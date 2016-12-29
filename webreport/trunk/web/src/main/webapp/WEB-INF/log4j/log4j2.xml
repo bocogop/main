@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{DEFAULT} [%p] [%c{1}] - %m%n" />
+		</Console>
+		<RollingFile append="true" bufferedIO="true" name="appender.app"
+			fileName="log/app.log" filePattern="log/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz"
+			ignoreExceptions="false">
+			<PatternLayout>
+				<Pattern>%d{DEFAULT} [%p] [%c{1}] - %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+		</RollingFile>
+		<RollingFile append="true" bufferedIO="true" name="appender.timings"
+			fileName="log/app-timings.log" filePattern="log/$${date:yyyy-MM}/app-timings-%d{MM-dd-yyyy}-%i.log.gz"
+			ignoreExceptions="false">
+			<PatternLayout>
+				<Pattern>%d{DEFAULT} [%c{1}] - %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+		</RollingFile>
+		<RollingFile append="true" bufferedIO="true" name="appender.cache"
+			fileName="log/app-cache.log" filePattern="log/$${date:yyyy-MM}/app-cache-%d{MM-dd-yyyy}-%i.log.gz"
+			ignoreExceptions="false">
+			<PatternLayout>
+				<Pattern>%d{DEFAULT} [%c{1}] - %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<!-- SQL server: suppress WARN errors for "WARN  [com.arjuna.ats.jta] (Periodic Recovery) ARJUNA016027: Local XARecoveryModule.xaRecovery 
+		got XA exception XAException.XAER_RMERR: javax.transaction.xa.XAException: The function RECOVER: failed. The status is: -3" -->
+		<Logger name="com.arjuna" level="error" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+		<Logger name="org.bocogop.shared.config" level="debug" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+		<Logger name="org.bocogop.wr" level="error" additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		<Logger name="org.bocogop.wr.config" level="debug" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+		<Logger name="org.bocogop.wr.util.MethodTimerAspect" level="info"
+			additivity="false">
+			<AppenderRef ref="appender.timings" />
+		</Logger>
+		<Logger name="org.bocogop.wr.service.scheduledJobs" level="error"
+			additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		<!-- Library Layer (components desired to log into own application log 
+			files) -->
+		<Logger name="orgs" level="warn" additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		<Logger name="net.sf.ehcache" level="warn" additivity="false">
+			<AppenderRef ref="appender.cache" />
+		</Logger>
+		<!-- ehcache: suppress WARN errors for "could not find cache settings, 
+			using defaults" -->
+		<Logger name="net.sf.ehcache.hibernate.SingletonEhCacheProvider"
+			level="info" additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		<Logger name="org.hibernate" level="error" additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		<!-- Hibernate: suppress WARN errors for "Narrowing proxy to class..." -->
+		<Logger name="org.hibernate.engine.internal.StatefulPersistenceContext"
+			level="error" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+		<Logger name="org.hibernate.stat" level="info" additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		<!-- Enable the following logger to see the bind parameters for each Hibernate 
+			query - CPB -->
+		<!-- <logger name="org.hibernate.type" additivity="false"> <level value="trace" 
+			/> <appender-ref ref="console" /> </logger> -->
+		<Logger name="org.springframework" level="info" additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		<!-- Spring: suppress WARN errors for "Unable to proxy method [] because 
+			it is final" -->
+		<Logger name="org.springframework.aop.framework.CglibAopProxy"
+			level="error" additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		<Logger name="org.springframework.jms" level="error"
+			additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		
+		<Logger name="org.bocogop.wr.config.WebSecurityConfig" level="warn" additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		<Logger name="org.bocogop.wr.config.WebSecurityConfig$2" level="warn" additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		<!-- 
+		<Logger name="org.springframework.security.web.authentication.preauth" level="debug" additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		
+		<Logger name="org.bocogop.wr.web.CommonController" level="debug" additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		 -->
+		
+		<Logger name="org.bocogop.wr.persistence.impl.leie" level="info"
+			additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		
+		
+		<Logger name="org.bocogop.wr.service.impl.VolunteerServiceImpl" level="debug"
+			additivity="false">
+			<AppenderRef ref="appender.app" />
+		</Logger>
+		
+		<Root level="warn">
+			<AppenderRef ref="appender.app" />
+		</Root>
+	</Loggers>
+</Configuration>
+
+	
+

@@ -1,0 +1,148 @@
+.flex-container {
+	padding: 0;
+	margin: 0;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-flow: row wrap;
+	justify-content: space-around;
+	flex-wrap: wrap;
+}
+
+div.fieldSetContainer legend {
+	text-align: left;
+}
+
+div#userAndDetailsDiv {
+	min-width: 360px;
+}
+
+div#globalRolesAndStationsDiv {
+	min-width: 200px;
+}
+
+div#rolePermissionsTableDiv {
+	display: inline-block;
+	vertical-align: top;
+	min-width: 290px;
+	width: 30%;
+}
+
+.userFields {
+	visibility: hidden;
+}
+
+.manageAll {
+	display: none;
+}
+
+.manageSelfOnly {
+	display: none;
+}
+
+div.effectiveRoleDiv {
+	padding-top: 60px;
+	padding-right: 60px;
+}
+
+table#effectiveRoleTable {
+	box-sizing: border-box;
+	border-collapse: collapse;
+}
+
+table#effectiveRoleTable td {
+	border: 1px solid gray;
+}
+
+table#effectiveRoleTable tr:nth-child(even) {
+	background-color: #eee;
+}
+
+table#effectiveRoleTable tr:nth-child(odd) {
+	background-color: #fff;
+}
+
+/*
+table#effectiveRoleTable td.stationName {
+	display:table-caption;
+}
+*/
+
+div#appContainerDiv {
+	display: inherit;
+}
+
+table#effectiveRoleTable tbody {
+	display: block;
+	max-height: 350px;
+	overflow-y: auto;
+	overflow-x:hidden;
+	padding: 2px;
+}
+
+table#effectiveRoleTable thead, table#effectiveRoleTable tbody tr {
+	width: 100%;
+	display: inline-table;
+	table-layout: fixed;
+}
+
+table#effectiveRoleTable thead {
+	width: calc(100% - 1em)
+}
+
+table#effectiveRoleTable th {
+	height: 30px;
+	white-space: nowrap;
+	font-weight: normal;
+}
+
+table#effectiveRoleTable th>div {
+	transform: translate(5px, 0px) rotate(315deg);
+	width: 30px;
+}
+
+table#effectiveRoleTable th>div>span {
+	border-bottom: 1px solid #ccc;
+	padding: 5px 10px;
+}
+
+table#effectiveRoleTable .check {
+	width: 30px;
+}
+
+table#effectiveRoleTable td.check {
+	
+}
+
+.ui-button-text-only>.ui-button-text {
+	padding: 5px;
+}
+
+option.defaultFacilityOption {
+	background-color: lightgreen;
+}
+
+userAdmin.user.title {
+	display: block;
+}
+
+userAdmin.user.displayName {
+	font-weight: bold;
+	margin-right: 5px;
+}
+
+userAdmin.user.username {
+	display: block;
+	font-size: 11px;
+	opacity: 0.8;
+}
+
+.dataTables_wrapper .dataTables_filter {
+	float:none;
+	text-align:center;
+}
+.dataTables_wrapper .dataTables_filter input {
+	width: 250px;
+}

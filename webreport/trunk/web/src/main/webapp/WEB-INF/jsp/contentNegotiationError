@@ -1,0 +1,7 @@
+<%@ include file="shared/inc_header.jsp"%>
+
+<div align="center">
+	
+	<p>Please specify the representation format you require for the resource via an extension at the end of the resource URL eg .json for JSON and .xml for XML</p>
+	
+</div>

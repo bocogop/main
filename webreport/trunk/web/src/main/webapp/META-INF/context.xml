@@ -1,0 +1,5 @@
+<Context reloadable="true">
+
+    <ResourceLink name="jdbc/bocogop" global="jdbc/bocogop" type="javax.sql.DataSource"/>
+    
+</Context>

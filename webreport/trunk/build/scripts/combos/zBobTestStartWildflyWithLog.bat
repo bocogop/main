@@ -1,0 +1,1 @@
+cmd /c D:\src\WR\trunk\build\scripts\combos\zBobTestStartWildfly.bat > D:\src\WR\trunk\build\scripts\combos\TestStartWildfly.log

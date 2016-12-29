@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.kirkk</groupId>
+  <artifactId>jaranalyzer</artifactId>
+  <version>1.2</version>
+  <packaging>jar</packaging>
+  <name>JarAnalyzer</name>
+  <url>http://www.kirkk.com/main/Main/JarAnalyzer</url>
+  <description>JarAnalyzer is a dependency management utility for jar files</description>
+  <licenses>
+   <license>
+    <name>Kirkk.com BSD License</name>
+    <url>http://www.kirkk.com/main/zip/license.txt</url>
+    <distribution>repo</distribution>
+   </license>
+  </licenses>
+  <scm>
+   <connection>http://www.kirkk.com/main/Main/JarAnalyzer</connection>
+   <url>http://www.kirkk.com/main/Main/JarAnalyzer</url>
+  </scm>
+  <developers>
+   <developer>
+    <id>kirkk</id>
+    <name>Kirk Knoernschild</name>
+    <email>...</email>
+   </developer>
+  </developers>
+  <dependencies>
+   <dependency>
+    <groupId>bcel</groupId>
+    <artifactId>bcel</artifactId>
+    <version>5.1</version>
+    <scope>compile</scope>
+   </dependency>
+   <dependency>
+    <groupId>jakarta-regexp</groupId>
+    <artifactId>jakarta-regexp</artifactId>
+    <version>1.4</version>
+    <scope>compile</scope>
+   </dependency>
+   <dependency>
+    <groupId>ant</groupId>
+    <artifactId>ant</artifactId>
+    <version>1.6.5</version>
+    <scope>compile</scope>
+   </dependency>
+  </dependencies>
+  <build/>
+  <reporting/>
+</project>

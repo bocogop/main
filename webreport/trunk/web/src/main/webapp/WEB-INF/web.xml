@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee" 
+         xmlns:web="http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee">
+
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+	
+	<context-param>
+		<param-name>spring.profiles.active</param-name>
+		<param-value>attended</param-value>
+	</context-param>
+
+	<servlet>
+		<servlet-name>JmxMiniConsoleServlet</servlet-name>
+		<servlet-class>org.jminix.console.servlet.MiniConsoleServlet</servlet-class>
+		<init-param>
+			<param-name>serverConnectionProvider</param-name>
+			<param-value>org.jminix.server.WebSpringServerConnectionProvider</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>JmxMiniConsoleServlet</servlet-name>
+		<url-pattern>/jmx/*</url-pattern>
+	</servlet-mapping>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>JMX server</web-resource-name>
+			<url-pattern>/jmx/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>wr_dev</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>RESTful web services</web-resource-name>
+			<url-pattern>/ws/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>wr_webservices</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>ApplicationRealm</realm-name>
+	</login-config>
+
+	<security-role>
+		<role-name>wr_dev</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>wr_webservices</role-name>
+	</security-role>
+	
+	<welcome-file-list>
+		<welcome-file>index.htm</welcome-file>
+	</welcome-file-list>
+
+</web-app>

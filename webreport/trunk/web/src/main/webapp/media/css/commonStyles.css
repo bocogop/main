@@ -1,0 +1,552 @@
+body {
+	margin: 0px;
+	padding: 0px;
+}
+
+body, table, textarea, select, input, pre {
+	font-size: 9pt;
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
+	font-weight: normal;
+	text-decoration: none;
+	color: #333333;
+}
+
+pre {
+	margin: 0;
+}
+
+div#appContainerDiv {
+	min-height: 350px;
+}
+
+div.leftHalf {
+	float: left;
+}
+
+div.rightHalf {
+	float: right;
+}
+
+div.clearCenter {
+	clear: both;
+	margin: 0 auto;
+	display: table;
+}
+
+div.centerContent {
+	text-align: center;
+}
+
+div.login-form {
+	text-align: center;
+}
+
+div.login-input-group {
+	display: inline-block;
+	align: center;
+	text-align: right;
+}
+
+div.login-input-group>div {
+	padding: 3px;
+}
+
+span.textWrap {
+	max-width: 200px;
+	word-wrap: break-word;
+	display: block;
+}
+
+.oneTimeUserNotification {
+	color: red;
+	font-size: 11pt;
+	font-weight: bold;
+	font-style: italic;
+}
+
+/* datatable customizations */
+table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
+	background-color: #E9E9E9;
+}
+
+table.dataTable.stripe tbody tr.even, table.dataTable.display tbody tr.even {
+	background-color: #FFF;
+}
+
+table.dataTable tr.odd table tr {
+	background-color: transparent;
+}
+
+table.dataTable thead th, table.dataTable thead td, table.dataTable tbody td,
+	table.dataTable tfoot th, table.dataTable tfoot td {
+	padding: 2px;
+}
+
+table.dataTable thead th div.DataTables_sort_wrapper span {
+	right: 0px;
+}
+
+.dataTables_wrapper .dataTables_info {
+	clear: none;
+}
+
+table.dataTable div.DataTables_sort_wrapper {
+	padding-right: 18px;
+}
+
+.ui-button-text {
+	padding: 2px;
+}
+
+.buttonAnchor.leftIcon>.ui-button-text {
+	text-align: left;
+	padding-left: 30px;
+}
+
+.buttonAnchor.rightIcon>.ui-button-text {
+	text-align: left;
+	padding-right: 30px;
+}
+
+div.form-actions {
+	text-align: center;
+}
+
+.msg-error {
+	background: url(../images/error.png) no-repeat scroll 6px 50% #FFDDDD;
+}
+
+.expand {
+	background: url(../images/plus.gif) no-repeat scroll right center
+		transparent;
+}
+
+.contract {
+	background: url(../images/minus.gif) no-repeat scroll right center
+		transparent;
+}
+/*
+.sorting_asc {
+	background: url(../images/sort_asc.png) no-repeat scroll right center
+		transparent;
+}
+
+.sorting_desc {
+	background: url(../images/sort_desc.png) no-repeat scroll right center
+		transparent;
+}
+
+.sorting {
+	background: url(../images/sort_both.png) no-repeat scroll right center
+		transparent;
+}
+*/
+.change {
+	background: url(../images/change.jpg) no-repeat scroll right center
+		transparent;
+	padding: 3px 20px 5px 5px;
+	*display: inline-block;
+}
+
+.edit {
+	background: url(../images/edit_18x18.png) no-repeat scroll right center
+		transparent;
+	padding: 5px 20px 5px 5px;
+	*display: inline-block;
+}
+
+.deletePermanent {
+	background: url(../images/permanently_delete_18x18.png) no-repeat scroll
+		left center transparent;
+	padding: 2px 4px 2px 4px;
+	*display: inline-block;
+	background-origin: content-box;
+}
+
+.hint {
+	background: url(../images/context-sensitive-help-icon-small.jpg)
+		no-repeat scroll right center transparent;
+	padding: 5px 20px 5px 5px;
+	*display: inline-block;
+}
+
+.manage {
+	background: url(../images/run_18x18.png) no-repeat scroll right center
+		transparent;
+	padding: 5px 20px 5px 5px;
+	*display: inline-block;
+}
+
+.tick {
+	background: url(../images/view_selected_item_18x18.png) no-repeat scroll
+		right center transparent;
+	padding: 5px 20px 5px 5px;
+	*display: inline-block;
+}
+
+.newUser {
+	background: url(../images/new_user.png) no-repeat scroll left center
+		transparent;
+	padding: 2px 4px 2px 4px;
+	*display: inline-block;
+	background-origin: content-box;
+}
+
+.remove {
+	background: url(../images/unassign_remove_18x18.png) no-repeat scroll
+		left center transparent;
+	padding: 4px 6px 4px 6px;
+	*display: inline-block;
+}
+
+.cancel {
+	background: url(../images/cancel-icon.png) no-repeat scroll right center
+		transparent;
+	padding: 7px 10px 7px 10px;
+	*display: inline-block;
+}
+
+.revert {
+	background: url(../images/revert.png) no-repeat scroll right center
+		transparent;
+	padding: 7px 10px 7px 10px;
+	*display: inline-block;
+}
+
+.assign {
+	background: url(../images/checked_checkbox_18x18.png) no-repeat scroll
+		center transparent;
+	padding: 9px 10px 9px 10px;
+	width: 16px;
+	height: 16px;
+	*display: inline-block;
+}
+
+.search {
+	background: url(../images/search.gif) no-repeat scroll left center
+		transparent;
+	padding: 2px 4px 2px 4px;
+	*display: inline-block;
+	background-origin: content-box;
+}
+
+.detail {
+	background: url(../images/view_edit_details_18x18.png) no-repeat scroll
+		right center transparent;
+	padding: 5px 15px 5px 5px;
+	*display: inline-block;
+}
+
+.forward {
+	background: url(../images/forward_to.png) no-repeat scroll right center
+		transparent;
+	padding: 5px 20px 5px 5px;
+	*display: inline-block;
+}
+
+.addComments {
+	background: url(../images/add_comment_18x18.png) no-repeat scroll right
+		center transparent;
+	padding: 5px 20px 5px 5px;
+	*display: inline-block;
+}
+
+.saveComments {
+	background: url(../images/saveComments.png) no-repeat scroll right
+		center transparent;
+	padding: 5px 20px 5px 5px;
+	*display: inline-block;
+}
+
+.origin {
+	background: url(../images/origin.png) no-repeat scroll right center
+		transparent;
+	padding: 5px 20px 5px 5px;
+	*display: inline-block;
+}
+
+.delete {
+	background: url(../images/delete.gif) no-repeat scroll right center
+		transparent;
+	padding: 5px 20px 5px 5px;
+	*display: inline-block;
+}
+
+object {
+	outline: 0;
+}
+
+#skip a {
+	position: absolute;
+	left: -10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
+	font-size: 7px;
+	color: #333333;
+}
+
+#skip a:focus {
+	position: static;
+	width: auto;
+	height: auto;
+}
+
+a.ui-dialog-titlebar-close {
+	display: none
+}
+
+:disabled {
+	color: #aaa;
+}
+
+.hidden {
+	position: absolute;
+	left: 0px;
+	top: -500px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.spinner {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-left: -50px; /* half width of the spinner gif */
+	margin-top: -50px; /* half height of the spinner gif */
+	text-align: center;
+	z-index: 1;
+	overflow: hidden;
+	width: 100px; /* width of the spinner gif */
+	height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
+}
+
+.spinnerMessage {
+	border: 1px solid gray;
+	border-radius: 7px;
+	background-color: rgba(255, 255, 255, 1);
+	position: fixed;
+	text-align: center;
+	vertical-align: middle;
+	top: 50%;
+	left: 50%;
+	margin-left: -100px; /* half width of the spinner gif */
+	margin-top: 0px; /* half height of the spinner gif */
+	width: 200px; /* width of the spinner gif */
+}
+
+.spinnerMessage p {
+	text-align: center;
+	position: relative;
+	top: 50%;
+}
+
+.bodyText {
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
+	font-weight: normal;
+	color: #333333;
+}
+
+a.white:link, a.white:active, a.white:visited {
+	background-color: Transparent;
+	border-bottom: 1px solid #FFFFFF;
+	color: white;
+	text-decoration: underline;
+}
+
+a.appLink:link, a.appLink:active, a.appLink:visited {
+	color: #229;
+	text-decoration: underline;
+}
+
+fieldset legend {
+	font-weight: bold;
+}
+
+.requdIndicator {
+	color: #aa0000;
+}
+
+.appFieldLabel {
+	text-align: right;
+	padding: 3px;
+}
+
+.appCheckbox {
+	text-align: left;
+	font-weight: bold;
+}
+
+.homepageDiv {
+	text-align: center;
+	display: inline-block;
+	clear: both;
+	width: 50%;
+}
+
+.msg-error {
+	border: 1px solid #FF0000;
+	display: block;
+	font-weight: bold;
+	margin: 2px auto 14px;
+	padding: 6px 6px 6px 30px;
+	text-align: left;
+}
+
+fieldset {
+	margin-bottom: 10px;
+}
+
+.roundedRect {
+	box-shadow: 1px 1px 0 #FFFFFF;
+	-moz-border-bottom-colors: none;
+	-moz-border-image: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	border-color: #C8C9CA #9E9E9E #9E9E9E #C8C9CA;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 6px 6px 6px 6px;
+}
+
+div#appTopper {
+	text-align: left;
+	margin-top: 0px;
+	margin-bottom: 10px;
+	font: 62.5%/1.4 Arial, Helvetica, Verdana, sans-serif;
+	font-size: 1.1em;
+}
+
+.expand {
+	padding: 15px 15px 0 5px;
+	*display: inline-block;
+}
+
+.contract {
+	padding: 15px 15px 0 5px;
+	*display: inline-block;
+}
+
+.expandTitle {
+	/* background: #B9CFE6; */
+	color: #225;
+	font-size: 11pt;
+	font-style: italic;
+	margin: 3px;
+}
+
+.notificationAlert {
+	/* float: right; */
+	min-width: 15%;
+	max-width: 40%;
+}
+
+.notificationAlert h1 {
+	font-size: 10pt;
+}
+
+.notificationBox {
+	background: #dfeffc url("glass-overlay.png") 50% 49% repeat-x;
+	padding: 6px;
+	border-radius: 6px;
+}
+
+.invisibleRequiredFor508 {
+	visibility: hidden;
+	display: none;
+}
+
+/* JQUERY table styles below here ---------------------------- */
+select.dataTableFilterSelect {
+	/*width:40px;*/
+	
+}
+
+select.expandSelect {
+	width: auto;
+}
+
+.tableClear {
+	clear: both;
+	margin: 10px auto;
+	display: table;
+}
+
+.noborder {
+	border: none;
+	background: #EEE;
+}
+
+.sorting_asc {
+	*display: inline-block;
+}
+
+.sorting_desc {
+	*display: inline-block;
+}
+
+.sorting {
+	*display: inline-block;
+}
+
+.buttonSpace {
+	margin: 10px 0 10px 0;
+}
+
+ul.searchPopupUL {
+	padding-left: 1.2em;
+}
+
+/* Quick search and multi-select customizations */
+.ms-container .ms-selectable li.ms-elem-selectable, .ms-container .ms-selection li.ms-elem-selection
+	{
+	font-size: 9px;
+}
+
+.ms-container ul {
+	margin: 10px;
+}
+
+.search-input {
+	margin-top: 10px;
+}
+
+.dataTableCenterFilter .dataTables_filter {
+	float: none;
+	text-align: center;
+}
+
+.ui-multiselect-filter {
+	margin-right: 1000px;
+	white-space: nowrap;
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-state-active,
+	.ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active,
+	.ui-state-default, .ui-widget-content .ui-state-default,
+	.ui-widget-header .ui-state-default {
+	font-weight: inherit;
+}
+
+.placeholderRequired::-webkit-input-placeholder {
+	color: #DD0000;
+}
+
+.placeholderRequired:-moz-placeholder { /* older Firefox*/
+	color: #DD0000;
+}
+
+.placeholderRequired::-moz-placeholder { /* Firefox 19+ */
+	color: #DD0000;
+}
+
+.placeholderRequired:-ms-input-placeholder {
+	color: #DD0000;
+}
+.redText {
+	color: #f13458;
+}

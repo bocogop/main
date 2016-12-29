@@ -1,0 +1,1 @@
+standalone.bat -Djboss.server.base.dir="%SERVER_BASE_DIR%"
