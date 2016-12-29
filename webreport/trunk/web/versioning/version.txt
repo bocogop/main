@@ -1,0 +1,1 @@
+This is a dummy file used by the Maven SCM plugin to retrieve the latest SVN tree version. It is not used to actually store the version.
