@@ -444,16 +444,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="/core"/>
-	<classpathentry kind="var" path="M2_REPO/javax/javaee-api/7.0/javaee-api-7.0.jar" sourcepath="M2_REPO/javax/javaee-api/7.0/javaee-api-7.0-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/javax/javaee-api/7.0/javaee-api-7.0-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/com/sun/mail/javax.mail/1.5.0/javax.mail-1.5.0.jar" sourcepath="M2_REPO/com/sun/mail/javax.mail/1.5.0/javax.mail-1.5.0-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/com/sun/mail/javax.mail/1.5.0/javax.mail-1.5.0-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/org/apache/logging/log4j/log4j-web/2.7/log4j-web-2.7.jar" sourcepath="M2_REPO/org/apache/logging/log4j/log4j-web/2.7/log4j-web-2.7-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/org/apache/logging/log4j/log4j-web/2.7/log4j-web-2.7-javadoc.jar!/"/>

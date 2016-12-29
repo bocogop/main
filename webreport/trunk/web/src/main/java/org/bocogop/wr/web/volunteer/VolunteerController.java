@@ -60,7 +60,6 @@ import org.bocogop.wr.model.volunteer.VolunteerStatus.VolunteerStatusType;
 import org.bocogop.wr.persistence.dao.TimeSummary;
 import org.bocogop.wr.persistence.dao.volunteer.VolunteerQuickSearchResult;
 import org.bocogop.wr.persistence.dao.volunteer.VolunteerQuickSearchResult.VolunteerQuickSearchResultView;
-import org.bocogop.wr.service.scheduledJobs.VolunteerAutoInactivationJob;
 import org.bocogop.wr.util.DateUtil;
 import org.bocogop.wr.web.AbstractAppController;
 import org.bocogop.wr.web.breadcrumbs.Breadcrumb;
@@ -76,8 +75,6 @@ public class VolunteerController extends AbstractAppController {
 
 	@Autowired
 	private VolunteerValidator volunteerValidator;
-	@Autowired
-	private VolunteerAutoInactivationJob autoInactivationJob;
 
 	// ------------------------------------------------------- Volunteer Search
 	// popup support methods
@@ -194,11 +191,6 @@ public class VolunteerController extends AbstractAppController {
 	public @ResponseBody boolean primaryFacilitySet(@RequestParam long volunteerId, @RequestParam long facilityId) {
 		volunteerService.setPrimaryFacility(volunteerId, facilityId);
 		return true;
-	}
-
-	@RequestMapping("/runAutoInactivation")
-	public @ResponseBody String runAutoInactivation() throws IOException {
-		return autoInactivationJob.inactivateStaleVolunteersWithStatus();
 	}
 
 	// ------------------------------------------------------- Volunteer form

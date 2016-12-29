@@ -3,8 +3,8 @@
 @rem save current directory
 @set OLDDIR=%CD%
 
-echo Building WR dependency tree from %WR_PROJECT_HOME%...
-cd %WR_PROJECT_HOME%
+echo Building WR dependency tree from %WR_CC_PATH%\parent...
+cd %WR_CC_PATH%\parent
 call mvn dependency:tree -s %MAVEN_SETTINGS_FILE% > %OLDDIR%\dependencies.txt
 
 echo Wrote dependency tree to %OLDDIR%\dependencies.txt.

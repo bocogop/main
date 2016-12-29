@@ -3,7 +3,7 @@
 @rem save current directory
 @set OLDDIR=%CD%
 
-cd %WR_PROJECT_HOME%
+cd %WR_CC_PATH%\parent
 call mvn test site -s %MAVEN_SETTINGS_FILE%
 
 @set MYERROR=%ERRORLEVEL%

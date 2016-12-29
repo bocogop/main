@@ -15,16 +15,14 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.text.WordUtils;
+import org.bocogop.shared.model.core.AbstractAuditedPersistent;
+import org.bocogop.shared.util.TypeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.bocogop.shared.model.core.AbstractAuditedPersistent;
-import org.bocogop.shared.util.TypeUtil;
 
 @SuppressWarnings("unchecked")
 @MappedSuperclass

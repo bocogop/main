@@ -9,7 +9,6 @@
 
 	<properties>
 		<jackson.version>2.8.5</jackson.version>
-		<javaee-api.version>7.0</javaee-api.version>
 		<junit.version>4.12</junit.version>
 		<log4j.version>2.7</log4j.version>
 		<org.aspectj.version>1.8.9</org.aspectj.version>
@@ -127,6 +126,12 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.1.0.Final</version>
 		</dependency>
 
 		<dependency>
@@ -364,19 +369,6 @@
 		<!-- ================================================= Provided scope -->
 
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>${javaee-api.version}</version>
-			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.activation</groupId>
-					<artifactId>activation</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
@@ -440,7 +432,7 @@
 			<version>1.4</version>
 			<scope>test</scope>
 		</dependency>
-
+		
 	</dependencies>
 
 </project>

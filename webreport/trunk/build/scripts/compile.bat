@@ -4,11 +4,11 @@
 @set OLDDIR=%CD%
 
 echo Building Core (including test jar)...
-cd %WR_PROJECT_HOME%\..\Core
+cd %WR_CC_PATH%\core
 call mvn install -s %MAVEN_SETTINGS_FILE%
 
-echo Building WR from %WR_PROJECT_HOME%...
-cd %WR_PROJECT_HOME%
+echo Building WR from %WR_CC_PATH%\parent...
+cd %WR_CC_PATH%\parent
 call mvn install -Dmaven.test.skip=true -s %MAVEN_SETTINGS_FILE%
 @rem mvn dependency:sources -s %MAVEN_SETTINGS_FILE%
 @rem mvn dependency:resolve -Dclassifier=javadoc -s %MAVEN_SETTINGS_FILE%

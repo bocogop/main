@@ -4,7 +4,7 @@
 @set OLDDIR=%CD%
 
 echo Generating Eclipse configuration files...
-cd %WR_PROJECT_HOME%
+cd %WR_CC_PATH%\parent
 call mvn eclipse:clean eclipse:eclipse -U -s %MAVEN_SETTINGS_FILE%
 @set MYERROR=%ERRORLEVEL%
 
