@@ -81,7 +81,7 @@
 					<form_instance_xml>
 						<VA_VISN5_v2>
 							<page1>
-								<Facility>512</Facility>
+								<Precinct>512</Precinct>
 							</page1>
 							<page2>
 								<Name_Field>George H Artola</Name_Field>
@@ -191,7 +191,7 @@
 					<form_instance_xml>
 						<VA_VISN2_v1>
 							<page1>
-								<Facility>670</Facility>
+								<Precinct>670</Precinct>
 							</page1>
 							<page2>
 								<Name_Field>Jonathan C Pullano</Name_Field>
@@ -297,7 +297,7 @@
 					<form_instance_xml>
 						<VA_VISN2_v1>
 							<page1>
-								<Facility>532</Facility>
+								<Precinct>532</Precinct>
 							</page1>
 							<page2>
 								<Name_Field>Matt Kathy Brady</Name_Field>
@@ -413,7 +413,7 @@
 					<form_instance_xml>
 						<VA_VISN10_v1>
 							<page1>
-								<Facility>757</Facility>
+								<Precinct>757</Precinct>
 							</page1>
 							<page2>
 								<Name_Field>Honda Transmission Mfg of America, Inc.</Name_Field>
@@ -528,7 +528,7 @@
 					<form_instance_xml>
 						<VA_VISN9_v1>
 							<page1>
-								<Facility>614</Facility>
+								<Precinct>614</Precinct>
 							</page1>
 							<page2>
 								<Name_Field>Ted and Christie Amato</Name_Field>
@@ -653,7 +653,7 @@
 					<form_instance_xml>
 						<VA_VISN15_v1>
 							<page1>
-								<Facility>5891</Facility>
+								<Precinct>5891</Precinct>
 							</page1>
 							<page2>
 								<Name_Field>Marcus Megan Woodard</Name_Field>

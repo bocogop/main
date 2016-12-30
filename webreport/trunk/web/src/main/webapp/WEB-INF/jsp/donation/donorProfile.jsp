@@ -4,10 +4,10 @@
 	<%@ include file="../shared/inc_modifyToView.jsp"%>
 </c:if>
 
-<jsp:include page="/WEB-INF/jsp/shared/inc_volunteerSearchPopup.jsp">
-	<jsp:param name="uniqueVolunteerSearchPopupId" value="linkToDonor" />
+<jsp:include page="/WEB-INF/jsp/shared/inc_voterSearchPopup.jsp">
+	<jsp:param name="uniqueVoterSearchPopupId" value="linkToDonor" />
 	<jsp:param name="resultCallbackMethod"
-		value="linkVolunteerSelectedCallback" />
+		value="linkVoterSelectedCallback" />
 </jsp:include>
 
 <jsp:include page="/WEB-INF/jsp/shared/inc_organizationSearchPopup.jsp">
@@ -109,7 +109,7 @@
 			phone: "<c:out value="${command.donor.displayPhone}" />",
 			email: "<c:out value="${command.donor.displayEmail}" />",
 			mutillineAddress: "<c:out value="${command.mutillineAddressWithoutLineFeed}" />",
-			lastDonationFacilty: "<c:out value="${lastDonationFacility}"/>",
+			lastDonationFacilty: "<c:out value="${lastDonationPrecinct}"/>",
 			lastDonationDate: "<c:out value="${lastDonationDate}" />"
 	}
 	var commandFirstName = "<c:out value="${command.donor.firstName}" />"
@@ -119,9 +119,9 @@
 	var commandDonorType = ${command.donor.donorType.id}
 	var donorTypeIsIndividual = (commandDonorType == '1')
 	var donorTypeIsOrg = (commandDonorType == '4')
-	var displayIndividual = donorTypeIsIndividual && ${empty command.donor.volunteer.id && empty command.donor.organization.id}
+	var displayIndividual = donorTypeIsIndividual && ${empty command.donor.voter.id && empty command.donor.organization.id}
 	var displayOrganization = donorTypeIsOrg && ${not empty command.donor.organization.id}
-	var displayVolunteer = donorTypeIsIndividual && ${not empty command.donor.volunteer.id}
+	var displayVoter = donorTypeIsIndividual && ${not empty command.donor.voter.id}
 	var orgSearchNameStr = "<c:out value="${donorSearchParams.orgName}" default="" />"
 	
 	var printReceipt = <c:out value="${printReceipt}" default="-1" />
@@ -129,7 +129,7 @@
 	var printThankYou = <c:out value="${printThankYou}" default="-1" />
 	var printFormat = "<c:out value="${printFormat}" default="PDF" />"
 	
-	var workingFacility = "<c:out value="${facilityContextName}"/>"
+	var workingPrecinct = "<c:out value="${precinctContextName}"/>"
 	
 	$(function() {
 		initDonorEdit(printReceipt, printMemo, printThankYou, printFormat)
@@ -153,13 +153,13 @@
 	min-width: 680px;
 }
 
-div.volunteerDisplayFields, div.organizationDisplayFields {
+div.voterDisplayFields, div.organizationDisplayFields {
 	min-width: 430px;
 }
 </style>
 
 <style>--%>
-div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields, div.otherTypesDisplayFields
+div.donorInputFields, div.voterDisplayFields, div.organizationDisplayFields, div.otherTypesDisplayFields
 	{
 	min-width: 680px;
 	max-width: 850px;
@@ -206,9 +206,9 @@ div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields,
 	<div class="clearCenter individualInputFields">
 		<div class="clearCenter centerContent">
 			<c:if test="${not FORM_READ_ONLY}">
-				<a id="linkVolunteerButton" class="buttonAnchor"
-					href="javascript:popupVolunteerSearch('linkToDonor')">Link
-					Volunteer</a>
+				<a id="linkVoterButton" class="buttonAnchor"
+					href="javascript:popupVoterSearch('linkToDonor')">Link
+					Voter</a>
 			<sec:authorize
 				access="hasAuthority('${PERMISSION_MERGE_DONOR}')">
 				<c:if test="${command.donor.persistent}">
@@ -327,7 +327,7 @@ div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields,
 								cssClass="emailInput" size="35" maxLength="250" /> <c:if
 								test="${command.donor.persistent}">
 								<a href="javascript:emailInputContent('donorEmail')"><img
-									alt='Click to email volunteer' src="${imgHome}/envelope.jpg"
+									alt='Click to email voter' src="${imgHome}/envelope.jpg"
 									height="14" width="18" border="0" align="absmiddle"
 									style="padding-left: 4px; padding-right: 4px" /></a></c:if>
 								<app:errors path="donor.email" cssClass="msg-error" />
@@ -346,11 +346,11 @@ div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields,
 	</div>
 
 
-	<%--- volunteer --%>
-	<c:if test="${command.donor.volunteer.persistent}">
-		<div class="clearCenter volunteerDisplayFields">
+	<%--- voter --%>
+	<c:if test="${command.donor.voter.persistent}">
+		<div class="clearCenter voterDisplayFields">
 			<fieldset>
-				<legend> Donor is Volunteer </legend>
+				<legend> Donor is Voter </legend>
 				<div class="leftHalf">
 					<table>
 						<tr>
@@ -360,17 +360,17 @@ div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields,
 						</tr>
 						<tr>
 							<td class='appFieldLabel' nowrap>Email:</td>
-							<td><c:out value="${command.donor.volunteer.email}" /> <c:if
-									test="${not empty command.donor.volunteer.email}">
-									<a href="mailto:${command.donor.volunteer.email}"><img
-										alt='Click to email volunteer' src="${imgHome}/envelope.jpg"
+							<td><c:out value="${command.donor.voter.email}" /> <c:if
+									test="${not empty command.donor.voter.email}">
+									<a href="mailto:${command.donor.voter.email}"><img
+										alt='Click to email voter' src="${imgHome}/envelope.jpg"
 										height="14" width="18" border="0" align="absmiddle"
 										style="padding-left: 4px; padding-right: 4px" /></a>
 								</c:if><br> <app:errors path="donor.email" cssClass="msg-error" /></td>
 						</tr>
 						<tr>
 							<td class='appFieldLabel' nowrap>Phone:</td>
-							<td><c:out value="${command.donor.volunteer.phone}" /></td>
+							<td><c:out value="${command.donor.voter.phone}" /></td>
 						</tr>
 					</table>
 				</div>
@@ -380,18 +380,18 @@ div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields,
 							<td class='appFieldLabel' nowrap>Address:</td>
 							<td><span style="padding-right: 30px"><pre>
 										<c:out
-											value="${command.donor.volunteer.addressMultilineDisplay}" />
+											value="${command.donor.voter.addressMultilineDisplay}" />
 									</pre></span></td>
 						</tr>
 					</table>
 				</div>
 				<div class="clearCenter">
 					<c:if test="${not FORM_READ_ONLY}">
-						<td><a id="unlinkVolunteerButton" class="buttonAnchor"
-							href="javascript:unlinkVolunteer()">Unlink Volunteer</a></td>
-						<td><a id="editVolunteerButton" class="buttonAnchor"
-							href="${home}/volunteerEdit.htm?id=${command.donor.volunteer.id}&fromPage=donor">Edit
-								Volunteer</a></td>
+						<td><a id="unlinkVoterButton" class="buttonAnchor"
+							href="javascript:unlinkVoter()">Unlink Voter</a></td>
+						<td><a id="editVoterButton" class="buttonAnchor"
+							href="${home}/voterEdit.htm?id=${command.donor.voter.id}&fromPage=donor">Edit
+								Voter</a></td>
 						<sec:authorize
 								access="hasAuthority('${PERMISSION_MERGE_DONOR}')">
 						<td><a id="mergeDonorButton" class="buttonAnchor"
@@ -405,7 +405,7 @@ div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields,
 			</fieldset>
 		</div>
 	</c:if>
-	<%-- end volunteer --%>
+	<%-- end voter --%>
 
 	<%--- organization --%>
 	<div class="clearCenter organizationDisplayFields">
@@ -425,8 +425,8 @@ div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields,
 				<div class="leftHalf">
 					<table width="100%">
 						<tr>
-							<td class='appFieldLabel' nowrap>Facility:</td>
-							<td style="text-align: left"><c:out value="${command.orgFacilityDisplay}" /></td>
+							<td class='appFieldLabel' nowrap>Precinct:</td>
+							<td style="text-align: left"><c:out value="${command.orgPrecinctDisplay}" /></td>
 						</tr>
 						<tr>
 							<td class='appFieldLabel' nowrap><span
@@ -607,7 +607,7 @@ div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields,
 					<thead>
 						<tr>
 							<td class="noborder" title="Filter by Donation Date"></td>
-							<td class="noborder" id="facilityFilter" title="Filter by Facility"></td>
+							<td class="noborder" id="precinctFilter" title="Filter by Precinct"></td>
 							<td class="noborder" title="Filter by Donation Type"></td>
 							<td class="noborder"></td>
 							<td class="noborder" title="Filter by Acknowledgement Date"></td>
@@ -622,7 +622,7 @@ div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields,
 							<th class="select-filter"
 								selectFilterSortFunction="reverseCompareDates">
 								Date</th>
-							<th class="select-filter">Facility</th>
+							<th class="select-filter">Precinct</th>
 							<th class="select-filter">Type</th>
 							<th>Amount</th>
 							<th class="select-filter">ACK Date</th>
@@ -643,7 +643,7 @@ div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields,
 									href="${home}/donationEdit.htm?id=${donation.id}&fromPage=donor"> <c:out
 											value="${donation.donationDate}" />
 								</a></td>
-								<td><c:out value="${donation.facility.displayName}" /></td>
+								<td><c:out value="${donation.precinct.displayName}" /></td>
 								<td><c:out value="${donation.donationType.donationType}" /></td>
 								<td style="text-align: right"><c:set var="totalValue"
 										value="0" /> <c:forEach items="${donation.donationDetails}"
@@ -660,7 +660,7 @@ div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields,
 								</c:if>
 								<td align="center">
 									<c:if
-										test="${donation.facility.id == facilityContextId and not command.donor.donorType.lookupType.legacy}">
+										test="${donation.precinct.id == precinctContextId and not command.donor.donorType.lookupType.legacy}">
 										<a
 											href="javascript:showPrintDonationSummaryDialog(${donation.id})"
 											title="Print Donation Documents"><img
@@ -668,7 +668,7 @@ div.donorInputFields, div.volunteerDisplayFields, div.organizationDisplayFields,
 											alt="Print Donation Documents" /></a>
 									</c:if> 
 									<c:if
-										test="${not FORM_READ_ONLY and donationEditable and donation.facility.id == facilityContextId}">
+										test="${not FORM_READ_ONLY and donationEditable and donation.precinct.id == precinctContextId}">
 										<a
 											href="javascript:deleteDonation('${donation.id}', '${command.donor.id}')"
 											title="Are you sure you want to delete this donation?"><img

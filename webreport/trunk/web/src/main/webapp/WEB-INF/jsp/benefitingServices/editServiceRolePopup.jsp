@@ -5,10 +5,10 @@
 var roleTypeGeneralId = ${BENEFITING_SERVICE_ROLE_TYPE_VALUE_GENERAL.id}
 
 $(function() {
-	initEditServiceRolePopup(${facilityContextId})
+	initEditServiceRolePopup(${precinctContextId})
 })
 
-function initEditServiceRolePopup(facilityId) {
+function initEditServiceRolePopup(precinctId) {
 	var submitEditServiceRole = function() {
 		var isNew = dialogEl.data('benefitingServiceRoleId') == ''
 		
@@ -50,7 +50,7 @@ function initEditServiceRolePopup(facilityId) {
 			data : {
 				benefitingServiceRoleId : dialogEl.data('benefitingServiceRoleId'),
 				benefitingServiceId : dialogEl.data('benefitingServiceId'),
-				facilityId : facilityId,
+				precinctId : precinctId,
 				locationId : locationIds,
 				name : name,
 				description : $("#editServiceRoleDescription").val(),
@@ -91,7 +91,7 @@ function initEditServiceRolePopup(facilityId) {
 			}
 		}
 	})
-	dialogEl.data('facilityId', facilityId)
+	dialogEl.data('precinctId', precinctId)
 		
 	var newLocationEl = $("#newServiceRolePhysicalLocation")
 	newLocationEl.multiselect({
@@ -102,12 +102,12 @@ function initEditServiceRolePopup(facilityId) {
 		},
 		beforeopen: function() {
 			if (dialogEl.data('newStationsPopulated')) return
-			getLocalFacilitiesForLocation($("#facilityId").val(), true, function(locations) {
+			getLocalPrecinctsForLocation($("#precinctId").val(), true, function(locations) {
 				var curVal = newLocationEl.val()
 				
 				newLocationEl.empty()
 				var newHtml = []
-				newHtml.push('<option value="-1">Main Facility</option>')
+				newHtml.push('<option value="-1">Main Precinct</option>')
 				
 				$.each(locations, function(index, item) {
 					var selectedText = (item.id == curVal) ? ' selected="selected"' : ''
@@ -134,12 +134,12 @@ function initEditServiceRolePopup(facilityId) {
 		},
 		beforeopen: function() {
 			if (dialogEl.data('editStationsPopulated')) return
-			getLocalFacilitiesForLocation($("#facilityId").val(), true, function(locations) {
+			getLocalPrecinctsForLocation($("#precinctId").val(), true, function(locations) {
 				var curVal = editLocationEl.val()
 				
 				editLocationEl.empty()
 				var newHtml = []
-				newHtml.push('<option value="-1">Main Facility</option>')
+				newHtml.push('<option value="-1">Main Precinct</option>')
 				
 				$.each(locations, function(index, item) {
 					var selectedText = (item.id == curVal) ? ' selected="selected"' : ''
@@ -273,14 +273,14 @@ function mergeRole() {
 		style="padding-top: 10px;"><label for='newServiceRolePhysicalLocation'>
 		Physical Location: </label><select id="newServiceRolePhysicalLocation"
 			multiple="multiple">
-			<option value="-1" selected="selected">Main Facility</option>
+			<option value="-1" selected="selected">Main Precinct</option>
 		</select>
 	</div>
 
 	<div id="editServiceRolePhysicalLocationDiv" class="clearCenter"
 		style="padding-top: 10px;"><label for='editServiceRolePhysicalLocation'>
 		Physical Location: </label><select id="editServiceRolePhysicalLocation">
-			<option value="-1" selected="selected">Main Facility</option>
+			<option value="-1" selected="selected">Main Precinct</option>
 		</select>
 	</div>
 

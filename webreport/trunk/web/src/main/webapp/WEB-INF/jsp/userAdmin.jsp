@@ -16,7 +16,7 @@
 	var csrfValue = '${_csrf.token}'
 
 	var nationalAdminId = "${ROLE_TYPE_NATIONAL_ADMIN.id}"
-	var centralOfficeFacilityId = "${VA_FACILITY_VALUE_CENTRAL_OFFICE.id}"
+	var centralOfficePrecinctId = "${VA_PRECINCT_VALUE_CENTRAL_OFFICE.id}"
 	
 	var hasUMPermission = false
 	var myUserId = <c:out value="${currentUser.id}" />
@@ -123,7 +123,7 @@
 
 	<div class="fieldSetContainer" id="globalRolesAndStationsDiv">
 		<fieldset>
-			<legend>Facilities &amp; Global Roles</legend>
+			<legend>Precincts &amp; Global Roles</legend>
 			<div class="clearCenter pleaseSelect">Please select a
 				user&#8230;</div>
 			<div class="clearCenter userFields">
@@ -153,14 +153,14 @@
 
 				<table cellpadding="2" align="center">
 					<tr align="center">
-						<td class="manageAll">Facilities Available:</td>
+						<td class="manageAll">Precincts Available:</td>
 						<td class="manageAll">&nbsp;</td>
-						<td aria-label="list of Assigned Facilities">Facilities Assigned:</td>
+						<td aria-label="list of Assigned Precincts">Precincts Assigned:</td>
 					</tr>
 					<tr align="center" valign="middle">
 						<td class="manageAll"><input id="available_stations_filter"
 							size="14"
-							title="Enter some text here to filter the Available Facility List"
+							title="Enter some text here to filter the Available Precinct List"
 							placeholder="[Filter Text]" />
 							<p /> <select name="available_stations" id="available_stations"
 							size="10" multiple></select></td>
@@ -175,23 +175,23 @@
 							<p /> <a class="buttonAnchor"
 							href="javascript:moveStations(false, false, true)">all&nbsp;&lt;-</a></td>
 						<td><input id="stations_filter" size="14"
-							title="Enter some text here to filter the Facility List"
+							title="Enter some text here to filter the Precinct List"
 							placeholder="[Filter Text]" />
 							<p /> <select name="stations" size="10" id="stations"
 							multiple="true"></select></td>
 					</tr>
 					<tr>
 						<td align="center" colspan="2" class="manageAll">Default
-							Facility: <span class="defaultFacilityText"></span><input
-							type="hidden" id="defaultFacilityId" value="" />
+							Precinct: <span class="defaultPrecinctText"></span><input
+							type="hidden" id="defaultPrecinctId" value="" />
 						</td>
 						<td align="center"><a class="buttonAnchor"
 							id="setDefaultLink" href="javascript:doNothing()">Set Default</a>
 					</tr>
 					<tr class="manageSelfOnly">
 						<td colspan="2" class="manageAll">&nbsp;</td>
-						<td align="center">Default Facility:<br> <span
-							class="defaultFacilityText"></span></td>
+						<td align="center">Default Precinct:<br> <span
+							class="defaultPrecinctText"></span></td>
 					</tr>
 				</table>
 			</div>
@@ -216,9 +216,9 @@
 </div>
 
 <div id="customizeDialog" style="display: none"
-	title="Customize Roles &amp; Facilities">
+	title="Customize Roles &amp; Precincts">
 	<div align="center">Which roles should this user be assigned, and
-		at which facilities?</div>
+		at which precincts?</div>
 	<table cellpadding="2" align="center">
 		<tr align="center">
 			<td>Roles Available:</td>
@@ -244,13 +244,13 @@
 
 	<table cellpadding="2" align="center">
 		<tr align="center">
-			<td>Facilities Available:</td>
+			<td>Precincts Available:</td>
 			<td>&nbsp;</td>
-			<td>Facilities Assigned:</td>
+			<td>Precincts Assigned:</td>
 		</tr>
 		<tr align="center" valign="middle">
 			<td><input id="available_cust_stations_filter" size="14"
-				title="Enter some text here to filter the Available Facility List"
+				title="Enter some text here to filter the Available Precinct List"
 				placeholder="[Filter Text]" />
 				<p /> <select name="available_cust_stations"
 				id="available_cust_stations" size="10" multiple></select></td>
@@ -264,7 +264,7 @@
 				<p /> <a class="buttonAnchor"
 				href="javascript:moveItem('cust_stations', 'removeAll')">all&nbsp;&lt;-</a></td>
 			<td><input id="cust_stations_filter" size="14"
-				title="Enter some text here to filter the Facility List"
+				title="Enter some text here to filter the Precinct List"
 				placeholder="[Filter Text]" />
 				<p /> <select name="cust_stations" size="10" id="cust_stations"
 				multiple="true"></select></td>

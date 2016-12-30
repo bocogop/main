@@ -13,12 +13,11 @@ import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.bocogop.shared.model.core.AbstractAuditedVersionedPersistent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.bocogop.shared.model.core.AbstractAuditedVersionedPersistent;
 
 @Entity
 @Table(name = "STD_TEMPLATE", schema = "CORE")

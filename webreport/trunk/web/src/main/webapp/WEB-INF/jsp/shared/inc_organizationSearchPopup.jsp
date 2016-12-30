@@ -7,8 +7,8 @@
 		uniquely identifies this organizationSearchPopup among other organizationSearchPopups on the same page
 	- A "mode" param set to either "search", "add" or "duplicateCheck":
 			If "search", search fields are shown and the callback is called as normal when the person clicks a result
-			If "volunteerLink", only local orgs will be shown for facilities where the user also has the Create
-				Volunteer permission
+			If "voterLink", only local orgs will be shown for precincts where the user also has the Create
+				Voter permission
 			If "donorLink"...
 				
 		If "mode" is unspecified, it defaults to "search".
@@ -111,7 +111,7 @@
 					<td width="10%" class="noborder"></td>
 				</tr>
 				<tr>
-					<th width="30%" id="facilityHeaderCol${uid}" class="select-filter">Facility</th>
+					<th width="30%" id="precinctHeaderCol${uid}" class="select-filter">Precinct</th>
 					<th width="50%">Name</th>
 					<th width="10%" class="select-filter">Type</th>
 					<th width="10%">Abbreviation</th>

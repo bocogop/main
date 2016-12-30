@@ -8,16 +8,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.bocogop.shared.model.lookup.AbstractLookup;
+import org.bocogop.shared.model.lookup.LookupType;
+import org.bocogop.wr.model.lookup.Language.LanguageType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Immutable;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.bocogop.shared.model.lookup.AbstractLookup;
-import org.bocogop.shared.model.lookup.LookupType;
-import org.bocogop.wr.model.lookup.Language.LanguageType;
 
 /* Legacy "Ver" version column ignored - CPB */
 @Entity

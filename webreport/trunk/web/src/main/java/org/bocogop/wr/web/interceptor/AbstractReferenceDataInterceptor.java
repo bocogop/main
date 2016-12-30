@@ -8,30 +8,24 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bocogop.shared.model.Permission;
+import org.bocogop.shared.model.Permission.PermissionType;
+import org.bocogop.shared.model.Role.RoleType;
+import org.bocogop.shared.persistence.AppUserDAO;
+import org.bocogop.shared.persistence.lookup.sds.StateDAO;
+import org.bocogop.shared.util.WebUtil;
+import org.bocogop.wr.config.CommonWebConfig;
+import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
+import org.bocogop.wr.service.VelocityService;
+import org.bocogop.wr.util.DateUtil;
+import org.bocogop.wr.web.UserNotifier;
+import org.bocogop.wr.web.conversion.interceptor.AbstractInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
-import org.bocogop.shared.model.Permission;
-import org.bocogop.shared.model.Permission.PermissionType;
-import org.bocogop.shared.model.Role.RoleType;
-import org.bocogop.shared.model.lookup.sds.VAFacility.VAFacilityValue;
-import org.bocogop.shared.persistence.AppUserDAO;
-import org.bocogop.shared.persistence.lookup.sds.StateDAO;
-import org.bocogop.shared.util.WebUtil;
-import org.bocogop.wr.config.CommonWebConfig;
-import org.bocogop.wr.model.facility.Facility;
-import org.bocogop.wr.model.facility.Facility.FacilityValue;
-import org.bocogop.wr.persistence.dao.facility.FacilityDAO;
-import org.bocogop.wr.persistence.dao.facility.KioskDAO;
-import org.bocogop.wr.service.VelocityService;
-import org.bocogop.wr.util.DateUtil;
-import org.bocogop.wr.util.context.SessionUtil;
-import org.bocogop.wr.web.UserNotifier;
-import org.bocogop.wr.web.conversion.interceptor.AbstractInterceptor;
 
 public abstract class AbstractReferenceDataInterceptor extends AbstractInterceptor {
 	private static final Logger log = LoggerFactory.getLogger(AbstractReferenceDataInterceptor.class);
@@ -41,9 +35,7 @@ public abstract class AbstractReferenceDataInterceptor extends AbstractIntercept
 	@Autowired
 	protected AppUserDAO appUserDAO;
 	@Autowired
-	protected FacilityDAO facilityDAO;
-	@Autowired
-	protected KioskDAO kioskDAO;
+	protected PrecinctDAO precinctDAO;
 	@Autowired
 	protected VelocityService velocityService;
 	@Autowired
@@ -66,7 +58,7 @@ public abstract class AbstractReferenceDataInterceptor extends AbstractIntercept
 	private String useMinifiedDependencies;
 	@Value("${maxGetRequestLength}")
 	private int maxGetRequestLength;
-	
+
 	protected abstract void addAdditionalReferenceData(HttpServletRequest request, HttpServletResponse response,
 			Object handler, ModelAndView modelAndView) throws Exception;
 
@@ -113,8 +105,6 @@ public abstract class AbstractReferenceDataInterceptor extends AbstractIntercept
 		WebUtil.addClassConstantsToModel(Permission.class, model, true);
 		WebUtil.addEnumToModel(PermissionType.class, model);
 		WebUtil.addEnumToModel(RoleType.class, model);
-		WebUtil.addEnumToModel(VAFacilityValue.class, model);
-		WebUtil.addEnumToModel(FacilityValue.class, model);
 
 		/*
 		 * Add all date util constants as they are defined (without adding
@@ -126,12 +116,6 @@ public abstract class AbstractReferenceDataInterceptor extends AbstractIntercept
 		WebUtil.addClassConstantsToModel(WebUtil.class, model);
 
 		model.put("AJAX_CONTEXT_PATH_PREFIX", CommonWebConfig.AJAX_CONTEXT_PATH_PREFIX);
-
-		Facility facility = SessionUtil.getFacilityContext();
-		model.put("facilityContextId", facility == null ? null : facility.getId());
-		model.put("facilityContextName", SessionUtil.getFacilityContextName());
-		model.put("facilityContextNumMeals", SessionUtil.getFacilityContextNumMeals());
-		model.put("facilityContextIsCentralOffice", SessionUtil.isFacilityContextCentralOffice());
 
 		model.put("useMinifiedDependencies", useMinifiedDependencies);
 
@@ -151,7 +135,7 @@ public abstract class AbstractReferenceDataInterceptor extends AbstractIntercept
 						.toString();
 		model.put("protocolHostnamePort", protocolHostnamePort);
 		model.put("maxGetRequestLength", maxGetRequestLength);
-		
+
 		addAdditionalReferenceData(request, response, handler, modelAndView);
 	}
 

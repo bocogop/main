@@ -2,6 +2,8 @@ package org.bocogop.wr.config;
 
 import javax.management.MBeanServer;
 
+import org.bocogop.shared.config.AbstractConfig;
+import org.bocogop.shared.config.LdapConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableMBeanExport;
@@ -9,9 +11,6 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.jmx.support.MBeanServerFactoryBean;
 import org.springframework.scheduling.annotation.EnableAsync;
-
-import org.bocogop.shared.config.AbstractConfig;
-import org.bocogop.shared.config.LdapConfig;
 
 @ComponentScan(basePackages = { "org.bocogop.shared",
 		"org.bocogop.wr" }, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = {

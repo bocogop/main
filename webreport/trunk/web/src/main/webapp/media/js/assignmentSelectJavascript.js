@@ -2,8 +2,8 @@ function popupAssignmentSelect(uid) {
 	$("#assignmentSelectDialog" + uid).dialog('open')
 	
 	if ($("#assignmentSelectDialog" + uid).data('stationsPopulated')) {
-		$("#assignmentFacilityId").val(facilityContextId)
-		$("#assignmentFacilityId").multiselect("refresh")
+		$("#assignmentPrecinctId").val(precinctContextId)
+		$("#assignmentPrecinctId").multiselect("refresh")
 	}
 	
 	refreshAssignmentsTable(uid)
@@ -15,7 +15,7 @@ function refreshAssignmentsTable(uid) {
 		type : "POST",
 		dataType : 'json',
 		data : {
-			facilityId : $("#assignmentFacilityId").val()
+			precinctId : $("#assignmentPrecinctId").val()
 		},
 		error : commonAjaxErrorHandler,
 		success : function(results) {
@@ -37,7 +37,7 @@ function assignmentSelectPopupItemSelected(uid, assignmentId) {
 function initAssignmentSelectPopup(options) {
 	var uid = options.uid
 	var callbackMethod = options.callbackMethod
-	var volEditPermission = options.volunteerEditPermission
+	var volEditPermission = options.voterEditPermission
 	
 	var parms = {
 		"columnDefs" : [
@@ -82,20 +82,20 @@ function initAssignmentSelectPopup(options) {
 	var theDataTable = $('#assignmentSelectList' + uid).DataTable(parms)
 	var dialogEl = $("#assignmentSelectDialog" + uid)
 	
-	var facilityEl = $("#assignmentFacilityId")
-	facilityEl.change(function() {
+	var precinctEl = $("#assignmentPrecinctId")
+	precinctEl.change(function() {
 		refreshAssignmentsTable(uid)
 	})
-	facilityEl.multiselect({
+	precinctEl.multiselect({
 		selectedText : function(numChecked, numTotal, checkedItems) {
 			return abbreviate($(checkedItems[0]).next().text())
 		},
 		beforeopen: function(){
 			if (dialogEl.data('stationsPopulated')) return
-			var curVal = facilityEl.val()
+			var curVal = precinctEl.val()
 			
 			$.ajax({
-				url : ajaxHomePath + "/getFacilitiesWithUserPermission",
+				url : ajaxHomePath + "/getPrecinctsWithUserPermission",
 				type : "POST",
 				data : {
 					permission : volEditPermission,
@@ -104,7 +104,7 @@ function initAssignmentSelectPopup(options) {
 				dataType : 'json',
 				error : commonAjaxErrorHandler,
 				success : function(results) {
-					facilityEl.empty()
+					precinctEl.empty()
 					var newHtml = []
 					$.each(results, function(index, item) {
 						if (item.id == centralOfficeId) return
@@ -112,13 +112,13 @@ function initAssignmentSelectPopup(options) {
 						var selectedText = (item.id == curVal) ? ' selected="selected"' : ''
 						newHtml.push('<option value="' + item.id + '"' + selectedText + '>' + item.displayName + '</option>')
 					})
-					facilityEl.html(newHtml.join(''))
+					precinctEl.html(newHtml.join(''))
 					
-					facilityEl.val(curVal)
-					facilityEl.multiselect("refresh")
+					precinctEl.val(curVal)
+					precinctEl.multiselect("refresh")
 					dialogEl.data('stationsPopulated', true)
 					
-					facilityEl.multiselect("open")
+					precinctEl.multiselect("open")
 				}
 			})
 			

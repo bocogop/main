@@ -127,13 +127,13 @@
 							name="donorSearchType${uid}" value="4" style="margin-left: 15px">Organization</td>
 					</tr>
 					<tr class="donorSearchToggleFields${uid}">
-						<td align="right"><label for='donorSearchFacility${uid}'>Donated
+						<td align="right"><label for='donorSearchPrecinct${uid}'>Donated
 								at:</label></td>
-						<td><input type="radio" id="donorSearchFacilityLocal${uid}"
-							name="donorSearchFacility${uid}" value="L" checked="checked"><c:out value="${facilityContextName}" />
-							<input type="radio" id="donorSearchFacilityAll${uid}"
-							name="donorSearchFacility${uid}" value="A"
-							style="margin-left: 15px">Any Facility</td>
+						<td><input type="radio" id="donorSearchPrecinctLocal${uid}"
+							name="donorSearchPrecinct${uid}" value="L" checked="checked"><c:out value="${precinctContextName}" />
+							<input type="radio" id="donorSearchPrecinctAll${uid}"
+							name="donorSearchPrecinct${uid}" value="A"
+							style="margin-left: 15px">Any Precinct</td>
 					</tr>
 				</table>
 			</td>
@@ -164,22 +164,22 @@
 			<thead>
 				<tr id="donorSearch${uid}FilterRow">
 					<td class="noborder">Filters:</td>
-					<td class="noborder" title="Filter by Donor is Volunteer"></td>
-					<td class="noborder" title="Filter by Organization Facility"></td>
+					<td class="noborder" title="Filter by Donor is Voter"></td>
+					<td class="noborder" title="Filter by Organization Precinct"></td>
 					<td class="noborder"></td>
 					<td class="noborder"></td>
-					<td class="noborder" title="Filter by Facility"></td>
+					<td class="noborder" title="Filter by Precinct"></td>
 					<td class="noborder" title="Filter by Donation Date"></td>
 					<td class="noborder"></td>
 					<td class="noborder"></td>
 				</tr>
 				<tr>
 					<th id="nameHeaderCol${uid}">Name</th>
-					<th class="select-filter">Donor is Volunteer?</th>
-					<th class="select-filter">Facility</th>
+					<th class="select-filter">Donor is Voter?</th>
+					<th class="select-filter">Precinct</th>
 					<th>Contact Name</th>
 					<th>Contact Info</th>
-					<th class="select-filter">Last Donation Facility</th>
+					<th class="select-filter">Last Donation Precinct</th>
 					<th class="select-filter">Last Donation Date</th>
 					<th>Last Donation Type</th>
 					<th>Last Donation Amount</th>

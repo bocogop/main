@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
 	var isReadOnly = ${FORM_READ_ONLY}
-	var facilityId = ${facilityContextId}
+	var precinctId = ${precinctContextId}
 	var newStatusId = ${REQUIREMENT_STATUS_VALUE_NEW.id}
 	var metStatusId = ${REQUIREMENT_STATUS_VALUE_MET.id}
 	var initialApplicationType = "<c:out value="${command.applicationType}" />"
@@ -171,9 +171,9 @@
 			var newType = $("input.requirementApplicationRadio:checked").val()
 			var isSpecificRoles = newType == "${REQUIREMENT_APPLICATION_TYPE_SPECIFIC_ROLES}"
 			
-			var showFacilitySpecificRoles = isSpecificRoles && !isGlobal
-			$("#roleListWrapper").toggle(showFacilitySpecificRoles)
-			if (!roleTableInitialized && showFacilitySpecificRoles) {
+			var showPrecinctSpecificRoles = isSpecificRoles && !isGlobal
+			$("#roleListWrapper").toggle(showPrecinctSpecificRoles)
+			if (!roleTableInitialized && showPrecinctSpecificRoles) {
 				refreshRoleTable()
 			}
 			
@@ -218,7 +218,7 @@
 			url : ajaxHomePath + '/benefitingServicesWithRoles',
 			dataType : 'json',
 			data : {
-				facilityId: facilityId,
+				precinctId: precinctId,
 				bypassCounts : true,
 				activeStatus : true
 			},
@@ -348,7 +348,7 @@
 		}
 		
 		if (missingItem) {
-			confirmDialog('All volunteers associated to this requirement with the statuses being removed will have their status reset to "New".',
+			confirmDialog('All voters associated to this requirement with the statuses being removed will have their status reset to "New".',
 					completeSubmission)
 		} else {
 			completeSubmission()
@@ -518,8 +518,8 @@ table#roleList tr.serviceRow, table#roleTemplateList tr.serviceRow {
 						<td>Apply this requirement to:
 							<div style="margin-left: 20px">
 								<label><form:radiobutton id="allApplicationType"
-										cssClass="requirementApplicationRadio" path="applicationType" value="${REQUIREMENT_APPLICATION_TYPE_ALL_VOLUNTEERS}" />All
-									Volunteers</label><br> <label><form:radiobutton
+										cssClass="requirementApplicationRadio" path="applicationType" value="${REQUIREMENT_APPLICATION_TYPE_ALL_VOTERS}" />All
+									Voters</label><br> <label><form:radiobutton
 										id="roleTypeApplicationType" path="applicationType" value="${REQUIREMENT_APPLICATION_TYPE_ROLE_TYPE}"
 										cssClass="requirementApplicationRadio" />A Role Type</label>
 								<form:select id="roleTypeInput" path="roleType"
@@ -529,7 +529,7 @@ table#roleList tr.serviceRow, table#roleTemplateList tr.serviceRow {
 										id="roleApplicationType"
 										cssClass="requirementApplicationRadio" path="applicationType"
 										value="${REQUIREMENT_APPLICATION_TYPE_SPECIFIC_ROLES}" />Specific 
-										<c:if test="${command.scope == REQUIREMENT_SCOPE_TYPE_FACILITY}">
+										<c:if test="${command.scope == REQUIREMENT_SCOPE_TYPE_PRECINCT}">
 											Roles
 										</c:if>
 										<c:if test="${command.scope == REQUIREMENT_SCOPE_TYPE_GLOBAL}">

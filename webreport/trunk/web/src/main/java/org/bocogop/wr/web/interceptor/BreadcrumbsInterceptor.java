@@ -2,7 +2,6 @@ package org.bocogop.wr.web.interceptor;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -15,19 +14,18 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
+import org.bocogop.shared.util.context.SessionUtil;
+import org.bocogop.wr.web.CommonController;
+import org.bocogop.wr.web.breadcrumbs.Breadcrumbs;
+import org.bocogop.wr.web.breadcrumbs.Breadcrumbs.Breadcrumb;
+import org.bocogop.wr.web.breadcrumbs.Link;
+import org.bocogop.wr.web.conversion.interceptor.AbstractInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
-import org.bocogop.shared.util.context.SessionUtil;
-import org.bocogop.wr.web.CommonController;
-import org.bocogop.wr.web.breadcrumbs.Breadcrumbs;
-import org.bocogop.wr.web.breadcrumbs.Link;
-import org.bocogop.wr.web.breadcrumbs.Breadcrumbs.Breadcrumb;
-import org.bocogop.wr.web.conversion.interceptor.AbstractInterceptor;
 
 @Component
 public class BreadcrumbsInterceptor extends AbstractInterceptor {

@@ -8,6 +8,10 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.exception.VelocityException;
+import org.bocogop.wr.service.VelocityService;
+import org.bocogop.wr.service.email.EmailService;
+import org.bocogop.wr.service.email.EmailType;
+import org.bocogop.wr.service.email.EmailType.InvalidParametersException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +22,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
-
-import org.bocogop.wr.service.VelocityService;
-import org.bocogop.wr.service.email.EmailService;
-import org.bocogop.wr.service.email.EmailType;
-import org.bocogop.wr.service.email.EmailType.InvalidParametersException;
 
 @Service
 @Profile({ "attended" })

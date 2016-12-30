@@ -5,7 +5,7 @@ var siteBenefitingServiceRolesById = {}
 
 /*
  * Array of { index, date, hours, numberInGroup, organizationId, benefitingServiceRoleId, comments }
- * (selectedLocationId = -1 for main facility)
+ * (selectedLocationId = -1 for main precinct)
  */
 var occasionalTimeEntryItems = []
 var occasionalTimeReportItems
@@ -50,7 +50,7 @@ $(function() {
 
 function preloadOrganizations() {
 	$.ajax({
-		url : ajaxHomePath + "/organization/quickSearch/currentFacility",
+		url : ajaxHomePath + "/organization/quickSearch/currentPrecinct",
 		success : function(quickSearchResponse) {
 			$(quickSearchResponse.organizations).each(function(index, item) {
 				siteOrganizations.push(item)
@@ -63,7 +63,7 @@ function preloadOrganizations() {
 
 function preloadBenefitingServiceRoles() {
 	$.ajax({
-		url : ajaxHomePath + "/benefitingServiceRole/quickSearch/currentFacility",
+		url : ajaxHomePath + "/benefitingServiceRole/quickSearch/currentPrecinct",
 		success : function(quickSearchResponse) {
 			$(quickSearchResponse.benefitingServiceRoles).each(function(index, item) {
 				siteBenefitingServiceRoles.push(item)
@@ -482,7 +482,7 @@ function buildServiceName(vId) {
 	if (!vId) return ''
 	var v = siteBenefitingServiceRolesById[vId]
 	return v.serviceName + ($.trim(v.serviceSubdivision) != '' ? ' - ' + v.serviceSubdivision : '') + ' - '
-		+ v.name + ' @' + (v.locationName ? v.locationName : 'Main Facility') + (!v.active ? ' (inactive)' : '')
+		+ v.name + ' @' + (v.locationName ? v.locationName : 'Main Precinct') + (!v.active ? ' (inactive)' : '')
 }
 
 function buildOrganizationName(oId) {

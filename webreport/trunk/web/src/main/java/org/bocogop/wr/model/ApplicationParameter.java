@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import org.bocogop.shared.model.core.AbstractAuditedVersionedPersistent;
 
 @Entity

@@ -6,15 +6,13 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.bocogop.shared.model.AppUser;
+import org.bocogop.shared.service.UserAdminCustomizations;
+import org.bocogop.shared.web.AuthenticationCustomizations;
+import org.bocogop.wr.model.precinct.Precinct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import org.bocogop.shared.model.AppUser;
-import org.bocogop.shared.model.lookup.sds.VAFacility;
-import org.bocogop.shared.service.UserAdminCustomizations;
-import org.bocogop.shared.web.AuthenticationCustomizations;
-import org.bocogop.wr.model.facility.Facility;
 
 @Component
 public class WrFrameworkCustomizations extends AbstractServiceImpl
@@ -22,7 +20,7 @@ public class WrFrameworkCustomizations extends AbstractServiceImpl
 
 	@Value("${userAdmin.newUserDefaultTimezone}")
 	private ZoneId newUserDefaultTimezone;
-	
+
 	@Override
 	public AppUser userRetrievedCallback(AppUser u, Map<String, Object> userAdminCustomizationsModel) {
 		return u;
@@ -36,8 +34,8 @@ public class WrFrameworkCustomizations extends AbstractServiceImpl
 	}
 
 	@Override
-	public SortedSet<VAFacility> getAssignableFacilities() {
-		return facilityDAO.findVAFacilitiesWithLinkToFacility();
+	public SortedSet<Precinct> getAssignablePrecincts() {
+		return precinctDAO.findAllSorted();
 	}
 
 	@Override
@@ -47,12 +45,6 @@ public class WrFrameworkCustomizations extends AbstractServiceImpl
 	@Override
 	public void successfulAuthenticationCallback(HttpServletRequest request, Authentication authResult,
 			Map<String, Object> authCustomizationsModel) {
-		VAFacility vaFacility = org.bocogop.shared.util.context.SessionUtil.getSiteContext(request.getSession());
-		if (vaFacility == null)
-			return;
-
-		Facility f = facilityDAO.findByVAFacility(vaFacility.getId());
-		sessionUtil.setFacilityContext(vaFacility, f, request.getSession());
 	}
 
 }

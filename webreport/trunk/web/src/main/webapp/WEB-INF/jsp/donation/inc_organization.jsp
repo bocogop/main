@@ -6,9 +6,9 @@
 		<div class="leftHalf">
 			<table width="100%">
 				<tr>
-					<td class='appFieldLabel' nowrap>Facility:</td>
+					<td class='appFieldLabel' nowrap>Precinct:</td>
 					<td style="text-align: left"><c:out
-							value="${command.displayedFacility}" /></td>
+							value="${command.displayedPrecinct}" /></td>
 				</tr>
 				<tr>
 					<td class='appFieldLabel' nowrap><span

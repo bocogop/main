@@ -5,32 +5,32 @@
 </script>
 
 <script type="text/javascript">
-	function volunteerRequirementUpdatedCallback() {
+	function voterRequirementUpdatedCallback() {
 		refreshNotifications()
 	}
-	function getVolunteerRequirementData() {
-		return volunteerRequirementMap
+	function getVoterRequirementData() {
+		return voterRequirementMap
 	}
-	function retrieveVolunteerRequirementsByScope(volunteerRequirementId, callbackFn) {
+	function retrieveVoterRequirementsByScope(voterRequirementId, callbackFn) {
 		$.ajax({
-			url : ajaxHomePath + '/volunteerRequirements',
+			url : ajaxHomePath + '/voterRequirements',
 			method : 'POST',
 			dataType : 'json',
 			data : {
-				volunteerRequirementId : volunteerRequirementId
+				voterRequirementId : voterRequirementId
 			},
 			error : commonAjaxErrorHandler,
 			success : function(response) {
-				var volunteerAssignmentData = {}
-				$(response.allVolunteerAssignments).each(function(index, item) {
-					volunteerAssignmentData[item.id] = item
+				var voterAssignmentData = {}
+				$(response.allVoterAssignments).each(function(index, item) {
+					voterAssignmentData[item.id] = item
 				})
-				callbackFn(response.requirementsByScope, volunteerAssignmentData)
+				callbackFn(response.requirementsByScope, voterAssignmentData)
 			}
 		})
 	}
 </script>
-<%@ include file="volunteer/volunteerRequirementPopup.jsp"%>
+<%@ include file="voter/voterRequirementPopup.jsp"%>
 
 <script type="text/javascript" src="${jsHome}/homeJavascript.js"></script>
 
@@ -41,9 +41,9 @@ ul.notificationRefList {
 }
 </style>
 
-<c:if test="${empty facilityContextId}">
+<c:if test="${empty precinctContextId}">
 	<script type="text/javascript">
-		alert('Your working facility configuration is invalid; please contact the national coordinator. You will be logged out until this is corrected.')
+		alert('Your working precinct configuration is invalid; please contact the national coordinator. You will be logged out until this is corrected.')
 		document.location.href = '${home}/logout.htm'
 	</script>
 </c:if>
@@ -72,7 +72,7 @@ ul.notificationRefList {
 							<td title="Filter by Severity"></td>
 							<td></td>
 							<td></td>
-							<td title="Filter by Originating Facility"></td>
+							<td title="Filter by Originating Precinct"></td>
 							<td></td>
 							<td></td>
 						</tr>
@@ -80,7 +80,7 @@ ul.notificationRefList {
 							<th width="10%" class="select-filter">Severity</th>
 							<th width="30%" class="select-filter">Name</th>
 							<th width="40%">Details</th>
-							<th width="10%" class="select-filter">Originating Facility</th>
+							<th width="10%" class="select-filter">Originating Precinct</th>
 							<th width="10%">Created<br>Date</th>
 							<th width="10%">Removal<br>Date</th>
 							<th width="10%">Actions</th>
@@ -99,8 +99,8 @@ ul.notificationRefList {
 
 ${homepageContent}
 
-<div id="volunteerDataChangeCompareDiv" style="display: none" title="Compare Volunteer Data Fields">
-	<table id="volunteerDataChangeTable" align="center" border="1" cellpadding="4">
+<div id="voterDataChangeCompareDiv" style="display: none" title="Compare Voter Data Fields">
+	<table id="voterDataChangeTable" align="center" border="1" cellpadding="4">
 		<thead>
 			<tr>
 				<th>Field:</th>

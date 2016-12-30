@@ -84,9 +84,9 @@
 
 	<definition name="stationChange" extends="root-no-menu">
 		<put-attribute name="body" value="/WEB-INF/jsp/changeStation.jsp" />
-		<put-attribute name="pageTitle" value="Select/Change Facility" />
+		<put-attribute name="pageTitle" value="Select/Change Precinct" />
 		<put-attribute name="pageDescription"
-			value="This screen allows the user to select or change their facility" />
+			value="This screen allows the user to select or change their precinct" />
 		<put-attribute name="helpContextID" value="2" />
 		<put-attribute name="showFullHeader" value="true" />
 	</definition>
@@ -134,18 +134,18 @@
 		<put-attribute name="helpContextID" value="34" />
 	</definition>
 
-	<definition name="volunteerProfile" extends="root">
+	<definition name="voterProfile" extends="root">
 		<put-attribute name="body"
-			value="/WEB-INF/jsp/volunteer/volunteerProfile.jsp" />
+			value="/WEB-INF/jsp/voter/voterProfile.jsp" />
 	</definition>
 
-	<definition name="createVolunteer" extends="volunteerProfile">
-		<put-attribute name="pageTitle" value="Create Volunteer" />
+	<definition name="createVoter" extends="voterProfile">
+		<put-attribute name="pageTitle" value="Create Voter" />
 		<put-attribute name="helpContextID" value="18" />
 	</definition>
 
-	<definition name="editVolunteer" extends="volunteerProfile">
-		<put-attribute name="pageTitle" value="Edit Volunteer" />
+	<definition name="editVoter" extends="voterProfile">
+		<put-attribute name="pageTitle" value="Edit Voter" />
 		<put-attribute name="helpContextID" value="17" />
 	</definition>
 
@@ -201,19 +201,19 @@
 			value="/WEB-INF/jsp/letterTemplate/letterTemplateEdit.jsp" />
 	</definition>
 
-	<definition name="facilityEdit" extends="root">
-		<put-attribute name="pageTitle" value="Manage Facilities" />
+	<definition name="precinctEdit" extends="root">
+		<put-attribute name="pageTitle" value="Manage Precincts" />
 		<put-attribute name="pageDescription"
-			value="This screen enables the user to manage facilities" />
+			value="This screen enables the user to manage precincts" />
 		<put-attribute name="body"
-			value="/WEB-INF/jsp/facility/facilityEdit.jsp" />
+			value="/WEB-INF/jsp/precinct/precinctEdit.jsp" />
 		<put-attribute name="helpContextID" value="31" />
 	</definition>
 
-	<definition name="facilityCreate" extends="facilityEdit">
-		<put-attribute name="pageTitle" value="Create New Facility" />
+	<definition name="precinctCreate" extends="precinctEdit">
+		<put-attribute name="pageTitle" value="Create New Precinct" />
 		<put-attribute name="pageDescription"
-			value="This screen enables the user to create a new facility" />
+			value="This screen enables the user to create a new precinct" />
 	</definition>
 
 	<definition name="excludedEntityList" extends="root">
@@ -221,7 +221,7 @@
 			value="/WEB-INF/jsp/leie/excludedEntityList.jsp" />
 		<put-attribute name="pageTitle" value="Excluded Entity Matches" />
 		<put-attribute name="pageDescription"
-			value="This screen allows the user to view a list of excluded entities which match WR volunteers" />
+			value="This screen allows the user to view a list of excluded entities which match WR voters" />
 	</definition>
 
 	<definition name="excludedEntityListAll" extends="root">
@@ -272,7 +272,7 @@
 			value="/WEB-INF/jsp/timeEntry/timeEntry.jsp" />
 		<put-attribute name="pageTitle" value="Time Entry" />
 		<put-attribute name="pageDescription"
-			value="This screen allows the user to enter volunteered time" />
+			value="This screen allows the user to enter votered time" />
 		<put-attribute name="helpContextID" value="21" />
 	</definition>
 	
@@ -281,7 +281,7 @@
 			value="/WEB-INF/jsp/timeEntry/occasionalTimeEntry.jsp" />
 		<put-attribute name="pageTitle" value="Occasional Time Entry" />
 		<put-attribute name="pageDescription"
-			value="This screen allows the user to enter occasional volunteered time" />
+			value="This screen allows the user to enter occasional votered time" />
 		<put-attribute name="helpContextID" value="22" />
 	</definition>
 	
@@ -329,12 +329,12 @@
 			value="This screen enables the user to create a requirement" />
 	</definition>
 
-	<definition name="volunteerDemographics" extends="root">
+	<definition name="voterDemographics" extends="root">
 		<put-attribute name="body"
-			value="/WEB-INF/jsp/volunteer/demographics/volunteerDemographics.jsp" />
-		<put-attribute name="pageTitle" value="Volunteer Demographics" />
+			value="/WEB-INF/jsp/voter/demographics/voterDemographics.jsp" />
+		<put-attribute name="pageTitle" value="Voter Demographics" />
 		<put-attribute name="pageDescription"
-			value="This screen allows the user to view a list of active volunteer demographics." />
+			value="This screen allows the user to view a list of active voter demographics." />
 	</definition>
 
 	<definition name="donationLogList" extends="root">
@@ -350,7 +350,7 @@
 			value="/WEB-INF/jsp/ledger/ledger.jsp" />
 		<put-attribute name="pageTitle" value="General Ledger" />
 		<put-attribute name="pageDescription"
-			value="This screen allows the user to view total donations and expenditures for each GPF at the working facility" />
+			value="This screen allows the user to view total donations and expenditures for each GPF at the working precinct" />
 	</definition>
 	
 	<definition name="expenditureList" extends="root">

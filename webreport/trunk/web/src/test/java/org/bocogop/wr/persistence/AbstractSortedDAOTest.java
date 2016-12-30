@@ -1,12 +1,11 @@
 package org.bocogop.wr.persistence;
 
-import org.junit.Test;
-
 import org.bocogop.shared.model.core.AuditedPersistent;
 import org.bocogop.wr.AbstractTransactionalWebDAOTest;
 import org.bocogop.wr.persistence.dao.CustomizableAppDAO;
 import org.bocogop.wr.persistence.dao.CustomizableSortedDAO;
 import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;
+import org.junit.Test;
 
 public abstract class AbstractSortedDAOTest<T extends Comparable<? super T> & AuditedPersistent>
 		extends AbstractTransactionalWebDAOTest<T> {

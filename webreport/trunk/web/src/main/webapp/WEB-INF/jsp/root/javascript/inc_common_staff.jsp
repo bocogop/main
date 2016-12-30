@@ -8,7 +8,7 @@
 <%-- WR-specific Javascript dependencies --%>
 <script type="text/javascript" src="${jsHome}/commonJavascript.js"></script>
 <script type="text/javascript" src="${jsHome}/commonStaffJavascript.js"></script>
-<script type="text/javascript" src="${jsHome}/volunteerSearchJavascript.js"></script>
+<script type="text/javascript" src="${jsHome}/voterSearchJavascript.js"></script>
 <script type="text/javascript" src="${jsHome}/organizationSearchJavascript.js"></script>
 <script type="text/javascript" src="${jsHome}/assignmentSelectJavascript.js"></script>
 <script type="text/javascript" src="${jsHome}/donorSearchJavascript.js"></script>

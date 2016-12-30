@@ -67,10 +67,10 @@
 					"className" : "dt-body-right",
 					"render" : function(row, type, val, meta) {
 						if (type === 'display') {
-							return 'Active: ' + val.volunteerActiveCount
-								+ '<br>Total: ' + val.volunteerTotalCount
+							return 'Active: ' + val.voterActiveCount
+								+ '<br>Total: ' + val.voterTotalCount
 						}
-						return val.volunteerActiveCount
+						return val.voterActiveCount
 					}
 				}, {
 					"className" : "dt-body-right",
@@ -86,7 +86,7 @@
 									+ '/switch.png" alt="Reactivate Service" border="0" hspace="5" align="center"/></a>'
 							} else {
 								actions = '<a href="javascript:inactivateBenefitingService('
-										+ val.id + ', ' + val.volunteerActiveCount + ')"><img src="' + imgHomePath
+										+ val.id + ', ' + val.voterActiveCount + ')"><img src="' + imgHomePath
 										+ '/switch.png" alt="Inactivate Service" border="0" hspace="5" align="center"/></a>'
 							}
 							return (type === 'display' ? actions + ' ': '') + (val.inactive ? 'Inactive' : 'Active')
@@ -101,9 +101,9 @@
 							+ val.id + ')"><img src="'+ imgHomePath
 							+ '/edit-small.gif" alt="Edit Service" border="0" hspace="5" align="center"/></a>'
 						
-						if (val.volunteerTotalCount == 0 && val.occasionalHoursCount == 0) {
+						if (val.voterTotalCount == 0 && val.occasionalHoursCount == 0) {
 							actions += '<a href="javascript:deleteBenefitingService('
-								+ val.id + ', ' + val.volunteerTotalCount + ')"><img src="' + imgHomePath
+								+ val.id + ', ' + val.voterTotalCount + ')"><img src="' + imgHomePath
 								+ '/permanently_delete_18x18.png" alt="Delete Service" border="0" hspace="5" align="center"/></a>'
 						}
 							
@@ -137,27 +137,27 @@
 		})
 		
 		refreshBenefitingServicesTable()
-		$("#facilityId").change(refreshBenefitingServicesTable)
+		$("#precinctId").change(refreshBenefitingServicesTable)
 		
-		buildFacilitySelect()
+		buildPrecinctSelect()
 	})
 	
-	/* cache map of facilityID to array of location objects { id : id, displayName : displayName } */
-	var localFacilityMap = {}
-	function getLocalFacilitiesForLocation(facilityId, activeStatus, callback) {
-		var locations = localFacilityMap[facilityId]
+	/* cache map of precinctID to array of location objects { id : id, displayName : displayName } */
+	var localPrecinctMap = {}
+	function getLocalPrecinctsForLocation(precinctId, activeStatus, callback) {
+		var locations = localPrecinctMap[precinctId]
 		if (typeof locations == 'undefined') {
 			$.ajax({
-				url : ajaxHomePath + "/facility/location",
+				url : ajaxHomePath + "/precinct/location",
 				type : "POST",
 				data : {
-					facilityId : facilityId,
+					precinctId : precinctId,
 					activeStatus : activeStatus
 				},
 				dataType : 'json',
 				error : commonAjaxErrorHandler,
 				success : function(results) {
-					localFacilityMap[facilityId] = results.locations
+					localPrecinctMap[precinctId] = results.locations
 					callback(results.locations)
 				}
 			})
@@ -180,13 +180,13 @@
 			url : ajaxHomePath + '/benefitingServicesWithRoles',
 			dataType : 'json',
 			data : {
-				facilityId: $("#facilityId").val()
+				precinctId: $("#precinctId").val()
 			},
 			error : commonAjaxErrorHandler,
 			success : function(response) {
 				benefitingServiceList = response.benefitingServices
 				
-				countsMapForRoles = response.volunteerCountsForRoles
+				countsMapForRoles = response.voterCountsForRoles
 				occasionalHoursMapForRoles = response.occasionalHoursForRoles
 				
 				var rArray = new Array()
@@ -205,8 +205,8 @@
 					}
 					
 					rArray[rArray.length] = $.extend({}, benefitingService, {
-						volunteerActiveCount : finalActiveCount,
-						volunteerTotalCount : finalTotalCount,
+						voterActiveCount : finalActiveCount,
+						voterTotalCount : finalTotalCount,
 						occasionalHoursCount : finalOccasionalHoursCount
 					})
 				}
@@ -318,7 +318,7 @@
 			+ fullObj.name + ($.trim(fullObj.subdivision) == '' ? '' : ' - ' + fullObj.subdivision) + '"?'
 		if (volCount > 0)
 			msg += ' <span class="redText" style="font-weight:bold"><p>There are ' + volCount
-				+ ' associated volunteer assignment(s) that will also be inactivated and will not be'
+				+ ' associated voter assignment(s) that will also be inactivated and will not be'
 				+ ' automatically reactivated if this role is reactivated!</span>'
 	    confirmDialog(msg,
                 function() {
@@ -379,7 +379,7 @@
 		var msg = 'Are you sure you want to inactivate "' + fullObj.name + '"?'
 		if (volCount > 0)
 			msg += ' <span class="redText" style="font-weight:bold"><p>There are ' + volCount
-				+ ' associated volunteer assignment(s) that will also be inactivated and will not be'
+				+ ' associated voter assignment(s) that will also be inactivated and will not be'
 				+ ' automatically reactivated if this role is reactivated!</span>'
 	    confirmDialog(msg,
                 function() {
@@ -395,17 +395,17 @@
         })
 	}
 	
-	var facilitiesPopulated = false
+	var precinctsPopulated = false
 	
-	function buildFacilitySelect() {
-		var facilityEl = $("#facilityId")
-		facilityEl.multiselect({
+	function buildPrecinctSelect() {
+		var precinctEl = $("#precinctId")
+		precinctEl.multiselect({
 			selectedText : function(numChecked, numTotal, checkedItems) {
 				return abbreviate($(checkedItems[0]).next().text())
 			},
 			beforeopen: function(){
-				if (facilitiesPopulated) return
-				var curVal = facilityEl.val()
+				if (precinctsPopulated) return
+				var curVal = precinctEl.val()
 				
 				$.ajax({
 					url : ajaxHomePath + "/getManageServiceStations",
@@ -413,19 +413,19 @@
 					dataType : 'json',
 					error : commonAjaxErrorHandler,
 					success : function(results) {
-						facilityEl.empty()
+						precinctEl.empty()
 						var newHtml = []
 						$.each(results, function(index, item) {
 							var selectedText = (item.id == curVal) ? ' selected="selected"' : ''
 							newHtml.push('<option value="' + item.id + '"' + selectedText + '>' + item.displayName + '</option>')
 						})
-						facilityEl.html(newHtml.join(''))
+						precinctEl.html(newHtml.join(''))
 						
-						facilityEl.val(curVal)
-						facilityEl.multiselect("refresh")
-						facilitiesPopulated = true
+						precinctEl.val(curVal)
+						precinctEl.multiselect("refresh")
+						precinctsPopulated = true
 						
-						facilityEl.multiselect("open")
+						precinctEl.multiselect("open")
 					}
 				})
 				
@@ -455,11 +455,11 @@ table#benefitingServiceList td {
 			<tr>
 				<td><a class="buttonAnchor"
 					href="javascript:showLinkDetailsPopup()" style="margin-right:60px">Add Service</a></td>
-				<td>Facility:</td>
-				<td><select id="facilityId">
-						<c:if test="${not empty facilityContextId}">
-							<option value="${facilityContextId}" selected="selected"><c:out
-									value="${facilityContextName}" /></option>
+				<td>Precinct:</td>
+				<td><select id="precinctId">
+						<c:if test="${not empty precinctContextId}">
+							<option value="${precinctContextId}" selected="selected"><c:out
+									value="${precinctContextName}" /></option>
 						</c:if>
 				</select></td>
 		</table>
@@ -491,7 +491,7 @@ table#benefitingServiceList td {
 				<th>Type</th>
 				<th>Contact</th>
 				<th class="select-filter">Games Service</th>
-				<th>Volunteers</th>
+				<th>Voters</th>
 				<th>Occasional<br>Hours</th>
 				<th class="select-filter">Status</th>
 				<c:if test="${not FORM_READ_ONLY}">

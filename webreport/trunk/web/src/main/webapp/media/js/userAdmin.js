@@ -11,11 +11,11 @@ $(function() {
 	$("#setDefaultLink").click(function() {
 		var optionsSelected = $('#stations option:selected')
 		if (optionsSelected.length == 0 || optionsSelected.length > 1) {
-			displayAttentionDialog("Please select one facility to set as the default.")
+			displayAttentionDialog("Please select one precinct to set as the default.")
 			return
 		}
 		
-		$("#defaultFacilityId").val(optionsSelected[0].value)
+		$("#defaultPrecinctId").val(optionsSelected[0].value)
 		$('#stations option:selected').prop("selected", false)
 		update(false)
 	})
@@ -45,14 +45,14 @@ $(function() {
     })    
 })
 
-// --------------------------------------- Roles and Facilities functions
+// --------------------------------------- Roles and Precincts functions
 
 var allRoles = []
-var allFacilities = []
+var allPrecincts = []
 
 function getAllRoles(callback) {
 	if (allRoles.length == 0) {
-		loadAllRolesAndFacilities(function() {
+		loadAllRolesAndPrecincts(function() {
 			callback(allRoles)
 		})
 	} else {
@@ -66,23 +66,23 @@ function setAllRolesIfNeeded(roleGenerator) {
 	}
 }
 
-function getAllFacilities(callback) {
-	if (allFacilities.length == 0) {
-		loadAllRolesAndFacilities(function() {
-			callback(allFacilities)
+function getAllPrecincts(callback) {
+	if (allPrecincts.length == 0) {
+		loadAllRolesAndPrecincts(function() {
+			callback(allPrecincts)
 		})
 	} else {
-		callback(allFacilities)
+		callback(allPrecincts)
 	}
 }
 
-function setAllFacilitiesIfNeeded(facilityGenerator) {
-	if (allFacilities.length == 0) {
-		allFacilities = facilityGenerator()
+function setAllPrecinctsIfNeeded(precinctGenerator) {
+	if (allPrecincts.length == 0) {
+		allPrecincts = precinctGenerator()
 	}
 }
 
-function loadAllRolesAndFacilities(callback) {
+function loadAllRolesAndPrecincts(callback) {
 	alert('AJAX call not implemented/needed yet')
 }
 
@@ -90,7 +90,7 @@ function loadAllRolesAndFacilities(callback) {
 
 var currentUser = null
 
-function refreshUser(includeRolesAndFacilities) {
+function refreshUser(includeRolesAndPrecincts) {
 	var userSelected = currentUser != null
 	$(".pleaseSelect").toggle(!userSelected)
 	
@@ -110,7 +110,7 @@ function refreshUser(includeRolesAndFacilities) {
 		dataType : 'json',
 		data : {
 			userId : currentUser.id,
-			includeRolesAndFacilities : includeRolesAndFacilities
+			includeRolesAndPrecincts : includeRolesAndPrecincts
 		},
 		error : commonAjaxErrorHandler,
 		success : setUserFields
@@ -119,7 +119,7 @@ function refreshUser(includeRolesAndFacilities) {
 
 function setUserFields(resultMap) {
 	var userResult = resultMap.user
-	var updateRolesAndFacilities = resultMap.updateRolesAndFacilities
+	var updateRolesAndPrecincts = resultMap.updateRolesAndPrecincts
 	
 	$("#userID").text(userResult.username)
 	$("#userName").text(userResult.displayName)
@@ -148,33 +148,33 @@ function setUserFields(resultMap) {
 		$("#timeZoneSelect").val(userResult.timeZone.id)
 	}
 	
-	var defaultFacility = resultMap.defaultFacility
-	if (defaultFacility) {
-		$("#defaultFacilityId").val(defaultFacility.id)
-		$(".defaultFacilityText").text(defaultFacility.displayName)
+	var defaultPrecinct = resultMap.defaultPrecinct
+	if (defaultPrecinct) {
+		$("#defaultPrecinctId").val(defaultPrecinct.id)
+		$(".defaultPrecinctText").text(defaultPrecinct.displayName)
 	} else {
-		$("#defaultFacilityId").val("")
-		$(".defaultFacilityText").text("(none set)")
+		$("#defaultPrecinctId").val("")
+		$(".defaultPrecinctText").text("(none set)")
 	}
 	
-	if (updateRolesAndFacilities) {
+	if (updateRolesAndPrecincts) {
 		$("#stations").empty()
-		var newOptionHtml = new Array(resultMap.appUserFacilities.length)
-		$.each(resultMap.appUserFacilities, function(index, appUserFacility) {
+		var newOptionHtml = new Array(resultMap.appUserPrecincts.length)
+		$.each(resultMap.appUserPrecincts, function(index, appUserPrecinct) {
 			var selectedStationStyle = ''
-			if (defaultFacility && appUserFacility.facility.id == defaultFacility.id)
-				selectedStationStyle = ' class="defaultFacilityOption"'
+			if (defaultPrecinct && appUserPrecinct.precinct.id == defaultPrecinct.id)
+				selectedStationStyle = ' class="defaultPrecinctOption"'
 				
-			newOptionHtml[index] = '<option value="' + appUserFacility.facility.id + '" ' + selectedStationStyle + '>' 
-					+ abbreviate(appUserFacility.facility.displayName) + '</option>'
+			newOptionHtml[index] = '<option value="' + appUserPrecinct.precinct.id + '" ' + selectedStationStyle + '>' 
+					+ abbreviate(appUserPrecinct.precinct.displayName) + '</option>'
 		})
 		$("#stations").html(newOptionHtml.join(''))
 		
-		newOptionHtml = new Array(resultMap.availableFacilities.length)
+		newOptionHtml = new Array(resultMap.availablePrecincts.length)
 		$("#available_stations").empty()
-		$.each(resultMap.availableFacilities, function(index, facility) {
-			newOptionHtml[index] = '<option value="' + facility.id + '" title="' + escapeHTML(facility.displayName)
-				+ '">' + abbreviate(facility.displayName) + '</option>'
+		$.each(resultMap.availablePrecincts, function(index, precinct) {
+			newOptionHtml[index] = '<option value="' + precinct.id + '" title="' + escapeHTML(precinct.displayName)
+				+ '">' + abbreviate(precinct.displayName) + '</option>'
 		})
 		$("#available_stations").html(newOptionHtml.join(''))
 		
@@ -193,25 +193,25 @@ function setUserFields(resultMap) {
 					.html(role.name))
 		})
 		
-		cacheAllRolesAndFacilities(resultMap)
+		cacheAllRolesAndPrecincts(resultMap)
 		rebuildSelectFilters(['available_stations', 'stations'], {
 			matchTitle : true
 		})
 		
-		var facilityIdMap = new Object()
-		$.each(resultMap.appUserFacilities, function(index, appUserFacility) {
-			facilityIdMap['' + appUserFacility.facility.id] = appUserFacility.facility
+		var precinctIdMap = new Object()
+		$.each(resultMap.appUserPrecincts, function(index, appUserPrecinct) {
+			precinctIdMap['' + appUserPrecinct.precinct.id] = appUserPrecinct.precinct
 		})
 		
-		buildEffectiveRoleTable(resultMap.stationAndRoles, resultMap.roleInfoMap, facilityIdMap)
+		buildEffectiveRoleTable(resultMap.stationAndRoles, resultMap.roleInfoMap, precinctIdMap)
 		
 		$("#customizeDiv").show()
 	} else {
 		 $('#stations option').each(function(i) {
-        	if (defaultFacility && $(this).val() == defaultFacility.id) {
-        		$(this).addClass('defaultFacilityOption')
+        	if (defaultPrecinct && $(this).val() == defaultPrecinct.id) {
+        		$(this).addClass('defaultPrecinctOption')
         	} else {
-	        	$(this).removeClass('defaultFacilityOption')
+	        	$(this).removeClass('defaultPrecinctOption')
         	}
         })
 	}
@@ -252,32 +252,32 @@ function selectUser(userObj) {
 	refreshUser(true)
 }
 
-var facilitiesToAdd = []
-var facilitiesToRemove = []
+var precinctsToAdd = []
+var precinctsToRemove = []
 
 function moveStations(isAdd, addAll, removeAll) {
-	facilitiesToAdd = []
+	precinctsToAdd = []
 	$('#available_stations option').each(function(i) {
     	if (isAdd && (addAll || $(this).is(":selected")))
-    		facilitiesToAdd.push(this.value)
+    		precinctsToAdd.push(this.value)
     })
 	
-	facilitiesToRemove = []
-	var removingDefaultFacility = false
-	var currentDefaultFacility = $("#defaultFacilityId").val()
+	precinctsToRemove = []
+	var removingDefaultPrecinct = false
+	var currentDefaultPrecinct = $("#defaultPrecinctId").val()
     $('#stations option').each(function(i) {
     	if (!isAdd && (removeAll || $(this).is(":selected"))) {
-    		facilitiesToRemove.push(this.value)
-    		if (this.value == currentDefaultFacility)
-    			removingDefaultFacility = true
+    		precinctsToRemove.push(this.value)
+    		if (this.value == currentDefaultPrecinct)
+    			removingDefaultPrecinct = true
     	}
     })
     
-    if (facilitiesToAdd.length == 0 && facilitiesToRemove.length == 0)
+    if (precinctsToAdd.length == 0 && precinctsToRemove.length == 0)
     	return
     
-    if (removingDefaultFacility) {
-    	confirmDialog("Are you sure you want to remove the default facility?<p />Another default facility will need to be selected.",
+    if (removingDefaultPrecinct) {
+    	confirmDialog("Are you sure you want to remove the default precinct?<p />Another default precinct will need to be selected.",
         	function() {
         		update(true)
         	})
@@ -310,30 +310,30 @@ function removeUser() {
 	})
 }
 
-function cacheAllRolesAndFacilities(resultMap) {
-	setAllFacilitiesIfNeeded(function() {
-		var allFacilities = new SortedArray([], function(a, b) {
+function cacheAllRolesAndPrecincts(resultMap) {
+	setAllPrecinctsIfNeeded(function() {
+		var allPrecincts = new SortedArray([], function(a, b) {
 			if (a === b) return 0
 			if (a.name < b.name) return -1
 			if (a.name > b.name) return 1
 			if (a.stationNumber < b.stationNumber) return -1
 			return 1
 		})
-		$.each(resultMap.appUserFacilities, function(index, appUserFacility) {
-			allFacilities.insert({
-				id: appUserFacility.facility.id,
-				name: appUserFacility.facility.displayName,
-				stationNumber: appUserFacility.facility.stationNumber
+		$.each(resultMap.appUserPrecincts, function(index, appUserPrecinct) {
+			allPrecincts.insert({
+				id: appUserPrecinct.precinct.id,
+				name: appUserPrecinct.precinct.displayName,
+				stationNumber: appUserPrecinct.precinct.stationNumber
 			})
 		})
-		$.each(resultMap.availableFacilities, function(index, facility) {
-			allFacilities.insert({
-				id: facility.id,
-				name: facility.displayName,
-				stationNumber: facility.stationNumber
+		$.each(resultMap.availablePrecincts, function(index, precinct) {
+			allPrecincts.insert({
+				id: precinct.id,
+				name: precinct.displayName,
+				stationNumber: precinct.stationNumber
 			})
 		})
-		return allFacilities.array
+		return allPrecincts.array
 	})
 	
 	var userResult = resultMap.user
@@ -360,15 +360,15 @@ function cacheAllRolesAndFacilities(resultMap) {
 	})
 }
 
-function buildEffectiveRoleTable(stationAndRoles, roleInfoMap, facilityIdMap) {
+function buildEffectiveRoleTable(stationAndRoles, roleInfoMap, precinctIdMap) {
 	$("#effectiveRoleTable").empty()
 	if ($.isEmptyObject(roleInfoMap)) {
 		$('<tr align="center"><td>No roles are assigned.</td></tr>').appendTo($("#effectiveRoleTable"))
 		return
 	}
 	
-	if ($.isEmptyObject(facilityIdMap)) {
-		$('<tr align="center"><td>No facilities are assigned.</td></tr>').appendTo($("#effectiveRoleTable"))
+	if ($.isEmptyObject(precinctIdMap)) {
+		$('<tr align="center"><td>No precincts are assigned.</td></tr>').appendTo($("#effectiveRoleTable"))
 		return
 	}
 	
@@ -383,8 +383,8 @@ function buildEffectiveRoleTable(stationAndRoles, roleInfoMap, facilityIdMap) {
 	
 	var tbody = $('<tbody></tbody>').appendTo($("#effectiveRoleTable"))
 	$.each(stationAndRoles, function(index, item) {
-		var facilityId = item.facilityId
-		var stationName = facilityIdMap[facilityId].displayName
+		var precinctId = item.precinctId
+		var stationName = precinctIdMap[precinctId].displayName
 		
 		var tr = $('<tr></tr>').appendTo(tbody)
 		var td = $('<td class="stationName" colspan="' + (roleInfoMap.length + 1) + '"></td>').text(stationName).appendTo(tr)
@@ -395,15 +395,15 @@ function buildEffectiveRoleTable(stationAndRoles, roleInfoMap, facilityIdMap) {
 		
 		$.each(roleInfoMap, function(index, item) {
 			$('<td class="check"></td>').html(thisRoleMap[item.id] ?
-					'<img alt="Tick mark signifying a role assignment at facility" src="'
+					'<img alt="Tick mark signifying a role assignment at precinct" src="'
 						+ imgHomePath + '/tick.png" />' : "").appendTo(tr)
 		})
 	})
 }
 
-function update(updateRolesAndFacilities) {
+function update(updateRolesAndPrecincts) {
 	var roles = []
-	if (updateRolesAndFacilities)
+	if (updateRolesAndPrecincts)
         $('#roles option').each(function(i) {
         	roles.push(this.value)
         })
@@ -419,17 +419,17 @@ function update(updateRolesAndFacilities) {
 			locked: $("#userLocked").is(':checked'),
 			timezone: $("#timeZoneSelect").val(),
 			globalRoles: roles.join(),
-			vaFacilitiesToAdd: facilitiesToAdd.join(),
-			vaFacilitiesToRemove : facilitiesToRemove.join(),
-			defaultFacilityId : $("#defaultFacilityId").val(),
-			updateRolesAndFacilities: updateRolesAndFacilities
+			precinctsToAdd: precinctsToAdd.join(),
+			precinctsToRemove : precinctsToRemove.join(),
+			defaultPrecinctId : $("#defaultPrecinctId").val(),
+			updateRolesAndPrecincts: updateRolesAndPrecincts
 		},
 		error : function(jqXHR, textStatus, errorThrown) { 
-			refreshUser(updateRolesAndFacilities)
+			refreshUser(updateRolesAndPrecincts)
 			commonAjaxErrorHandler(jqXHR, textStatus, errorThrown)
 		},
 		success : function(resultMap) {
-			refreshUser(updateRolesAndFacilities)
+			refreshUser(updateRolesAndPrecincts)
 		}
 	})
 }
@@ -451,9 +451,9 @@ function initCustomizeDialog() {
 		        	roles.push(this.value)
 		        })
 		        
-		        var facilities = []
+		        var precincts = []
 		        $('#cust_stations option').each(function(i) {
-		        	facilities.push(this.value)
+		        	precincts.push(this.value)
 		        })
 				
 				$.ajax({
@@ -463,7 +463,7 @@ function initCustomizeDialog() {
 					data : {
 						userId : currentUser.id,
 						roles: roles.join(),
-						vaFacilities: facilities.join()
+						precincts: precincts.join()
 					},
 					error : function(jqXHR, textStatus, errorThrown) { 
 						refreshUser(true)
@@ -497,14 +497,14 @@ function showCustomizeDialog() {
 		})
 		$("#available_cust_roles").html(newOptionHtml.join(''))
 	})
-	getAllFacilities(function(allFacilities) {
+	getAllPrecincts(function(allPrecincts) {
 		var newOptionHtml = []
-		$.each(allFacilities, function(index, f) {
+		$.each(allPrecincts, function(index, f) {
 			/*
 			 * Don't let them customize the central office - it's either global
 			 * or none - CPB
 			 */
-			if (centralOfficeFacilityId == f.id) return
+			if (centralOfficePrecinctId == f.id) return
 			
 			newOptionHtml.push('<option value="' + f.id + '">' + 
 					abbreviate(f.name) + '</option>')

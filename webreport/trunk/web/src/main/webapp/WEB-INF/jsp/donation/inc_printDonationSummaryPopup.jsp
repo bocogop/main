@@ -51,7 +51,7 @@ function printIfNeeded(printReceiptId, printMemoId, printThankYouId, printFormat
 	var commonParams = {
 		Username : "<c:out value="${username}" />",
 		UserPasswordHash : "<c:out value="${userPasswordHash}" />",
-		FacilityContextId : "<c:out value="${siteContextId}" />"
+		PrecinctContextId : "<c:out value="${siteContextId}" />"
 	}
 	
 	skip = (printReceiptId == null) ||

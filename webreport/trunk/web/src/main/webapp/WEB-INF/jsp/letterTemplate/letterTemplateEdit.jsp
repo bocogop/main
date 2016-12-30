@@ -115,7 +115,7 @@
 		<c:forEach items="${letterMap}" var="entry">
 			$("#override_${entry.key}True").prop('checked', true)
 		</c:forEach>
-		<c:if test="${facilityContextIsCentralOffice}">
+		<c:if test="${precinctContextIsCentralOffice}">
 			$(".overrideTrue").prop('checked', true)
 			$(".overrideFalse").prop('disabled', true)
 		</c:if>

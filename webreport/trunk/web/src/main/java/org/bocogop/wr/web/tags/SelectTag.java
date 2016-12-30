@@ -3,9 +3,8 @@ package org.bocogop.wr.web.tags;
 import javax.servlet.jsp.JspException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.servlet.tags.form.TagWriter;
-
 import org.bocogop.shared.model.lookup.AbstractLookup;
+import org.springframework.web.servlet.tags.form.TagWriter;
 
 /**
  * @author vhaisdbarryc

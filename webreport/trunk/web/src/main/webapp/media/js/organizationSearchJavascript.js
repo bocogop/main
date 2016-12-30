@@ -31,8 +31,8 @@ function initOrganizationSearchPopup(options) {
 					"targets" : 0,
 					"data" : function(row, type, val, meta) {
 						if (type === 'sort')
-							return row.facility ? row.facility.displayName : '11111111'
-						return row.facility ? row.facility.displayName : 'National'
+							return row.precinct ? row.precinct.displayName : '11111111'
+						return row.precinct ? row.precinct.displayName : 'National'
 						
 					}
 				},{

@@ -8,13 +8,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.bocogop.shared.util.cache.CacheUtil;
+import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;
 import org.hibernate.jpa.QueryHints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-
-import org.bocogop.shared.util.cache.CacheUtil;
-import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;
 
 /* Helper class that allows the main GenericHibernateLookupDAO to always access these
  * methods through a proxy - CPB */

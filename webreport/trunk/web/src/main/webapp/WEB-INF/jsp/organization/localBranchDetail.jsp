@@ -60,11 +60,11 @@ function showLocalBranchPopup(localBranchId, organizationId) {
 	
 	if (hasLocalBranchId) {
 		var fullObj = localBranchList[localBranchId]
-		var branchFacilityId = fullObj.facility.id
-		var currWorkingId = facilityContextId
+		var branchPrecinctId = fullObj.precinct.id
+		var currWorkingId = precinctContextId
 		
 		var isOrgActive = "<c:out value='${command.organization.active}'/>"
-		if (!(facilityContextId == branchFacilityId &&  isOrgActive == 'true')) {
+		if (!(precinctContextId == branchPrecinctId &&  isOrgActive == 'true')) {
 			isDisabled = true
 		}
 
@@ -152,7 +152,7 @@ function submitLocalBranchDetails() {
     
     if (currentActiveStatus && !newActiveStatus) {
 	    var msg = 'Are you sure you want to inactivate this branch?'
-		msg += ' <span  class="redText" style="font-weight:bold"><p>ALL volunteers assigned to this branch will have their branch association inactivated!</span>'
+		msg += ' <span  class="redText" style="font-weight:bold"><p>ALL voters assigned to this branch will have their branch association inactivated!</span>'
     	confirmDialog(msg, finalSubmit)
     } else {
     	finalSubmit()
@@ -207,7 +207,7 @@ function validateLocalBranch() {
 								value="${command.organization.scope}" /> <c:if
 								test="${command.organization.scope == 'LOCAL'}">
 								-- <c:out
-									value="${command.organization.facility.displayName}" />
+									value="${command.organization.precinct.displayName}" />
 							</c:if></td>
 					</tr>
 					<tr>

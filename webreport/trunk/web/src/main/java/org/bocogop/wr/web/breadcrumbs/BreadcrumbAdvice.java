@@ -4,13 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.bocogop.wr.web.interceptor.BreadcrumbsInterceptor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import org.bocogop.wr.web.interceptor.BreadcrumbsInterceptor;
 
 @Component
 @Aspect

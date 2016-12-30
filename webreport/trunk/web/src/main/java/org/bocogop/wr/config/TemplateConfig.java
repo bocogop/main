@@ -5,13 +5,12 @@ import java.util.Properties;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
+import org.bocogop.wr.persistence.VelocityDataSourceResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.ui.velocity.VelocityEngineFactoryBean;
-
-import org.bocogop.wr.persistence.VelocityDataSourceResourceLoader;
 
 @Configuration
 public class TemplateConfig {

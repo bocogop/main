@@ -3,16 +3,15 @@ package org.bocogop.wr.web.validation;
 import java.util.Locale;
 import java.util.Map;
 
+import org.bocogop.shared.service.validation.ServiceValidationException;
+import org.bocogop.shared.util.SecurityUtil;
+import org.bocogop.wr.web.ajax.AjaxRequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-
-import org.bocogop.shared.service.validation.ServiceValidationException;
-import org.bocogop.shared.util.SecurityUtil;
-import org.bocogop.wr.web.ajax.AjaxRequestHandler;
 
 @Service
 public class WebValidationService {

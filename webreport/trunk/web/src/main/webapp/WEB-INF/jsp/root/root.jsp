@@ -65,23 +65,23 @@
 						<img src="${imgHome}/wrlogo_oneline.png" height="40"
 					alt="Department of Veterans Affairs Voluntary Services System" />
 						</c:if></td>
-						<c:if test="${not empty facilityContextName}">
+						<c:if test="${not empty precinctContextName}">
 							<td align="right" class="stationHeaderText" nowrap><img
-								src="${imgHome}/spacer.gif" alt="" height="0"><strong>Facility:</strong>&nbsp;</td>
+								src="${imgHome}/spacer.gif" alt="" height="0"><strong>Precinct:</strong>&nbsp;</td>
 							<td align="left" class="stationHeaderText" width="0" nowrap
 								id="dutyStationId"><div
 									style="display: inline-block; background-color: white; padding: 2px; border-radius: 2px">
 									<c:if
 										test="${multipleStationsAssigned}">
 										<a class="changeStationLink" href="${home}/changeStation.htm"><c:out
-												value="${facilityContextName}" /><img
+												value="${precinctContextName}" /><img
 											src="${imgHome}/uparrow.png" height="14" hspace="4"
-											border="0" align="absmiddle" alt="Change Facility Arrow" /></a>
+											border="0" align="absmiddle" alt="Change Precinct Arrow" /></a>
 									</c:if>
 									<c:if
 										test="${not multipleStationsAssigned}">
 										<span class="changeStationText"><c:out
-												value="${facilityContextName}" /></span>
+												value="${precinctContextName}" /></span>
 									</c:if>
 								</div></td>
 						</c:if>

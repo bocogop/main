@@ -3,10 +3,9 @@ package org.bocogop.wr.web.conversion.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.bocogop.wr.web.ajax.AjaxRequestHandler;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
-import org.bocogop.wr.web.ajax.AjaxRequestHandler;
 
 public abstract class AbstractInterceptor implements HandlerInterceptor {
 

@@ -4,7 +4,6 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 import org.apache.commons.lang3.StringUtils;
-
 import org.bocogop.shared.persistence.usertype.CodedEnum;
 import org.bocogop.shared.util.TypeUtil;
 

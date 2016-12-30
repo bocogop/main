@@ -1,9 +1,9 @@
-var siteVolunteers = new Array()
-var siteVolunteersById = new Object()
+var siteVoters = new Array()
+var siteVotersById = new Object()
 var lastTimeEntryTypeSelected
 
 /*
- * Array of { index, volunteerId, date, selectedAssignmentId, selectedOrganizationId, hours }
+ * Array of { index, voterId, date, selectedAssignmentId, selectedOrganizationId, hours }
  */
 var timeEntryItems = []
 var timeReportItems
@@ -28,7 +28,7 @@ $(function() {
 	buildAdjustedHoursTable()
 	workEntryPopupInit()
 	adjustedHoursPopupInit()
-	prepareVolunteerMaster()
+	prepareVoterMaster()
 	prepareDateMaster()
 	
 	$('#adjustedHoursShowHide').showHide({
@@ -45,7 +45,7 @@ $(function() {
 	for (var i = 0; i < 7; i++) {
 		timeEntryItems.push({
 			index : i,
-			volunteerId : null,
+			voterId : null,
 			date : nowDateStr,
 			selectedAssignmentId : null,
 			selectedOrganizationId : null,
@@ -58,8 +58,8 @@ $(function() {
 		$("#dateMaster").val(nowDateStr)
 		lastTimeEntryTypeSelected = 'byDate'
 	} else {
-		$("#byVolunteer").prop('checked', true)
-		lastTimeEntryTypeSelected = 'byVolunteer'
+		$("#byVoter").prop('checked', true)
+		lastTimeEntryTypeSelected = 'byVoter'
 		$(".adjustedHoursWrapper").show()
 	}
 	
@@ -67,15 +67,15 @@ $(function() {
 	$("#timeEntryList input").first().focus()
 	
 	$.ajax({
-		url : ajaxHomePath + "/volunteer/quickSearch/currentFacility",
+		url : ajaxHomePath + "/voter/quickSearch/currentPrecinct",
 		success : function(quickSearchResponse) {
-			siteVolunteers = quickSearchResponse.volunteers
-			siteVolunteersById = new Object()
-			$(siteVolunteers).each(function(index, item) {
-				siteVolunteersById[item.id] = item
+			siteVoters = quickSearchResponse.voters
+			siteVotersById = new Object()
+			$(siteVoters).each(function(index, item) {
+				siteVotersById[item.id] = item
 			})
 			if (volIdRequested) {
-				 volunteerSelected(volIdRequested)
+				 voterSelected(volIdRequested)
 			}
 		},
 		error : commonAjaxErrorHandler
@@ -86,27 +86,27 @@ $(function() {
 	}
 })
 
-function getSiteVolunteer(volId) {
-	var vol = siteVolunteersById[volId]
+function getSiteVoter(volId) {
+	var vol = siteVotersById[volId]
 	if (vol == null) {
-		alert('The current volunteer does not have an active assignment and active organization at the current facility.\n\nYou will be returned to this volunteer\'s profile for evaluation.')
-		jumpToVolunteer(volId)
+		alert('The current voter does not have an active assignment and active organization at the current precinct.\n\nYou will be returned to this voter\'s profile for evaluation.')
+		jumpToVoter(volId)
 	}
 	return vol
 }
 
-function volunteerSelected(volId) {
-	var vol = getSiteVolunteer(volId)
+function voterSelected(volId) {
+	var vol = getSiteVoter(volId)
 	
-	$("#volunteerMasterId").val(volId)
+	$("#voterMasterId").val(volId)
 	/*
 	 * workaround for this function not setting the value quickly enough before the blur()
 	 * below is activated - CPB
 	 */ 
-	$("#volunteerMaster").val(vol.name)
+	$("#voterMaster").val(vol.name)
 	
 	for (var i = 0; i < timeEntryItems.length; i++)
-		updateTimeEntryItemsForVolunteerSelected(i, volId)
+		updateTimeEntryItemsForVoterSelected(i, volId)
 	
 	refreshTimeEntryTable()
 	refreshTimeReportTable()
@@ -115,26 +115,26 @@ function volunteerSelected(volId) {
 	$("#timeEntryList input").first().focus()
 }
 
-function prepareVolunteerMaster() {
-	$("#volunteerMaster").autocomplete({
+function prepareVoterMaster() {
+	$("#voterMaster").autocomplete({
 		minLength : 1,
 		
 		select: function(event, ui) {
 			var inputEl = $(event.target)
 			var volId = ui.item.id
-			volunteerSelected(volId)			
+			voterSelected(volId)			
 		},
-		source : volunteerAutocompleteSource
+		source : voterAutocompleteSource
 	})
 	
-	$("#volunteerMaster").blur(function() {
-		var volId = $("#volunteerMasterId").val()
+	$("#voterMaster").blur(function() {
+		var volId = $("#voterMasterId").val()
 		
-		if (volId == '' || $(this).val() != getSiteVolunteer(volId).name) {
-			$("#volunteerMaster").val('')
-			$("#volunteerMasterId").val('')
+		if (volId == '' || $(this).val() != getSiteVoter(volId).name) {
+			$("#voterMaster").val('')
+			$("#voterMasterId").val('')
 			for (var i = 0; i < timeEntryItems.length; i++)
-				updateTimeEntryItemsForVolunteerSelected(i, null)
+				updateTimeEntryItemsForVoterSelected(i, null)
 			$(this).val('')
 			$(".assignmentWrapper").empty()
 			$(".adjustedHoursWrapper").hide()
@@ -287,7 +287,7 @@ function adjustedHoursPopupInit() {
 			method: 'POST',
 			dataType : 'json',
 			data : {
-				volunteerId : $("#volunteerMasterId").val(),
+				voterId : $("#voterMasterId").val(),
 				date : date,
 				hours : hours,
 				comments : comments
@@ -334,13 +334,13 @@ function addAdjustedHoursEntry() {
 	$("#addAdjustedHoursEntryDialog").dialog('open')
 }
 
-function updateTimeEntryItemsForVolunteerSelected(index, volId) {
-	timeEntryItems[index].volunteerId = volId
+function updateTimeEntryItemsForVoterSelected(index, volId) {
+	timeEntryItems[index].voterId = volId
 	if (volId == null) {
 		timeEntryItems[index].selectedAssignmentId = null
 		timeEntryItems[index].selectedOrganizationId = null
 	} else {
-		var vol = getSiteVolunteer(volId)
+		var vol = getSiteVoter(volId)
 		
 		if (vol.assignments.length == 1) {
 			timeEntryItems[index].selectedAssignmentId = '' + vol.assignments[0].id
@@ -365,13 +365,13 @@ function buildTimeEntryTable() {
 									"render" : function(row, type, val, meta) {
 										if (type !== 'display') return ''
 										
-										var volInput = $('<input type="text" class="volunteerInput" />') //
+										var volInput = $('<input type="text" class="voterInput" />') //
 											.attr('index', val.index) //
-											.attr('id', 'volunteerInput' + val.index)
-										volInput.attr('value', val.volunteerId ? (getSiteVolunteer(val.volunteerId).name || '') : '')
-										var volInputId = $('<input type="hidden" class="volunteerInputId" />') //
-											.attr('id', 'volunteerInputId' + val.index) //
-											.attr('value', val.volunteerId || '')
+											.attr('id', 'voterInput' + val.index)
+										volInput.attr('value', val.voterId ? (getSiteVoter(val.voterId).name || '') : '')
+										var volInputId = $('<input type="hidden" class="voterInputId" />') //
+											.attr('id', 'voterInputId' + val.index) //
+											.attr('value', val.voterId || '')
 										return $('<div></div>').append(volInput).append(volInputId).outerHTML()
 									},
 									"sortable" : false
@@ -471,7 +471,7 @@ function buildTimeReportTable() {
 								{
 									"targets" : 0,
 									"data" : function(row, type, val, meta) {
-										var v = row.volunteerAssignment.volunteer
+										var v = row.voterAssignment.voter
 										return v ? v.displayName : ''
 									}
 								},
@@ -494,15 +494,15 @@ function buildTimeReportTable() {
 									"targets" : 3,
 									"data" : function(row, type, val, meta) {
 										if (type === 'filter') {
-											return $.trim(row.volunteerAssignment.displayName.split('-')[0])
+											return $.trim(row.voterAssignment.displayName.split('-')[0])
 										}
-										return row.volunteerAssignment.displayName
+										return row.voterAssignment.displayName
 									}
 								},
 								{
 									"targets" : 4,
 									"data" : function(row) {
-										return row.volunteerAssignment.locationDisplayName
+										return row.voterAssignment.locationDisplayName
 									}
 								},
 								{
@@ -531,7 +531,7 @@ function buildTimeReportTable() {
 										
 										if (showButtons) {
 											actions += '<a href="javascript:workEntryEdit('
-												+ row.id + ', ' + row.volunteerAssignment.volunteer.id + ')"><img src="'+ imgHomePath
+												+ row.id + ', ' + row.voterAssignment.voter.id + ')"><img src="'+ imgHomePath
 												+ '/edit-small.gif" alt="Edit Time Entry" border="0" hspace="5" align="center"/></a>'
 											actions += '<a href="javascript:deleteWorkEntry('
 													+ row.id
@@ -594,7 +594,7 @@ function buildAdjustedHoursTable() {
 	return theTable
 }
 
-function volunteerAutocompleteSource(request, response) {
+function voterAutocompleteSource(request, response) {
 	var theVal = $.trim(request.term).toLowerCase()
 	if (theVal == '')
 		return
@@ -602,8 +602,8 @@ function volunteerAutocompleteSource(request, response) {
 	var matches = new Array()
 	var tokens = theVal.match(/[A-Za-z0-9']+/g);
 
-	outer: for (var i = 0; i < siteVolunteers.length && matches.length <= 10; i++) {
-		var v = siteVolunteers[i]
+	outer: for (var i = 0; i < siteVoters.length && matches.length <= 10; i++) {
+		var v = siteVoters[i]
 
 		for (var t = 0; t < tokens.length; t++) {
 			var token = tokens[t]
@@ -622,11 +622,11 @@ function volunteerAutocompleteSource(request, response) {
 	response(matches)
 }
 
-function prepareVolunteerInput($selector) {
+function prepareVoterInput($selector) {
 	$selector.each(function() {
 		var that = $(this)
 		
-		$(this).attr('aria-label', 'Type some characters to search matching active volunteers, or push Alt one to exit the worksheet')
+		$(this).attr('aria-label', 'Type some characters to search matching active voters, or push Alt one to exit the worksheet')
 		bindAlt1Keydown($(this))
 		
 		$(this).autocomplete({
@@ -634,7 +634,7 @@ function prepareVolunteerInput($selector) {
 			select: function(event, ui) {
 				var index = $(event.target).attr('index')
 				var volId = ui.item.id
-				var vol = getSiteVolunteer(volId)
+				var vol = getSiteVoter(volId)
 				
 				/*
 				 * workaround for this function not setting the value quickly enough before the blur()
@@ -642,10 +642,10 @@ function prepareVolunteerInput($selector) {
 				 */ 
 				that.val(vol.name)
 				
-				timeEntryItems[index].volunteerId = volId
-				$("#volunteerInputId" + index).val(volId)
+				timeEntryItems[index].voterId = volId
+				$("#voterInputId" + index).val(volId)
 				
-				updateTimeEntryItemsForVolunteerSelected(index, volId)
+				updateTimeEntryItemsForVoterSelected(index, volId)
 				
 				$("#assignmentWrapperIndex" + index).empty()
 				var el = getAssignmentsDropdownEl(index)
@@ -661,17 +661,17 @@ function prepareVolunteerInput($selector) {
 					prepareOrganizationsDropdown($(".organizationInput", "#organizationWrapperIndex" + index))
 				}
 			},
-			source : volunteerAutocompleteSource
+			source : voterAutocompleteSource
 		})
 		
 			$(this).blur(function() {
 				var index = $(this).attr('index')
-				var volId = $("#volunteerInputId" + index).val()
+				var volId = $("#voterInputId" + index).val()
 				
-				if (volId == '' || $(this).val() != getSiteVolunteer(volId).name) {
-					$("#volunteerInputId" + index).val('')
-					timeEntryItems[index].volunteerId = null
-					// timeEntryItems[index].volunteerId = null
+				if (volId == '' || $(this).val() != getSiteVoter(volId).name) {
+					$("#voterInputId" + index).val('')
+					timeEntryItems[index].voterId = null
+					// timeEntryItems[index].voterId = null
 					$(this).val('')
 					$("#assignmentWrapperIndex" + index).empty()
 					$("#organizationWrapperIndex" + index).empty()
@@ -681,8 +681,8 @@ function prepareVolunteerInput($selector) {
 }
 
 function getAssignmentsDropdownEl(index) {
-	var volId = timeEntryItems[index].volunteerId
-	var assignments = volId ? getSiteVolunteer(volId).assignments : null
+	var volId = timeEntryItems[index].voterId
+	var assignments = volId ? getSiteVoter(volId).assignments : null
 	
 	if (!assignments) return null
 	
@@ -711,8 +711,8 @@ function getAssignmentsDropdownEl(index) {
 }
 
 function getOrganizationsDropdownEl(index) {
-	var volId = timeEntryItems[index].volunteerId
-	var organizations = volId ? getSiteVolunteer(volId).organizations : null
+	var volId = timeEntryItems[index].voterId
+	var organizations = volId ? getSiteVoter(volId).organizations : null
 	
 	if (!organizations) return null
 	
@@ -742,7 +742,7 @@ function getOrganizationsDropdownEl(index) {
 
 function prepareAssignmentsDropdown($selector) {
 	$selector.each(function() {
-		$(this).attr('aria-label', 'Select the volunteer assignment, or push Alt one to exit the worksheet')
+		$(this).attr('aria-label', 'Select the voter assignment, or push Alt one to exit the worksheet')
 		bindAlt1Keydown($(this))
 		
 		$(this).change(function() {
@@ -773,26 +773,26 @@ function prepareOrganizationsDropdown($selector) {
 }
 
 function resetAllAndRefreshReport(clearMasterValues) {
-	var isVolunteer = $("#byVolunteer").is(":checked")
+	var isVoter = $("#byVoter").is(":checked")
 	var isDate = $("#byDate").is(":checked")
 
-	$("#volunteerMaster").prop('disabled', !isVolunteer)
+	$("#voterMaster").prop('disabled', !isVoter)
 	$("#dateMaster").prop('disabled', !isDate)
 	
 	if (clearMasterValues) {
-		$("#volunteerMaster").val('')
-		$("#volunteerMasterId").val('')
+		$("#voterMaster").val('')
+		$("#voterMasterId").val('')
 		$("#dateMaster").val('')
 	}
 	
-	if (isVolunteer) {
-		$("#volunteerMaster").focus()
+	if (isVoter) {
+		$("#voterMaster").focus()
 	} else {
 		$("#dateMaster").focus()
 	}
 	
 	var timeEntryList = $("#timeEntryList").DataTable()
-	timeEntryList.column(0).visible(!isVolunteer)
+	timeEntryList.column(0).visible(!isVoter)
 	timeEntryList.column(1).visible(!isDate)
 	
 	clearAndRefreshTimeEntryTable()
@@ -822,7 +822,7 @@ function refreshTimeEntryTable() {
 		var index = el.input.attr('index')
 		timeEntryItems[index].date = getDateFromMMDDYYYY(dateText)
 	})
-	prepareVolunteerInput($(".volunteerInput", "#timeEntryList"))
+	prepareVoterInput($(".voterInput", "#timeEntryList"))
 	prepareRowDeleteIcon($(".rowDeleteIcon", "#timeEntryList"))
 	rebindAutoAddRowFn("#timeEntryList")
 }
@@ -831,31 +831,31 @@ function refreshTimeReportTable(pageToRowWithDate) {
 	$("#timeReportLegend").text('Time Report')
 	var timeReportList = $("#timeReportList").DataTable()
 	
-	var isVolunteer = $("#byVolunteer").is(":checked")
+	var isVoter = $("#byVoter").is(":checked")
 	var isDate = $("#byDate").is(":checked")
-	timeReportList.column(0).visible(!isVolunteer)
+	timeReportList.column(0).visible(!isVoter)
 	timeReportList.column(1).visible(!isDate)
 	
-	var volunteerMasterId = $("#volunteerMasterId").val()
-	var volunteerMasterName = $("#volunteerMaster").val()
+	var voterMasterId = $("#voterMasterId").val()
+	var voterMasterName = $("#voterMaster").val()
 	var dateMaster = $("#dateMaster").val()
-	var isVolunteerMasterId = volunteerMasterId != ''
+	var isVoterMasterId = voterMasterId != ''
 	var isDateMaster = dateMaster != ''
-	if (!isVolunteerMasterId && !isDateMaster) {
+	if (!isVoterMasterId && !isDateMaster) {
 		timeReportList.clear().draw()
 		return
 	}
 	
 	$("#timeReportLegend").html('Time Report for ' 
-			+ (isVolunteer ? '<a class="appLink" href="javascript:jumpToVolunteer(' + volunteerMasterId + ')">'
-					+ escapeHTML(volunteerMasterName) + '</a>' : dateMaster))
+			+ (isVoter ? '<a class="appLink" href="javascript:jumpToVoter(' + voterMasterId + ')">'
+					+ escapeHTML(voterMasterName) + '</a>' : dateMaster))
 	
 	timeReportItems = new Object()
 	$.ajax({
-		url : ajaxHomePath + '/timeEntry/timeReportBy' + (isVolunteer ? 'Volunteer' : 'Date'),
+		url : ajaxHomePath + '/timeEntry/timeReportBy' + (isVoter ? 'Voter' : 'Date'),
 		dataType : 'json',
 		data : {
-			volunteerId : volunteerMasterId,
+			voterId : voterMasterId,
 			date : dateMaster
 		},
 		error : commonAjaxErrorHandler,
@@ -880,25 +880,25 @@ function refreshTimeReportTable(pageToRowWithDate) {
 function refreshAdjustedHoursTable() {
 	var adjustedHoursList = $("#adjustedHoursList").DataTable()
 	
-	var volunteerMasterName = $("#volunteerMaster").val()
-	var volunteerMasterId = $("#volunteerMasterId").val()
-	var isVolunteerMasterId = volunteerMasterId != ''
-	if (!isVolunteerMasterId) {
+	var voterMasterName = $("#voterMaster").val()
+	var voterMasterId = $("#voterMasterId").val()
+	var isVoterMasterId = voterMasterId != ''
+	if (!isVoterMasterId) {
 		$("#adjustedHoursLegend").html('Adjusted Hours')
 		adjustedHoursList.clear().draw()
 		return
 	}
 	
 	$("#adjustedHoursLegend").html('Adjusted Hours for ' 
-			+ '<a class="appLink" href="javascript:jumpToVolunteer(' + volunteerMasterId + ')">'
-			+ escapeHTML(volunteerMasterName) + '</a>' )
+			+ '<a class="appLink" href="javascript:jumpToVoter(' + voterMasterId + ')">'
+			+ escapeHTML(voterMasterName) + '</a>' )
 	
 	adjustedHoursItems = new Object()
 	$.ajax({
 		url : ajaxHomePath + '/timeEntry/adjustedHours',
 		dataType : 'json',
 		data : {
-			volunteerId : volunteerMasterId,
+			voterId : voterMasterId,
 		},
 		error : commonAjaxErrorHandler,
 		success : function(response) {
@@ -921,20 +921,20 @@ function refreshAdjustedHoursTable() {
 }
 
 function addBlankTimeEntryItem() {
-	var volunteerMasterId = $("#volunteerMasterId").val()
+	var voterMasterId = $("#voterMasterId").val()
 	var dateMaster = $("#dateMaster").val()
 	
 	timeEntryItems.push({
 		index : timeEntryItems.length,
-		volunteerId : volunteerMasterId != '' ? volunteerMasterId : null,
+		voterId : voterMasterId != '' ? voterMasterId : null,
 		date : dateMaster != '' ? getDateFromMMDDYYYY($("#dateMaster").val()) : null,
 		selectedAssignmentId : null,
 		selectedOrganizationId : null,
 		hours : null
 	})
 	
-	if (volunteerMasterId != '')
-		updateTimeEntryItemsForVolunteerSelected(timeEntryItems.length - 1, volunteerMasterId)
+	if (voterMasterId != '')
+		updateTimeEntryItemsForVoterSelected(timeEntryItems.length - 1, voterMasterId)
 }
 
 function addInputRow() {
@@ -952,9 +952,9 @@ function timeEntryTypeClicked() {
 	var proceedFunc = function() {
 		that.prop('checked', true)
 		lastTimeEntryTypeSelected = idClicked
-		var isByVolunteer = lastTimeEntryTypeSelected == 'byVolunteer'
+		var isByVoter = lastTimeEntryTypeSelected == 'byVoter'
 		
-		if (isByVolunteer) {
+		if (isByVoter) {
 			$("#timeEntryForbidden").hide()
 			if (!isReadOnly)
 				$("#timeEntryWrapper").show()
@@ -965,7 +965,7 @@ function timeEntryTypeClicked() {
 	}
 	
 	var hasVal = false
-	$(".volunteerInput, .dateInput, .hoursInput, .assignmentInput", "#timeEntryList").each(function(index, item) {
+	$(".voterInput, .dateInput, .hoursInput, .assignmentInput", "#timeEntryList").each(function(index, item) {
 		if ($(item).is(":visible") && $(item).val() != '') {
 			hasVal = true
 			return false
@@ -990,7 +990,7 @@ function deleteInputRow(index) {
 	$("#timeEntryList input[value='']:visible:first").focus()
 }
 
-function workEntryEdit(workEntryId, volunteerId) {
+function workEntryEdit(workEntryId, voterId) {
 	var workEntry = timeReportItems[workEntryId]
 	$("#editWorkEntryDialog").data('workEntryId', workEntryId)
 	
@@ -1000,17 +1000,17 @@ function workEntryEdit(workEntryId, volunteerId) {
 	$("#editWorkEntryHours").val(paddedHours)
 	
 	$.ajax({
-			url : ajaxHomePath + '/volunteer/quickSearch/individualPlusAssignmentsAndOrgs',
+			url : ajaxHomePath + '/voter/quickSearch/individualPlusAssignmentsAndOrgs',
 			method: 'POST',
 			dataType : 'json',
 			data : {
-				volunteerId : volunteerId,
+				voterId : voterId,
 				onlyActiveAssignmentsAndOrgs : false
 			},
 			error : commonAjaxErrorHandler,
 			success : function(response) {
 				var container = $("#editWorkEntryAssignmentWrapper").empty()
-				var selectedAssignmentId = workEntry.volunteerAssignment.id
+				var selectedAssignmentId = workEntry.voterAssignment.id
 				var select = $('<select id="editWorkEntryAssignmentId"></select>')
 				$("<option />").attr("value", "").text("Please select...").appendTo(select)
 				for (var i = 0; i < response.assignments.length; i++) {
@@ -1061,9 +1061,9 @@ function postAll(evt) {
 	if (evt != null)
 		doubleClickSafeguard($(evt.currentTarget))
 	
-	var byVolunteer = $("#byVolunteer").is(":checked")
+	var byVoter = $("#byVoter").is(":checked")
 	var byDate = $("#byDate").is(":checked")
-	var volMaster = $("#volunteerMasterId").val()
+	var volMaster = $("#voterMasterId").val()
 	var dateMaster = $("#dateMaster").val()
 	
 	var params = {}
@@ -1074,7 +1074,7 @@ function postAll(evt) {
 		var item = timeEntryItems[i]
 		if (!isValidItem(item)) continue
 		
-		if (byVolunteer) {
+		if (byVoter) {
 			params['date' + curIndex] = getDateStrFromDate(item.date)
 			if (maxDate == null || maxDate < item.date)
 				maxDate = item.date
@@ -1101,10 +1101,10 @@ function postAll(evt) {
 }
 
 function isValidItem(item) {
-	var assignments = (item.volunteerId == null) ? [] : getSiteVolunteer(item.volunteerId).assignments
-	var organizations = (item.volunteerId == null) ? [] : getSiteVolunteer(item.volunteerId).organizations
+	var assignments = (item.voterId == null) ? [] : getSiteVoter(item.voterId).assignments
+	var organizations = (item.voterId == null) ? [] : getSiteVoter(item.voterId).organizations
 	
-	var anyInputsEntered = $("#byDate").is(":checked") ? item.volunteerId != null : item.date != null
+	var anyInputsEntered = $("#byDate").is(":checked") ? item.voterId != null : item.date != null
 	anyInputsEntered |= assignments.length > 1 && item.selectedAssignmentId != null
 	anyInputsEntered |= organizations.length > 1 && item.selectedOrganizationId != null
 	anyInputsEntered |= item.hours != null
@@ -1121,19 +1121,19 @@ function validate() {
 	var validationPassed = true
 	var errorFields = []
 	
-	var byVolunteer = $("#byVolunteer").is(":checked")
+	var byVoter = $("#byVoter").is(":checked")
 	var byDate = $("#byDate").is(":checked")
 	
 	clearAllErrors()
 	
 	var hasMissingFields = false
 	
-	var volMaster = $("#volunteerMaster").val()
-	var volMasterId = $("#volunteerMasterId").val()
+	var volMaster = $("#voterMaster").val()
+	var volMasterId = $("#voterMasterId").val()
 	var dateMaster = $("#dateMaster").val()
 	
-	if (byVolunteer && volMasterId == '') {
-		errorFields.push("#volunteerMaster")
+	if (byVoter && volMasterId == '') {
+		errorFields.push("#voterMaster")
 		hasMissingFields = true
 	} else if (byDate && dateMaster == '') {
 		errorFields.push("#dateMaster")
@@ -1148,11 +1148,11 @@ function validate() {
 		if (!isValidItem(item))
 			continue;
 		
-		if (byDate && item.volunteerId == null) {
-			errorFields.push("#volunteerInput" + index)
+		if (byDate && item.voterId == null) {
+			errorFields.push("#voterInput" + index)
 			hasMissingFields = true
 		}
-		if (byVolunteer) {
+		if (byVoter) {
 			if (item.date == null) {
 				errorFields.push("#dateInput" + index)
 				hasMissingFields = true
@@ -1191,7 +1191,7 @@ function validate() {
 	}
 	
 	if (errorFields.length == 0 && numValidItems == 0) {
-		errorFields.push(byVolunteer ? "#dateInput0" : "#volunteerInput0")
+		errorFields.push(byVoter ? "#dateInput0" : "#voterInput0")
 		hasMissingFields = true
 	}
 

@@ -2,13 +2,13 @@
 
 <script type="text/javascript">
 $(function() {
-	initLinkServicesAndRolesPopup(${facilityContextId})
+	initLinkServicesAndRolesPopup(${precinctContextId})
 })
 
 var linkServicesArray = new SortedArray([])
 var linkRolesArray = new SortedArray([])
 
-function initLinkServicesAndRolesPopup(workingFacilityId) {
+function initLinkServicesAndRolesPopup(workingPrecinctId) {
 	var hasBenefitingServiceId = function() {
 		return $("#linkDialog").data('benefitingServiceId') != ''
 	}
@@ -90,7 +90,7 @@ function initLinkServicesAndRolesPopup(workingFacilityId) {
 			method: 'POST',
 			dataType : 'json',
 			data : {
-				facilityId : $("#facilityId").val(),
+				precinctId : $("#precinctId").val(),
 				locationId : locationId,
 				csrfParamName : csrfValue,
 				newServices : linkServicesArray.array,
@@ -152,10 +152,10 @@ function initLinkServicesAndRolesPopup(workingFacilityId) {
 			if (dialogEl.data('stationsPopulated')) return
 			var curVal = locationEl.val()
 			
-			getLocalFacilitiesForLocation($("#facilityId").val(), true, function(locations) {
+			getLocalPrecinctsForLocation($("#precinctId").val(), true, function(locations) {
 				locationEl.empty()
 				var newHtml = []
-				newHtml.push('<option value="-1" selected="selected">Main Facility</option>')
+				newHtml.push('<option value="-1" selected="selected">Main Precinct</option>')
 				
 				$.each(locations, function(index, item) {
 					var selectedText = (item.id == curVal) ? ' selected="selected"' : ''
@@ -258,7 +258,7 @@ function refreshLinkServicesAndRolesTable() {
 			url : ajaxHomePath + '/benefitingServiceAndRoleTemplates/assignable',
 			dataType : 'json',
 			data : {
-				facilityId: $("#facilityId").val(),
+				precinctId: $("#precinctId").val(),
 				benefitingServiceId : benefitingServiceId,
 				skipRequiredAndReadOnlyRoles : false
 			},
@@ -311,7 +311,7 @@ function showLinkDetailsPopup(optionalBenefitingServiceId) {
 			<div id="linkServicesAndRolesPhysicalLocationDiv" class="clearCenter"
 				style="padding-top: 10px; padding-bottom: 10px">
 				Physical Locations: <select id="linkServicesAndRolesPhysicalLocation" multiple="multiple">
-					<option value="-1" selected="selected">Main Facility</option>
+					<option value="-1" selected="selected">Main Precinct</option>
 				</select>
 			</div>
 			<table class="formatTable" id="linkServicesAndRolesTable">

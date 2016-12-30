@@ -32,7 +32,7 @@
 					summary="List of Organizations">
 					<thead>
 						<tr id="organizationSearchFilterRow">
-							<td class="noborder" title="Filter by Facility">Filters:</td>
+							<td class="noborder" title="Filter by Precinct">Filters:</td>
 							<td class="noborder"></td>
 							<td class="noborder"></td>
 							<td class="noborder" title="Filter by Type"></td>
@@ -43,7 +43,7 @@
 							<td class="noborder" id="statusFilter" title="Filter by Status"></td>
 						</tr>
 						<tr>
-							<th class="select-filter">Facility</th>
+							<th class="select-filter">Precinct</th>
 							<th>Name</th>
 							<th>Abbreviation</th>
 							<th class="select-filter">Type</th>
@@ -58,8 +58,8 @@
 					<c:forEach var="org" items="${command.organizations}">
 						<c:set var="isOrgNotBranch" value="${org.scale == 'Organization'}" />
 						<tr>
-							<td><c:if test="${not empty org.facility}">
-									<c:out value="${org.facility.displayName}" />
+							<td><c:if test="${not empty org.precinct}">
+									<c:out value="${org.precinct.displayName}" />
 								</c:if> <c:if test="${org.scope == 'NATIONAL'}">
 									<c:out value="National" />
 								</c:if></td>

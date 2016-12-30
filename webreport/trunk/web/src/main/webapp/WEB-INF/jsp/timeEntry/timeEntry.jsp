@@ -50,14 +50,14 @@
 					<td><input type="radio" name="timeEntryType" value="date"
 						id="byDate" selected="selected" class="alwaysEnabled" /> By Date:</td>
 					<td rowspan="2" width="15">&nbsp;</td>
-					<td><input type="radio" name="timeEntryType" value="volunteer"
-						id="byVolunteer" class="alwaysEnabled" /> By Volunteer:</td>
+					<td><input type="radio" name="timeEntryType" value="voter"
+						id="byVoter" class="alwaysEnabled" /> By Voter:</td>
 				</tr>
 				<tr>
 					<td><input type="text" id="dateMaster" class="dateInput alwaysEnabled" /></td>
 					<td><input disabled="disabled" type="text" class="alwaysEnabled"
-						id="volunteerMaster" /><input type="hidden"
-						id="volunteerMasterId" /></td>
+						id="voterMaster" /><input type="hidden"
+						id="voterMasterId" /></td>
 				</tr>
 			</table>
 			<div id="timeEntryForbidden"
@@ -72,7 +72,7 @@
 					summary="List of Time Entries">
 					<thead>
 						<tr>
-							<th width="25%">Volunteer</th>
+							<th width="25%">Voter</th>
 							<th width="10%">Date</th>
 							<th width="10%">Hours</th>
 							<th width="25%">Assignment</th>
@@ -115,7 +115,7 @@
 						<td class="noborder"></td>
 					</tr>
 					<tr>
-						<th>Volunteer</th>
+						<th>Voter</th>
 						<th>Date</th>
 						<th>Hours</th>
 						<th class="select-filter">Service Role</th>

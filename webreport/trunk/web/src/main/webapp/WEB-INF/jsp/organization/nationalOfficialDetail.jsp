@@ -318,7 +318,7 @@ function validateNationalOffical() {
 						<td><input type="text" id="officialEmail" size="35"
 							maxLength="255" /> <a
 							href="javascript:emailInputContent('officialEmail')"><img
-								alt='Click to email volunteer' src="${imgHome}/envelope.jpg"
+								alt='Click to email voter' src="${imgHome}/envelope.jpg"
 								height="14" width="18" border="0" align="absmiddle"
 								style="padding-left: 4px; padding-right: 4px" /></a></td>
 					</tr>

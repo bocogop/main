@@ -3,9 +3,9 @@ package org.bocogop.wr.model;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
 import org.bocogop.shared.model.AppUser;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 public interface BasicUserFields {
 

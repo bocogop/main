@@ -1,0 +1,5 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Thu Dec 29 00:16:27 MST 2016
+wr_web-1.0.war>=
+wr_web-1.0-classes.jar>=
+wr_web-1.0.pom>=

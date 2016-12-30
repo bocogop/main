@@ -6,10 +6,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.bocogop.wr.web.ajax.AjaxRequestHandler;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-
-import org.bocogop.wr.web.ajax.AjaxRequestHandler;
 
 public class AjaxAwareAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
 	public AjaxAwareAuthenticationEntryPoint(String loginUrl) {

@@ -321,7 +321,7 @@ function submitStaffDetails() {
 						<td></td>
 						<td nowrap><span id="staffEmail"></span>&nbsp;<a
 							id="staffEmailLink" style="display: none" href=""><img
-								alt='Click to email volunteer' src="${imgHome}/envelope.jpg"
+								alt='Click to email voter' src="${imgHome}/envelope.jpg"
 								height="14" width="18" border="0" align="absmiddle"
 								style="padding-left: 4px; padding-right: 4px" /></a></td>
 					</tr>

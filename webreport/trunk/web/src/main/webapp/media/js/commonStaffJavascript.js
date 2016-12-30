@@ -138,12 +138,12 @@ function printReports(optionArray) {
 	}
 }
 
-function jumpToVolunteer(id) {
-	document.location.href = homePath + '/volunteerEdit.htm?id=' + id
+function jumpToVoter(id) {
+	document.location.href = homePath + '/voterEdit.htm?id=' + id
 }
 
-function menuVolunteerSelectedCallback(volunteerObj) {
-	jumpToVolunteer(volunteerObj.id)
+function menuVoterSelectedCallback(voterObj) {
+	jumpToVoter(voterObj.id)
 }
 
 function jumpToOrganization(id) {
@@ -158,8 +158,8 @@ function menuOrganizationAddSelectedCallback() {
 	document.location.href = homePath + "/organizationCreate.htm"
 }
 
-function menuVolunteerAddSelectedCallback() {
-	document.location.href = homePath + "/volunteerCreate.htm"
+function menuVoterAddSelectedCallback() {
+	document.location.href = homePath + "/voterCreate.htm"
 }
 
 function menuDonorAddSelectedCallback(type, searchNameStr) {

@@ -16,9 +16,9 @@
 	var twoDigitDateTimeMask = '${TWO_DIGIT_DATE_TIME_MASK}'
 	var useMinifiedDependencies = <c:out value="${useMinifiedDependencies}" default="false" />
 	
-	var facilityContextId = <c:out value="${facilityContextId}" default="null" />
+	var precinctContextId = <c:out value="${precinctContextId}" default="null" />
 	
-	var centralOfficeId = <c:out value="${FACILITY_VALUE_CENTRAL_OFFICE.id}" default="-1" />
+	var centralOfficeId = <c:out value="${PRECINCT_VALUE_CENTRAL_OFFICE.id}" default="-1" />
 	var nationalAdminRoleId = <c:out value="${ROLE_TYPE_NATIONAL_ADMIN.id}" default="-1" />
 	var formReadOnly = <c:out value="${FORM_READ_ONLY}" default="false" />
 </script>

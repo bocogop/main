@@ -13,11 +13,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.bocogop.wr.persistence.queryCustomization.ModelAssociationFieldInfoRegistry.ModelAssociationFieldInfo;
 import org.bocogop.wr.persistence.queryCustomization.fieldTypes.ModelAssociationFieldType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A class representing a set of customizations to make when running a JPA

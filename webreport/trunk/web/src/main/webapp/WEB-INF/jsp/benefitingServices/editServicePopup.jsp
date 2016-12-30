@@ -2,10 +2,10 @@
 
 <script type="text/javascript">
 $(function() {
-	initEditServicePopup(${facilityContextId})
+	initEditServicePopup(${precinctContextId})
 })
 
-function initEditServicePopup(facilityId) {
+function initEditServicePopup(precinctId) {
 	var submitEditService = function() {
 		var name = $("#editServiceName").val()
 		
@@ -36,7 +36,7 @@ function initEditServicePopup(facilityId) {
 			dataType : 'json',
 			data : {
 				benefitingServiceId : dialogEl.data('benefitingServiceId'),
-				facilityId : $("#facilityId").val(),
+				precinctId : $("#precinctId").val(),
 				locationId : locationIds,
 				name : name,
 				subdivision : $("#editServiceSubdivision").val(),
@@ -76,7 +76,7 @@ function initEditServicePopup(facilityId) {
 		}
 	})
 	
-	dialogEl.data('facilityId', facilityId)
+	dialogEl.data('precinctId', precinctId)
 	
 	var locationEl = $("#editServicePhysicalLocation")
 	locationEl.multiselect({
@@ -89,10 +89,10 @@ function initEditServicePopup(facilityId) {
 			if (dialogEl.data('stationsPopulated')) return
 			var curVal = locationEl.val()
 			
-			getLocalFacilitiesForLocation($("#facilityId").val(), true, function(locations) {
+			getLocalPrecinctsForLocation($("#precinctId").val(), true, function(locations) {
 				locationEl.empty()
 				var newHtml = []
-				newHtml.push('<option value="-1" selected="selected">Main Facility</option>')
+				newHtml.push('<option value="-1" selected="selected">Main Precinct</option>')
 				
 				$.each(locations, function(index, item) {
 					var selectedText = (item.id == curVal) ? ' selected="selected"' : ''
@@ -189,7 +189,7 @@ function showEditServicePopup(benefitingServiceId) {
 		style="padding-top: 10px;"><label for='editServicePhysicalLocation'>
 		Physical Location: </label><select id="editServicePhysicalLocation"
 			multiple="multiple">
-			<option value="-1" selected="selected">Main Facility</option>
+			<option value="-1" selected="selected">Main Precinct</option>
 		</select>
 	</div>
 </div>

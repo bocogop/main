@@ -8,16 +8,15 @@ import org.apache.commons.lang3.ClassUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.bocogop.shared.util.SecurityUtil;
+import org.bocogop.wr.model.AuditLogEntry;
+import org.bocogop.wr.service.audit.AuditLogEntryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Joiner;
-
-import org.bocogop.shared.util.SecurityUtil;
-import org.bocogop.wr.model.AuditLogEntry;
-import org.bocogop.wr.service.audit.AuditLogEntryService;
 
 /* Configured in XML due to the inability to pass in a ${} properties lookup in the @Before value - CPB */
 @Component

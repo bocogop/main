@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import org.springframework.cache.interceptor.KeyGenerator;
 
 /**
- * A customized cache key generator for Spring's caching facilities that
+ * A customized cache key generator for Spring's caching precincts that
  * considers the class and method name. Spring's default is only to consider the
  * method params.
  * 

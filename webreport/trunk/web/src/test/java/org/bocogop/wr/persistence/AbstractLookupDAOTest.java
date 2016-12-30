@@ -1,13 +1,12 @@
 package org.bocogop.wr.persistence;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import org.bocogop.shared.model.lookup.AbstractLookup;
 import org.bocogop.shared.model.lookup.LookupType;
 import org.bocogop.wr.persistence.dao.CustomizableLookupDAO;
 import org.bocogop.wr.persistence.dao.CustomizableSortedDAO;
 import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;
+import org.junit.Assert;
+import org.junit.Test;
 
 public abstract class AbstractLookupDAOTest<T extends AbstractLookup<T, ?>> extends AbstractSortedDAOTest<T> {
 

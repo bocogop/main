@@ -16,12 +16,11 @@ import javax.validation.ValidatorFactory;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.bocogop.wr.web.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.Errors;
-
-import org.bocogop.wr.web.validation.ValidationException;
 
 public abstract class AbstractAppValidator<T> {
 	@SuppressWarnings("unused")

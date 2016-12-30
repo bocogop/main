@@ -103,7 +103,7 @@ $(function() {
 					
 					/* array of columns for current row */
 					rArray[rArray.length] = new Array(		
-							escapeHTML(response[i].facility ? response[i].facility.displayName : ''), 
+							escapeHTML(response[i].precinct ? response[i].precinct.displayName : ''), 
 							'<a href="javascript:showLocalBranchPopup(' + response[i].id + ', ${command.organization.id}' + ')">'+ 
 							escapeHTML(response[i].name) +'</a>',
 							escapeHTML(response[i].contactName),
@@ -274,7 +274,7 @@ var wasFullNamePopulated = ("${command.organization.fullName}".length > 0);
 	    
 	    <c:if test="${command.organization.active}">
 	    if ($("#statusRadioId2").is(":checked")) {
-	    	confirmDialog('Are you sure you want to inactivate this organization?<p><span class="redText" style="font-weight:bold">ALL volunteers assigned to this organization (or to any of its branches) will have their organizations inactivated!</span>', function() {
+	    	confirmDialog('Are you sure you want to inactivate this organization?<p><span class="redText" style="font-weight:bold">ALL voters assigned to this organization (or to any of its branches) will have their organizations inactivated!</span>', function() {
 	    		$('#organizationForm').submit()
 	    	})
 	    } else {
@@ -343,13 +343,13 @@ var wasFullNamePopulated = ("${command.organization.fullName}".length > 0);
 				<legend>Organization</legend>
 				<table>
 					<tr>
-						<td class='appFieldLabel' nowrap>Facility:</td>
+						<td class='appFieldLabel' nowrap>Precinct:</td>
 						<td></td>
 						<td style="text-align: left"><c:out
 								value="${command.organization.scope}" /> <c:if
 								test="${command.organization.scope == 'LOCAL'}">
 								-- <c:out
-									value="${command.organization.facility.displayName}" />
+									value="${command.organization.precinct.displayName}" />
 							</c:if></td>
 					</tr>
 					
@@ -626,7 +626,7 @@ var wasFullNamePopulated = ("${command.organization.fullName}".length > 0);
 				<legend>Local Branches</legend>
 
 				<div align="center">
-				<c:if test="${not facilityContextIsCentralOffice and command.organization.active == 'true'}">
+				<c:if test="${not precinctContextIsCentralOffice and command.organization.active == 'true'}">
 					<sec:authorize access="hasAnyAuthority('${PERMISSION_ORG_CODE_LOCAL_CREATE}')">
 						<a class="buttonAnchor" id="createButton"
 							href="javascript:showLocalBranchPopup('',  ${command.organization.id} )">Add</a>
@@ -637,7 +637,7 @@ var wasFullNamePopulated = ("${command.organization.fullName}".length > 0);
 					summary="List of Local Branchs">
 					<thead>
 						<tr id="localBranchSearchFilterRow">
-							<td class="noborder" title="Filter by Facility">Filters:</td>
+							<td class="noborder" title="Filter by Precinct">Filters:</td>
 							<td class="noborder" title="Filter by Local Branch"></td>
 							<td class="noborder"></td>
 							<td class="noborder"></td>
@@ -647,7 +647,7 @@ var wasFullNamePopulated = ("${command.organization.fullName}".length > 0);
 						</tr>
 					
 						<tr>
-							<th class="select-filter">Facility Name (#)</th>
+							<th class="select-filter">Precinct Name (#)</th>
 							<th class="select-filter">Local Branch</th>
 							<th>Contact Name</th>
 							<th>Title</th>

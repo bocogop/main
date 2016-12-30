@@ -1,10 +1,10 @@
 package org.bocogop.wr.persistence.queryCustomization.fieldTypes.lookup.sds;
 
-import org.bocogop.shared.model.lookup.sds.VAFacility;
+import org.bocogop.wr.model.precinct.Precinct;
 import org.bocogop.wr.persistence.queryCustomization.fieldTypes.ModelAssociationFieldType;
 
 public enum InstitutionAssociationFieldType implements ModelAssociationFieldType {
-	PARENT("parent"), VISN("visn"), FACILITY_TYPE("facilityType");
+	PARENT("parent"), VISN("visn"), PRECINCT_TYPE("precinctType");
 
 	private String fieldName;
 
@@ -18,7 +18,7 @@ public enum InstitutionAssociationFieldType implements ModelAssociationFieldType
 
 	@Override
 	public Class<?> getModelClass() {
-		return VAFacility.class;
+		return Precinct.class;
 	}
 
 }

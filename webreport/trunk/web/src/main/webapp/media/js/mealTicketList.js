@@ -60,7 +60,7 @@ function validateMealTicketOccasionalVol() {
 	var errors = new Array();
 
 	if ($.trim($("#occasionalLastNameInput").val()) == '') {
-		errors.push("Occasional Volunteer Last Name is required.")
+		errors.push("Occasional Voter Last Name is required.")
 	}
 	
 	if (errors.length > 0) {
@@ -70,7 +70,7 @@ function validateMealTicketOccasionalVol() {
 	return errors.length == 0;
 }
 
-function addOccasionalVolunteer() {
+function addOccasionalVoter() {
 
 	   if (!validateMealTicketOccasionalVol()) return;
 
@@ -90,19 +90,19 @@ function addOccasionalVolunteer() {
 }
 	
 
-function addVolunteerMealTicket() {
-	popupVolunteerSearch('addMealTicket', '', {
-		searchFirstNameStr : $('#volunteerFirstNameInput').val(),
-		searchLastNameStr : $('#volunteerLastNameInput').val(),
+function addVoterMealTicket() {
+	popupVoterSearch('addMealTicket', '', {
+		searchFirstNameStr : $('#voterFirstNameInput').val(),
+		searchLastNameStr : $('#voterLastNameInput').val(),
 	})
 }
 
-function addMealTicketForVolCallback(volunteerObj) {
+function addMealTicketForVolCallback(voterObj) {
 	$.ajax({
-		url : ajaxHomePath + '/mealTicketAddVolunteer',
+		url : ajaxHomePath + '/mealTicketAddVoter',
 		dataType : 'json',
 		data : {
-			volunteerId : volunteerObj.id
+			voterId : voterObj.id
 		},
 		error : commonAjaxErrorHandler,
 		success : function(response) {

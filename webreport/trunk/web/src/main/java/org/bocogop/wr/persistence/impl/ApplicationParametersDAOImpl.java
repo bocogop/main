@@ -2,10 +2,9 @@ package org.bocogop.wr.persistence.impl;
 
 import javax.persistence.NoResultException;
 
-import org.springframework.stereotype.Repository;
-
 import org.bocogop.wr.model.ApplicationParameter;
 import org.bocogop.wr.persistence.dao.ApplicationParametersDAO;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class ApplicationParametersDAOImpl extends GenericHibernateDAOImpl<ApplicationParameter>

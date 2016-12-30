@@ -13,10 +13,9 @@ import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.bocogop.shared.model.core.AbstractAuditedVersionedPersistent;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
-import org.bocogop.shared.model.core.AbstractAuditedVersionedPersistent;
 
 @Entity
 @Table(name = "Holidays", schema = "wr")

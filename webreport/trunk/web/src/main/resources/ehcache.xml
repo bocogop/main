@@ -46,11 +46,11 @@
 		eternal="false" timeToIdleSeconds="360" timeToLiveSeconds="360"
 		overflowToDisk="false" copyOnRead="true" />
 
-	<cache name="queries.facilityDAO" maxElementsInMemory="5000"
+	<cache name="queries.precinctDAO" maxElementsInMemory="5000"
 		eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="1200"
 		overflowToDisk="false" />
 
-	<cache name="queries.facilityAndVisnDAO" maxElementsInMemory="2000"
+	<cache name="queries.precinctAndVisnDAO" maxElementsInMemory="2000"
 		eternal="true" overflowToDisk="false" copyOnRead="true" />
 
 	<cache name="queries.genderDAO" maxElementsInMemory="5" eternal="true"
@@ -68,7 +68,7 @@
 		timeToIdleSeconds="3600" timeToLiveSeconds="7200" overflowToDisk="false"
 		copyOnRead="true" />
 
-	<cache name="queries.vaFacilityDAO" maxElementsInMemory="15000"
+	<cache name="queries.precinctDAO" maxElementsInMemory="15000"
 		eternal="true" overflowToDisk="false" copyOnRead="true"></cache>
 
 	<cache name="queries.vistaStationDataDAO" maxElementsInMemory="2500"
@@ -91,13 +91,13 @@
 	<cache name="org.bocogop.shared.model.lookup.sds.State"
 		maxElementsInMemory="500" eternal="true" overflowToDisk="false" />
 
-	<cache name="org.bocogop.shared.model.lookup.sds.VAFacility"
+	<cache name="org.bocogop.shared.model.lookup.sds.Precinct"
 		maxElementsInMemory="5000" eternal="true" overflowToDisk="false" />
 
-	<cache name="org.bocogop.shared.model.lookup.sds.VAFacilityType"
+	<cache name="org.bocogop.shared.model.lookup.sds.PrecinctType"
 		maxElementsInMemory="250" eternal="true" overflowToDisk="false" />
 
-	<cache name="org.bocogop.shared.model.lookup.sds.VAFacilityType.facilityList"
+	<cache name="org.bocogop.shared.model.lookup.sds.PrecinctType.precinctList"
 		maxElementsInMemory="500" eternal="true" overflowToDisk="false" />
 
 	<cache name="org.bocogop.shared.model.lookup.ActiveStatus"
@@ -143,15 +143,15 @@
 		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="3600"
 		timeToLiveSeconds="7200" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.facility.AbstractUpdateableLocation"
+	<cache name="org.bocogop.wr.model.precinct.AbstractUpdateableLocation"
 		maxElementsInMemory="5000" eternal="false" timeToIdleSeconds="1200"
 		timeToLiveSeconds="1200" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.facility.Facility"
+	<cache name="org.bocogop.wr.model.precinct.Precinct"
 		maxElementsInMemory="5000" eternal="false" timeToIdleSeconds="1200"
 		timeToLiveSeconds="1200" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.facility.FacilityType"
+	<cache name="org.bocogop.wr.model.precinct.PrecinctType"
 		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="1200"
 		timeToLiveSeconds="1200" overflowToDisk="false" />
 
@@ -177,13 +177,13 @@
 		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="300"
 		timeToLiveSeconds="600" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.volunteer.TransportationMethod"
+	<cache name="org.bocogop.wr.model.voter.TransportationMethod"
 		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.volunteer.VolunteerStatus"
+	<cache name="org.bocogop.wr.model.voter.VoterStatus"
 		maxElementsInMemory="10" eternal="true" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.facility.AdministrativeUnit"
+	<cache name="org.bocogop.wr.model.precinct.AdministrativeUnit"
 		maxElementsInMemory="50" eternal="false" timeToIdleSeconds="300"
 		timeToLiveSeconds="600" overflowToDisk="false" />
 
@@ -212,14 +212,14 @@
 	<cache name="org.bocogop.wr.model.expenditure.ExpenditureType"
 		maxElementsInMemory="5" eternal="true" overflowToDisk="false" />
 		
-	<cache name="org.bocogop.wr.model.facility.StaffTitle" maxElementsInMemory="100"
+	<cache name="org.bocogop.wr.model.precinct.StaffTitle" maxElementsInMemory="100"
 		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
 		overflowToDisk="false" />
 
 	<cache name="org.bocogop.wr.model.lookup.JobExecutionType"
 		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
 		
-	<cache name="org.bocogop.wr.model.volunteer.ShirtSize" maxElementsInMemory="20"
+	<cache name="org.bocogop.wr.model.voter.ShirtSize" maxElementsInMemory="20"
 		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
 		overflowToDisk="false" />
 

@@ -67,9 +67,9 @@
 		<put-attribute name="helpContextID" value="28" />
 	</definition>
 
-	<definition name="NewVolunteer" extends="embeddedReportWrapper">
+	<definition name="NewVoter" extends="embeddedReportWrapper">
 		<put-attribute name="reportParameters"
-			value="/WEB-INF/jsp/report/NewVolunteer.jsp" cascade="true" />
+			value="/WEB-INF/jsp/report/NewVoter.jsp" cascade="true" />
 		<put-attribute name="paramPopupWidth" value="950"
 			cascade="true" />
 		<put-attribute name="paramPopupHeight" value="500"
@@ -96,9 +96,9 @@
 			cascade="true" />
 	</definition>
 
-	<definition name="VolunteerAddressLabels" extends="embeddedReportWrapper">
+	<definition name="VoterAddressLabels" extends="embeddedReportWrapper">
 		<put-attribute name="reportParameters"
-			value="/WEB-INF/jsp/report/VolunteerAddressLabels.jsp" cascade="true" />
+			value="/WEB-INF/jsp/report/VoterAddressLabels.jsp" cascade="true" />
 		<put-attribute name="paramPopupWidth" value="650"
 			cascade="true" />
 		<put-attribute name="paramPopupHeight" value="500"
@@ -106,18 +106,18 @@
 		<put-attribute name="helpContextID" value="28" />
 	</definition>
 
-	<definition name="VolunteerAlpha" extends="embeddedReportWrapper">
+	<definition name="VoterAlpha" extends="embeddedReportWrapper">
 		<put-attribute name="reportParameters"
-			value="/WEB-INF/jsp/report/VolunteerAlpha.jsp" cascade="true" />
+			value="/WEB-INF/jsp/report/VoterAlpha.jsp" cascade="true" />
 		<put-attribute name="paramPopupWidth" value="850"
 			cascade="true" />
 		<put-attribute name="paramPopupHeight" value="400"
 			cascade="true" />
 	</definition>
 
-	<definition name="VolunteersByService" extends="embeddedReportWrapper">
+	<definition name="VotersByService" extends="embeddedReportWrapper">
 		<put-attribute name="reportParameters"
-			value="/WEB-INF/jsp/report/VolunteersByService.jsp" cascade="true" />
+			value="/WEB-INF/jsp/report/VotersByService.jsp" cascade="true" />
 		<put-attribute name="paramPopupWidth" value="850"
 			cascade="true" />
 		<put-attribute name="paramPopupHeight" value="400"
@@ -125,9 +125,9 @@
 		<put-attribute name="helpContextID" value="28" />
 	</definition>
 
-	<definition name="VolunteersByOrganization" extends="embeddedReportWrapper">
+	<definition name="VotersByOrganization" extends="embeddedReportWrapper">
 		<put-attribute name="reportParameters"
-			value="/WEB-INF/jsp/report/VolunteersByOrganization.jsp" cascade="true" />
+			value="/WEB-INF/jsp/report/VotersByOrganization.jsp" cascade="true" />
 		<put-attribute name="paramPopupWidth" value="850"
 			cascade="true" />
 		<put-attribute name="paramPopupHeight" value="400"
@@ -137,7 +137,7 @@
 
 	<definition name="ScheduledAndOccasionalHours" extends="embeddedReportWrapper">
 		<put-attribute name="reportParameters"
-			value="/WEB-INF/jsp/report/VolunteerHours.jsp" cascade="true" />
+			value="/WEB-INF/jsp/report/VoterHours.jsp" cascade="true" />
 		<put-attribute name="paramPopupWidth" value="850"
 			cascade="true" />
 		<put-attribute name="paramPopupHeight" value="400"
@@ -263,9 +263,9 @@
 			value="/WEB-INF/jsp/report/paramWidgets/zipCodeSelector.jsp" />
 	</definition>
 
-	<definition name="widgetVolunteerSelector" extends="widgetWrapper">
+	<definition name="widgetVoterSelector" extends="widgetWrapper">
 		<put-attribute name="widget"
-			value="/WEB-INF/jsp/report/paramWidgets/volunteerSelector.jsp" />
+			value="/WEB-INF/jsp/report/paramWidgets/voterSelector.jsp" />
 	</definition>
 
 	<definition name="widgetVAVSTitleSelector" extends="widgetWrapper">

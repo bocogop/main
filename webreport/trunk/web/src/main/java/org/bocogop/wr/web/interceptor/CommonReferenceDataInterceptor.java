@@ -11,16 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bocogop.shared.model.AppUser;
+import org.bocogop.shared.util.SecurityUtil;
+import org.bocogop.wr.model.lookup.TemplateType;
+import org.bocogop.wr.web.AbstractAppController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
-
-import org.bocogop.shared.model.AppUser;
-import org.bocogop.shared.util.SecurityUtil;
-import org.bocogop.wr.model.lookup.TemplateType;
-import org.bocogop.wr.web.AbstractAppController;
 
 @Component
 public class CommonReferenceDataInterceptor extends AbstractReferenceDataInterceptor {
@@ -48,7 +47,7 @@ public class CommonReferenceDataInterceptor extends AbstractReferenceDataInterce
 		ZoneId timeZone = null;
 		if (appUser != null) {
 			model.put("currentUser", appUser);
-			model.put("multipleStationsAssigned", appUser.getFacilities().size() > 1);
+			model.put("multipleStationsAssigned", appUser.getPrecincts().size() > 1);
 			timeZone = appUser.getTimeZone();
 
 			if (timeZone != null) {

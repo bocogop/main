@@ -7,14 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bocogop.shared.util.context.SessionUtil;
+import org.bocogop.wr.web.conversion.interceptor.AbstractInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import org.bocogop.shared.util.context.SessionUtil;
-import org.bocogop.wr.web.conversion.interceptor.AbstractInterceptor;
 
 /**
  * Interceptor which logs the most recent GET request URL in the session. This

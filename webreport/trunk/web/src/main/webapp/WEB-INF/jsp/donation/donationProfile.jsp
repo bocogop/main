@@ -46,7 +46,7 @@
 <script type="text/javascript" src="${jsHome}/donationProfile.js"></script>
 
 <style>
-div.individualDisplayFields, div.volunteerDisplayFields, div.organizationDisplayFields
+div.individualDisplayFields, div.voterDisplayFields, div.organizationDisplayFields
 	{
 	min-width: 680px;
 	max-width: 850px;
@@ -63,12 +63,12 @@ div.donationInputFields {
 <form:form method="post" action="${home}/donationSummarySubmit.htm"
 	id="donationProfileForm">
 	<c:if
-		test="${not command.donor.volunteer.persistent && (command.donor.donorType.id == '1' || command.donor.donorType.id == '6')}">
+		test="${not command.donor.voter.persistent && (command.donor.donorType.id == '1' || command.donor.donorType.id == '6')}">
 		<%@ include file="inc_individual.jsp"%>
 	</c:if>
 
-	<c:if test="${command.donor.volunteer.persistent}">
-		<%@ include file="inc_volunteer.jsp"%>
+	<c:if test="${command.donor.voter.persistent}">
+		<%@ include file="inc_voter.jsp"%>
 	</c:if>
 
 	<c:if
@@ -88,10 +88,10 @@ div.donationInputFields {
 
 			<table width="100%">
 				<tr>
-					<td class='appFieldLabel' nowrap>Facility:</td>
+					<td class='appFieldLabel' nowrap>Precinct:</td>
 					<td></td>
 					<td><c:out
-							value="${command.donationSummary.facility.displayName}" /></td>
+							value="${command.donationSummary.precinct.displayName}" /></td>
 					<td class='appFieldLabel' nowrap><label
 						for='donationId'>Donation ID:</label></td>
 					<td style="text-align: left"></td>
@@ -518,8 +518,8 @@ div.donationInputFields {
 					Print</a>
 			</c:if>
 			<sec:authorize
-				access="hasAnyAuthority('${PERMISSION_VOLUNTEER_READ},
-					${PERMISSION_VOLUNTEER_CREATE}')">
+				access="hasAnyAuthority('${PERMISSION_VOTER_READ},
+					${PERMISSION_VOTER_EDIT}')">
 				<a class="buttonAnchor" id="submitFormButton" href="#">Post</a>
 			</sec:authorize>
 		</c:if>

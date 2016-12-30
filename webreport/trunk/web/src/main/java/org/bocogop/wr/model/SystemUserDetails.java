@@ -3,9 +3,8 @@ package org.bocogop.wr.model;
 import java.time.ZoneId;
 import java.util.Collection;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import org.bocogop.shared.model.CoreUserDetails;
+import org.springframework.security.core.GrantedAuthority;
 
 public class SystemUserDetails implements CoreUserDetails {
 	private static final long serialVersionUID = 5238699990913115861L;
@@ -54,11 +53,6 @@ public class SystemUserDetails implements CoreUserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthoritiesAtFacility(long facilityId) {
-		return getAuthorities();
 	}
 
 	@Override

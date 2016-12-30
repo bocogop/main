@@ -94,13 +94,13 @@ function initDonorSearchPopup(options) {
 				{
 					"targets" : 1,
 					"data" : function(row, type, val, meta) {
-						return row.donor.volunteer? 'Yes' : 'No'
+						return row.donor.voter? 'Yes' : 'No'
 					}
 				},
 				{
 					"targets" : 2,
 					"data" : function(row, type, val, meta) {
-						var theText = escapeHTML((row.orgFacility) ? row.orgFacility.displayName : '')
+						var theText = escapeHTML((row.orgPrecinct) ? row.orgPrecinct.displayName : '')
 						if (type === 'filter') {
 							return abbreviate(theText, 25)
 						}
@@ -125,7 +125,7 @@ function initDonorSearchPopup(options) {
 				{
 					"targets" : 5,
 					"data" : function(row, type, val, meta) {
-						var theText = escapeHTML(row.facility ? row.facility.displayName : '')
+						var theText = escapeHTML(row.precinct ? row.precinct.displayName : '')
 						if (type === 'filter') {
 							return abbreviate(theText, 25)
 						}
@@ -215,7 +215,7 @@ function initDonorSearchPopup(options) {
 	}
 	
 	if (mode == 'add' || mode == 'addEDonation') {
-		$("input[name=donorSearchFacility" + uid + "][value=" + 'A' + "]").prop("checked", true)
+		$("input[name=donorSearchPrecinct" + uid + "][value=" + 'A' + "]").prop("checked", true)
 			
 		$(".donorAddLink" + uid).click(function() {
 				var isOrg = $("#donorSearchTypeOrganization" + uid).is(":checked") 
@@ -265,7 +265,7 @@ function submitDonorSearchForm(uid) {
 	                  "donorSearchZip" + uid,
 	                  "donorSearchEmail" + uid,
 	                  "donorSearchPhone" + uid,
-	                  "donorSearchFacility" + uid])) {
+	                  "donorSearchPrecinct" + uid])) {
 		displayAttentionDialog('Please enter at least one piece of search criteria.')
 		return
 	}
@@ -275,8 +275,8 @@ function submitDonorSearchForm(uid) {
 	var theType = $(
 			"input[type='radio'][name='donorSearchType" + uid
 					+ "']:checked").val()
-	var theFacility = $(
-			"input[type='radio'][name='donorSearchFacility" + uid
+	var thePrecinct = $(
+			"input[type='radio'][name='donorSearchPrecinct" + uid
 					+ "']:checked").val()
 				
 	$.ajax({
@@ -293,7 +293,7 @@ function submitDonorSearchForm(uid) {
 			zip : $("#donorSearchZip" + uid).val(),
 			email : $("#donorSearchEmail" + uid).val(),
 			phone : $("#donorSearchPhone" + uid).val(),
-			facilityScope : theFacility,
+			precinctScope : thePrecinct,
 		},
 		error : commonAjaxErrorHandler,
 		success : function(results) {

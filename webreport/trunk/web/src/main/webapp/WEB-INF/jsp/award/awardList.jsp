@@ -112,36 +112,36 @@
 	}
 
 	function printSelected() {
-		var volunteerIds = new Array()
+		var voterIds = new Array()
 		$("input[name='" + getDisplayPrefix() + "VolAwardSelect']:checked").each(function(index, item) {
-			volunteerIds.push($(item).val())
+			voterIds.push($(item).val())
 		})
-		if (volunteerIds.length == 0) {
+		if (voterIds.length == 0) {
 			displayAttentionDialog('Please select at least one label to print.')
 			return		}
 		
-		if (volunteerIds.length > 990) {
+		if (voterIds.length > 990) {
 			displayAttentionDialog('Please limit number of labels to print to 990 (33 pages worth of labels) at a time.')
 			return
 		}
 		
-		printIfNeeded(volunteerIds)
+		printIfNeeded(voterIds)
 	}
 	
-	function printIfNeeded(volunteerIds) {
+	function printIfNeeded(voterIds) {
 		var reportsToPrint = []
 				
 		var commonParams = {
 			Username : "<c:out value="${username}" />",
 			UserPasswordHash : "<c:out value="${userPasswordHash}" />",
-			FacilityContextId : "<c:out value="${siteContextId}" />"
+			PrecinctContextId : "<c:out value="${siteContextId}" />"
 		}
 		
 		reportsToPrint.push({
-				reportName : 'Volunteer_AddressLabels_By_Vol_Id',
+				reportName : 'Voter_AddressLabels_By_Vol_Id',
 				reportOutputFormat : 'PDF',
 				reportParams : $.extend({}, commonParams, {
-					VolId : volunteerIds
+					VolId : voterIds
 				})
 			})
 		
@@ -197,9 +197,9 @@
 		if ($('#awardDate').val() == '')
 			errors.push("Award Date is required.")
 			
-		var checkedVols = $('.awardVolunteerId:checked')
+		var checkedVols = $('.awardVoterId:checked')
 		if (checkedVols.length == 0 )
-			errors.push("Please select at least 1 volunteer to receive award.")
+			errors.push("Please select at least 1 voter to receive award.")
 		
 		if (errors.length > 0) {
 			displayAttentionDialog("Please correct the following errors: <ul><li>"
@@ -207,10 +207,10 @@
 			return false
 		}
 		
-		msg = '<span  class="redText">WARNING: This process will code the awards for the selected volunteers.' +
+		msg = '<span  class="redText">WARNING: This process will code the awards for the selected voters.' +
 			' The process may take some time to post the awards and is an irreversible process.  Do you want to continue?</span>'
 		confirmDialog(msg, function() {
-			$('.awardVolunteerId:checked').each(function(index, item) {
+			$('.awardVoterId:checked').each(function(index, item) {
 				$("#awardForVolId" + $(item).attr('value')).prop('disabled', false)
 			})
 			
@@ -318,14 +318,14 @@ div.awardSearchFields {
 									</c:if>
 									<th class="select-filter">Award Name</th>
 									<th class="select-filter">Type</th>
-									<th>Volunteer Name</th>
+									<th>Voter Name</th>
 									<th class="select-filter">Status</th>
 									<th>Last Award Date</th>
 									<th>Last Award Hours</th>
 									<th>Svc Yrs</th>
 									<th>Total Hours</th>
 									<th>Avg Hours/Mo</th>
-									<th>Date Last Volunteered</th>
+									<th>Date Last Votered</th>
 									<th align="center" nowrap class="tableHeaderLinkWrapper">Labels<br>
 										<a class="tableHeaderLink"
 										href="javascript:setAllCheckboxes(true)">All</a> / <a
@@ -337,25 +337,25 @@ div.awardSearchFields {
 								<c:forEach var="awardResult"
 									items="${awardCommand.eligibleAwardResults}">
 									<c:set var="vol"
-										value="${awardCommand.volunteersMap[awardResult.volunteerId]}" />
+										value="${awardCommand.votersMap[awardResult.voterId]}" />
 
 									<tr>
 										<c:set var="checked" value="checked='checked'" />
-										<c:if test="${vol.status.volunteerInactiveOrTerminated}">
+										<c:if test="${vol.status.voterInactiveOrTerminated}">
 											<c:set var="checked" value="" />
 										</c:if>
 										<c:if test="${not FORM_READ_ONLY}">
-											<td><input type="checkbox" class="awardVolunteerId"
-												name="awardVolunteerIds" value="${awardResult.volunteerId}"
+											<td><input type="checkbox" class="awardVoterId"
+												name="awardVoterIds" value="${awardResult.voterId}"
 												${checked} /> <input type="hidden"
-												id="awardForVolId${awardResult.volunteerId}"
-												name="awardForVolId${awardResult.volunteerId}"
+												id="awardForVolId${awardResult.voterId}"
+												name="awardForVolId${awardResult.voterId}"
 												value="${awardResult.deservedAwardId}" disabled="disabled" /></td>
 										</c:if>
 										<td><c:out value="${awardResult.deservedAwardName}" /></td>
 										<td><c:out value="${awardResult.awardType}" /></td>
 										<td align="left"><a
-											href="${home}/volunteerEdit.htm?id=${awardResult.volunteerId}"><c:out
+											href="${home}/voterEdit.htm?id=${awardResult.voterId}"><c:out
 													value="${vol.displayName}" /></a></td>
 										<td><c:out value="${awardResult.volStatus}" /></td>
 										<td align="right"><wr:localDate
@@ -369,7 +369,7 @@ div.awardSearchFields {
 												value="${awardResult.actualHours}" /></td>
 										<td align="right"><c:out value="${awardResult.aveHours}" /></td>
 										<td align="right"><wr:localDate
-												date="${awardResult.dateLastVolunteered}"
+												date="${awardResult.dateLastVotered}"
 												pattern="${TWO_DIGIT_DATE_ONLY}" /></td>
 										<td align="center"><input type="checkbox"
 											name="potentialVolAwardSelect" value="${vol.id}" /></td>
@@ -444,14 +444,14 @@ div.awardSearchFields {
 								<tr>
 									<th class="select-filter">Award Name</th>
 									<th class="select-filter">Type</th>
-									<th>Volunteer Name</th>
+									<th>Voter Name</th>
 									<th class="select-filter">Status</th>
 									<th>Last Award Date</th>
 									<th>Last Award Hours</th>
 									<th>Svc Yrs</th>
 									<th>Total Hours</th>
 									<th>Avg Hours/Mo</th>
-									<th>Date Last Volunteered</th>
+									<th>Date Last Votered</th>
 									<th align="center" nowrap class="tableHeaderLinkWrapper">Labels<br>
 										<a class="tableHeaderLink"
 										href="javascript:setAllCheckboxes(true)">All</a> / <a
@@ -463,13 +463,13 @@ div.awardSearchFields {
 								<c:forEach var="awardResult"
 									items="${awardCommand.processedAwardResults}">
 									<c:set var="vol"
-										value="${awardCommand.volunteersMap[awardResult.volunteerId]}" />
+										value="${awardCommand.votersMap[awardResult.voterId]}" />
 
 									<tr>
 										<td><c:out value="${awardResult.currentAwardName}" /></td>
 										<td><c:out value="${awardResult.awardType}" /></td>
 										<td align="left"><a
-											href="${home}/volunteerEdit.htm?id=${awardResult.volunteerId}"><c:out
+											href="${home}/voterEdit.htm?id=${awardResult.voterId}"><c:out
 													value="${vol.displayName}" /></a></td>
 										<td><c:out value="${awardResult.volStatus}" /></td>
 										<td align="right"><wr:localDate
@@ -483,7 +483,7 @@ div.awardSearchFields {
 												value="${awardResult.actualHours}" /></td>
 										<td align="right"><c:out value="${awardResult.aveHours}" /></td>
 										<td align="right"><wr:localDate
-												date="${awardResult.dateLastVolunteered}"
+												date="${awardResult.dateLastVotered}"
 												pattern="${TWO_DIGIT_DATE_ONLY}" /></td>
 										<td align="center"><input type="checkbox"
 											name="processedVolAwardSelect" value="${vol.id}" /></td>

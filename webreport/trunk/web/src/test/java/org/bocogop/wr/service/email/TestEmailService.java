@@ -5,15 +5,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bocogop.wr.AbstractWebAppTest;
+import org.bocogop.wr.service.email.impl.TestEmailServiceImpl;
+import org.bocogop.wr.util.DateUtil;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
-
-import org.bocogop.wr.AbstractWebAppTest;
-import org.bocogop.wr.service.email.impl.TestEmailServiceImpl;
-import org.bocogop.wr.util.DateUtil;
 
 @Component
 @Ignore

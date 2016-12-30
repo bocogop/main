@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.bocogop.wr.util.CompressionUtil;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -15,8 +16,6 @@ import org.hibernate.internal.util.SerializationHelper;
 import org.hibernate.type.SerializationException;
 import org.hibernate.type.descriptor.java.PrimitiveByteArrayTypeDescriptor;
 import org.hibernate.usertype.UserType;
-
-import org.bocogop.wr.util.CompressionUtil;
 
 /**
  * @author barrycon

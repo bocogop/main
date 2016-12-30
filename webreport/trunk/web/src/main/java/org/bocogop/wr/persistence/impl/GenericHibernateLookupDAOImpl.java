@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.bocogop.shared.model.lookup.AbstractLookup;
 import org.bocogop.shared.model.lookup.LookupType;
 import org.bocogop.wr.persistence.dao.CustomizableLookupDAO;
 import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class GenericHibernateLookupDAOImpl<T extends AbstractLookup<T, ?>> extends GenericHibernateSortedDAOImpl<T>
 		implements CustomizableLookupDAO<T> {

@@ -5,21 +5,21 @@ function initDonorEdit(printReceipt, printMemo, printThankYou, printFormat) {
 		toggleDisplays($(this).val());
 	})
 
-	var theSelect = $('select', "#facilityFilter")
-	if ($("option[value = '" + workingFacility + "']", theSelect).length > 0) {
-		theSelect.val(workingFacility)
+	var theSelect = $('select', "#precinctFilter")
+	if ($("option[value = '" + workingPrecinct + "']", theSelect).length > 0) {
+		theSelect.val(workingPrecinct)
 		theSelect.change()
 	}
 	toggleDisplays(commandDonorType);
 }
 
-function linkVolunteerSelectedCallback(volunteerObj) {
+function linkVoterSelectedCallback(voterObj) {
 	$.ajax({
-		url : ajaxHomePath + '/donor/donorLinkVolunteer',
+		url : ajaxHomePath + '/donor/donorLinkVoter',
 		dataType : 'json',
 		data : {
 			donorId : donorId,
-			volunteerId : volunteerObj.id
+			voterId : voterObj.id
 		},
 		error : commonAjaxErrorHandler,
 		success : function(response) {
@@ -29,8 +29,8 @@ function linkVolunteerSelectedCallback(volunteerObj) {
 }
 
 
-function unlinkVolunteer() {
-	confirmDialog('Are you sure you want to remove the volunteer link from this donor?', function() {
+function unlinkVoter() {
+	confirmDialog('Are you sure you want to remove the voter link from this donor?', function() {
 		$("#desiredIndividualType").val('individual');
 		toggleDisplays('1')
 		$("#cancelFormButton").attr('href', 'donorEdit.htm?id=' + donorId)
@@ -59,7 +59,7 @@ function linkOrganizationAddSelectedCallback() {
 
 function toggleDisplays(selectdDonorTypeVal) {
 	$('.individualInputFields').toggle(shouldShowIndividualSection(selectdDonorTypeVal))
-	$('.volunteerDisplayFields').toggle(shouldShowVolunteerSection(selectdDonorTypeVal))
+	$('.voterDisplayFields').toggle(shouldShowVoterSection(selectdDonorTypeVal))
 	$('.organizationDisplayFields').toggle(shouldShowOrgSection(selectdDonorTypeVal))
 	$('.otherTypesDisplayFields').toggle(shouldShowOtherTypesSection(selectdDonorTypeVal))
 	$('#submitButton').toggle(shouldShowIndividualSection(selectdDonorTypeVal))
@@ -71,30 +71,30 @@ function shouldShowIndividualSection(selectdDonorTypeVal) {
 		// selected is individual
 		return selectdDonorTypeVal == '1';
 	} else {
-		// If editing existing record, and the volunteer link had just been
+		// If editing existing record, and the voter link had just been
 		// unlinked, display individual
 		if (donorTypeIsIndividual && $("#desiredIndividualType").val() == 'individual') {
 			return true;
 		} else {
-			// otherwise if neither volunteer nor organization is linked,
+			// otherwise if neither voter nor organization is linked,
 			// display individual
 			return displayIndividual;
 		}
 	}
 }
 
-function shouldShowVolunteerSection(selectdDonorTypeVal) {
+function shouldShowVoterSection(selectdDonorTypeVal) {
 	if (!donorPersistent) {
 		// If creating new record, display just individual data
 		return false;
 	} else {
-		// If editing existing record, and the volunteer link had just been
+		// If editing existing record, and the voter link had just been
 		// unlinked, display individual
 		if (donorTypeIsIndividual && $("#desiredIndividualType").val() == 'individual') {
 			return false;
 		} else {
-			// otherwise if donor type is dinvidual, and volunteer is linked, display volunteer
-			return displayVolunteer
+			// otherwise if donor type is dinvidual, and voter is linked, display voter
+			return displayVoter
 		}
 	}
 }
@@ -113,12 +113,12 @@ function shouldShowSubmitButton(selectdDonorTypeVal) {
 		// individual type
 		return selectdDonorTypeVal == '1'
 	} else {
-		// If editing existing record, and the volunteer link had just been
+		// If editing existing record, and the voter link had just been
 		// unlinked, display submit button
 		if ($("#desiredIndividualType").val() == 'individual') {
 			return true;
 		} else {
-			// otherwise if neither linked to volunteer nor organizationk,
+			// otherwise if neither linked to voter nor organizationk,
 			// allow to submit
 			return displayIndividual
 		}
@@ -183,7 +183,7 @@ function finalSubmit() {
 function validate() {
 	var errors = new Array();
 
-	// if donor type is individual and donor is not of type volunteer then last
+	// if donor type is individual and donor is not of type voter then last
 	// name is required
 	if ((!donorPersistent && $("input[name='donor.donorType']:checked").val() == '1')
 			|| (donorPersistent && donorTypeIsIndividual)) {
@@ -213,7 +213,7 @@ function validate() {
 function mergeDonorSelectedCallback(donorObj, fullObj) {
 	var hasDonor = (typeof donorObj !== 'undefined')
 	var changedDonorId = hasDonor? donorObj.id : ''
-	var targetDonorFacility = (fullObj.facility !== null)? fullObj.facility.displayName: ''
+	var targetDonorPrecinct = (fullObj.precinct !== null)? fullObj.precinct.displayName: ''
 	var targetDonorDonationDate= fullObj.donationDate !== null? fullObj.donationDate : ''
 	if(fromMergeDonor.name == donorObj.displayName) {
 		displayAttentionDialog("The target donor cannot be the same as the source donor")
@@ -232,7 +232,7 @@ function mergeDonorSelectedCallback(donorObj, fullObj) {
 			+ '			<tr><td align="right">Type:</td><td nowrap>' + fromMergeDonor.type + '</td></tr>'
 			+ '			<tr><td align="right">Name:</td><td class="textWrap" style="max-width: 240px">' + fromMergeDonor.name + '</td></tr>'
 			+ '			<tr><td align="right">Contact Info:</td><td>'+getContactInfoForDonorMerge(fromMergeDonor.phone,fromMergeDonor.email, fromMergeDonor.mutillineAddress) + '</td></tr>'
-			+ '			<tr><td align="right" nowrap>Last Donation Facility:</td><td>' + fromMergeDonor.lastDonationFacilty + '</td></tr>'
+			+ '			<tr><td align="right" nowrap>Last Donation Precinct:</td><td>' + fromMergeDonor.lastDonationFacilty + '</td></tr>'
 			+ '			<tr><td align="right" nowrap>Last Donation Date:</td><td>' + fromMergeDonor.lastDonationDate + '</td></tr>'
 			+ '		</table>'
 			+ '	</td><td>'
@@ -240,7 +240,7 @@ function mergeDonorSelectedCallback(donorObj, fullObj) {
 			+ '			<tr><td align="right">Type:</td><td nowrap>' + donorObj.donorType.donorType + '</td></tr>'
 			+ '			<tr><td align="right">Name:</td><td class="textWrap" style="max-width: 240px">' + donorObj.displayName + '</td></tr>'
 			+ '			<tr><td align="right">Contact Info:</td><td>'+getContactInfoForDonorMerge(donorObj.phone,donorObj.email, donorObj.addressMultilineDisplay) + '</td></tr>'
-			+ '			<tr><td align="right" nowrap>Last Donation Facility:</td><td>' + targetDonorFacility + '</td></tr>'
+			+ '			<tr><td align="right" nowrap>Last Donation Precinct:</td><td>' + targetDonorPrecinct + '</td></tr>'
 			+ '			<tr><td align="right" nowrap>Last Donation Date:</td><td>' + targetDonorDonationDate + '</td></tr>'
 			+ '		</table>'
 			+ '	</td></tr>'
@@ -298,7 +298,7 @@ function mergeDonorToAnoymous() {
 		+ '			<tr><td align="right">Type:</td><td nowrap>' + fromMergeDonor.type + '</td></tr>'
 		+ '			<tr><td align="right">Name:</td><td nowrap>' + fromMergeDonor.name + '</td></tr>'
 		+ '			<tr><td align="right">Contact Info:</td><td>'+getContactInfoForDonorMerge(fromMergeDonor.phone,fromMergeDonor.email, fromMergeDonor.mutillineAddress) + '</td></tr>'
-		+ '			<tr><td align="right" nowrap>Last Donation Facility:</td><td>' + fromMergeDonor.lastDonationFacilty + '</td></tr>'
+		+ '			<tr><td align="right" nowrap>Last Donation Precinct:</td><td>' + fromMergeDonor.lastDonationFacilty + '</td></tr>'
 		+ '			<tr><td align="right" nowrap>Last Donation Date:</td><td>' + fromMergeDonor.lastDonationDate + '</td></tr>'
 		+ '		</table>'
 		+ '	</td><td>'
@@ -306,7 +306,7 @@ function mergeDonorToAnoymous() {
 		+ '			<tr><td align="right">Type:</td><td nowrap> Anonymous</td></tr>'
 		+ '			<tr><td align="right">Name:</td><td nowrap></td></tr>'
 		+ '			<tr><td align="right">Contact Info:</td><td></td></tr>'
-		+ '			<tr><td align="right" nowrap>Last Donation Facility:</td><td ></td></tr>'
+		+ '			<tr><td align="right" nowrap>Last Donation Precinct:</td><td ></td></tr>'
 		+ '			<tr><td align="right" nowrap>Last Donation Date:</td><td></td></tr>'
 		+ '		</table>'
 		+ '	</td></tr>'

@@ -4,16 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bocogop.shared.model.core.IdentifiedPersistent;
+import org.bocogop.shared.model.core.Persistent;
+import org.bocogop.shared.persistence.AppDAO;
+import org.bocogop.shared.util.TypeUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.format.support.FormattingConversionService;
-
-import org.bocogop.shared.model.core.IdentifiedPersistent;
-import org.bocogop.shared.model.core.Persistent;
-import org.bocogop.shared.persistence.AppDAO;
-import org.bocogop.shared.util.TypeUtil;
 
 public abstract class AbstractStringToPersistentConverter<T extends Persistent>
 		implements GenericConverter, InitializingBean {

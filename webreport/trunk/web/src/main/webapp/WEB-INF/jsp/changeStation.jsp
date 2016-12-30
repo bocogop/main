@@ -4,7 +4,7 @@
 	function submitForm(evt) {
 		if ($('#stationCode').val() == -99 || $('#stationCode').val() == "" ||
 				$('#stationCode').val() == null) {
-			displayAttentionDialog('Please select a facility before proceeding!');
+			displayAttentionDialog('Please select a precinct before proceeding!');
 			return
 		}
 		
@@ -39,7 +39,7 @@
 	
 	<table cellpadding="8" align="center">
 		<tr valign="top">
-			<td align="right" class="appFieldLabel">Last Visited Facility:</td>
+			<td align="right" class="appFieldLabel">Last Visited Precinct:</td>
 			<td>
 				<table cellpadding="3">
 					<tr>
@@ -63,12 +63,12 @@
 		</tr>
 		<tr valign="top">
 			<td align="right" class="appFieldLabel"><label
-				for='selectedStation'>Select Facility: <span
+				for='selectedStation'>Select Precinct: <span
 					class='requdIndicator'>*</span>
 			</label></td>
 
 			<td><input id='selectedStation' size="50"
-				title="Enter some text here to filter the Facility List"><br />
+				title="Enter some text here to filter the Precinct List"><br />
 				<i>(Enter some text to filter the list below)</i> <label
 				for='hiddenCancelSubmit' style='display: none;'>(Enter some
 					text to filter the list below)</label><input type='text'
@@ -77,22 +77,22 @@
 		</tr>
 		<tr align="center">
 			<td><label for='stationCode' style='display: none;'>Select
-					a facility</label></td>
+					a precinct</label></td>
 			<td align='left'><select name="stationCode" id="stationCode"
 				size='10'
 				ondblclick='document.getElementById("stationSettingsForm").submit();'>
-					<option value="-99">Select a Facility..</option>
-					<c:forEach items="${facilityList}" var="facility">
+					<option value="-99">Select a Precinct..</option>
+					<c:forEach items="${precinctList}" var="precinct">
 						<c:choose>
 							<c:when
-								test="${not empty currentStationId and fn:trim(currentStationId) == fn:trim(facility.id)}">
-								<option value="${facility.id}" selected="selected">
-									<c:out value="${facility.displayName}" />
+								test="${not empty currentStationId and fn:trim(currentStationId) == fn:trim(precinct.id)}">
+								<option value="${precinct.id}" selected="selected">
+									<c:out value="${precinct.displayName}" />
 								</option>
 							</c:when>
 							<c:otherwise>
-								<option value="${facility.id}">
-									<c:out value="${facility.displayName}" />
+								<option value="${precinct.id}">
+									<c:out value="${precinct.displayName}" />
 								</option>
 							</c:otherwise>
 						</c:choose>

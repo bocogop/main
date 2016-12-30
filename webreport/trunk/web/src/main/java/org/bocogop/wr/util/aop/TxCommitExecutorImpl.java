@@ -5,13 +5,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bocogop.wr.util.aop.TxCommitRunnable.TxCommitRunnableType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-
-import org.bocogop.wr.util.aop.TxCommitRunnable.TxCommitRunnableType;
 
 @Component
 public class TxCommitExecutorImpl extends TransactionSynchronizationAdapter implements TxCommitExecutor {

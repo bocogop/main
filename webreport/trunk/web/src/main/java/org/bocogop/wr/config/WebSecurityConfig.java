@@ -1,19 +1,15 @@
 package org.bocogop.wr.config;
 
-import java.io.IOException;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import org.bocogop.shared.config.AbstractSecurityConfig;
+import org.bocogop.shared.config.HybridDaoAuthenticationProvider;
+import org.bocogop.shared.model.Permission;
+import org.bocogop.shared.service.AppUserDetailsService;
+import org.bocogop.shared.web.DatabaseDrivenPreAuthenticationFilter;
+import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
+import org.bocogop.wr.util.context.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,32 +29,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.authentication.AuthenticationManagerBeanDefinitionParser.NullAuthenticationProvider;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
-
-import org.bocogop.shared.config.AbstractSecurityConfig;
-import org.bocogop.shared.config.HybridDaoAuthenticationProvider;
-import org.bocogop.shared.model.Permission;
-import org.bocogop.shared.model.lookup.sds.VAFacility;
-import org.bocogop.shared.service.AppUserDetailsService;
-import org.bocogop.shared.web.DatabaseDrivenPreAuthenticationFilter;
-import org.bocogop.wr.model.facility.Facility;
-import org.bocogop.wr.persistence.dao.facility.FacilityDAO;
-import org.bocogop.wr.util.context.SessionUtil;
 
 @Configuration
 @EnableWebSecurity
@@ -90,20 +72,14 @@ public class WebSecurityConfig extends AbstractSecurityConfig {
 	@Value("${port.https}")
 	private int httpsPort;
 
-	@Value("${authProvider.siteMinder.active}")
-	private boolean siteMinderActive;
-	@Value("${authProvider.activeDirectory.active}")
-	private boolean ldapAuthActive;
 	@Value("${authProvider.localDevAuth.active}")
 	private boolean devPreAuthActive;
-	@Value("${authProvider.siteMinder.principalHeaderPropertyName}")
-	private String siteMinderPrincipalHeaderProperty;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	private FacilityDAO facilityDAO;
+	private PrecinctDAO precinctDAO;
 	@Autowired
 	private SessionUtil sessionUtil;
 	@Autowired
@@ -124,7 +100,6 @@ public class WebSecurityConfig extends AbstractSecurityConfig {
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.eraseCredentials(true) //
 				.authenticationProvider(preAuthenticatedProvider()) //
-				.authenticationProvider(siteMinderPreAuthenticatedProvider()) //
 				.authenticationProvider(hybridAuthenticationProvider());
 	}
 
@@ -143,11 +118,6 @@ public class WebSecurityConfig extends AbstractSecurityConfig {
 
 		if (devPreAuthActive)
 			http.addFilterBefore(devPreAuthFilter(), RequestHeaderAuthenticationFilter.class);
-		if (siteMinderActive)
-			http.addFilterBefore(siteMinderAuthFilter(), RequestHeaderAuthenticationFilter.class);
-
-		// add patch filter regardless
-		http.addFilterAfter(new AuthoritiesPatchFilter(), DatabaseDrivenPreAuthenticationFilter.class); //
 
 		http.logout().invalidateHttpSession(true).deleteCookies(cookieSessionId); //
 
@@ -227,22 +197,7 @@ public class WebSecurityConfig extends AbstractSecurityConfig {
 	}
 
 	@Bean
-	public AuthenticationProvider siteMinderPreAuthenticatedProvider() {
-		if (!siteMinderActive)
-			return new NullAuthenticationProvider();
-
-		PreAuthenticatedAuthenticationProvider p = new PreAuthenticatedAuthenticationProvider();
-		UserDetailsByNameServiceWrapper<PreAuthenticatedAuthenticationToken> uds = new UserDetailsByNameServiceWrapper<>(
-				appUserDetailsService);
-		p.setPreAuthenticatedUserDetailsService(uds);
-		return p;
-	}
-
-	@Bean
 	public AuthenticationProvider hybridAuthenticationProvider() {
-		if (!ldapAuthActive)
-			return new NullAuthenticationProvider();
-
 		HybridDaoAuthenticationProvider p = new HybridDaoAuthenticationProvider(passwordEncoder);
 		return p;
 	}
@@ -254,70 +209,6 @@ public class WebSecurityConfig extends AbstractSecurityConfig {
 		DatabaseDrivenPreAuthenticationFilter f = new DatabaseDrivenPreAuthenticationFilter(MEDIA_DIR);
 		f.setAuthenticationManager(authenticationManagerBean());
 		return f;
-	}
-
-	@Bean
-	public RequestHeaderAuthenticationFilter siteMinderAuthFilter() throws Exception {
-		RequestHeaderAuthenticationFilter f = new RequestHeaderAuthenticationFilter() {
-			@Override
-			public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-					throws IOException, ServletException {
-				HttpServletRequest r = (HttpServletRequest) request;
-				if (log.isDebugEnabled()) {
-					Enumeration<String> headerNames = r.getHeaderNames();
-					while (headerNames.hasMoreElements()) {
-						String headerName = (String) headerNames.nextElement();
-						log.debug("header: {}: {}", headerName, r.getHeader(headerName));
-					}
-				}
-
-				if (URI_LOGIN.equals(r.getServletPath())) {
-					chain.doFilter(request, response);
-					return;
-				}
-				
-				super.doFilter(request, response, chain);
-			}
-		};
-		f.setAuthenticationManager(authenticationManagerBean());
-		f.setAuthenticationFailureHandler(myAuthenticationFailureHandler());
-		f.setPrincipalRequestHeader(siteMinderPrincipalHeaderProperty);
-		f.setExceptionIfHeaderMissing(siteMinderActive && !ldapAuthActive && !devPreAuthActive);
-		return f;
-	}
-
-	/*
-	 * Attempted band-aid for strange issue where user was set in session but no
-	 * authorities were set in the user - CPB
-	 */
-	private final class AuthoritiesPatchFilter implements Filter {
-		@Override
-		public void init(FilterConfig filterConfig) throws ServletException {
-		}
-
-		@Override
-		public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-				throws IOException, ServletException {
-			if (request instanceof HttpServletRequest) {
-
-				HttpServletRequest hsr = (HttpServletRequest) request;
-				Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-				HttpSession session = hsr.getSession();
-				VAFacility f = org.bocogop.shared.util.context.SessionUtil.getSiteContext(session);
-
-				if (currentUser != null && f != null && currentUser.isAuthenticated()
-						&& currentUser.getAuthorities().isEmpty()) {
-					Facility facility = f == null ? null : facilityDAO.findByVAFacility(f.getId());
-					sessionUtil.setFacilityContext(f, facility, session);
-				}
-			}
-
-			chain.doFilter(request, response);
-		}
-
-		@Override
-		public void destroy() {
-		}
 	}
 
 }

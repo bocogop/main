@@ -126,7 +126,7 @@
 		</Logger>
 		
 		
-		<Logger name="org.bocogop.wr.service.impl.VolunteerServiceImpl" level="debug"
+		<Logger name="org.bocogop.wr.service.impl.VoterServiceImpl" level="debug"
 			additivity="false">
 			<AppenderRef ref="appender.app" />
 		</Logger>

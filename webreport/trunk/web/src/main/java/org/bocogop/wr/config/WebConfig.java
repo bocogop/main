@@ -4,6 +4,12 @@ import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
 
+import org.bocogop.shared.config.AbstractConfig;
+import org.bocogop.wr.web.ajax.AjaxRequestHandler.CustomJsonObjectMapper;
+import org.bocogop.wr.web.conversion.Jsr310DateTimeFormatAnnotationFormatterFactory;
+import org.bocogop.wr.web.interceptor.BreadcrumbsInterceptor;
+import org.bocogop.wr.web.interceptor.CommonReferenceDataInterceptor;
+import org.bocogop.wr.web.interceptor.StoreLastGetRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,19 +25,10 @@ import org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
-import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.bocogop.shared.config.AbstractConfig;
-import org.bocogop.wr.web.ajax.AjaxRequestHandler.CustomJsonObjectMapper;
-import org.bocogop.wr.web.conversion.Jsr310DateTimeFormatAnnotationFormatterFactory;
-import org.bocogop.wr.web.interceptor.BreadcrumbsInterceptor;
-import org.bocogop.wr.web.interceptor.CommonReferenceDataInterceptor;
-import org.bocogop.wr.web.interceptor.StoreLastGetRequestInterceptor;
 
 @Configuration
 @ComponentScan({ "org.bocogop.shared.web", "org.bocogop.wr.web" })

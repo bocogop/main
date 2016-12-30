@@ -36,10 +36,10 @@
 					"className" : "dt-body-right",
 					"render" : function(row, type, val, meta) {
 						if (type === 'display') {
-							return 'Active: ' + val.volunteerActiveCount
-								+ '<br>Total: ' + val.volunteerTotalCount
+							return 'Active: ' + val.voterActiveCount
+								+ '<br>Total: ' + val.voterTotalCount
 						}
-						return val.volunteerActiveCount
+						return val.voterActiveCount
 					}
 				}, {
 					"className" : "dt-body-right",
@@ -55,7 +55,7 @@
 								+ '/switch.png" border="0" hspace="5" align="center"/></a>'
 						} else {
 							actions = '<a href="javascript:inactivateBenefitingServiceTemplate('
-									+ val.id + ', ' + val.volunteerActiveCount + ')"><img alt="Inactivate Service Template" src="' + imgHomePath
+									+ val.id + ', ' + val.voterActiveCount + ')"><img alt="Inactivate Service Template" src="' + imgHomePath
 									+ '/switch.png" border="0" hspace="5" align="center"/></a>'
 						}
 						return (type === 'display' ? actions + ' ': '') + (val.inactive ? 'Inactive' : 'Active')
@@ -68,9 +68,9 @@
 							+ val.id + ')"><img alt="Edit Service Template" src="'+ imgHomePath
 							+ '/edit-small.gif" border="0" hspace="5" align="center"/></a>'
 							
-						if (val.volunteerTotalCount == 0 && val.occasionalHoursCount == 0) {
+						if (val.voterTotalCount == 0 && val.occasionalHoursCount == 0) {
 							actions += '<a href="javascript:deleteBenefitingServiceTemplate('
-								+ val.id + ', ' + val.volunteerTotalCount + ')"><img alt="Delete Service Template" src="' + imgHomePath
+								+ val.id + ', ' + val.voterTotalCount + ')"><img alt="Delete Service Template" src="' + imgHomePath
 								+ '/permanently_delete_18x18.png" border="0" hspace="5" align="center"/></a>'
 						}
 					
@@ -130,7 +130,7 @@
 			error : commonAjaxErrorHandler,
 			success : function(response) {
 				benefitingServiceTemplateList = response.benefitingServiceTemplates
-				countsMapForRoles = response.volunteerCountsForRoles
+				countsMapForRoles = response.voterCountsForRoles
 				occasionalHoursMapForRoles = response.occasionalHoursForRoles
 				
 				var rArray = new Array()
@@ -149,8 +149,8 @@
 					}
 					
 					rArray[rArray.length] = $.extend({}, benefitingServiceTemplate, {
-						volunteerActiveCount : finalActiveCount,
-						volunteerTotalCount : finalTotalCount,
+						voterActiveCount : finalActiveCount,
+						voterTotalCount : finalTotalCount,
 						occasionalHoursCount : finalOccasionalHoursCount
 					})
 				}
@@ -245,7 +245,7 @@
 			+ fullObj.name + ($.trim(fullObj.subdivision) == '' ? '' : ' - ' + fullObj.subdivision) + '"?'
 		if (volCount > 0)
 			msg += ' <span class="redText" style="font-weight:bold"><p>There are ' + volCount
-				+ ' associated volunteer assignment(s) that will also be inactivated and will not be'
+				+ ' associated voter assignment(s) that will also be inactivated and will not be'
 				+ ' automatically reactivated if this template is reactivated!</span>'
 	    confirmDialog(msg,
                 function() {
@@ -307,7 +307,7 @@
 		var msg = 'Are you sure you want to inactivate "' + fullObj.name + '"?'
 		if (volCount > 0)
 			msg += ' <span class="redText" style="font-weight:bold"><p>There are ' + volCount
-				+ ' associated volunteer assignment(s) that will also be inactivated and will not be'
+				+ ' associated voter assignment(s) that will also be inactivated and will not be'
 				+ ' automatically reactivated if this role template is reactivated!</span>'
 		
 	    confirmDialog(msg,
@@ -370,7 +370,7 @@ table#benefitingServiceTemplateList td {
 				<th>Role</th>
 				<th>Role Type</th>
 				<th class="select-filter">Games Service</th>
-				<th>Volunteers</th>
+				<th>Voters</th>
 				<th>Occasional Hours</th>
 				<th class="select-filter">Status</th>
 				<th>Action</th>

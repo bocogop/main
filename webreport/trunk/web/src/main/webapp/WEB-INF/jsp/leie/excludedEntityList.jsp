@@ -29,7 +29,7 @@
 					<thead>
 						<tr id="excludedEntitySearchFilterRow">
 							<td class="noborder">Filters:</td>
-							<td class="noborder" title="Filter by Facility"></td>
+							<td class="noborder" title="Filter by Precinct"></td>
 							<td class="noborder"></td>
 							<td class="noborder" title="Filter by SSA"></td>
 							<td class="noborder" title="Filter by 42USC code"></td>
@@ -41,8 +41,8 @@
 							<td class="noborder"></td>
 						</tr>
 						<tr>
-							<th>Volunteer</th>
-							<th class="select-filter">Facility</th>
+							<th>Voter</th>
+							<th class="select-filter">Precinct</th>
 							<th>LEIE Name</th>
 							<th class="select-filter">SSA</th>
 							<th class="select-filter">42 USC Code</th>
@@ -56,12 +56,12 @@
 					</thead>
 
 					<c:forEach var="eeMatch" items="${excludedEntities}">
-						<c:set var="v" value="${eeMatch.volunteer}" />
+						<c:set var="v" value="${eeMatch.voter}" />
 						<c:set var="ee" value="${eeMatch.excludedEntity}" />
 
 						<tr>
-							<td><a class="appLink" href="${home}/volunteerEdit.htm?id=${v.id}"><c:out value="${v.displayName}" /></a></td>
-							<td><c:out value="${v.primaryFacility.displayName}" /></td>
+							<td><a class="appLink" href="${home}/voterEdit.htm?id=${v.id}"><c:out value="${v.displayName}" /></a></td>
+							<td><c:out value="${v.primaryPrecinct.displayName}" /></td>
 							<td><c:out value="${ee.displayName}" /></td>
 							<td><c:out value="${ee.exclusionType.ssa}" /></td>
 							<td><c:out value="${ee.exclusionType.code42Usc}" /></td>
@@ -94,9 +94,9 @@
 	<table align="center" cellpadding="10">
 		<tr>
 			<td>No excluded entities were found <c:if test="${canViewAll}">
-					at any facility.
+					at any precinct.
 				 </c:if> <c:if test="${not canViewAll}">
-				for facility "<c:out value="${facilityContextName}" />".
+				for precinct "<c:out value="${precinctContextName}" />".
 				</c:if>
 			</td>
 		</tr>

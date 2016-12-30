@@ -2,9 +2,8 @@ package org.bocogop.wr.service.email;
 
 import java.util.Map;
 
-import org.springframework.util.concurrent.ListenableFuture;
-
 import org.bocogop.wr.service.email.EmailType.InvalidParametersException;
+import org.springframework.util.concurrent.ListenableFuture;
 
 public interface EmailService {
 

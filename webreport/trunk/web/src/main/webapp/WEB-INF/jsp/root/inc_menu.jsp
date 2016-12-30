@@ -6,21 +6,21 @@
 	href="${pkgHome}/accessible-dropdown-menu/accessible-dropdown-menu.css"
 	rel="Stylesheet" />
 
-<jsp:include page="/WEB-INF/jsp/shared/inc_volunteerSearchPopup.jsp">
-	<jsp:param name="uniqueVolunteerSearchPopupId" value="menuSearch" />
+<jsp:include page="/WEB-INF/jsp/shared/inc_voterSearchPopup.jsp">
+	<jsp:param name="uniqueVoterSearchPopupId" value="menuSearch" />
 	<jsp:param name="resultCallbackMethod"
-		value="menuVolunteerSelectedCallback" />
+		value="menuVoterSelectedCallback" />
 </jsp:include>
 
-<jsp:include page="/WEB-INF/jsp/shared/inc_volunteerSearchPopup.jsp">
-	<jsp:param name="uniqueVolunteerSearchPopupId" value="menuAdd" />
+<jsp:include page="/WEB-INF/jsp/shared/inc_voterSearchPopup.jsp">
+	<jsp:param name="uniqueVoterSearchPopupId" value="menuAdd" />
 	<jsp:param name="mode" value="add" />
 	<jsp:param name="resultCallbackMethod"
-		value="menuVolunteerSelectedCallback" />
+		value="menuVoterSelectedCallback" />
 	<jsp:param name="disclaimerText"
-		value="Please search for an existing volunteer before adding a new one:" />
+		value="Please search for an existing voter before adding a new one:" />
 	<jsp:param name="addButtonCallbackMethod"
-		value="menuVolunteerAddSelectedCallback" />
+		value="menuVoterAddSelectedCallback" />
 </jsp:include>
 
 <jsp:include page="/WEB-INF/jsp/shared/inc_organizationSearchPopup.jsp">
@@ -60,43 +60,43 @@
 				shortcut="Shift+h" class="hotkeyed" role="menuitem">Home</a></li>
 
 			<sec:authorize
-				access="hasAnyAuthority('${PERMISSION_VOLUNTEER_READ},
-				${PERMISSION_VOLUNTEER_CREATE}, ${PERMISSION_TIME_READ}, ${PERMISSION_TIME_CREATE},
+				access="hasAnyAuthority('${PERMISSION_VOTER_READ},
+				${PERMISSION_VOTER_EDIT}, ${PERMISSION_TIME_READ}, ${PERMISSION_TIME_CREATE},
 				${PERMISSION_MEALTICKET_READ}, ${PERMISSION_MEALTICKET_CREATE}')">
 				<li role="menuitem" aria-haspopup="true"><a
-					id="menuVolunteerLink" href="#menuVolunteer" title="Volunteer"
-					shortcut="Shift+v" class="hotkeyed" role="menuitem">Volunteers</a>
-					<ul id="menuVolunteer" role="menu" style="width: 200px">
+					id="menuVoterLink" href="#menuVoter" title="Voter"
+					shortcut="Shift+v" class="hotkeyed" role="menuitem">Voters</a>
+					<ul id="menuVoter" role="menu" style="width: 200px">
 
-						<c:if test="${not facilityContextIsCentralOffice}">
+						<c:if test="${not precinctContextIsCentralOffice}">
 							<sec:authorize
-								access="hasAuthority('${PERMISSION_VOLUNTEER_CREATE}')">
+								access="hasAuthority('${PERMISSION_VOTER_EDIT}')">
 								<li role="menuitem"><a
-									href="javascript:popupVolunteerSearch('menuAdd')"
-									title="Add New Volunteer" shortcut="cv"
-									class="sequencehotkeyed" role="menuitem">Add New Volunteer</a></li>
+									href="javascript:popupVoterSearch('menuAdd')"
+									title="Add New Voter" shortcut="cv"
+									class="sequencehotkeyed" role="menuitem">Add New Voter</a></li>
 							</sec:authorize>
 							<sec:authorize
-								access="hasAuthority('${PERMISSION_VOLUNTEER_READ}')">
+								access="hasAuthority('${PERMISSION_VOTER_READ}')">
 								<li role="menuitem"><a
-									href="javascript:popupVolunteerSearch('menuSearch')"
-									title="Existing Volunteer
+									href="javascript:popupVoterSearch('menuSearch')"
+									title="Existing Voter
 										Records" shortcut="sv"
-									class="sequencehotkeyed" role="menuitem">Existing Volunteer
+									class="sequencehotkeyed" role="menuitem">Existing Voter
 										Records</a></li>
 							</sec:authorize>
 						</c:if>
 
 						<sec:authorize
-							access="hasAuthority('${PERMISSION_VOLUNTEER_READ}')">
+							access="hasAuthority('${PERMISSION_VOTER_READ}')">
 							<li role="menuitem"><a
-								href="${home}/volunteerDemographics.htm"
-								title="Volunteer Demographics" shortcut="vdg"
-								class="sequencehotkeyed" role="menuitem">Volunteer
+								href="${home}/voterDemographics.htm"
+								title="Voter Demographics" shortcut="vdg"
+								class="sequencehotkeyed" role="menuitem">Voter
 									Demographics</a></li>
 						</sec:authorize>
 
-						<c:if test="${not facilityContextIsCentralOffice}">
+						<c:if test="${not precinctContextIsCentralOffice}">
 							<sec:authorize
 								access="hasAnyAuthority('${PERMISSION_TIME_READ}, ${PERMISSION_TIME_CREATE}')">
 								<li><a href="${home}/timeEntry.htm"
@@ -111,7 +111,7 @@
 								access="hasAnyAuthority('${PERMISSION_MEALTICKET_READ},
 									${PERMISSION_MEALTICKET_CREATE}')">
 								<c:if
-									test="${not empty facilityContextNumMeals and facilityContextNumMeals > 0}">
+									test="${not empty precinctContextNumMeals and precinctContextNumMeals > 0}">
 									<li role="menuitem"><a href="${home}/mealTicketList.htm"
 										title="Daily Meal Tickets" shortcut="lmt"
 										class="sequencehotkeyed" role="menuitem">Daily Meal
@@ -119,7 +119,7 @@
 								</c:if>
 							</sec:authorize>
 							<sec:authorize
-								access="hasAuthority('${PERMISSION_VOLUNTEER_READ}')">
+								access="hasAuthority('${PERMISSION_VOTER_READ}')">
 								<li role="menuitem"><a href="${home}/award.htm"
 									title="Awards" shortcut="awd" class="sequencehotkeyed"
 									role="menuitem">Awards</a></li>
@@ -128,7 +128,7 @@
 					</ul></li>
 			</sec:authorize>
 
-			<c:if test="${not facilityContextIsCentralOffice}">
+			<c:if test="${not precinctContextIsCentralOffice}">
 				<sec:authorize
 					access="hasAnyAuthority('${PERMISSION_DONATION_READ},
 					${PERMISSION_DONATION_CREATE}, ${PERMISSION_EDONATION_MANAGE}')">
@@ -212,10 +212,10 @@
 				<ul id="appMenuReports" role="menu" style="width: 170px">
 
 					<li role="menuitem" aria-haspopup="true"><a
-						href="#menuReportsVolunteers" title="Volunteers" shortcut="ar"
-						class="sequencehotkeyed" role="menuitem">Volunteers</a>
+						href="#menuReportsVoters" title="Voters" shortcut="ar"
+						class="sequencehotkeyed" role="menuitem">Voters</a>
 
-						<ul id="volunteerReportsList" role="menu">
+						<ul id="voterReportsList" role="menu">
 							<sec:authorize
 								access="hasAuthority('${PERMISSION_RUN_MEAL_TICKET_REPORT}')">
 								<li role="menuitem"><a
@@ -225,7 +225,7 @@
 											key="reports.mtf.displayName" /></a></li>
 							</sec:authorize>
 							<sec:authorize
-								access="hasAuthority('${PERMISSION_RUN_NEW_VOLUNTEERS}')">
+								access="hasAuthority('${PERMISSION_RUN_NEW_VOTERS}')">
 								<li role="menuitem"><a
 									href="${home}/displayReportParameters.htm?reportCode=nvr"
 									title="<fmt:message key="reports.nvr.displayName" />"
@@ -241,7 +241,7 @@
 										Entities</a></li>
 							</sec:authorize>
 							<sec:authorize
-								access="hasAnyAuthority('${PERMISSION_RUN_VOLUNTEERS_BY_SERVICE}')">
+								access="hasAnyAuthority('${PERMISSION_RUN_VOTERS_BY_SERVICE}')">
 								<li role="menuitem"><a
 									href="${home}/displayReportParameters.htm?reportCode=vba"
 									title="<fmt:message key="reports.vba.displayName" />"
@@ -249,7 +249,7 @@
 											key="reports.vba.displayName" /></a></li>
 							</sec:authorize>
 							<sec:authorize
-								access="hasAnyAuthority('${PERMISSION_RUN_VOLUNTEERS_BY_ORG}')">
+								access="hasAnyAuthority('${PERMISSION_RUN_VOTERS_BY_ORG}')">
 								<li role="menuitem"><a
 									href="${home}/displayReportParameters.htm?reportCode=vbo"
 									title="<fmt:message key="reports.vbo.displayName" />"
@@ -266,7 +266,7 @@
 							</sec:authorize>
 
 							<sec:authorize
-								access="hasAnyAuthority('${PERMISSION_RUN_VOLUNTEER_ALPHA}')">
+								access="hasAnyAuthority('${PERMISSION_RUN_VOTER_ALPHA}')">
 								<li role="menuitem"><a
 									href="${home}/displayReportParameters.htm?reportCode=vde"
 									title="<fmt:message key="reports.vde.displayName" />"
@@ -286,7 +286,7 @@
 									href="${home}/letterTemplateEdit.htm"
 									title="Manage Letter Templates" shortcut="elt"
 									class="sequencehotkeyed" role="menuitem">Manage <c:if
-											test="${facilityContextIsCentralOffice}">Default</c:if>
+											test="${precinctContextIsCentralOffice}">Default</c:if>
 										Letter Templates
 								</a></li>
 							</sec:authorize>
@@ -316,9 +316,9 @@
 
 								<ul id="addressLabelReportsList" role="menu">
 
-									<%-- Volunteer Address Labels --%>
+									<%-- Voter Address Labels --%>
 									<sec:authorize
-										access="hasAuthority('${PERMISSION_RUN_VOLUNTEER_ADDRESS_LABELS}')">
+										access="hasAuthority('${PERMISSION_RUN_VOTER_ADDRESS_LABELS}')">
 										<li role="menuitem"><a
 											href="${home}/displayReportParameters.htm?reportCode=val"
 											title="<fmt:message key="reports.val.displayName" />"
@@ -416,10 +416,10 @@
 				class="hotkeyed" role="menuitem">Maintenance</a>
 				<ul id="menuAdministration" role="menu" style="width: 240px">
 					<sec:authorize
-						access="hasAnyAuthority('${PERMISSION_FACILITY_CREATE}, ${PERMISSION_FACILITY_EDIT_ALL}, ${PERMISSION_FACILITY_EDIT_CURRENT}')">
-						<li role="menuitem"><a href="${home}/facilityEdit.htm"
-							title="Manage Facilities" shortcut="mf" class="sequencehotkeyed"
-							role="menuitem">Manage Facilities</a></li>
+						access="hasAnyAuthority('${PERMISSION_PRECINCT_CREATE}, ${PERMISSION_PRECINCT_EDIT_ALL}, ${PERMISSION_PRECINCT_EDIT_CURRENT}')">
+						<li role="menuitem"><a href="${home}/precinctEdit.htm"
+							title="Manage Precincts" shortcut="mf" class="sequencehotkeyed"
+							role="menuitem">Manage Precincts</a></li>
 					</sec:authorize>
 					<sec:authorize
 						access="hasAnyAuthority('${PERMISSION_ORG_CODE_NATIONAL_READ}, 
@@ -464,8 +464,8 @@
 											${PERMISSION_REQUIREMENTS_GLOBAL_MANAGE}')">
 
 						<li><a href="${home}/manageRequirements.htm"
-							title="Manage Volunteer Requirements" shortcut="mr"
-							class="sequencehotkeyed" role="menuitem">Manage Volunteer
+							title="Manage Voter Requirements" shortcut="mr"
+							class="sequencehotkeyed" role="menuitem">Manage Voter
 								Requirements</a></li>
 					</sec:authorize>
 

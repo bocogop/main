@@ -2,8 +2,8 @@
 
 <script type="text/javascript" src="${jsHome}/mealTicketList.js"></script>
 
-<jsp:include page="/WEB-INF/jsp/shared/inc_volunteerSearchPopup.jsp">
-	<jsp:param name="uniqueVolunteerSearchPopupId" value="addMealTicket" />
+<jsp:include page="/WEB-INF/jsp/shared/inc_voterSearchPopup.jsp">
+	<jsp:param name="uniqueVoterSearchPopupId" value="addMealTicket" />
 	<jsp:param name="resultCallbackMethod" value="addMealTicketForVolCallback" />
 </jsp:include>
 
@@ -31,24 +31,24 @@ table.dataTable thead th.tableHeaderLinkWrapper {
 		
 				<table>
 					<tr>
-						<td class='appFieldLabel' nowrap>Volunteer Last Name:</td>
-						<td><input type="text" id="volunteerLastNameInput" size="15"
+						<td class='appFieldLabel' nowrap>Voter Last Name:</td>
+						<td><input type="text" id="voterLastNameInput" size="15"
 							maxLength="30" /></td>
 						<td class='appFieldLabel' nowrap>First Name:</td>
-						<td><input type="text" id="volunteerFirstNameInput" size="15"
+						<td><input type="text" id="voterFirstNameInput" size="15"
 							maxLength="30" /></td>
-						<td><a id="addVolunteerButton" class="buttonAnchor"
-							href="javascript:addVolunteerMealTicket()">Search</a></td>	
+						<td><a id="addVoterButton" class="buttonAnchor"
+							href="javascript:addVoterMealTicket()">Search</a></td>	
 					</tr>
 					<tr>
-						<td class='appFieldLabel' nowrap>Occasional Volunteer Last Name:</td>
+						<td class='appFieldLabel' nowrap>Occasional Voter Last Name:</td>
 						<td><input type="text" id="occasionalLastNameInput" size="15"
 							maxLength="30" /></td>
 						<td class='appFieldLabel' nowrap>First Name:</td>
 						<td><input type="text" id="occasionalFirstNameInput" size="15"
 							maxLength="30" /></td>
 						<td><a id="addOccasionalVolButton" class="buttonAnchor"
-							href="javascript:addOccasionalVolunteer()">Add</a></td>	
+							href="javascript:addOccasionalVoter()">Add</a></td>	
 					</tr>
 				</table>		
 		</fieldset>
@@ -87,8 +87,8 @@ table.dataTable thead th.tableHeaderLinkWrapper {
 								class="tableHeaderLink"
 								href="javascript:setAllCheckboxes(false)">None</a>
 						</th>
-						<th>Volunteer Name</th>
-						<th>Occasional Volunteer</th>
+						<th>Voter Name</th>
+						<th>Occasional Voter</th>
 						<th>Meal Ticket ID</th>
 						<th class="select-filter">Printed</th>
 						<th class="select-filter">Reprinted</th>
@@ -102,8 +102,8 @@ table.dataTable thead th.tableHeaderLinkWrapper {
 						<tr>
 							<td><input type="checkbox" name="mealTicketSelect" value="${mt.id}" />
 							</td>
-							<td><c:out value="${mt.volunteer.displayName}"/></td>
-							<td><c:if test="${empty mt.volunteer}"><c:out value="${mt.displayName}"/></c:if></td>
+							<td><c:out value="${mt.voter.displayName}"/></td>
+							<td><c:if test="${empty mt.voter}"><c:out value="${mt.displayName}"/></c:if></td>
 							<td><c:out value="${mt.id}"/></td>
 							<td><wr:zonedDateTime value="${mt.lastPrintedDate}" zoneId="${userTimeZone}"/></td>
 							<td><c:if test="${mt.reprinted}">Yes</c:if> 

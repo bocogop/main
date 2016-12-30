@@ -1,11 +1,11 @@
 $(function() {
-	buildVolunteerDataComparePopup()
+	buildVoterDataComparePopup()
 	buildNotificationsTable()
 	refreshNotifications()
 })
 
-function buildVolunteerDataComparePopup() {
-	$("#volunteerDataChangeCompareDiv").dialog({
+function buildVoterDataComparePopup() {
+	$("#voterDataChangeCompareDiv").dialog({
 		autoOpen : false,
 		modal : true,
 		width : 500,
@@ -19,14 +19,14 @@ function buildVolunteerDataComparePopup() {
 		}
 	})
 
-	$("#volunteerDataChangeCompareDiv").show()
+	$("#voterDataChangeCompareDiv").show()
 }
 
-function compareVolunteerDataChanges(volId, fromVer, toVer) {
+function compareVoterDataChanges(volId, fromVer, toVer) {
 	$.ajax({
-			url : ajaxHomePath + "/volunteer/history",
+			url : ajaxHomePath + "/voter/history",
 			data : {
-				volunteerId : volId,
+				voterId : volId,
 				versions : [fromVer, toVer]
 			},
 			type : "POST",
@@ -36,7 +36,7 @@ function compareVolunteerDataChanges(volId, fromVer, toVer) {
 				var fromEntry = r[fromVer]
 				var toEntry = r[toVer]
 				
-				var tbody = $("#volunteerDataChangeTable tbody")
+				var tbody = $("#voterDataChangeTable tbody")
 				tbody.empty()
 				
 				var fields = {
@@ -88,7 +88,7 @@ function compareVolunteerDataChanges(volId, fromVer, toVer) {
 					}
 				})
 				
-				$("#volunteerDataChangeCompareDiv").dialog('open')
+				$("#voterDataChangeCompareDiv").dialog('open')
 			}
 		})
 }
@@ -128,9 +128,9 @@ function buildNotificationsTable() {
 						
 						s += '<div style="display:inline-block">'
 						// s += '<ul class="notificationRefList">'
-						if (full.referenceVolunteer) {
-							s += 'Volunteer: <a class="appLink" href="' + homePath + '/volunteerEdit.htm?id='
-								+ full.referenceVolunteer.id + '">' + escapeHTML(full.referenceVolunteer.displayName) + '</a><br>'
+						if (full.referenceVoter) {
+							s += 'Voter: <a class="appLink" href="' + homePath + '/voterEdit.htm?id='
+								+ full.referenceVoter.id + '">' + escapeHTML(full.referenceVoter.displayName) + '</a><br>'
 						}
 						// s += '</ul>'
 						s += '</div>'
@@ -140,12 +140,12 @@ function buildNotificationsTable() {
 				}
 				, {
 					"render" : function(data, type, full, meta) {
-						var theText = escapeHTML((full.originatingFacility) ? full.originatingFacility.displayName : '')
+						var theText = escapeHTML((full.originatingPrecinct) ? full.originatingPrecinct.displayName : '')
 						if (type === 'filter') {
 							return abbreviate(theText, 25)
 						}
 						
-						return full.originatingFacility ? full.originatingFacility.displayName : ''
+						return full.originatingPrecinct ? full.originatingPrecinct.displayName : ''
 					},
 					"visible" : isNationalAdmin
 				}
@@ -164,23 +164,23 @@ function buildNotificationsTable() {
 					"render" : function(data, type, full, meta) {
 						var options = ''
 							
-						var volReq = full['referenceVolunteerRequirement']
+						var volReq = full['referenceVoterRequirement']
 						if (volReq) {
-							options += '<li><a href="javascript:showVolunteerRequirementPopup(' + volReq.id + ')">Edit Volunteer Requirement</a></li>'
+							options += '<li><a href="javascript:showVoterRequirementPopup(' + volReq.id + ')">Edit Voter Requirement</a></li>'
 						}
 							
 						$.each(["link", "link2", "link3"], function(index, item) {
 							if (!full[item]) return
 							
 							if (full[item].code == 'A' && full.referenceAuditFromVersion != null && full.referenceAuditToVersion != null) {
-								if (full.referenceVolunteer) {
-									options += '<li><a href="javascript:compareVolunteerDataChanges(' + full.referenceVolunteer.id + ', '
+								if (full.referenceVoter) {
+									options += '<li><a href="javascript:compareVoterDataChanges(' + full.referenceVoter.id + ', '
 										+ full.referenceAuditFromVersion + ', ' + full.referenceAuditToVersion + ')">View Data Changes</a></li>'
 								} // else { ... for other types of objects - CPB
 							}
 							
-							if (full[item].code == 'V' && full.referenceVolunteer) {
-								options += '<li><a href="javascript:jumpToVolunteer(' + full.referenceVolunteer.id + ')">View Volunteer</a></li>'
+							if (full[item].code == 'V' && full.referenceVoter) {
+								options += '<li><a href="javascript:jumpToVoter(' + full.referenceVoter.id + ')">View Voter</a></li>'
 							}
 							
 							if (full[item].code == 'D') {
@@ -212,10 +212,10 @@ function buildNotificationsTable() {
 			})
 }
 
-var volunteerRequirementMap = {}
+var voterRequirementMap = {}
 
 function refreshNotifications() {
-	volunteerRequirementMap = {}
+	voterRequirementMap = {}
 	
 	$.ajax({
 		url : ajaxHomePath + "/notification",
@@ -233,8 +233,8 @@ function refreshNotifications() {
 			
 			if (hasNotifications) {
 				$.each(r.notifications, function(index, notification) {
-					var refVolReq = notification.referenceVolunteerRequirement
-					if (refVolReq) volunteerRequirementMap[refVolReq.id] = refVolReq
+					var refVolReq = notification.referenceVoterRequirement
+					if (refVolReq) voterRequirementMap[refVolReq.id] = refVolReq
 					
 					var row = table.row.add(notification)
 					
@@ -245,10 +245,10 @@ function refreshNotifications() {
 					var hasChild = false
 					/*
 					childRow += '<ul class="notificationRefList">'
-					if (notification.referenceVolunteer) {
+					if (notification.referenceVoter) {
 						hasChild = true
-						childRow += '<li>Volunteer: <a class="appLink" href="' + homePath + '/volunteerEdit.htm?id='
-							+ notification.referenceVolunteer.id + '">' + escapeHTML(notification.referenceVolunteer.displayName) + '</a></li>'
+						childRow += '<li>Voter: <a class="appLink" href="' + homePath + '/voterEdit.htm?id='
+							+ notification.referenceVoter.id + '">' + escapeHTML(notification.referenceVoter.displayName) + '</a></li>'
 					}
 					childRow += '</ul>'
 					*/

@@ -21,17 +21,17 @@
 		buildRequirementsTable('local')
 		buildRequirementsTable('global')
 		
-		$("#requirementFacilitySelectWrapper").toggle(scope != 'local')
-		$("input[name=requirementFacility][value=" + (scope == 'global' ? "G" : "F")+ "]").prop("checked", true)
+		$("#requirementPrecinctSelectWrapper").toggle(scope != 'local')
+		$("input[name=requirementPrecinct][value=" + (scope == 'global' ? "G" : "F")+ "]").prop("checked", true)
 
 		var scopeListener = function() {
-			scope = $("#requirementFacilityLocal").is(":checked") ? 'local' : 'global'
-			$("#requirementFacilityLocalWrapper").toggle(scope == 'local')
-			$("#requirementFacilityGlobalWrapper").toggle(scope != 'local')
+			scope = $("#requirementPrecinctLocal").is(":checked") ? 'local' : 'global'
+			$("#requirementPrecinctLocalWrapper").toggle(scope == 'local')
+			$("#requirementPrecinctGlobalWrapper").toggle(scope != 'local')
 		}
 		
-		$("#requirementFacilityLocal").click(scopeListener)
-		$("#requirementFacilityGlobal").click(scopeListener)
+		$("#requirementPrecinctLocal").click(scopeListener)
+		$("#requirementPrecinctGlobal").click(scopeListener)
 		scopeListener()
 		
 		refreshRequirementsTable('local')
@@ -56,7 +56,7 @@
 					}
 				}, {
 					"render" : function(row, type, val, meta) {
-						return val.applicationType == '${REQUIREMENT_APPLICATION_TYPE_ALL_VOLUNTEERS}' ? 'All Volunteers' :
+						return val.applicationType == '${REQUIREMENT_APPLICATION_TYPE_ALL_VOTERS}' ? 'All Voters' :
 							val.applicationType == '${REQUIREMENT_APPLICATION_TYPE_ROLE_TYPE}' ? 'Role Type "' + val.roleType.name + '"' :
 							val.applicationType == '${REQUIREMENT_APPLICATION_TYPE_SPECIFIC_ROLES}' ? 'Specific Roles' :
 								'(Unknown)'
@@ -182,7 +182,7 @@
 				var msg = 'Are you sure you want to delete this requirement?'
 				if (volCount > 0)
 					msg += ' <span class="redText" style="font-weight:bold"><p>There are ' + volCount
-						+ ' volunteer(s) associated with this requirement, whose statuses will be permanently lost!</span>'
+						+ ' voter(s) associated with this requirement, whose statuses will be permanently lost!</span>'
 			    confirmDialog(msg,
 		                function() {
 		  					$.ajax({
@@ -223,25 +223,25 @@ table#requirementGlobalList td, table#requirementLocalList td {
 table#requirementGlobalList {
 	min-width: 600px;
 }
-.requirementFacilityGlobalWrapper, .requirementFacilityLocalWrapper {
+.requirementPrecinctGlobalWrapper, .requirementPrecinctLocalWrapper {
 	min-width: 600px;
 }
 </style>
 
-<div id="requirementFacilitySelectWrapper" class="clearCenter">
+<div id="requirementPrecinctSelectWrapper" class="clearCenter">
 		<table>
 			<tr>
-				<td align="right"><label for='requirementFacility'>Facility:</label></td>
-				<td><input type="radio" id="requirementFacilityGlobal"
-					name="requirementFacility" value="G" checked="checked">National <input type="radio"
-					id="requirementFacilityLocal" name="requirementFacility" value="F">
-					<c:out value="${facilityContextName}" /></td>
+				<td align="right"><label for='requirementPrecinct'>Precinct:</label></td>
+				<td><input type="radio" id="requirementPrecinctGlobal"
+					name="requirementPrecinct" value="G" checked="checked">National <input type="radio"
+					id="requirementPrecinctLocal" name="requirementPrecinct" value="F">
+					<c:out value="${precinctContextName}" /></td>
 			</tr>
 		</table>
 	</div>
 
 <p>
-<div id="requirementFacilityGlobalWrapper" class="clearCenter" style="max-width:75%">
+<div id="requirementPrecinctGlobalWrapper" class="clearCenter" style="max-width:75%">
  	<fieldset>
 		<legend>National Requirements</legend>
 	 	<div align="center" style="margin-bottom:15px">
@@ -282,14 +282,14 @@ table#requirementGlobalList {
 	</fieldset>
 </div>
 
-<div id="requirementFacilityLocalWrapper" class="clearCenter" style="max-width:75%">
+<div id="requirementPrecinctLocalWrapper" class="clearCenter" style="max-width:75%">
 <fieldset>
-	<legend>Facility Requirements</legend>
+	<legend>Precinct Requirements</legend>
 	<div align="center" style="margin-bottom:15px"> 
 		<table>
 			<tr>
 				<td><a class="buttonAnchor"
-					href="${home}/requirementCreate.htm?scope=${REQUIREMENT_SCOPE_TYPE_FACILITY}" style="margin-right:60px">Add Requirement</a></td>
+					href="${home}/requirementCreate.htm?scope=${REQUIREMENT_SCOPE_TYPE_PRECINCT}" style="margin-right:60px">Add Requirement</a></td>
 			</tr>
 		</table>
 	</div>
