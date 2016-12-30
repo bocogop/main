@@ -2,8 +2,8 @@ package org.bocogop.wr.persistence;
 
 import java.time.LocalDate;
 
-import org.bocogop.shared.model.lookup.sds.Gender.GenderType;
 import org.bocogop.wr.AbstractTransactionalWebDAOTest;
+import org.bocogop.wr.model.lookup.Gender.GenderType;
 import org.bocogop.wr.model.voter.Voter;
 import org.bocogop.wr.persistence.dao.CustomizableAppDAO;
 import org.bocogop.wr.persistence.dao.voter.VoterDAO;

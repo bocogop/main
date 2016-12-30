@@ -16,7 +16,7 @@ import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.bocogop.shared.model.core.AbstractAuditedPersistent;
+import org.bocogop.wr.model.core.AbstractAuditedPersistent;
 import org.bocogop.wr.model.precinct.Precinct;
 import org.bocogop.wr.model.voter.Voter;
 import org.bocogop.wr.persistence.dao.voter.VoterDAO;

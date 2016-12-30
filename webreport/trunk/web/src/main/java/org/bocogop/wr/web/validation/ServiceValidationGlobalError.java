@@ -1,6 +1,6 @@
 package org.bocogop.wr.web.validation;
 
-import org.bocogop.shared.service.validation.ServiceValidationException;
+import org.bocogop.wr.service.validation.ServiceValidationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 

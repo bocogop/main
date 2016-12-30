@@ -10,8 +10,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.bocogop.shared.model.lookup.sds.Gender;
-import org.bocogop.shared.model.lookup.sds.State;
+import org.bocogop.wr.model.lookup.Gender;
+import org.bocogop.wr.model.lookup.State;
 import org.bocogop.wr.model.voter.Voter.VoterView;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;

@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
-import org.bocogop.shared.util.context.SessionUtil;
+import org.bocogop.wr.util.context.SessionUtil;
 import org.bocogop.wr.web.CommonController;
 import org.bocogop.wr.web.breadcrumbs.Breadcrumbs;
 import org.bocogop.wr.web.breadcrumbs.Breadcrumbs.Breadcrumb;

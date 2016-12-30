@@ -1,7 +1,7 @@
 package org.bocogop.wr.service;
 
-import org.bocogop.shared.service.validation.ServiceValidationException;
 import org.bocogop.wr.model.precinct.Precinct;
+import org.bocogop.wr.service.validation.ServiceValidationException;
 
 public interface PrecinctService {
 

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bocogop.shared.util.context.SessionUtil;
+import org.bocogop.wr.util.context.SessionUtil;
 import org.bocogop.wr.web.conversion.interceptor.AbstractInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

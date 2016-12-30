@@ -20,11 +20,11 @@ import java.util.Map.Entry;
 import javax.persistence.Query;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bocogop.shared.persistence.impl.AbstractAppDAOImpl;
 import org.bocogop.wr.model.voter.VoterDemographics;
 import org.bocogop.wr.persistence.dao.voter.demographics.VolDemoColumn;
 import org.bocogop.wr.persistence.dao.voter.demographics.VolDemoDAO;
 import org.bocogop.wr.persistence.dao.voter.demographics.VolDemoSearchParams;
+import org.bocogop.wr.persistence.impl.AbstractAppDAOImpl;
 import org.bocogop.wr.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bocogop.shared.model.AppUser;
-import org.bocogop.shared.model.Permission.PermissionType;
-import org.bocogop.shared.persistence.impl.AbstractAppDAOImpl;
 import org.bocogop.wr.config.WebSecurityConfig;
+import org.bocogop.wr.model.AppUser;
+import org.bocogop.wr.model.Permission.PermissionType;
 import org.bocogop.wr.model.lookup.TemplateType;
 import org.bocogop.wr.model.precinct.Precinct;
 import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
+import org.bocogop.wr.persistence.impl.AbstractAppDAOImpl;
 import org.bocogop.wr.service.VelocityService;
 import org.bocogop.wr.web.breadcrumbs.Breadcrumb;
 import org.slf4j.Logger;

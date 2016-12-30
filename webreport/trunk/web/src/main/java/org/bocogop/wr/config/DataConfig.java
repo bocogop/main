@@ -1,6 +1,5 @@
 package org.bocogop.wr.config;
 
-import org.bocogop.shared.config.AbstractDataConfig;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration

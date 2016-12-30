@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.bocogop.shared.persistence.AppDAO;
+import org.bocogop.wr.persistence.AppDAO;
 import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;
 
 public interface CustomizableAppDAO<T> extends AppDAO<T> {

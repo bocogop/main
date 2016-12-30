@@ -15,8 +15,8 @@ import java.util.TreeSet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.bocogop.shared.service.validation.ServiceValidationException;
 import org.bocogop.wr.model.precinct.Precinct;
+import org.bocogop.wr.service.validation.ServiceValidationException;
 import org.bocogop.wr.web.AbstractAppController;
 import org.bocogop.wr.web.breadcrumbs.Breadcrumb;
 import org.bocogop.wr.web.validation.ValidationException;

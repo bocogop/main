@@ -8,7 +8,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
-import org.bocogop.shared.model.AppUser;
+import org.bocogop.wr.model.AppUser;
 import org.bocogop.wr.model.AuditLogEntry;
 import org.bocogop.wr.persistence.dao.audit.AuditLogEntryDAO;
 import org.bocogop.wr.persistence.impl.GenericHibernateSortedDAOImpl;

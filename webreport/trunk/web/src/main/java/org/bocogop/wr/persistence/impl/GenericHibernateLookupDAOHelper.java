@@ -8,8 +8,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.bocogop.shared.util.cache.CacheUtil;
 import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;
+import org.bocogop.wr.util.cache.CacheUtil;
 import org.hibernate.jpa.QueryHints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

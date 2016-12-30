@@ -2,7 +2,6 @@ package org.bocogop.wr.config;
 
 import java.io.File;
 
-import org.bocogop.shared.config.AbstractConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

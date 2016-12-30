@@ -14,10 +14,10 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bocogop.shared.model.core.AbstractAuditedVersionedPersistent;
-import org.bocogop.shared.util.StringUtil;
+import org.bocogop.wr.model.core.AbstractAuditedVersionedPersistent;
 import org.bocogop.wr.model.voter.Voter.VoterView;
 import org.bocogop.wr.util.DateUtil;
+import org.bocogop.wr.util.StringUtil;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 

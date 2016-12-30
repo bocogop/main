@@ -2,8 +2,6 @@ package org.bocogop.wr.config;
 
 import javax.management.MBeanServer;
 
-import org.bocogop.shared.config.AbstractConfig;
-import org.bocogop.shared.config.LdapConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableMBeanExport;

@@ -9,8 +9,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
-import org.bocogop.shared.util.cache.CacheUtil;
 import org.bocogop.wr.persistence.queryCustomization.fieldTypes.ModelAssociationFieldType;
+import org.bocogop.wr.util.cache.CacheUtil;
 
 public final class ModelAssociationFieldInfoRegistry {
 

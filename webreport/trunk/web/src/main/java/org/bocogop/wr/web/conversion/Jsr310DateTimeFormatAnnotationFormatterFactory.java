@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
 
-import org.bocogop.shared.util.SecurityUtil;
+import org.bocogop.wr.util.SecurityUtil;
 import org.springframework.format.Parser;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.datetime.standard.TemporalAccessorParser;

@@ -3,8 +3,8 @@ package org.bocogop.wr.persistence.dao;
 import java.util.List;
 import java.util.SortedSet;
 
-import org.bocogop.shared.model.lookup.AbstractLookup;
-import org.bocogop.shared.model.lookup.LookupType;
+import org.bocogop.wr.model.lookup.AbstractLookup;
+import org.bocogop.wr.model.lookup.LookupType;
 import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;
 
 public interface CustomizableLookupDAO<T extends AbstractLookup<T, ?>> extends CustomizableSortedDAO<T> {

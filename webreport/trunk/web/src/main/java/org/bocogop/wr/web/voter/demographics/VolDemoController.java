@@ -15,13 +15,13 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bocogop.shared.model.AppUser;
-import org.bocogop.shared.util.WebUtil;
 import org.bocogop.wr.model.voter.Voter.VoterView;
+import org.bocogop.wr.model.AppUser;
 import org.bocogop.wr.model.voter.VoterDemographics;
 import org.bocogop.wr.persistence.dao.voter.demographics.VolDemoColumn;
 import org.bocogop.wr.persistence.dao.voter.demographics.VolDemoSearchParams;
 import org.bocogop.wr.util.OffsetCollection;
+import org.bocogop.wr.util.WebUtil;
 import org.bocogop.wr.web.AbstractAppController;
 import org.bocogop.wr.web.breadcrumbs.Breadcrumb;
 import org.springframework.stereotype.Controller;

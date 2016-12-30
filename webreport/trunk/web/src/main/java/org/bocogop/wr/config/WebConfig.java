@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
 
-import org.bocogop.shared.config.AbstractConfig;
 import org.bocogop.wr.web.ajax.AjaxRequestHandler.CustomJsonObjectMapper;
 import org.bocogop.wr.web.conversion.Jsr310DateTimeFormatAnnotationFormatterFactory;
 import org.bocogop.wr.web.interceptor.BreadcrumbsInterceptor;

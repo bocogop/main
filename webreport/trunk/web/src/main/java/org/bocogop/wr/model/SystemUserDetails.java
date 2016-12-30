@@ -3,7 +3,6 @@ package org.bocogop.wr.model;
 import java.time.ZoneId;
 import java.util.Collection;
 
-import org.bocogop.shared.model.CoreUserDetails;
 import org.springframework.security.core.GrantedAuthority;
 
 public class SystemUserDetails implements CoreUserDetails {

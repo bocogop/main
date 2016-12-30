@@ -1,8 +1,9 @@
 package org.bocogop.shared.persistence;
 
 import org.bocogop.shared.AbstractTransactionalCoreDAOTest;
-import org.bocogop.shared.model.lookup.sds.Gender;
-import org.bocogop.shared.persistence.lookup.sds.GenderDAO;
+import org.bocogop.wr.model.lookup.Gender;
+import org.bocogop.wr.persistence.AppSortedDAO;
+import org.bocogop.wr.persistence.lookup.GenderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestGenderDAO extends AbstractTransactionalCoreDAOTest<Gender> {

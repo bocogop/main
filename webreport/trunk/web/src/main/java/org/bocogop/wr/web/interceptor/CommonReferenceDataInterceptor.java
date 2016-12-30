@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bocogop.shared.model.AppUser;
-import org.bocogop.shared.util.SecurityUtil;
+import org.bocogop.wr.model.AppUser;
 import org.bocogop.wr.model.lookup.TemplateType;
+import org.bocogop.wr.util.SecurityUtil;
 import org.bocogop.wr.web.AbstractAppController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

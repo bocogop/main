@@ -3,8 +3,8 @@ package org.bocogop.wr.web.validation;
 import java.util.Locale;
 import java.util.Map;
 
-import org.bocogop.shared.service.validation.ServiceValidationException;
-import org.bocogop.shared.util.SecurityUtil;
+import org.bocogop.wr.service.validation.ServiceValidationException;
+import org.bocogop.wr.util.SecurityUtil;
 import org.bocogop.wr.web.ajax.AjaxRequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

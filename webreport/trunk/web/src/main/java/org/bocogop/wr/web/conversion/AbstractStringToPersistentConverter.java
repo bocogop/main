@@ -4,10 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bocogop.shared.model.core.IdentifiedPersistent;
-import org.bocogop.shared.model.core.Persistent;
-import org.bocogop.shared.persistence.AppDAO;
-import org.bocogop.shared.util.TypeUtil;
+import org.bocogop.wr.model.core.IdentifiedPersistent;
+import org.bocogop.wr.model.core.Persistent;
+import org.bocogop.wr.persistence.AppDAO;
+import org.bocogop.wr.util.TypeUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.TypeDescriptor;

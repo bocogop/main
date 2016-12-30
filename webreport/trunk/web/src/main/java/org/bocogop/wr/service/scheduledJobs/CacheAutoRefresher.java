@@ -2,11 +2,11 @@ package org.bocogop.wr.service.scheduledJobs;
 
 import java.util.SortedSet;
 
-import org.bocogop.shared.model.lookup.sds.State;
-import org.bocogop.shared.persistence.lookup.RoleDAO;
-import org.bocogop.shared.persistence.lookup.sds.StateDAO;
+import org.bocogop.wr.model.lookup.State;
 import org.bocogop.wr.model.precinct.Precinct;
 import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
+import org.bocogop.wr.persistence.lookup.RoleDAO;
+import org.bocogop.wr.persistence.lookup.StateDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

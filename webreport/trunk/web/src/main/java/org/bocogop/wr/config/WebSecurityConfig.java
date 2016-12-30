@@ -3,13 +3,11 @@ package org.bocogop.wr.config;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bocogop.shared.config.AbstractSecurityConfig;
-import org.bocogop.shared.config.HybridDaoAuthenticationProvider;
-import org.bocogop.shared.model.Permission;
-import org.bocogop.shared.service.AppUserDetailsService;
-import org.bocogop.shared.web.DatabaseDrivenPreAuthenticationFilter;
+import org.bocogop.wr.model.Permission;
 import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
+import org.bocogop.wr.service.AppUserDetailsService;
 import org.bocogop.wr.util.context.SessionUtil;
+import org.bocogop.wr.web.DatabaseDrivenPreAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

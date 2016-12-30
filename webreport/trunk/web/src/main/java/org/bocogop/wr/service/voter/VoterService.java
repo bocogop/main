@@ -1,7 +1,7 @@
 package org.bocogop.wr.service.voter;
 
-import org.bocogop.shared.service.validation.ServiceValidationException;
 import org.bocogop.wr.model.voter.Voter;
+import org.bocogop.wr.service.validation.ServiceValidationException;
 
 public interface VoterService {
 

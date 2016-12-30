@@ -6,10 +6,10 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.bocogop.shared.model.AppUser;
-import org.bocogop.shared.service.UserAdminCustomizations;
-import org.bocogop.shared.web.AuthenticationCustomizations;
+import org.bocogop.wr.model.AppUser;
 import org.bocogop.wr.model.precinct.Precinct;
+import org.bocogop.wr.service.UserAdminCustomizations;
+import org.bocogop.wr.web.AuthenticationCustomizations;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package org.bocogop.wr.persistence;
 
-import org.bocogop.shared.model.lookup.AbstractLookup;
-import org.bocogop.shared.model.lookup.LookupType;
+import org.bocogop.wr.model.lookup.AbstractLookup;
+import org.bocogop.wr.model.lookup.LookupType;
 import org.bocogop.wr.persistence.dao.CustomizableLookupDAO;
 import org.bocogop.wr.persistence.dao.CustomizableSortedDAO;
 import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;

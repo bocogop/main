@@ -3,7 +3,7 @@ package org.bocogop.wr.persistence.impl;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.bocogop.shared.model.core.IdentifiedPersistent;
+import org.bocogop.wr.model.core.IdentifiedPersistent;
 import org.bocogop.wr.persistence.dao.CustomizableSortedDAO;
 import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;
 import org.slf4j.Logger;

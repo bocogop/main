@@ -13,13 +13,12 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.bocogop.shared.model.core.IdentifiedPersistent;
-import org.bocogop.shared.persistence.impl.AbstractAppDAOImpl;
-import org.bocogop.shared.util.TypeUtil;
-import org.bocogop.shared.util.cache.CacheUtil;
+import org.bocogop.wr.model.core.IdentifiedPersistent;
 import org.bocogop.wr.persistence.dao.CustomizableAppDAO;
 import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;
 import org.bocogop.wr.util.DateUtil;
+import org.bocogop.wr.util.TypeUtil;
+import org.bocogop.wr.util.cache.CacheUtil;
 import org.hibernate.jpa.QueryHints;
 import org.springframework.beans.factory.annotation.Autowired;
 

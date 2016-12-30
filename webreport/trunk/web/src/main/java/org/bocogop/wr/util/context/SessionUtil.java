@@ -2,11 +2,14 @@ package org.bocogop.wr.util.context;
 
 import java.util.concurrent.Callable;
 
-import org.bocogop.shared.util.context.ContextManager;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.bocogop.wr.util.ServletUtil;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SessionUtil extends org.bocogop.shared.util.context.SessionUtil {
+public class SessionUtil {
 
 	protected static ThreadLocal<ContextManager> contextManagerThreadOverride = new ThreadLocal<>();
 
@@ -47,6 +50,15 @@ public class SessionUtil extends org.bocogop.shared.util.context.SessionUtil {
 	}
 
 	// ---------------------------------------- Static helper methods
+
+	/**
+	 * Returns the HttpSession of the current thread-bound ServletRequest (or
+	 * throws an Exception if running outside of a ServletContext).
+	 */
+	public static HttpSession getHttpSession() {
+		HttpServletRequest r = ServletUtil.getThreadBoundServletRequest();
+		return r == null ? null : r.getSession(true);
+	}
 
 	// --------------------------------- Instance methods
 

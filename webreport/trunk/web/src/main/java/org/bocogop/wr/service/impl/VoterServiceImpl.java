@@ -5,13 +5,13 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import java.time.LocalDate;
 
-import org.bocogop.shared.model.CoreUserDetails;
-import org.bocogop.shared.model.Permission;
-import org.bocogop.shared.model.Permission.PermissionType;
-import org.bocogop.shared.service.validation.ServiceValidationException;
-import org.bocogop.shared.util.SecurityUtil;
+import org.bocogop.wr.model.CoreUserDetails;
+import org.bocogop.wr.model.Permission;
+import org.bocogop.wr.model.Permission.PermissionType;
 import org.bocogop.wr.model.voter.Voter;
+import org.bocogop.wr.service.validation.ServiceValidationException;
 import org.bocogop.wr.service.voter.VoterService;
+import org.bocogop.wr.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

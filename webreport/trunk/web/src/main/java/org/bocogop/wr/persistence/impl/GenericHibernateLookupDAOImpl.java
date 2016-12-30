@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.bocogop.shared.model.lookup.AbstractLookup;
-import org.bocogop.shared.model.lookup.LookupType;
+import org.bocogop.wr.model.lookup.AbstractLookup;
+import org.bocogop.wr.model.lookup.LookupType;
 import org.bocogop.wr.persistence.dao.CustomizableLookupDAO;
 import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;
 import org.slf4j.Logger;

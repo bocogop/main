@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bocogop.shared.model.core.AbstractAuditedVersionedPersistent;
+import org.bocogop.wr.model.core.AbstractAuditedVersionedPersistent;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;

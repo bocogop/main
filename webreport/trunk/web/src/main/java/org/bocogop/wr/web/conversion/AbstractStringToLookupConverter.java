@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bocogop.shared.model.lookup.LookupType;
-import org.bocogop.shared.util.TypeUtil;
+import org.bocogop.wr.model.lookup.LookupType;
+import org.bocogop.wr.util.TypeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.GenericConverter;

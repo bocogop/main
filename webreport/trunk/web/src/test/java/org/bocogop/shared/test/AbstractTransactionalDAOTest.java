@@ -2,9 +2,9 @@ package org.bocogop.shared.test;
 
 import java.util.List;
 
-import org.bocogop.shared.model.core.IdentifiedPersistent;
-import org.bocogop.shared.persistence.AppDAO;
-import org.bocogop.shared.util.TypeUtil;
+import org.bocogop.wr.model.core.IdentifiedPersistent;
+import org.bocogop.wr.persistence.AppDAO;
+import org.bocogop.wr.util.TypeUtil;
 import org.junit.Assert;
 import org.junit.Test;
 

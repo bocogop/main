@@ -3,8 +3,8 @@ package org.bocogop.wr.web;
 import javax.persistence.OptimisticLockException;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.bocogop.shared.model.AppUser;
-import org.bocogop.shared.util.SecurityUtil;
+import org.bocogop.wr.model.AppUser;
+import org.bocogop.wr.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.OptimisticLockingFailureException;

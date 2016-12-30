@@ -6,7 +6,8 @@ import java.util.List;
 import javax.persistence.Query;
 
 import org.bocogop.shared.AbstractTransactionalCoreTest;
-import org.bocogop.shared.model.Role;
+import org.bocogop.wr.model.Role;
+import org.bocogop.wr.persistence.SQLServer2012Dialect;
 import org.junit.Test;
 
 public class TestSQLServer2012Dialect extends AbstractTransactionalCoreTest {

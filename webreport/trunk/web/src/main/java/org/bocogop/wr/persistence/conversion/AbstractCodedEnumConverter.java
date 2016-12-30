@@ -4,8 +4,8 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bocogop.shared.persistence.usertype.CodedEnum;
-import org.bocogop.shared.util.TypeUtil;
+import org.bocogop.wr.persistence.usertype.CodedEnum;
+import org.bocogop.wr.util.TypeUtil;
 
 @Converter
 public abstract class AbstractCodedEnumConverter<T extends Enum<?> & CodedEnum>
