@@ -10,7 +10,6 @@ import org.bocogop.wr.persistence.dao.voter.VoterDAO;
 import org.bocogop.wr.persistence.lookup.GenderDAO;
 import org.bocogop.wr.persistence.lookup.PermissionDAO;
 import org.bocogop.wr.persistence.lookup.RoleDAO;
-import org.bocogop.wr.persistence.lookup.StateDAO;
 import org.bocogop.wr.service.email.EmailService;
 import org.bocogop.wr.service.validation.ServiceValidationException;
 import org.bocogop.wr.util.DateUtil;
@@ -37,8 +36,6 @@ public class AbstractServiceImpl {
 	protected PermissionDAO permissionDAO;
 	@Autowired
 	protected RoleDAO roleDAO;
-	@Autowired
-	protected StateDAO stateDAO;
 	@Autowired
 	protected TemplateDAO templateDAO;
 	@Autowired

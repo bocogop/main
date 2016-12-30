@@ -13,7 +13,6 @@ import org.bocogop.wr.persistence.dao.ApplicationParametersDAO;
 import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.wr.persistence.dao.voter.VoterDAO;
 import org.bocogop.wr.persistence.lookup.GenderDAO;
-import org.bocogop.wr.persistence.lookup.StateDAO;
 import org.bocogop.wr.service.PrecinctService;
 import org.bocogop.wr.test.util.TestObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +32,6 @@ public abstract class AbstractTransactionalWebTest extends AbstractTransactional
 	protected AppUserDAO appUserDAO;
 	@Autowired
 	protected GenderDAO genderDAO;
-	@Autowired
-	protected StateDAO stateDAO;
 	@Autowired
 	protected PrecinctDAO precinctDAO;
 	@Autowired

@@ -1,21 +1,16 @@
 package org.bocogop.wr.web.voter;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-
-import org.bocogop.wr.util.DateUtil;
-import org.springframework.format.annotation.DateTimeFormat;
 
 public class VoterSearchParams implements Serializable {
 	private static final long serialVersionUID = 2786795572960254973L;
-	
+
 	// ----------------------------------- Fields
-	
+
+	private String voterId;
 	private String lastName;
 	private String firstName;
-	private String code;
-	@DateTimeFormat(pattern = DateUtil.TWO_DIGIT_DATE_ONLY)
-	private LocalDate dob;
+	private Integer birthYear;
 	private String email;
 
 	// ----------------------------------- Constructors
@@ -23,11 +18,11 @@ public class VoterSearchParams implements Serializable {
 	public VoterSearchParams() {
 	}
 
-	public VoterSearchParams(String lastName, String firstName, String code, LocalDate dob, String email) {
+	public VoterSearchParams(String voterId, String lastName, String firstName, Integer birthYear, String email) {
+		this.voterId = voterId;
 		this.lastName = lastName;
 		this.firstName = firstName;
-		this.code = code;
-		this.dob = dob;
+		this.birthYear = birthYear;
 		this.email = email;
 	}
 
@@ -48,22 +43,6 @@ public class VoterSearchParams implements Serializable {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public LocalDate getDob() {
-		return dob;
-	}
-
-	public void setDob(LocalDate dob) {
-		this.dob = dob;
-	}
 
 	public String getEmail() {
 		return email;
@@ -73,5 +52,20 @@ public class VoterSearchParams implements Serializable {
 		this.email = email;
 	}
 
+	public String getVoterId() {
+		return voterId;
+	}
+
+	public void setVoterId(String voterId) {
+		this.voterId = voterId;
+	}
+
+	public Integer getBirthYear() {
+		return birthYear;
+	}
+
+	public void setBirthYear(Integer birthYear) {
+		this.birthYear = birthYear;
+	}
 
 }

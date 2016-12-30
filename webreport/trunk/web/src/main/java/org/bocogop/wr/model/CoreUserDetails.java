@@ -14,8 +14,6 @@ public interface CoreUserDetails extends UserDetails {
 	 */
 	ZoneId getTimeZone();
 
-	boolean isSoundsEnabled();
-
 	String getDisplayName();
 
 	boolean isNationalAdmin();

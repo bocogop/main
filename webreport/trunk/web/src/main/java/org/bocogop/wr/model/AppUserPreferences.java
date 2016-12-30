@@ -27,7 +27,6 @@ public class AppUserPreferences extends AbstractAuditedVersionedPersistent<AppUs
 	// ------------------------------------- Fields
 
 	private AppUser appUser;
-	private boolean soundsEnabled;
 
 	// ------------------------------------- Business Methods
 
@@ -54,16 +53,6 @@ public class AppUserPreferences extends AbstractAuditedVersionedPersistent<AppUs
 
 	public void setAppUser(AppUser appUser) {
 		this.appUser = appUser;
-	}
-
-	@Column(name = "SOUND_ENABLED_IND")
-	@Type(type = "yes_no")
-	public boolean isSoundsEnabled() {
-		return soundsEnabled;
-	}
-
-	public void setSoundsEnabled(boolean soundsEnabled) {
-		this.soundsEnabled = soundsEnabled;
 	}
 
 }

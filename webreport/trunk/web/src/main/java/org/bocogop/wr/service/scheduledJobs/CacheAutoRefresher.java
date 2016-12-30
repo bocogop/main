@@ -2,11 +2,9 @@ package org.bocogop.wr.service.scheduledJobs;
 
 import java.util.SortedSet;
 
-import org.bocogop.wr.model.lookup.State;
 import org.bocogop.wr.model.precinct.Precinct;
 import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.wr.persistence.lookup.RoleDAO;
-import org.bocogop.wr.persistence.lookup.StateDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -18,20 +16,12 @@ public class CacheAutoRefresher {
 	@Autowired
 	private RoleDAO roleDAO;
 	@Autowired
-	private StateDAO stateDAO;
-	@Autowired
 	private PrecinctDAO precinctDAO;
 
 	@Scheduled(initialDelayString = "${cache.autoRefresh.startupDelayMillis}", //
 			fixedDelayString = "${cache.autoRefresh.fixedDelayMillis}")
 	@Transactional(readOnly = true)
 	public void refresh() {
-		// ensure this is cached via Spring as well as the State objects
-		SortedSet<State> allStates = stateDAO.findAllSorted();
-		for (State s : allStates) {
-			s.getName();
-		}
-
 		SortedSet<Precinct> allPrecincts = precinctDAO.findAllSorted();
 		for (Precinct f : allPrecincts) {
 			// reattach if cached

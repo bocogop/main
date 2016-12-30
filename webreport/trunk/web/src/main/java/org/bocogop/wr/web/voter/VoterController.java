@@ -72,26 +72,27 @@ public class VoterController extends AbstractAppController {
 	// @PreAuthorize("hasAuthority('" + Permission.VOTER_VIEW + "')")
 	@JsonView(VoterView.Search.class)
 	public @ResponseBody SortedSet<Voter> findVoters(@RequestParam(required = false) String firstName,
-			@RequestParam(required = false) String lastName, @RequestParam(required = false) String code,
+			@RequestParam(required = false) String lastName, @RequestParam(required = false) String voterId,
 			@RequestParam(required = false) String email,
-			@DateTimeFormat(pattern = DateUtil.TWO_DIGIT_DATE_ONLY) @RequestParam(required = false) LocalDate dob,
+			@DateTimeFormat(pattern = DateUtil.TWO_DIGIT_DATE_ONLY) @RequestParam(required = false) Integer birthYear,
 			@RequestParam String scope, @RequestParam(required = false) Long precinctId,
 			@RequestParam boolean includeInactive, HttpSession session) {
-		if (StringUtil.allBlank(firstName, lastName, code, email) && dob == null)
+		if (StringUtil.allBlank(voterId, firstName, lastName, email) && birthYear == null)
 			throw new IllegalArgumentException("Please specify at least one piece of search criteria");
 
 		if ("National".equals(scope))
 			precinctId = null;
 
-		SortedSet<Voter> voters = new TreeSet<>(voterDAO.findByCriteria(firstName, null, lastName, false, false, code,
-				dob, null, null, null, null, null, email, precinctId != null ? Arrays.asList(precinctId) : null));
+		SortedSet<Voter> voters = new TreeSet<>(
+				voterDAO.findByCriteria(voterId, firstName, null, lastName, false, false, birthYear, null, null, null,
+						null, null, email, precinctId != null ? Arrays.asList(precinctId) : null));
 
 		// save the search params into a session object
-		VoterSearchParams searchParams = new VoterSearchParams(lastName, firstName, code, dob, email);
+		VoterSearchParams searchParams = new VoterSearchParams(voterId, lastName, firstName, birthYear, email);
 		session.setAttribute(VOTER_SEARCH_PARAMS, searchParams);
 
-		session.setAttribute(SESSION_ATTR_VOTER_SEARCH_MOST_RECENT, new VoterSearchResults(voters,
-				new Parameters(firstName, lastName, code, email, dob, scope, includeInactive)));
+		session.setAttribute(SESSION_ATTR_VOTER_SEARCH_MOST_RECENT,
+				new VoterSearchResults(voters, new Parameters(voterId, firstName, lastName, email, birthYear)));
 
 		return voters;
 	}
@@ -122,23 +123,22 @@ public class VoterController extends AbstractAppController {
 	@JsonView(VoterView.Search.class)
 	public @ResponseBody Map<String, Object> preSubmitCheckFindDuplicateVoters(@RequestParam String firstName,
 			@RequestParam String lastName,
-			@DateTimeFormat(pattern = DateUtil.TWO_DIGIT_DATE_ONLY) @RequestParam LocalDate dob,
-			@RequestParam(required = false) Long voterId) {
+			@DateTimeFormat(pattern = DateUtil.TWO_DIGIT_DATE_ONLY) @RequestParam Integer birthYear,
+			@RequestParam(required = false) Long id) {
 		if (StringUtils.isBlank(lastName) || StringUtils.isBlank(firstName))
 			throw new IllegalArgumentException("Both last name and first name are required.");
 
-		boolean isEdit = voterId != null;
+		boolean isEdit = id != null;
 
 		Map<String, Object> results = new HashMap<>();
 
 		SortedSet<Voter> voters = new TreeSet<>();
-		List<Voter> nameMatches = voterDAO.findByCriteria(firstName, null, lastName, true, true, null, dob, null, null,
+		List<Voter> nameMatches = voterDAO.findByCriteria(null, firstName, null, lastName, true, true, birthYear, null,
 				null, null, null, null, null, null);
 		voters.addAll(nameMatches);
 
 		if (isEdit) {
-			voters = voters.stream().filter(p -> !p.getId().equals(voterId))
-					.collect(Collectors.toCollection(TreeSet::new));
+			voters = voters.stream().filter(p -> !p.getId().equals(id)).collect(Collectors.toCollection(TreeSet::new));
 		}
 		results.put("potentialDuplicates", voters);
 
@@ -164,7 +164,7 @@ public class VoterController extends AbstractAppController {
 		if (params != null) {
 			voter.setLastName(params.getLastName());
 			voter.setFirstName(params.getFirstName());
-			voter.setDateOfBirth(params.getDob());
+			voter.setBirthYear(params.getBirthYear());
 			voter.setEmail(params.getEmail());
 
 			// clear out the search params that's carried via http session

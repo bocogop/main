@@ -1,11 +1,7 @@
 package org.bocogop.wr.web;
 
-import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -105,8 +101,6 @@ public class CommonController extends AbstractAppController {
 
 	@RequestMapping("/index.htm")
 	public String index(ModelMap modelMap, HttpSession session) {
-		AppUser user = getCurrentUser();
-		appUserService.logApplicationAccess(user.getUsername(), ZonedDateTime.now());
 		return "redirect:" + URL_HOME;
 	}
 
@@ -179,11 +173,9 @@ public class CommonController extends AbstractAppController {
 	}
 
 	@RequestMapping("/updatePreferences")
-	public @ResponseBody boolean updatePreferences(@RequestParam(required = false) Boolean soundsEnabled) {
+	public @ResponseBody boolean updatePreferences() {
 		AppUser user = getCurrentUser();
-		appUserService.updatePreferences(user.getId(), soundsEnabled);
-		if (soundsEnabled != null)
-			user.getPreferences().setSoundsEnabled(soundsEnabled);
+		appUserService.updatePreferences(user.getId());
 		return true;
 	}
 

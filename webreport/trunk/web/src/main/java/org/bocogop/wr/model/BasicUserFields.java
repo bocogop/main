@@ -21,12 +21,6 @@ public interface BasicUserFields {
 
 	String getFirstName();
 
-	String getTitle();
-
-	String getOffice();
-
-	String getDepartment();
-
 	@JsonAutoDetect(fieldVisibility = NONE, getterVisibility = PUBLIC_ONLY, isGetterVisibility = PUBLIC_ONLY)
 	public static class AppUserAdapter implements BasicUserFields {
 		private AppUser appUser;
@@ -70,20 +64,6 @@ public interface BasicUserFields {
 			return appUser.getTelephoneNumber();
 		}
 
-		@Override
-		public String getTitle() {
-			return appUser.getTitle();
-		}
-
-		@Override
-		public String getOffice() {
-			return appUser.getOffice();
-		}
-
-		@Override
-		public String getDepartment() {
-			return appUser.getDepartment();
-		}
 	}
 
 }

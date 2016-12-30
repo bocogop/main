@@ -17,8 +17,8 @@ import org.bocogop.wr.model.AppUserPrecinct;
 import org.bocogop.wr.model.AppUserPreferences;
 import org.bocogop.wr.model.CoreUserDetails;
 import org.bocogop.wr.model.Permission;
-import org.bocogop.wr.model.Role;
 import org.bocogop.wr.model.Permission.PermissionType;
+import org.bocogop.wr.model.Role;
 import org.bocogop.wr.model.Role.RoleType;
 import org.bocogop.wr.model.precinct.Precinct;
 import org.bocogop.wr.persistence.AppUserDAO;
@@ -26,8 +26,8 @@ import org.bocogop.wr.service.AppUserService;
 import org.bocogop.wr.service.UserAdminCustomizations;
 import org.bocogop.wr.service.validation.ServiceValidationException;
 import org.bocogop.wr.util.CollectionUtil;
-import org.bocogop.wr.util.SecurityUtil;
 import org.bocogop.wr.util.CollectionUtil.SynchronizeCollectionsOps;
+import org.bocogop.wr.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,14 +51,6 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 			boolean setAccountLockDate, ZonedDateTime accountLockDate, Integer failedLoginCount) {
 		return appUserDAO.updateFieldsWithoutVersionCheck(appUserId, incrementVersion, lastVisitedPrecinctId,
 				accountLockDate, failedLoginCount, null);
-	}
-
-	@Override
-	public void logApplicationAccess(String activeDirectoryName, ZonedDateTime dateOfNewAccess) {
-		AppUser user = appUserDAO.findByUsername(activeDirectoryName, false);
-
-		user.setLastSuccessfulLoginDate(dateOfNewAccess);
-		user = appUserDAO.saveOrUpdate(user);
 	}
 
 	@Override
@@ -105,19 +97,6 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 				updatedBasics = true;
 				user.setEnabled(enabled);
 			}
-
-			if (locked != null) {
-				boolean userWasLocked = user.isLocked();
-
-				if (locked && !userWasLocked) {
-					user.lock(ZonedDateTime.now());
-					updatedBasics = true;
-				} else if (userWasLocked && !locked) {
-					user.unlock();
-					updatedBasics = true;
-				}
-			}
-
 		}
 
 		/*
@@ -289,13 +268,9 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 		return appUser;
 	}
 
-	public AppUser updatePreferences(long appUserId, Boolean soundsEnabled) {
+	public AppUser updatePreferences(long appUserId) {
 		AppUser appUser = appUserDAO.findRequiredByPrimaryKey(appUserId);
 		appUser = populatePreferencesIfNecessary(appUserDAO, appUser);
-		AppUserPreferences preferences = appUser.getPreferences();
-		if (soundsEnabled != null) {
-			preferences.setSoundsEnabled(soundsEnabled);
-		}
 		appUser = appUserDAO.saveOrUpdate(appUser);
 		return appUser;
 	}

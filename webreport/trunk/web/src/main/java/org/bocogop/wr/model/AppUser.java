@@ -4,7 +4,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -75,45 +74,17 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	private String firstName;
 	private String middleName;
 	private String lastName;
-	private String title;
-	private String department;
 	private String description;
-	private String office;
 	private String telephoneNumber;
 	private String email;
 
-	/*
-	 * Roles which apply to all stations that don't have an explicit set of
-	 * Roles defined. These are stored in the AppUserPrecinct objects in the
-	 * precincts Map below.
-	 */
 	private Set<AppUserGlobalRole> globalRoles;
 
-	/* Key = precinct ID, value = AppUserPrecinct */
 	private Set<AppUserPrecinct> precincts;
 	private Precinct lastVisitedPrecinct;
 
 	/* Has someone completely disabled this user from logging in */
 	private boolean enabled;
-
-	/*
-	 * A count of how many times the user attempted to login incorrectly. This
-	 * is often reset to 0 after a successful login.
-	 */
-	private Integer failedLoginCount;
-	/*
-	 * If non-null, the account is locked as of this date; if null, the account
-	 * is not locked.
-	 */
-	private ZonedDateTime accountLockDate;
-	/*
-	 * The time of the last failed login (helpful if auto-unlocking after X
-	 * minutes)
-	 */
-	private ZonedDateTime lastFailedLoginDate;
-
-	/* The last time this user logged in */
-	private ZonedDateTime lastSuccessfulLoginDate;
 
 	/*
 	 * Only contains one item, lazy-loaded; mapping like this instead
@@ -144,15 +115,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 
 		for (AppUserPrecinct f : getPrecincts())
 			f.initializeAll();
-	}
-
-	public void lock(ZonedDateTime asOf) {
-		setAccountLockDate(asOf);
-	}
-
-	public void unlock() {
-		setAccountLockDate(null);
-		setFailedLoginCount(0);
 	}
 
 	/**
@@ -278,7 +240,7 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	@Override
 	@Transient
 	public boolean isAccountNonLocked() {
-		return accountLockDate == null;
+		return true;
 	}
 
 	/* Convenience / clarity - CPB */
@@ -307,13 +269,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 			getAppUserPreferencesList().add(preferences);
 			preferences.setAppUser(this);
 		}
-	}
-
-	@Transient
-	@Override
-	@JsonIgnore
-	public boolean isSoundsEnabled() {
-		return getPreferences().isSoundsEnabled();
 	}
 
 	// ------------------------------------ Common Methods
@@ -387,36 +342,12 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		this.lastName = familyName;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getOffice() {
-		return office;
-	}
-
-	public void setOffice(String office) {
-		this.office = office;
 	}
 
 	@Column(name = "PHONE")
@@ -482,42 +413,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
-	}
-
-	@Column(name = "ACCOUNT_LOCK_DATE")
-	public ZonedDateTime getAccountLockDate() {
-		return accountLockDate;
-	}
-
-	public void setAccountLockDate(ZonedDateTime accountLockDate) {
-		this.accountLockDate = accountLockDate;
-	}
-
-	@Column(name = "FAILED_LOGIN_COUNT")
-	public Integer getFailedLoginCount() {
-		return failedLoginCount;
-	}
-
-	public void setFailedLoginCount(Integer failedLoginCount) {
-		this.failedLoginCount = failedLoginCount;
-	}
-
-	@Column(name = "LAST_SUCCESSFUL_LOGIN_DATE")
-	public ZonedDateTime getLastSuccessfulLoginDate() {
-		return lastSuccessfulLoginDate;
-	}
-
-	public void setLastSuccessfulLoginDate(ZonedDateTime lastAccessedDate) {
-		this.lastSuccessfulLoginDate = lastAccessedDate;
-	}
-
-	@Column(name = "LAST_FAILED_LOGIN_DATE")
-	public ZonedDateTime getLastFailedLoginDate() {
-		return lastFailedLoginDate;
-	}
-
-	public void setLastFailedLoginDate(ZonedDateTime lastFailedLoginDate) {
-		this.lastFailedLoginDate = lastFailedLoginDate;
 	}
 
 	@Column(name = "PASSWORD_HASH", insertable = false, updatable = false)

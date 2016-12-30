@@ -14,7 +14,6 @@ import org.bocogop.wr.model.Permission.PermissionType;
 import org.bocogop.wr.model.Role.RoleType;
 import org.bocogop.wr.persistence.AppUserDAO;
 import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
-import org.bocogop.wr.persistence.lookup.StateDAO;
 import org.bocogop.wr.service.VelocityService;
 import org.bocogop.wr.util.DateUtil;
 import org.bocogop.wr.util.WebUtil;
@@ -38,8 +37,6 @@ public abstract class AbstractReferenceDataInterceptor extends AbstractIntercept
 	protected PrecinctDAO precinctDAO;
 	@Autowired
 	protected VelocityService velocityService;
-	@Autowired
-	protected StateDAO stateDAO;
 
 	@Value("${session.pollingIntervalSeconds}")
 	private int sessionPollingIntervalSeconds;
@@ -120,7 +117,6 @@ public abstract class AbstractReferenceDataInterceptor extends AbstractIntercept
 		model.put("useMinifiedDependencies", useMinifiedDependencies);
 
 		model.put("appVersionNumber", appVersion);
-		model.put("allStates", stateDAO.findAllSorted());
 
 		int port = request.getServerPort();
 		if (request.getScheme().equals("http") && port == 80) {

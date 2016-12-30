@@ -1,6 +1,5 @@
 package org.bocogop.wr.persistence.dao.voter;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
@@ -46,8 +45,8 @@ public interface VoterDAO extends CustomizableSortedDAO<Voter> {
 	 *            All or part of the last name (case-insensitive)
 	 * @return The list of Voters matching the above criteria
 	 */
-	List<Voter> findByCriteria(String firstName, String middleName, String lastName, boolean firstNameOrLastNameMatches,
-			boolean useExactNameMatching, String identifyingCode, LocalDate dateOfBirth, String addressStreet,
+	List<Voter> findByCriteria(String voterId, String firstName, String middleName, String lastName,
+			boolean firstNameOrLastNameMatches, boolean useExactNameMatching, Integer birthYear, String addressStreet,
 			String city, String state, String zip, String phone, String email, Collection<Long> precinctIds,
 			QueryCustomization... customization);
 

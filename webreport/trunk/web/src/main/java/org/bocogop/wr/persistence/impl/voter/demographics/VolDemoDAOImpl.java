@@ -622,18 +622,8 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 		LocalDate dateLastAward = DateUtil.asLocalDate((Date) row[index++]);
 		String primaryOrganization = (String) row[index++];
 
-		VoterDemographics vd = new VoterDemographics(id, identifyingCode, lastName, firstName, middleName, nameSuffix,
-				birthDate, age, youth, nickname, gender, status, statusDate, streetAddress1, streetAddress2, city,
-				state, stateId == null ? null : stateId.longValue(), zip, combinedParkingStickers, combinedUniforms,
-				phone, altPhone, altPhone2, email, emerContactName, emerContactRelationship, emerContactPhone,
-				emerContactAltPhone, primaryPrecinctId == null ? null : primaryPrecinctId.longValue(),
-				primaryPrecinctName, entryDate, combinedAssignments, lastVoteredDate,
-				currentYearHours == null ? 0 : currentYearHours.doubleValue(),
-				priorHours == null ? 0 : priorHours.doubleValue(),
-				adjustedHours == null ? 0 : adjustedHours.doubleValue(),
-				totalHours == null ? 0 : totalHours.doubleValue(), totalDonations,
-				hoursLastAward == null || hoursLastAward.doubleValue() == 0 ? null : hoursLastAward.doubleValue(),
-				dateLastAward, primaryOrganization);
+		VoterDemographics vd = new VoterDemographics();
+		// TODO BOCOGOP
 		return vd;
 	}
 

@@ -6,20 +6,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 import java.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bocogop.wr.model.core.AbstractAuditedVersionedPersistent;
+import org.bocogop.wr.model.lookup.Gender;
 import org.bocogop.wr.model.voter.Voter.VoterView;
-import org.bocogop.wr.util.DateUtil;
 import org.bocogop.wr.util.StringUtil;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -41,80 +42,74 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 
 	// -------------------------------------- Fields
 
-	private String identifyingCode;
+	private String voterId;
 
-	@NotBlank
-	private String lastName;
 	@NotBlank
 	private String firstName;
 	private String middleName;
+	@NotBlank
+	private String lastName;
 	private String suffix;
-	private String nickname;
 
-	@NotNull(message = "Please enter a date of birth.")
-	@DateTimeFormat(pattern = DateUtil.TWO_DIGIT_DATE_ONLY)
-	private LocalDate dateOfBirth;
-	/* Computed */
-	private Integer age;
-	/* Computed */
-	private boolean youth;
+	private String driversLicense;
+	private String ssn;
 
-	@NotBlank(message = "Please enter a street address.")
-	private String addressLine1;
-	private String addressLine2;
-	@NotBlank(message = "Please enter a city.")
-	private String city;
-	@NotBlank(message = "Please enter a zipcode.")
-	private String zip;
+	private LocalDate registrationDate;
+	private LocalDate effectiveDate;
+
 	private String phone;
-	private String phoneAlt;
-	private String phoneAlt2;
+
+	private String houseNumber;
+	private String houseSuffix;
+	private String preDirection;
+	private String streetName;
+	private String streetType;
+	private String postDirection;
+	private String unitType;
+	private String unitNumber;
+	private String address;
+	private String city;
+	private String state;
+	private String zip;
+	private String zipPlus;
+	private String mailingAddress1;
+	private String mailingAddress2;
+	private String mailingAddress3;
+	private String mailingCity;
+	private String mailingState;
+	private String mailingZip;
+	private String mailingZipPlus;
+	private String mailingCountry;
+	private String ballotAddress1;
+	private String ballotAddress2;
+	private String ballotAddress3;
+	private String ballotCity;
+	private String ballotState;
+	private String ballotZip;
+	private String ballotZipPlus;
+	private String ballotCountry;
+	private Boolean statusActive;
+	private String statusReason;
+	private LocalDate affiliatedDate;
+	private Boolean idRequired;
+	private Integer birthYear;
+	private Boolean uocava;
+	private String issueMethod;
+	private String fax;
 	private String email;
-	private String emergencyContactName;
-	private String emergencyContactRelationship;
-	private String emergencyContactPhone;
-	private String emergencyContactPhoneAlt;
+
+	private Gender gender;
 
 	// -------------------------------------- Constructors
 
 	protected AbstractSimpleVoter() {
 	}
 
-	/**
-	 * Convenience constructor for when we just want to create a dummy object
-	 * for the UI (e.g. Notifications)
-	 */
-	protected AbstractSimpleVoter(long id, String lastName, String firstName, String middleName, String nameSuffix) {
-		setId(id);
+	protected AbstractSimpleVoter(String lastName, String firstName, String middleName, String nameSuffix) {
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.suffix = nameSuffix;
-	}
-
-	public AbstractSimpleVoter(long id, String identifyingCode, String lastName, String firstName, String middleName,
-			String nameSuffix, LocalDate dateOfBirth, int age, boolean youth, String nickname, String addressLine1,
-			String addressLine2, String city, String zip, String phone, String phoneAlt, String phoneAlt2, String email,
-			String emergencyContactName, String emergencyContactRelationship, String emergencyContactPhone,
-			String emergencyContactPhoneAlt) {
-		this(id, lastName, firstName, middleName, nameSuffix);
-		this.identifyingCode = identifyingCode;
-		this.dateOfBirth = dateOfBirth;
-		this.age = age;
-		this.youth = youth;
-		this.nickname = nickname;
-		this.addressLine1 = addressLine1;
-		this.addressLine2 = addressLine2;
-		this.city = city;
-		this.zip = zip;
-		this.phone = phone;
-		this.phoneAlt = phoneAlt;
-		this.phoneAlt2 = phoneAlt2;
-		this.email = email;
-		this.emergencyContactName = emergencyContactName;
-		this.emergencyContactRelationship = emergencyContactRelationship;
-		this.emergencyContactPhone = emergencyContactPhone;
-		this.emergencyContactPhoneAlt = emergencyContactPhoneAlt;
 	}
 
 	// -------------------------------------- Business Methods
@@ -134,33 +129,23 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	@Transient
 	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
 	public String getAddressMultilineDisplay() {
-		return getAddressDisplay(false);
+		return getAddressDisplay();
 	}
 
-	private String getAddressDisplay(boolean useIdForState) {
-		return StringUtil.getAddressDisplay(getAddressLine1(), getAddressLine2(), null, getCity(),
-				useIdForState ? String.valueOf(getStateId()) : getStateString(), getZip(), "\n");
+	private String getAddressDisplay() {
+		return StringUtil.getAddressDisplay(getAddress(), null, null, getCity(), getState(), getZip(), "\n");
 	}
-
-	@Transient
-	protected abstract String getStateString();
-
-	@Transient
-	protected abstract Long getStateId();
 
 	// -------------------------------------- Common Methods
 
 	@Override
 	protected boolean requiredEquals(Voter oo) {
-		return new EqualsBuilder().append(getDisplayName(), oo.getDisplayName())
-				.append(getDateOfBirth(), oo.getDateOfBirth()).append(getIdentifyingCode(), oo.getIdentifyingCode())
-				.isEquals();
+		return new EqualsBuilder().append(getVoterId(), oo.getVoterId()).isEquals();
 	}
 
 	@Override
 	protected int requiredHashCode() {
-		return new HashCodeBuilder().append(getDisplayName()).append(getDateOfBirth()).append(getIdentifyingCode())
-				.toHashCode();
+		return new HashCodeBuilder().append(getVoterId()).toHashCode();
 	}
 
 	@Override
@@ -173,40 +158,10 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	public String toString() {
-		return getDisplayName() + " (DOB " + getDateOfBirth() + ", code '" + identifyingCode + "')";
+		return getDisplayName() + " (voter ID " + getVoterId() + ")";
 	}
 
 	// -------------------------------------- Accessor Methods
-
-	@Column(length = 10)
-	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
-	public String getIdentifyingCode() {
-		return identifyingCode;
-	}
-
-	public void setIdentifyingCode(String identifyingCode) {
-		this.identifyingCode = identifyingCode;
-	}
-
-	@Column(insertable = false, updatable = false)
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
-	public Integer getAge() {
-		return age;
-	}
-
-	public void setAge(Integer age) {
-		this.age = age;
-	}
-
-	@Column(name = "IsYouth", insertable = false, updatable = false, nullable = false)
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
-	public boolean isYouth() {
-		return youth;
-	}
-
-	public void setYouth(boolean youth) {
-		this.youth = youth;
-	}
 
 	@Column(length = 30)
 	@JsonView(VoterView.Extended.class)
@@ -248,45 +203,6 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.suffix = suffix;
 	}
 
-	@JsonView(VoterView.Basic.class)
-	public LocalDate getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(LocalDate dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-
-	@Column(name = "NickName", length = 30)
-	@JsonView(VoterView.Extended.class)
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
-	@Column(name = "StreetAddress1", length = 35, nullable = false)
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
-	public String getAddressLine1() {
-		return addressLine1;
-	}
-
-	public void setAddressLine1(String addressLine1) {
-		this.addressLine1 = addressLine1;
-	}
-
-	@Column(name = "StreetAddress2", length = 35)
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
-	public String getAddressLine2() {
-		return addressLine2;
-	}
-
-	public void setAddressLine2(String addressLine2) {
-		this.addressLine2 = addressLine2;
-	}
-
 	@Column(length = 30, nullable = false)
 	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	public String getCity() {
@@ -317,26 +233,6 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.phone = phone;
 	}
 
-	@Column(name = "AlternateTelephone", length = 30)
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
-	public String getPhoneAlt() {
-		return phoneAlt;
-	}
-
-	public void setPhoneAlt(String phoneAlternate) {
-		this.phoneAlt = phoneAlternate;
-	}
-
-	@Column(name = "AlternateTelephone2", length = 30)
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
-	public String getPhoneAlt2() {
-		return phoneAlt2;
-	}
-
-	public void setPhoneAlt2(String phoneAlternate2) {
-		this.phoneAlt2 = phoneAlternate2;
-	}
-
 	@Column(name = "EMailAddress", length = 250)
 	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
 	public String getEmail() {
@@ -347,43 +243,335 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.email = email;
 	}
 
-	@Column(length = 250, name = "EmergencyContactName")
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
-	public String getEmergencyContactName() {
-		return emergencyContactName;
+	@Column(length = 2)
+	public String getState() {
+		return state;
 	}
 
-	public void setEmergencyContactName(String emergencyContactName) {
-		this.emergencyContactName = emergencyContactName;
+	public void setState(String state) {
+		this.state = state;
 	}
 
-	@Column(length = 250, name = "EmergencyContactRelationship")
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
-	public String getEmergencyContactRelationship() {
-		return emergencyContactRelationship;
+	public String getVoterId() {
+		return voterId;
 	}
 
-	public void setEmergencyContactRelationship(String emergencyContactRelationship) {
-		this.emergencyContactRelationship = emergencyContactRelationship;
+	public void setVoterId(String voterId) {
+		this.voterId = voterId;
 	}
 
-	@Column(length = 30, name = "EmergencyContactTelephone")
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
-	public String getEmergencyContactPhone() {
-		return emergencyContactPhone;
+	public String getDriversLicense() {
+		return driversLicense;
 	}
 
-	public void setEmergencyContactPhone(String emergencyContactPhone) {
-		this.emergencyContactPhone = emergencyContactPhone;
+	public void setDriversLicense(String driversLicense) {
+		this.driversLicense = driversLicense;
 	}
 
-	@Column(length = 30, name = "EmergencyContactAlternateTelephone")
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
-	public String getEmergencyContactPhoneAlt() {
-		return emergencyContactPhoneAlt;
+	public String getSsn() {
+		return ssn;
 	}
 
-	public void setEmergencyContactPhoneAlt(String emergencyContactPhoneAlt) {
-		this.emergencyContactPhoneAlt = emergencyContactPhoneAlt;
+	public void setSsn(String ssn) {
+		this.ssn = ssn;
 	}
+
+	public LocalDate getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(LocalDate registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+
+	public LocalDate getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	public void setEffectiveDate(LocalDate effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+
+	public String getHouseNumber() {
+		return houseNumber;
+	}
+
+	public void setHouseNumber(String houseNumber) {
+		this.houseNumber = houseNumber;
+	}
+
+	public String getHouseSuffix() {
+		return houseSuffix;
+	}
+
+	public void setHouseSuffix(String houseSuffix) {
+		this.houseSuffix = houseSuffix;
+	}
+
+	public String getPreDirection() {
+		return preDirection;
+	}
+
+	public void setPreDirection(String preDirection) {
+		this.preDirection = preDirection;
+	}
+
+	public String getStreetName() {
+		return streetName;
+	}
+
+	public void setStreetName(String streetName) {
+		this.streetName = streetName;
+	}
+
+	public String getStreetType() {
+		return streetType;
+	}
+
+	public void setStreetType(String streetType) {
+		this.streetType = streetType;
+	}
+
+	public String getPostDirection() {
+		return postDirection;
+	}
+
+	public void setPostDirection(String postDirection) {
+		this.postDirection = postDirection;
+	}
+
+	public String getUnitType() {
+		return unitType;
+	}
+
+	public void setUnitType(String unitType) {
+		this.unitType = unitType;
+	}
+
+	public String getUnitNumber() {
+		return unitNumber;
+	}
+
+	public void setUnitNumber(String unitNumber) {
+		this.unitNumber = unitNumber;
+	}
+
+	public String getZipPlus() {
+		return zipPlus;
+	}
+
+	public void setZipPlus(String zipPlus) {
+		this.zipPlus = zipPlus;
+	}
+
+	public String getMailingAddress1() {
+		return mailingAddress1;
+	}
+
+	public void setMailingAddress1(String mailingAddress1) {
+		this.mailingAddress1 = mailingAddress1;
+	}
+
+	public String getMailingAddress2() {
+		return mailingAddress2;
+	}
+
+	public void setMailingAddress2(String mailingAddress2) {
+		this.mailingAddress2 = mailingAddress2;
+	}
+
+	public String getMailingAddress3() {
+		return mailingAddress3;
+	}
+
+	public void setMailingAddress3(String mailingAddress3) {
+		this.mailingAddress3 = mailingAddress3;
+	}
+
+	public String getMailingCity() {
+		return mailingCity;
+	}
+
+	public void setMailingCity(String mailingCity) {
+		this.mailingCity = mailingCity;
+	}
+
+	public String getMailingState() {
+		return mailingState;
+	}
+
+	public void setMailingState(String mailingState) {
+		this.mailingState = mailingState;
+	}
+
+	public String getMailingZip() {
+		return mailingZip;
+	}
+
+	public void setMailingZip(String mailingZip) {
+		this.mailingZip = mailingZip;
+	}
+
+	public String getMailingZipPlus() {
+		return mailingZipPlus;
+	}
+
+	public void setMailingZipPlus(String mailingZipPlus) {
+		this.mailingZipPlus = mailingZipPlus;
+	}
+
+	public String getMailingCountry() {
+		return mailingCountry;
+	}
+
+	public void setMailingCountry(String mailingCountry) {
+		this.mailingCountry = mailingCountry;
+	}
+
+	public String getBallotAddress1() {
+		return ballotAddress1;
+	}
+
+	public void setBallotAddress1(String ballotAddress1) {
+		this.ballotAddress1 = ballotAddress1;
+	}
+
+	public String getBallotAddress2() {
+		return ballotAddress2;
+	}
+
+	public void setBallotAddress2(String ballotAddress2) {
+		this.ballotAddress2 = ballotAddress2;
+	}
+
+	public String getBallotAddress3() {
+		return ballotAddress3;
+	}
+
+	public void setBallotAddress3(String ballotAddress3) {
+		this.ballotAddress3 = ballotAddress3;
+	}
+
+	public String getBallotCity() {
+		return ballotCity;
+	}
+
+	public void setBallotCity(String ballotCity) {
+		this.ballotCity = ballotCity;
+	}
+
+	public String getBallotState() {
+		return ballotState;
+	}
+
+	public void setBallotState(String ballotState) {
+		this.ballotState = ballotState;
+	}
+
+	public String getBallotZip() {
+		return ballotZip;
+	}
+
+	public void setBallotZip(String ballotZip) {
+		this.ballotZip = ballotZip;
+	}
+
+	public String getBallotZipPlus() {
+		return ballotZipPlus;
+	}
+
+	public void setBallotZipPlus(String ballotZipPlus) {
+		this.ballotZipPlus = ballotZipPlus;
+	}
+
+	public String getBallotCountry() {
+		return ballotCountry;
+	}
+
+	public void setBallotCountry(String ballotCountry) {
+		this.ballotCountry = ballotCountry;
+	}
+
+	public Boolean getStatusActive() {
+		return statusActive;
+	}
+
+	public void setStatusActive(Boolean statusActive) {
+		this.statusActive = statusActive;
+	}
+
+	public String getStatusReason() {
+		return statusReason;
+	}
+
+	public void setStatusReason(String statusReason) {
+		this.statusReason = statusReason;
+	}
+
+	public LocalDate getAffiliatedDate() {
+		return affiliatedDate;
+	}
+
+	public void setAffiliatedDate(LocalDate affiliatedDate) {
+		this.affiliatedDate = affiliatedDate;
+	}
+
+	public Boolean getIdRequired() {
+		return idRequired;
+	}
+
+	public void setIdRequired(Boolean idRequired) {
+		this.idRequired = idRequired;
+	}
+
+	public Integer getBirthYear() {
+		return birthYear;
+	}
+
+	public void setBirthYear(Integer birthYear) {
+		this.birthYear = birthYear;
+	}
+
+	public Boolean getUocava() {
+		return uocava;
+	}
+
+	public void setUocava(Boolean uocava) {
+		this.uocava = uocava;
+	}
+
+	public String getIssueMethod() {
+		return issueMethod;
+	}
+
+	public void setIssueMethod(String issueMethod) {
+		this.issueMethod = issueMethod;
+	}
+
+	public String getFax() {
+		return fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "GenderFK")
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
 }

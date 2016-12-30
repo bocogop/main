@@ -16,7 +16,6 @@ import org.bocogop.wr.persistence.dao.voter.VoterDAO;
 import org.bocogop.wr.persistence.dao.voter.VoterHistoryEntryDAO;
 import org.bocogop.wr.persistence.dao.voter.demographics.VolDemoDAO;
 import org.bocogop.wr.persistence.lookup.GenderDAO;
-import org.bocogop.wr.persistence.lookup.StateDAO;
 import org.bocogop.wr.service.AppUserService;
 import org.bocogop.wr.service.PrecinctService;
 import org.bocogop.wr.service.email.EmailService;
@@ -58,8 +57,6 @@ public abstract class AbstractCommonAppController {
 	protected AppUserDAO appUserDAO;
 	@Autowired
 	protected GenderDAO genderDAO;
-	@Autowired
-	protected StateDAO stateDAO;
 	@Autowired
 	protected PrecinctDAO precinctDAO;
 	@Autowired

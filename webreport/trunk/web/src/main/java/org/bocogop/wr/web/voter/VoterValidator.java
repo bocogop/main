@@ -34,30 +34,14 @@ public class VoterValidator extends AbstractAppValidator<VoterCommand> {
 		// (note that @NotBlank is Hibernate-specific API but achieves the same
 		// as an annotation on the field)
 
-		LocalDate dateOfBirth = voter.getDateOfBirth();
-		if (dateOfBirth != null && dateOfBirth.isAfter(LocalDate.now())) {
-			errors.rejectValue("voter.dateOfBirth", "voter.error.dateOfBirthNotInFuture");
+		Integer birthYear = voter.getBirthYear();
+		if (birthYear != null && birthYear > LocalDate.now().getYear()) {
+			errors.rejectValue("voter.birthYear", "voter.error.birthYearNotInFuture");
 		}
 
 		String phoneNum = voter.getPhone();
 		if (phoneNum != null && !validatePhoneNumber(phoneNum))
 			errors.rejectValue("voter.phone", "voter.error.phone");
-
-		String phoneAltNum = voter.getPhoneAlt();
-		if (phoneAltNum != null && !validatePhoneNumber(phoneAltNum))
-			errors.rejectValue("voter.phoneAlt", "voter.error.phone");
-
-		String phoneAlt2Num = voter.getPhoneAlt2();
-		if (phoneAlt2Num != null && !validatePhoneNumber(phoneAlt2Num))
-			errors.rejectValue("voter.phoneAlt2", "voter.error.phone");
-
-		String emgergencyPhone = voter.getEmergencyContactPhone();
-		if (emgergencyPhone != null && !validatePhoneNumber(emgergencyPhone))
-			errors.rejectValue("voter.emergencyContactPhone", "voter.error.phone");
-
-		String emgergencyPhoneAlt = voter.getEmergencyContactPhoneAlt();
-		if (emgergencyPhoneAlt != null && !validatePhoneNumber(emgergencyPhoneAlt))
-			errors.rejectValue("voter.emergencyContactPhoneAlt", "voter.error.phone");
 
 		String email = voter.getEmail();
 		if (email != null && !isValidEmailAddress(email))

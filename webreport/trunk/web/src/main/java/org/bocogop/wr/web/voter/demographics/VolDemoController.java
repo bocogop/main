@@ -53,7 +53,6 @@ public class VolDemoController extends AbstractAppController {
 		model.put("curMonth", LocalDate.now().getMonthValue());
 		model.put("curYear", LocalDate.now().getYear());
 		model.put("allGenders", genderDAO.findAllSorted());
-		model.put("allStates", stateDAO.findAllSorted());
 
 		WebUtil.addEnumToModel(VolDemoColumn.class, model);
 		model.addAttribute("columnsByDivider", VolDemoColumn.getColumnsByDivider());

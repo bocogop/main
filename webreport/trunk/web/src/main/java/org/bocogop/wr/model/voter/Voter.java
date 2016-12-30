@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.bocogop.wr.model.lookup.Language;
 import org.bocogop.wr.model.precinct.Precinct;
 import org.bocogop.wr.util.DateUtil;
 import org.hibernate.annotations.BatchSize;
@@ -27,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonView;
  *
  */
 @Entity
-@Table(name = "Voters", schema = "wr")
+@Table(name = "Voters")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = PUBLIC_ONLY, isGetterVisibility = PUBLIC_ONLY)
 public class Voter extends AbstractVoter<Voter> {
 	private static final long serialVersionUID = 6904844123870655771L;
@@ -48,7 +47,6 @@ public class Voter extends AbstractVoter<Voter> {
 
 	// -------------------------------------- Fields
 
-	private Language preferredLanguage;
 	private String remarks;
 	@DateTimeFormat(pattern = DateUtil.TWO_DIGIT_DATE_ONLY)
 	private LocalDate entryDate;
@@ -77,28 +75,13 @@ public class Voter extends AbstractVoter<Voter> {
 	public Voter() {
 	}
 
-	/**
-	 * Convenience constructor for when we just want to create a dummy object
-	 * for the UI (e.g. Notifications)
-	 */
-	public Voter(long id, String lastName, String firstName, String middleName, String nameSuffix) {
-		super(id, lastName, firstName, middleName, nameSuffix);
+	public Voter(String lastName, String firstName, String middleName, String nameSuffix) {
+		super(lastName, firstName, middleName, nameSuffix);
 	}
 
 	// -------------------------------------- Business Methods
 
 	// -------------------------------------- Accessor Methods
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PreferredLanguageForLoginFK")
-	@JsonView(VoterView.Extended.class)
-	public Language getPreferredLanguage() {
-		return preferredLanguage;
-	}
-
-	public void setPreferredLanguage(Language preferredLanguage) {
-		this.preferredLanguage = preferredLanguage;
-	}
 
 	@JsonView(VoterView.Extended.class)
 	public String getRemarks() {

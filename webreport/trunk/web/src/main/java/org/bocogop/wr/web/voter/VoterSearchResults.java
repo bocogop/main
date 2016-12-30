@@ -1,6 +1,5 @@
 package org.bocogop.wr.web.voter;
 
-import java.time.LocalDate;
 import java.util.SortedSet;
 
 import org.bocogop.wr.model.voter.Voter;
@@ -8,23 +7,18 @@ import org.bocogop.wr.model.voter.Voter;
 public class VoterSearchResults {
 
 	public static class Parameters {
+		public String voterId;
 		public String firstName;
 		public String lastName;
-		public String code;
 		public String email;
-		public LocalDate dob;
-		public String scope;
-		public boolean includeInactive;
+		public Integer birthYear;
 
-		public Parameters(String firstName, String lastName, String code, String email, LocalDate dob, String scope,
-				boolean includeInactive) {
+		public Parameters(String voterId, String firstName, String lastName, String email, Integer birthYear) {
+			this.voterId = voterId;
 			this.firstName = firstName;
 			this.lastName = lastName;
-			this.code = code;
 			this.email = email;
-			this.dob = dob;
-			this.scope = scope;
-			this.includeInactive = includeInactive;
+			this.birthYear = birthYear;
 		}
 
 	}

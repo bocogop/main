@@ -65,11 +65,6 @@ public class SystemUserDetails implements CoreUserDetails {
 	}
 
 	@Override
-	public boolean isSoundsEnabled() {
-		return false;
-	}
-
-	@Override
 	public String getDisplayName() {
 		return getUsername();
 	}

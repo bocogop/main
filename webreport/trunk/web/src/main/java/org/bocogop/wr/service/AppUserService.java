@@ -13,8 +13,6 @@ public interface AppUserService {
 	int updateFieldsWithoutVersionCheck(long appUserID, boolean incrementVersion, Long lastVisitedDutyStationNumber,
 			boolean setAccountLockDate, ZonedDateTime accountLockDate, Integer failedLoginCount);
 
-	void logApplicationAccess(String activeDirectoryName, ZonedDateTime now);
-
 	AppUser saveOrUpdate(AppUser appUser);
 
 	/* For application-internal code only */
@@ -35,6 +33,6 @@ public interface AppUserService {
 
 	AppUser createOrRetrieveUser(String activeDirectoryName, Map<String, Object> userAdminCustomizationsModel);
 
-	AppUser updatePreferences(long appUserId, Boolean soundsEnabled);
+	AppUser updatePreferences(long appUserId);
 
 }

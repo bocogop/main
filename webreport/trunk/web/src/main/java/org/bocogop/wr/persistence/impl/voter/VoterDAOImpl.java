@@ -1,8 +1,6 @@
 package org.bocogop.wr.persistence.impl.voter;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,7 +14,6 @@ import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.bocogop.wr.model.core.AbstractAuditedPersistent;
 import org.bocogop.wr.model.precinct.Precinct;
 import org.bocogop.wr.model.voter.Voter;
 import org.bocogop.wr.persistence.dao.voter.VoterDAO;
@@ -38,10 +35,10 @@ public class VoterDAOImpl extends GenericHibernateSortedDAOImpl<Voter> implement
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Voter> findByCriteria(String firstName, String middleName, String lastName,
-			boolean firstNameOrLastNameMatches, boolean useExactNameMatching, String identifyingCode,
-			LocalDate dateOfBirth, String addressStreet, String city, String state, String zip, String phone,
-			String email, Collection<Long> precinctIds, QueryCustomization... customization) {
+	public List<Voter> findByCriteria(String voterId, String firstName, String middleName, String lastName,
+			boolean firstNameOrLastNameMatches, boolean useExactNameMatching, Integer birthYear, String addressStreet,
+			String city, String state, String zip, String phone, String email, Collection<Long> precinctIds,
+			QueryCustomization... customization) {
 		boolean hasPrecinctIds = CollectionUtils.isNotEmpty(precinctIds);
 
 		StringBuilder sb = new StringBuilder("select v from ").append(Voter.class.getName()).append(" v");
@@ -79,14 +76,14 @@ public class VoterDAOImpl extends GenericHibernateSortedDAOImpl<Voter> implement
 			}
 		}
 
-		if (StringUtils.isNotBlank(identifyingCode)) {
-			whereClauseItems.add("v.identifyingCode = :identifyingCode");
-			params.put("identifyingCode", identifyingCode);
+		if (StringUtils.isNotBlank(voterId)) {
+			whereClauseItems.add("v.voterId = :voterId");
+			params.put("voterId", voterId);
 		}
 
-		if (dateOfBirth != null) {
-			whereClauseItems.add("v.dateOfBirth = :dob");
-			params.put("dob", dateOfBirth);
+		if (birthYear != null) {
+			whereClauseItems.add("v.birthYear = :birthYear");
+			params.put("birthYear", birthYear);
 		}
 
 		if (hasPrecinctIds) {
@@ -181,7 +178,6 @@ public class VoterDAOImpl extends GenericHibernateSortedDAOImpl<Voter> implement
 				// TODO BOCOGOP
 				"").setParameter("id", voterId).getResultList());
 	}
-
 
 	@Override
 	public SortedSet<VoterQuickSearchResult> quickSearch(String searchValue, Long voterId, long precinctId,

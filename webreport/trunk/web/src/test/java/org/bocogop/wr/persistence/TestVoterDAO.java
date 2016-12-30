@@ -25,12 +25,11 @@ public class TestVoterDAO extends AbstractTransactionalWebDAOTest<Voter> {
 		Voter v = new Voter();
 		v.setFirstName("Connor");
 		v.setLastName("Barry");
-		v.setDateOfBirth(LocalDate.of(1950, 1, 1));
+		v.setBirthYear(1950);
 		v.setZip("80026");
 		v.setCity("Lafayette");
-		v.setState(stateDAO.findStateByPostalCode("CO"));
 		v.setGender(genderDAO.findByLookup(GenderType.MALE));
-		v.setAddressLine1("658 Wild Ridge Cir");
+		v.setAddress("658 Wild Ridge Cir");
 		v.setEntryDate(LocalDate.now());
 		// v.setPrimaryPrecinct(precinctDAO.findByStationNumber("442"));
 		// v.setContactInfo(vci);
