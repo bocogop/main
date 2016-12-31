@@ -247,8 +247,79 @@ CREATE TABLE [dbo].[Voter](
 	IssueMethod [varchar](255) NULL,
 	Fax [varchar](255) NULL,
 	Email [varchar](255) NULL,
+	[CreatedBy] [varchar](30) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[ModifiedBy] [varchar](30) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL,
+	[Ver] [numeric](10, 0) NOT NULL,
  CONSTRAINT [PK_voter] PRIMARY KEY CLUSTERED ([Id] ASC)
 	WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+)
+GO
+
+CREATE TABLE [dbo].[Voter_H](
+	[Id_H] [int] IDENTITY(1,1) NOT NULL,
+	[TransactionCode] char(1) not null,
+	[ModifiedDate_H] datetime not null,
+	[Id] [int] not null,
+	[VoterId] [varchar](255) NOT NULL,
+	[FirstName] [varchar](100) NULL,
+	[MiddleName] [varchar](100) NULL,
+	[LastName] [varchar](100) NULL,
+	[NameSuffix] [varchar](20) NULL,
+	[VoterName]  [varchar](330) NULL,
+	[DriversLicense] [varchar](30) NULL,
+	[SSN] [varchar](9) NULL,
+	[RegistrationDate] [date] NULL,
+	[EffectiveDate] [date] NULL,
+	[Phone] [varchar](30) NULL,
+	[HouseNumber] [varchar](10) NULL,
+	[HouseSuffix] [varchar](20) NULL,
+	[PreDirection] [varchar](5) NULL,
+	[StreetName] [varchar](255) NULL,
+	[StreetType] [varchar](10) NULL,
+	[PostDirection] [varchar](255) NULL,
+	[UnitType] [varchar](20) NULL,
+	[UnitNumber] [varchar](15) NULL,
+	[ResidentialAddress] [varchar](255) NULL,
+	[ResidentialCity] [varchar](255) NULL,
+	[ResidentialState] [varchar](2) NULL,
+	[ResidentialZip] [varchar](15) NULL,
+	[ResidentialZipPlus] [varchar](20) NULL,
+	[MailingAddress1] [varchar](255) NULL,
+	[MailingAddress2] [varchar](255) NULL,
+	[MailingAddress3] [varchar](255) NULL,
+	[MailingCity] [varchar](255) NULL,
+	[MailingState] [varchar](2) NULL,
+	[MailingZip] [varchar](15) NULL,
+	[MailingZipPlus] [varchar](20) NULL,
+	[MailingCountry] [varchar](100) NULL,
+	[BallotAddress1] [varchar](255) NULL,
+	[BallotAddress2] [varchar](255) NULL,
+	[BallotAddress3] [varchar](255) NULL,
+	[BallotCity] [varchar](255) NULL,
+	[BallotState] [varchar](2) NULL,
+	[BallotZip] [varchar](15) NULL,
+	[BallotZipPlus] [varchar](20) NULL,
+	[BallotCountry] [varchar](100) NULL,
+	[VoterStatusActive] [bit] NULL,
+	[VoterStatusReason] [varchar](255) NULL,
+	[PartyFK] [int] NULL,
+	[AffiliatedDate] [date] NULL,
+	[GenderFK] [int] NULL,
+	[IdRequired] [bit] NULL,
+	[BirthYear] [int] NULL,
+	[PrecinctFK] [int] NULL,
+	[UOCAVA] [bit] NULL,
+	[IssueMethod] [varchar](255) NULL,
+	[Fax] [varchar](255) NULL,
+	[Email] [varchar](255) NULL,
+	[CreatedBy] [varchar](30) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[ModifiedBy] [varchar](30) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL,
+	[Ver] [numeric](10, 0) NOT NULL,
+	CONSTRAINT [PK_voter_H] PRIMARY KEY CLUSTERED ([Id_H] ASC)
 )
 GO
 
@@ -322,6 +393,236 @@ GO
 CREATE UNIQUE NONCLUSTERED INDEX UQ_PartyCode ON [dbo].Party (Code);
 GO
 CREATE UNIQUE NONCLUSTERED INDEX UQ_GenderName ON [dbo].Gender (Name);
+GO
+CREATE NONCLUSTERED INDEX [IX_Voter_H_Id] ON [dbo].[Voter_H]([Id] ASC)
+GO
+CREATE NONCLUSTERED INDEX [IX_Voter_H_VoterId] ON [dbo].[Voter_H]([VoterId] ASC)
+GO
+
+---------------------------------------------- Triggers
+
+CREATE TRIGGER [CORE].[TR_Voter_INS_H] ON dbo.Voter
+WITH EXEC AS CALLER
+AFTER INSERT
+AS
+BEGIN
+INSERT INTO dbo.Voter_H
+    ([TransactionCode]
+			,[ModifiedDate_H]
+           ,[Id]
+           ,[VoterId]
+           ,[FirstName]
+           ,[MiddleName]
+           ,[LastName]
+           ,[NameSuffix]
+           ,[VoterName]
+           ,[DriversLicense]
+           ,[SSN]
+           ,[RegistrationDate]
+           ,[EffectiveDate]
+           ,[Phone]
+           ,[HouseNumber]
+           ,[HouseSuffix]
+           ,[PreDirection]
+           ,[StreetName]
+           ,[StreetType]
+           ,[PostDirection]
+           ,[UnitType]
+           ,[UnitNumber]
+           ,[ResidentialAddress]
+           ,[ResidentialCity]
+           ,[ResidentialState]
+           ,[ResidentialZip]
+           ,[ResidentialZipPlus]
+           ,[MailingAddress1]
+           ,[MailingAddress2]
+           ,[MailingAddress3]
+           ,[MailingCity]
+           ,[MailingState]
+           ,[MailingZip]
+           ,[MailingZipPlus]
+           ,[MailingCountry]
+           ,[BallotAddress1]
+           ,[BallotAddress2]
+           ,[BallotAddress3]
+           ,[BallotCity]
+           ,[BallotState]
+           ,[BallotZip]
+           ,[BallotZipPlus]
+           ,[BallotCountry]
+           ,[VoterStatusActive]
+           ,[VoterStatusReason]
+           ,[PartyFK]
+           ,[AffiliatedDate]
+           ,[GenderFK]
+           ,[IdRequired]
+           ,[BirthYear]
+           ,[PrecinctFK]
+           ,[UOCAVA]
+           ,[IssueMethod]
+           ,[Fax]
+           ,[Email]
+		   ,[CreatedBy]
+			,[CreatedDate]
+			,[ModifiedBy]
+			,[ModifiedDate]
+			,[Ver])
+SELECT 'I',SYSUTCDATETIME(), i.*
+  FROM inserted i
+END
+GO
+
+ALTER TABLE dbo.Voter ENABLE TRIGGER [TR_Voter_INS_H]
+GO
+
+--
+CREATE TRIGGER dbo.TR_Voter_UPD_H ON dbo.Voter
+WITH EXEC AS CALLER
+AFTER UPDATE
+AS
+BEGIN
+INSERT INTO dbo.Voter_H
+    ([TransactionCode]
+			,[ModifiedDate_H]
+           ,[Id]
+           ,[VoterId]
+           ,[FirstName]
+           ,[MiddleName]
+           ,[LastName]
+           ,[NameSuffix]
+           ,[VoterName]
+           ,[DriversLicense]
+           ,[SSN]
+           ,[RegistrationDate]
+           ,[EffectiveDate]
+           ,[Phone]
+           ,[HouseNumber]
+           ,[HouseSuffix]
+           ,[PreDirection]
+           ,[StreetName]
+           ,[StreetType]
+           ,[PostDirection]
+           ,[UnitType]
+           ,[UnitNumber]
+           ,[ResidentialAddress]
+           ,[ResidentialCity]
+           ,[ResidentialState]
+           ,[ResidentialZip]
+           ,[ResidentialZipPlus]
+           ,[MailingAddress1]
+           ,[MailingAddress2]
+           ,[MailingAddress3]
+           ,[MailingCity]
+           ,[MailingState]
+           ,[MailingZip]
+           ,[MailingZipPlus]
+           ,[MailingCountry]
+           ,[BallotAddress1]
+           ,[BallotAddress2]
+           ,[BallotAddress3]
+           ,[BallotCity]
+           ,[BallotState]
+           ,[BallotZip]
+           ,[BallotZipPlus]
+           ,[BallotCountry]
+           ,[VoterStatusActive]
+           ,[VoterStatusReason]
+           ,[PartyFK]
+           ,[AffiliatedDate]
+           ,[GenderFK]
+           ,[IdRequired]
+           ,[BirthYear]
+           ,[PrecinctFK]
+           ,[UOCAVA]
+           ,[IssueMethod]
+           ,[Fax]
+           ,[Email]
+		   ,[CreatedBy]
+			,[CreatedDate]
+			,[ModifiedBy]
+			,[ModifiedDate]
+			,[Ver])
+SELECT 'U',SYSUTCDATETIME(), i.*
+  FROM inserted i
+END
+GO
+
+ALTER TABLE dbo.Voter ENABLE TRIGGER TR_Voter_UPD_H
+GO
+
+--
+CREATE TRIGGER dbo.TR_Voter_DEL_H ON dbo.Voter
+WITH EXEC AS CALLER
+AFTER DELETE
+AS
+BEGIN
+INSERT INTO dbo.Voter_H
+    ([TransactionCode]
+			,[ModifiedDate_H]
+           ,[Id]
+           ,[VoterId]
+           ,[FirstName]
+           ,[MiddleName]
+           ,[LastName]
+           ,[NameSuffix]
+           ,[VoterName]
+           ,[DriversLicense]
+           ,[SSN]
+           ,[RegistrationDate]
+           ,[EffectiveDate]
+           ,[Phone]
+           ,[HouseNumber]
+           ,[HouseSuffix]
+           ,[PreDirection]
+           ,[StreetName]
+           ,[StreetType]
+           ,[PostDirection]
+           ,[UnitType]
+           ,[UnitNumber]
+           ,[ResidentialAddress]
+           ,[ResidentialCity]
+           ,[ResidentialState]
+           ,[ResidentialZip]
+           ,[ResidentialZipPlus]
+           ,[MailingAddress1]
+           ,[MailingAddress2]
+           ,[MailingAddress3]
+           ,[MailingCity]
+           ,[MailingState]
+           ,[MailingZip]
+           ,[MailingZipPlus]
+           ,[MailingCountry]
+           ,[BallotAddress1]
+           ,[BallotAddress2]
+           ,[BallotAddress3]
+           ,[BallotCity]
+           ,[BallotState]
+           ,[BallotZip]
+           ,[BallotZipPlus]
+           ,[BallotCountry]
+           ,[VoterStatusActive]
+           ,[VoterStatusReason]
+           ,[PartyFK]
+           ,[AffiliatedDate]
+           ,[GenderFK]
+           ,[IdRequired]
+           ,[BirthYear]
+           ,[PrecinctFK]
+           ,[UOCAVA]
+           ,[IssueMethod]
+           ,[Fax]
+           ,[Email]
+		   ,[CreatedBy]
+			,[CreatedDate]
+			,[ModifiedBy]
+			,[ModifiedDate]
+			,[Ver])
+SELECT 'D',SYSUTCDATETIME(), i.*
+  FROM deleted i
+END
+GO
+
+ALTER TABLE dbo.Voter ENABLE TRIGGER TR_Voter_DEL_H
 GO
 
 ---------------------------------------------- Initial Data

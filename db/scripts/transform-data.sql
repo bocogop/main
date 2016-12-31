@@ -1,6 +1,22 @@
 update [dbo].[$(TableName)] set VOTER_ID = SUBSTRING(VOTER_ID, 2, LEN(VOTER_ID))
 where LEFT(VOTER_ID, 1) = '"'
 GO
+update [dbo].[$(TableName)] set SSN = null
+where SSN is not null
+	and LTRIM(RTRIM(SSN)) = ''
+GO
+update [dbo].[$(TableName)] set PHONE_NUM = null
+where PHONE_NUM is not null
+	and LTRIM(RTRIM(PHONE_NUM)) = ''
+GO
+update [dbo].[$(TableName)] set FAX = null
+where FAX is not null
+	and LTRIM(RTRIM(FAX)) = ''
+GO
+update [dbo].[$(TableName)] set EMAIL = null
+where EMAIL is not null
+	and LTRIM(RTRIM(EMAIL)) = ''
+GO
 
 -- populate any new precincts
 insert into dbo.Precinct(Code, Name)
@@ -95,6 +111,9 @@ WHEN MATCHED THEN
       ,t.[Fax] = s.FAX
 	  -- preserve existing email since we also populate this elsewhere
       ,t.[Email] = ISNULL(s.EMAIL, t.Email)
+	  ,t.ModifiedBy = 'AutoImport'
+	  ,t.ModifiedDate = SYSUTCDATETIME()
+	  ,t.Ver = t.Ver + 1
 WHEN NOT MATCHED THEN  
   INSERT ([VoterId]
            ,[FirstName]
@@ -146,7 +165,12 @@ WHEN NOT MATCHED THEN
            ,[UOCAVA]
            ,[IssueMethod]
            ,[Fax]
-           ,[Email])
+           ,[Email]
+		   ,[CreatedBy]
+		   ,[CreatedDate]
+		   ,[ModifiedBy]
+		   ,[ModifiedDate]
+		   ,[Ver])
 	 VALUES (
 		s.VOTER_ID
 		,s.FIRST_NAME
@@ -198,22 +222,10 @@ WHEN NOT MATCHED THEN
       ,case when s.UOCAVA = 'Yes' then 1 else 0 end
       ,s.ISSUE_METHOD
       ,s.FAX
-      ,s.EMAIL);
-GO
-
-update [dbo].Voter set SSN = null
-where SSN is not null
-	and LTRIM(RTRIM(SSN)) = ''
-GO
-update [dbo].Voter set Phone = null
-where Phone is not null
-	and LTRIM(RTRIM(Phone)) = ''
-GO
-update [dbo].Voter set Fax = null
-where Fax is not null
-	and LTRIM(RTRIM(Fax)) = ''
-GO
-update [dbo].Voter set Email = null
-where Email is not null
-	and LTRIM(RTRIM(Email)) = ''
+      ,s.EMAIL
+	  ,'AutoImport'
+	  ,SYSUTCDATETIME()
+	  ,'AutoImport'
+	  ,SYSUTCDATETIME()
+	  ,1);
 GO
