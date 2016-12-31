@@ -47,8 +47,6 @@ public abstract class AbstractReferenceDataInterceptor extends AbstractIntercept
 	@Value("${protocolHostnamePortOverride}")
 	private String protocolHostnamePortOverride;
 
-	@Value("${solr.baseURL}")
-	private String solrBaseURL;
 	@Value("${web.version}")
 	private String appVersion;
 	@Value("${useMinifiedDependencies}")

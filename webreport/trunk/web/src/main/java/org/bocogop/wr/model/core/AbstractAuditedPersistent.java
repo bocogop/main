@@ -76,7 +76,7 @@ public abstract class AbstractAuditedPersistent<T> extends AbstractIdentifiedPer
 
 	// ---------------------------------------- Accessor Methods
 
-	@Column(name = "CREATED_BY", length = 30)
+	@Column(name = "CreatedBy", length = 30)
 	@XmlTransient
 	@JsonIgnore
 	public String getCreatedBy() {
@@ -87,7 +87,7 @@ public abstract class AbstractAuditedPersistent<T> extends AbstractIdentifiedPer
 		this.createdBy = createdBy;
 	}
 
-	@Column(name = "CREATED_DATE")
+	@Column(name = "CreatedDate")
 	@XmlTransient
 	@JsonIgnore
 	public ZonedDateTime getCreatedDate() {
@@ -98,7 +98,7 @@ public abstract class AbstractAuditedPersistent<T> extends AbstractIdentifiedPer
 		this.createdDate = createdDate;
 	}
 
-	@Column(name = "MODIFIED_BY", length = 30)
+	@Column(name = "ModifiedBy", length = 30)
 	@XmlTransient
 	@JsonIgnore
 	public String getModifiedBy() {
@@ -109,7 +109,7 @@ public abstract class AbstractAuditedPersistent<T> extends AbstractIdentifiedPer
 		this.modifiedBy = modifiedBy;
 	}
 
-	@Column(name = "MODIFIED_DATE")
+	@Column(name = "ModifiedDate")
 	@XmlTransient
 	@JsonIgnore
 	public ZonedDateTime getModifiedDate() {

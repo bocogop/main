@@ -3,7 +3,6 @@ package org.bocogop.wr.config;
 import org.bocogop.wr.model.AppUser;
 import org.bocogop.wr.service.AppUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
@@ -15,13 +14,6 @@ public class HybridDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
 	@Autowired
 	private AppUserDetailsService appUserDetailsService;
-
-	@Value("${maxAllowedFailedLogins}")
-	private int maxAllowedFailedLogins;
-	@Value("${autoUnlockMinutes}")
-	private int autoUnlockMinutes;
-	@Value("${autoDisableAfterDays}")
-	private int autoDisableAfterDays;
 
 	public HybridDaoAuthenticationProvider(PasswordEncoder passwordEncoder) {
 		setHideUserNotFoundExceptions(false);

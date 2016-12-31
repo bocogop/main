@@ -13,7 +13,7 @@
 				"${ajaxHome}/keepAlive",
 				${sessionScope.sessionIdleAfterSeconds},
 				${sessionScope.sessionPollingIntervalSeconds},
-				${sessionScope.sessionFailedRequestsCount}, onIdleCallback)
+				${sessionScope.sessionFailedRequestsCount}, null)
 	})
 </script>
 

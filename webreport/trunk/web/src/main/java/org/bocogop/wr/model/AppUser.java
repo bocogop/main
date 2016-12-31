@@ -13,17 +13,14 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
@@ -47,8 +44,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
-@Table(name = "APP_USER", schema = "CORE")
-@AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "APP_USER_ID")) })
+@Table(name = "AppUser", schema = "Core")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = PUBLIC_ONLY, isGetterVisibility = PUBLIC_ONLY)
 public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		implements CoreUserDetails, Comparable<AppUser> {
@@ -81,7 +77,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	private Set<AppUserGlobalRole> globalRoles;
 
 	private Set<AppUserPrecinct> precincts;
-	private Precinct lastVisitedPrecinct;
 
 	/* Has someone completely disabled this user from logging in */
 	private boolean enabled;
@@ -106,7 +101,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	public void initializeAll() {
 		initialize(getGlobalRoles());
 		initialize(getPrecincts());
-		initialize(getLastVisitedPrecinct());
 		initialize(getAppUserPreferencesList());
 
 		for (AppUserGlobalRole augr : getGlobalRoles()) {
@@ -296,7 +290,8 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 
 	// ------------------------------------ Accessor Methods
 
-	@Column(name = "USERNAME")
+	@Column(nullable = false)
+	@NotNull
 	public String getUsername() {
 		return username;
 	}
@@ -305,7 +300,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		this.username = username;
 	}
 
-	@Column(name = "TIME_ZONE")
 	@JsonSerialize(using = ZoneIdSerializer.class)
 	public ZoneId getTimeZone() {
 		return timeZone;
@@ -315,7 +309,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		this.timeZone = timeZone;
 	}
 
-	@Column(name = "FIRST_NAME")
 	public String getFirstName() {
 		return firstName;
 	}
@@ -324,7 +317,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		this.firstName = givenName;
 	}
 
-	@Column(name = "MIDDLE_NAME")
 	public String getMiddleName() {
 		return middleName;
 	}
@@ -333,7 +325,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		this.middleName = middleName;
 	}
 
-	@Column(name = "LAST_NAME")
 	public String getLastName() {
 		return lastName;
 	}
@@ -350,7 +341,7 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		this.description = description;
 	}
 
-	@Column(name = "PHONE")
+	@Column(name = "Phone")
 	public String getTelephoneNumber() {
 		return telephoneNumber;
 	}
@@ -394,18 +385,7 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		this.precincts = precincts;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "LAST_VISITED_PRECINCT_ID")
-	@BatchSize(size = 500)
-	public Precinct getLastVisitedPrecinct() {
-		return lastVisitedPrecinct;
-	}
-
-	public void setLastVisitedPrecinct(Precinct lastVisitedPrecinct) {
-		this.lastVisitedPrecinct = lastVisitedPrecinct;
-	}
-
-	@Column(name = "ENABLED_IND", nullable = false)
+	@Column(name = "EnabledInd", nullable = false)
 	@Type(type = "yes_no")
 	public boolean isEnabled() {
 		return enabled;
@@ -415,7 +395,7 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		this.enabled = enabled;
 	}
 
-	@Column(name = "PASSWORD_HASH", insertable = false, updatable = false)
+	@Column(name = "PasswordHash", insertable = false, updatable = false)
 	@JsonIgnore
 	public String getPassword() {
 		return password;

@@ -27,11 +27,11 @@ public class AppUserGlobalRoleDAOImpl extends AbstractAppDAOImpl<AppUserGlobalRo
 
 		StringBuilder sb = new StringBuilder("insert into");
 		appendTypeSchemaAndTable(sb);
-		sb.append("(APP_USER_ID, ROLE_ID, CREATED_BY, CREATED_DATE, MODIFIED_BY, MODIFIED_DATE)");
-		sb.append(" select :userId, r.ROLE_ID, :createdBy, :createdDate, :modifiedBy, :modifiedDate");
+		sb.append("(AppUserFK, RoleFK, CreatedBy, CreatedDate, ModifiedBy, ModifiedDate)");
+		sb.append(" select :userId, r.Id, :createdBy, :createdDate, :modifiedBy, :modifiedDate");
 		sb.append(" from ");
 		appendTypeSchemaAndTable(sb, Role.class);
-		sb.append(" r where r.ROLE_ID in (:roleIds)");
+		sb.append(" r where r.Id in (:roleIds)");
 
 		Iterables.partition(roleIdsToAdd, maxSupportedSQLParams).forEach(l -> {
 			Query q = em.createNativeQuery(sb.toString());

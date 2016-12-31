@@ -22,8 +22,7 @@ import org.hibernate.annotations.Immutable;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @Entity
-@Table(name = "ROLE_PERMISSION", schema = "CORE")
-@AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "ROLE_PERMISSION_ID") ) })
+@Table(name = "RolePermission", schema = "Core")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = NONE, isGetterVisibility = NONE)
 @Immutable
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
@@ -61,7 +60,7 @@ public class RolePermission extends AbstractAuditedPersistent<RolePermission> {
 	 * @return the permission
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PERMISSION_ID", nullable = false)
+	@JoinColumn(name = "PermissionFK", nullable = false)
 	@BatchSize(size = 500)
 	public Permission getPermission() {
 		return permission;
@@ -79,7 +78,7 @@ public class RolePermission extends AbstractAuditedPersistent<RolePermission> {
 	 * @return the role
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ROLE_ID", nullable = false)
+	@JoinColumn(name = "RoleFK", nullable = false)
 	public Role getRole() {
 		return role;
 	}

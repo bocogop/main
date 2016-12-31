@@ -21,7 +21,6 @@ import org.bocogop.wr.web.AbstractAppController;
 import org.bocogop.wr.web.breadcrumbs.Breadcrumb;
 import org.bocogop.wr.web.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -38,8 +37,6 @@ public class PrecinctController extends AbstractAppController {
 
 	@Autowired
 	private PrecinctValidator precinctValidator;
-	@Value("${maxQuietPrinterStatusCheckMinutes}")
-	private int maxQuietPrinterStatusCheckMinutes;
 
 	@RequestMapping("/precinctCreate.htm")
 	@Breadcrumb("Create Precinct")

@@ -133,7 +133,6 @@
 					</c:if>
 
 					<tr valign="top" id="titleRow">
-						<td width="26"><%@ include file="inc_contextualHelp.jsp"%></td>
 						<td>
 							<table align="center">
 								<tr>
@@ -166,7 +165,6 @@
 								</tr>
 							</table>
 						</td>
-						<td width="26">&nbsp;</td>
 					</tr>
 				</table>
 			</td>
@@ -198,33 +196,25 @@
 					<tr class="bodyText">
 						<td align="left" style="border: 1px solid gray">
 							${footerContent}</td>
-						<td valign="middle" align="left" width="180"><img
-							src="${imgHome}/VA_Excellence_4C.gif" width="180" height="72"
-							alt="VA Health Care Defining Excellence in the 21st Century" /></td>
 					</tr>
 					<tr>
-						<td colspan="2">&nbsp;</td>
+						<td>&nbsp;</td>
 					</tr>
 					<c:if test="${not empty additionalFooterItem}">
 						<tr>
-							<td colspan="2" align="center"><c:out value="${additionalFooterItem}" /></td>
+							<td align="center"><c:out value="${additionalFooterItem}" /></td>
 						</tr>
 					</c:if>
 					<c:if test="${not empty userTimeZoneName}">
 						<tr class="bodyTextSmall">
-							<td colspan="2" align="center" nowrap="nowrap"><wr:zonedDateTime value="${currentTime}" zoneId="${userTimeZone}" />
+							<td align="center" nowrap="nowrap"><wr:zonedDateTime value="${currentTime}" zoneId="${userTimeZone}" />
 							|
-							All times are in <c:out value="${userTimeZoneName}" />. <sec:authorize
-									access="isAuthenticated()">
-								 |
-								<label><input type="checkbox" id="soundEnabled" value="true"
-										onchange="javascript:setSounds(this)"> Sounds Enabled</label>
-								</sec:authorize>
+							All times are in <c:out value="${userTimeZoneName}" />.
 							</td>
 						</tr>
 					</c:if>
 					<tr class="bodyTextSmall">
-						<td colspan="2" align="center" nowrap="nowrap">App Version: <c:out
+						<td align="center" nowrap="nowrap">App Version: <c:out
 								value="${appVersionNumber}" />
 						</td>
 					</tr>

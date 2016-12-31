@@ -32,33 +32,14 @@
 	<cache name="ajaxViews" maxElementsInMemory="200" eternal="false"
 		timeToIdleSeconds="300" timeToLiveSeconds="600" overflowToDisk="false" />
 
-	<cache name="queries.sharedDAO" maxElementsInMemory="1000"
-		eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600"
-		overflowToDisk="false" />
-
 	<!-- Specific caches -->
-
-	<cache name="queries.excludedEntityDAO.totalAndFiltered"
-		maxElementsInMemory="150" eternal="false" timeToIdleSeconds="60"
-		timeToLiveSeconds="300" overflowToDisk="false" copyOnRead="true" />
-
-	<cache name="queries.exclusionTypeDAO" maxElementsInMemory="250"
-		eternal="false" timeToIdleSeconds="360" timeToLiveSeconds="360"
-		overflowToDisk="false" copyOnRead="true" />
 
 	<cache name="queries.precinctDAO" maxElementsInMemory="5000"
 		eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="1200"
 		overflowToDisk="false" />
 
-	<cache name="queries.precinctAndVisnDAO" maxElementsInMemory="2000"
-		eternal="true" overflowToDisk="false" copyOnRead="true" />
-
 	<cache name="queries.genderDAO" maxElementsInMemory="5" eternal="true"
 		overflowToDisk="false" copyOnRead="true" />
-
-	<cache name="queries.grantableRoleDAO" maxElementsInMemory="2000"
-		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
-		overflowToDisk="false" />
 
 	<cache name="queries.permissionDAO" maxElementsInMemory="1000" eternal="false"
 		timeToIdleSeconds="3600" timeToLiveSeconds="7200" overflowToDisk="false"
@@ -68,44 +49,10 @@
 		timeToIdleSeconds="3600" timeToLiveSeconds="7200" overflowToDisk="false"
 		copyOnRead="true" />
 
-	<cache name="queries.precinctDAO" maxElementsInMemory="15000"
-		eternal="true" overflowToDisk="false" copyOnRead="true"></cache>
-
-	<cache name="queries.vistaStationDataDAO" maxElementsInMemory="2500"
-		eternal="false" timeToIdleSeconds="180" timeToLiveSeconds="180"
-		overflowToDisk="false" copyOnRead="true" />
-
-	<cache name="queries.stateDAO" maxElementsInMemory="1000"
-		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
-		overflowToDisk="false" copyOnRead="true" />
-
 	<!-- App classes -->
-
-	<cache name="org.bocogop.shared.model.lookup.InactiveReason"
-		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="300"
-		timeToLiveSeconds="600" overflowToDisk="false" />
 
 	<cache name="org.bocogop.wr.model.lookup.Gender"
 		maxElementsInMemory="20" eternal="true" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.lookup.State"
-		maxElementsInMemory="500" eternal="true" overflowToDisk="false" />
-
-	<cache name="org.bocogop.shared.model.lookup.sds.Precinct"
-		maxElementsInMemory="5000" eternal="true" overflowToDisk="false" />
-
-	<cache name="org.bocogop.shared.model.lookup.sds.PrecinctType"
-		maxElementsInMemory="250" eternal="true" overflowToDisk="false" />
-
-	<cache name="org.bocogop.shared.model.lookup.sds.PrecinctType.precinctList"
-		maxElementsInMemory="500" eternal="true" overflowToDisk="false" />
-
-	<cache name="org.bocogop.shared.model.lookup.ActiveStatus"
-		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
-
-	<cache name="org.bocogop.shared.model.GrantableRole"
-		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
-		timeToLiveSeconds="7200" overflowToDisk="false" />
 
 	<cache name="org.bocogop.wr.model.Role" maxElementsInMemory="250"
 		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
@@ -113,10 +60,6 @@
 
 	<cache name="org.bocogop.wr.model.Role.internalPermissions"
 		maxElementsInMemory="5000" eternal="false" timeToIdleSeconds="3600"
-		timeToLiveSeconds="7200" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.Role.grantableRoles"
-		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
 		timeToLiveSeconds="7200" overflowToDisk="false" />
 
 	<cache name="org.bocogop.wr.model.RolePermission"
@@ -139,14 +82,6 @@
 		maxElementsInMemory="250" eternal="false" timeToIdleSeconds="3600"
 		timeToLiveSeconds="7200" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.benefitingService.BenefitingServiceRoleType"
-		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="3600"
-		timeToLiveSeconds="7200" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.precinct.AbstractUpdateableLocation"
-		maxElementsInMemory="5000" eternal="false" timeToIdleSeconds="1200"
-		timeToLiveSeconds="1200" overflowToDisk="false" />
-
 	<cache name="org.bocogop.wr.model.precinct.Precinct"
 		maxElementsInMemory="5000" eternal="false" timeToIdleSeconds="1200"
 		timeToLiveSeconds="1200" overflowToDisk="false" />
@@ -155,72 +90,12 @@
 		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="1200"
 		timeToLiveSeconds="1200" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.organization.NACStatus"
-		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="300"
-		timeToLiveSeconds="600" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.organization.OrganizationType"
-		maxElementsInMemory="25" eternal="false" timeToIdleSeconds="3600"
-		timeToLiveSeconds="7200" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.requirement.RequirementDateType"
-		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.requirement.RequirementStatus"
-		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.donation.StdCreditCardType"
-		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="300"
-		timeToLiveSeconds="600" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.organization.StdVAVSTitle"
-		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="300"
-		timeToLiveSeconds="600" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.voter.TransportationMethod"
-		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.voter.VoterStatus"
-		maxElementsInMemory="10" eternal="true" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.precinct.AdministrativeUnit"
-		maxElementsInMemory="50" eternal="false" timeToIdleSeconds="300"
-		timeToLiveSeconds="600" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.leie.ExclusionType"
-		maxElementsInMemory="250" eternal="false" timeToIdleSeconds="3600"
-		timeToLiveSeconds="3600" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.donation.DonationType"
-		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="3600"
-		timeToLiveSeconds="7200" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.donation.DonorType"
-		maxElementsInMemory="10" eternal="true" overflowToDisk="false" />
 
 	<cache name="org.bocogop.wr.model.lookup.Language"
 		maxElementsInMemory="500" eternal="false" timeToIdleSeconds="300"
 		timeToLiveSeconds="600" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.voluntaryService.VoluntaryServiceType"
-		maxElementsInMemory="20" eternal="true" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.award.Award" maxElementsInMemory="250"
-		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
-		overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.expenditure.ExpenditureType"
-		maxElementsInMemory="5" eternal="true" overflowToDisk="false" />
-		
-	<cache name="org.bocogop.wr.model.precinct.StaffTitle" maxElementsInMemory="100"
-		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
-		overflowToDisk="false" />
-
 	<cache name="org.bocogop.wr.model.lookup.JobExecutionType"
 		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
 		
-	<cache name="org.bocogop.wr.model.voter.ShirtSize" maxElementsInMemory="20"
-		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
-		overflowToDisk="false" />
-
 </ehcache>

@@ -28,10 +28,10 @@ public class TemplateConfig {
 		props.put("ds.resource.loader.instance", loader);
 		props.put("ds.resource.loader.public.name", "DataSource");
 		props.put("ds.resource.loader.description", "Velocity DataSource Resource Loader");
-		props.put("ds.resource.loader.resource.table", "CORE.STD_TEMPLATE");
-		props.put("ds.resource.loader.resource.keycolumn", "TEMPLATE_NAME");
-		props.put("ds.resource.loader.resource.templatecolumn", "TEMPLATE_BODY");
-		props.put("ds.resource.loader.resource.timestampcolumn", "MODIFIED_DATE");
+		props.put("ds.resource.loader.resource.table", "Core.Template");
+		props.put("ds.resource.loader.resource.keycolumn", "TemplateName");
+		props.put("ds.resource.loader.resource.templatecolumn", "TemplateBody");
+		props.put("ds.resource.loader.resource.timestampcolumn", "ModifiedDate");
 		props.put("ds.resource.loader.cache", env.getProperty("velocity.cacheTemplates"));
 		props.put("ds.resource.loader.modificationCheckInterval",
 				env.getProperty("velocity.modificationCheckInterval"));

@@ -4,7 +4,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
-import org.bocogop.shared.test.AbstractTransactionalAppTest;
 import org.bocogop.wr.config.WebAppConfig;
 import org.bocogop.wr.config.testOnly.AppTestConfig;
 import org.bocogop.wr.persistence.AppUserDAO;
@@ -14,6 +13,7 @@ import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.wr.persistence.dao.voter.VoterDAO;
 import org.bocogop.wr.persistence.lookup.GenderDAO;
 import org.bocogop.wr.service.PrecinctService;
+import org.bocogop.wr.test.AbstractTransactionalAppTest;
 import org.bocogop.wr.test.util.TestObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

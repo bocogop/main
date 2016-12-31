@@ -47,13 +47,6 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 	private UserAdminCustomizations customizations;
 
 	@Override
-	public int updateFieldsWithoutVersionCheck(long appUserId, boolean incrementVersion, Long lastVisitedPrecinctId,
-			boolean setAccountLockDate, ZonedDateTime accountLockDate, Integer failedLoginCount) {
-		return appUserDAO.updateFieldsWithoutVersionCheck(appUserId, incrementVersion, lastVisitedPrecinctId,
-				accountLockDate, failedLoginCount, null);
-	}
-
-	@Override
 	@PreAuthorize("hasAuthority('" + Permission.USER_MANAGER + "')")
 	public AppUser saveOrUpdate(AppUser appUser) {
 		return appUserDAO.saveOrUpdate(appUser);

@@ -30,8 +30,8 @@ public class AppUserPrecinctDAOImpl extends AbstractAppDAOImpl<AppUserPrecinct> 
 
 		StringBuilder sb = new StringBuilder("insert into");
 		appendTypeSchemaAndTable(sb);
-		sb.append("(APP_USER_ID, PRECINCT_ID, PRIMARY_PRECINCT_IND,");
-		sb.append(" CREATED_BY, CREATED_DATE, MODIFIED_BY, MODIFIED_DATE)");
+		sb.append("(AppUserFK, PrecinctFK, PrimaryPrecinctInd,");
+		sb.append(" CreatedBy, CreatedDate, ModifiedBy, ModifiedDate)");
 		sb.append(" select :userId, i.id, 'N', :createdBy, :createdDate, :modifiedBy, :modifiedDate");
 		sb.append(" from ");
 		appendTypeSchemaAndTable(sb, Precinct.class);

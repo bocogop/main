@@ -35,16 +35,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class CommonController extends AbstractAppController {
 	private static final Logger log = LoggerFactory.getLogger(CommonController.class);
 
-	private static final String VIEW_STATION_CHANGE = "stationChange";
-
 	public static final String BREADCRUMB_HOME = "Home";
 	public static final String URL_HOME = "/home.htm";
 	public static final String VIEW_HOME = "home";
 
 	@Autowired
 	private VelocityService velocityService;
-	@Value("${notification.maxResults}")
-	private int notificationMaxResults;
 	@Value("${authProvider.activeDirectory.active}")
 	private boolean adAuthActive;
 	@Value("${logout.postRedirectUrl}")
@@ -110,7 +106,6 @@ public class CommonController extends AbstractAppController {
 		model.put("homepageContent", velocityService.mergeTemplateIntoString(TemplateType.HOMEPAGE_CONTENT.getName()));
 		model.put("homepageAnnouncement",
 				velocityService.mergeTemplateIntoString(TemplateType.HOMEPAGE_ANNOUNCEMENT.getName()));
-		model.put("notificationMaxResults", notificationMaxResults);
 
 		// Already a station in session. Do nothing, redirect to sitemap.
 		return VIEW_HOME;
@@ -125,51 +120,8 @@ public class CommonController extends AbstractAppController {
 		return true;
 	}
 
-	private boolean isPrecinctAvailableToUser(AppUser user, Precinct newPrecinct) {
-		return user.getAppUserPrecinct(newPrecinct.getId()) != null;
-	}
-
 	public static void populatePrecinctList(AppUser user, ModelMap model, PrecinctDAO precinctDAO) {
 		model.put("precinctList", user.getAssignedPrecincts());
-	}
-
-	@RequestMapping(value = "/selectStation.htm", method = RequestMethod.GET)
-	public String selectStation(ModelMap model) {
-		populateStationChangeModel(model);
-		model.put("cancelAllowed", false);
-		return VIEW_STATION_CHANGE;
-	}
-
-	@RequestMapping("/changeStation.htm")
-	public String changeStation(ModelMap model) {
-		populateStationChangeModel(model);
-		model.put("cancelAllowed", true);
-		return VIEW_STATION_CHANGE;
-	}
-
-	private void populateStationChangeModel(ModelMap model) {
-		AppUser user = getCurrentUser();
-
-		Precinct currentPrecinct = user.getLastVisitedPrecinct();
-		if (currentPrecinct != null) {
-			model.put("currentStationName", currentPrecinct.getName());
-			model.put("currentStationId", currentPrecinct.getId());
-		}
-
-		populatePrecinctList(user, model, precinctDAO);
-	}
-
-	private void setNewDutyStation(Precinct newDutyStation) {
-		AppUser user = getCurrentUser();
-		user.setLastVisitedPrecinct(newDutyStation);
-		appUserService.updateFieldsWithoutVersionCheck(user.getId(), false, newDutyStation.getId(), false, null, null);
-	}
-
-	@RequestMapping(value = "/selectStation.htm", method = RequestMethod.POST)
-	public String processSelectStation(@RequestParam Long stationCode) {
-		Precinct f = precinctDAO.findByPrimaryKey(stationCode);
-		setNewDutyStation(f);
-		return "redirect:" + URL_HOME;
 	}
 
 	@RequestMapping("/updatePreferences")

@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "APP_USER_PREFERENCES", schema = "CORE")
+@Table(name = "AppUserPreferences", schema = "Core")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = PUBLIC_ONLY, isGetterVisibility = PUBLIC_ONLY)
 public class AppUserPreferences extends AbstractAuditedVersionedPersistent<AppUserPreferences> {
 	private static final long serialVersionUID = 1L;
@@ -45,7 +45,7 @@ public class AppUserPreferences extends AbstractAuditedVersionedPersistent<AppUs
 	// ------------------------------------- Accessor Methods
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "APP_USER_ID", nullable = false, unique = true)
+	@JoinColumn(name = "AppUserFK", nullable = false, unique = true)
 	@JsonIgnore
 	public AppUser getAppUser() {
 		return appUser;

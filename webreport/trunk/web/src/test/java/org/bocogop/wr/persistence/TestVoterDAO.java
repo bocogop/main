@@ -1,7 +1,5 @@
 package org.bocogop.wr.persistence;
 
-import java.time.LocalDate;
-
 import org.bocogop.wr.AbstractTransactionalWebDAOTest;
 import org.bocogop.wr.model.lookup.Gender.GenderType;
 import org.bocogop.wr.model.voter.Voter;
@@ -30,7 +28,6 @@ public class TestVoterDAO extends AbstractTransactionalWebDAOTest<Voter> {
 		v.setCity("Lafayette");
 		v.setGender(genderDAO.findByLookup(GenderType.MALE));
 		v.setAddress("658 Wild Ridge Cir");
-		v.setEntryDate(LocalDate.now());
 		// v.setPrimaryPrecinct(precinctDAO.findByStationNumber("442"));
 		// v.setContactInfo(vci);
 		return v;

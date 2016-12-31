@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bocogop.wr.model.Permission;
-import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.wr.service.AppUserDetailsService;
-import org.bocogop.wr.util.context.SessionUtil;
 import org.bocogop.wr.web.DatabaseDrivenPreAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,10 +74,6 @@ public class WebSecurityConfig extends AbstractSecurityConfig {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private PrecinctDAO precinctDAO;
-	@Autowired
-	private SessionUtil sessionUtil;
 	@Autowired
 	private AppUserDetailsService appUserDetailsService;
 

@@ -9,8 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.bocogop.wr.model.AppUser;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * Contains utility methods for manipulating dates as well as helpful formatting
@@ -22,90 +20,7 @@ import org.springframework.stereotype.Component;
  * @author Connor Barry
  * 
  */
-@Component
 public final class DateUtil {
-
-	@Value("${donationFiscalYearStartMMDD}")
-	private String fiscalYearStartMMDD;
-	@Value("${donationFiscalYearEndMMDD}")
-	private String fiscalYearEndMMDD;
-	@Value("${donationGracePeriod}")
-	private int gracePeriod;
-
-	public LocalDate getEarliestAcceptableDateEntryAsOfNow(ZoneId precinctTimeZone) {
-		LocalDate d = getCurrentFiscalYearStartDate(precinctTimeZone);
-		if (d.plusDays(gracePeriod).isAfter(LocalDate.now(precinctTimeZone)))
-			d = d.minusYears(1);
-		return d;
-	}
-
-	public LocalDate getCurrentFiscalYearStartDate(ZoneId precinctTimeZone) {
-		return getFiscalYearStartDateForDate(LocalDate.now(precinctTimeZone));
-	}
-
-	public LocalDate getPreviousFiscalYearStartDate(ZoneId precinctTimeZone) {
-		return getFiscalYearStartDateForDate(LocalDate.now(precinctTimeZone)).minusYears(1);
-	}
-
-	public LocalDate getCurrentFiscalYearEndDate(ZoneId precinctTimeZone) {
-		return getFiscalYearEndDateForDate(LocalDate.now(precinctTimeZone));
-	}
-
-	public LocalDate getPreviousFiscalYearEndDate(ZoneId precinctTimeZone) {
-		return getFiscalYearEndDateForDate(LocalDate.now(precinctTimeZone)).minusYears(1);
-	}
-
-	public LocalDate getPreviousFiscalYearEndDatePlusGracePeriod(ZoneId precinctTimeZone) {
-		return getPreviousFiscalYearEndDate(precinctTimeZone).plusDays(gracePeriod);
-	}
-
-	public LocalDate[] getStartAndEndDatesForFiscalYear(int year) {
-		String[] tokens = fiscalYearEndMMDD.split("/");
-		int month = Integer.parseInt(tokens[0]);
-		int day = Integer.parseInt(tokens[1]);
-		LocalDate endDate = LocalDate.of(year, month, day);
-		return new LocalDate[] { getFiscalYearStartDateForDate(endDate), endDate };
-	}
-
-	public LocalDate getFiscalYearStartDateForDate(LocalDate d) {
-		String[] tokens = fiscalYearStartMMDD.split("/");
-		int month = Integer.parseInt(tokens[0]);
-		int day = Integer.parseInt(tokens[1]);
-
-		LocalDate fiscalYearStartDate = d.withMonth(month).withDayOfMonth(day);
-		if (d.isBefore(fiscalYearStartDate))
-			fiscalYearStartDate = fiscalYearStartDate.minusYears(1);
-
-		return fiscalYearStartDate;
-	}
-
-	public LocalDate getFiscalYearEndDateForDate(LocalDate d) {
-		String[] tokens = fiscalYearEndMMDD.split("/");
-		int month = Integer.parseInt(tokens[0]);
-		int day = Integer.parseInt(tokens[1]);
-
-		LocalDate fiscalYearEndDate = d.withMonth(month).withDayOfMonth(day);
-		if (d.isAfter(fiscalYearEndDate))
-			fiscalYearEndDate = fiscalYearEndDate.plusYears(1);
-
-		return fiscalYearEndDate;
-	}
-
-	public int getCurrentFiscalYear(ZoneId precinctTimeZone) {
-		LocalDate d = getCurrentFiscalYearEndDate(precinctTimeZone);
-		return d.getYear();
-	}
-
-	public int[] getAllFiscalYears(ZoneId precinctTimeZone) {
-		int currentFiscalYear = getCurrentFiscalYear(precinctTimeZone);
-		int[] fiscalYears = new int[currentFiscalYear - 1995 + 1];
-
-		int j = 0;
-		for (int i = currentFiscalYear; i >= 1995; i--) {
-			fiscalYears[j++] = i;
-		}
-		return fiscalYears;
-	}
 
 	public static final String DATE_ONLY = "M/d/yyyy";
 	public static final DateTimeFormatter DATE_ONLY_FORMAT = DateTimeFormatter.ofPattern(DATE_ONLY);
@@ -202,21 +117,6 @@ public final class DateUtil {
 		if (date == null)
 			return null;
 		return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-	}
-
-	public boolean isDonationSummaryEditable(LocalDate donationDate, ZoneId precinctTimeZone) {
-		// current fiscal year donation
-		if (donationDate.isAfter(getCurrentFiscalYearStartDate(precinctTimeZone).minusDays(1)))
-			return true;
-
-		boolean isPreviousFiscalYearDonation = false;
-		// the previous fiscal year donation
-		if (donationDate.isAfter(getCurrentFiscalYearStartDate(precinctTimeZone).minusYears(1).minusDays(1))
-				&& donationDate.isBefore(getCurrentFiscalYearEndDate(precinctTimeZone).minusYears(1).plusDays(1)))
-			isPreviousFiscalYearDonation = true;
-
-		return isPreviousFiscalYearDonation
-				&& LocalDate.now().isBefore(getPreviousFiscalYearEndDatePlusGracePeriod(precinctTimeZone).plusDays(1));
 	}
 
 }

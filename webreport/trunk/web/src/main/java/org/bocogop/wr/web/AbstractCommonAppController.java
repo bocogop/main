@@ -20,9 +20,9 @@ import org.bocogop.wr.service.AppUserService;
 import org.bocogop.wr.service.PrecinctService;
 import org.bocogop.wr.service.email.EmailService;
 import org.bocogop.wr.service.voter.VoterService;
-import org.bocogop.wr.util.DateUtil;
 import org.bocogop.wr.util.SecurityUtil;
 import org.bocogop.wr.util.ServletUtil;
+import org.bocogop.wr.util.context.SessionUtil;
 import org.bocogop.wr.web.ajax.AjaxRequestHandler;
 import org.bocogop.wr.web.validation.WebValidationService;
 import org.slf4j.Logger;
@@ -82,9 +82,7 @@ public abstract class AbstractCommonAppController {
 	@Autowired
 	protected AjaxRequestHandler ajaxRequestHandler;
 	@Autowired
-	protected DateUtil dateUtil;
-	@Autowired
-	protected org.bocogop.wr.util.context.SessionUtil sessionUtil;
+	protected SessionUtil sessionUtil;
 	@Autowired
 	protected Environment env;
 	@Autowired

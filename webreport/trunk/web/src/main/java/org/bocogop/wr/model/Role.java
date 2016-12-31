@@ -36,8 +36,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @Entity
-@Table(name = "ROLE", schema = "CORE")
-@AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "ROLE_ID")) })
+@Table(name = "Role", schema = "Core")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = NONE, isGetterVisibility = NONE)
 @Immutable
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
@@ -113,7 +112,7 @@ public class Role extends AbstractLookup<Role, RoleType> implements GrantedAutho
 		}
 	}
 
-	@Column(name = "USED_AS_PERMISSION_IND")
+	@Column(name = "UsedAsPermissionInd")
 	@Type(type = "yes_no")
 	public boolean isUsedAsPermission() {
 		return usedAsPermission;

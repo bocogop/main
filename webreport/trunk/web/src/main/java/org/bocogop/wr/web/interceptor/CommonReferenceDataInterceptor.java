@@ -25,11 +25,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class CommonReferenceDataInterceptor extends AbstractReferenceDataInterceptor {
 	private static final Logger log = LoggerFactory.getLogger(AbstractReferenceDataInterceptor.class);
 
-	@Value("${solr.baseURL}")
-	private String solrBaseURL;
-	@Value("${session.staff.idleAfterSeconds}")
+	@Value("${session.idleAfterSeconds}")
 	private int sessionIdleAfterSeconds;
-	@Value("${session.staff.expirationSeconds}")
+	@Value("${session.expirationSeconds}")
 	private int sessionExpirationSeconds;
 
 	@Override
@@ -60,8 +58,6 @@ public class CommonReferenceDataInterceptor extends AbstractReferenceDataInterce
 		if (timeZone != null)
 			now = now.withZoneSameInstant(timeZone);
 		model.put("currentTime", now);
-
-		model.put("solrBaseURL", solrBaseURL);
 
 		/* Sensible default for consistency in JSP layer - CPB */
 		if (model.get(AbstractAppController.FORM_READ_ONLY) == null)

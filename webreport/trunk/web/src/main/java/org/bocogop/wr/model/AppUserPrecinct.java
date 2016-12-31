@@ -26,8 +26,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "APP_USER_PRECINCT", schema = "CORE")
-@AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "APP_USER_PRECINCT_ID")) })
+@Table(name = "AppUserPrecinct", schema = "Core")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = PUBLIC_ONLY, isGetterVisibility = PUBLIC_ONLY)
 public class AppUserPrecinct extends AbstractAuditedPersistent<AppUserPrecinct> {
 	private static final long serialVersionUID = 1L;
@@ -89,7 +88,7 @@ public class AppUserPrecinct extends AbstractAuditedPersistent<AppUserPrecinct> 
 
 	// ------------------------------------- Accessor Methods
 
-	@Column(name = "PRIMARY_PRECINCT_IND")
+	@Column(name = "PrimaryPrecinctInd")
 	@Type(type = "yes_no")
 	public boolean isPrimaryPrecinct() {
 		return primaryPrecinct;
@@ -100,7 +99,7 @@ public class AppUserPrecinct extends AbstractAuditedPersistent<AppUserPrecinct> 
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "APP_USER_ID", nullable = false)
+	@JoinColumn(name = "AppUserFK", nullable = false)
 	@JsonIgnore
 	public AppUser getAppUser() {
 		return appUser;
@@ -111,7 +110,7 @@ public class AppUserPrecinct extends AbstractAuditedPersistent<AppUserPrecinct> 
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "PRECINCT_ID", updatable = false)
+	@JoinColumn(name = "PrecinctFK", updatable = false)
 	@BatchSize(size = 500)
 	public Precinct getPrecinct() {
 		return precinct;

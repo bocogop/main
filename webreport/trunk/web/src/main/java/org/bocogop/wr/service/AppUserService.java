@@ -10,9 +10,6 @@ import org.bocogop.wr.service.validation.ServiceValidationException;
 
 public interface AppUserService {
 
-	int updateFieldsWithoutVersionCheck(long appUserID, boolean incrementVersion, Long lastVisitedDutyStationNumber,
-			boolean setAccountLockDate, ZonedDateTime accountLockDate, Integer failedLoginCount);
-
 	AppUser saveOrUpdate(AppUser appUser);
 
 	/* For application-internal code only */

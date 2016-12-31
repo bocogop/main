@@ -31,8 +31,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @Entity
-@Table(name = "PERMISSION", schema = "CORE")
-@AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "PERMISSION_ID")) })
+@Table(name = "Permission", schema = "Core")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = NONE, isGetterVisibility = NONE)
 @Immutable
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)

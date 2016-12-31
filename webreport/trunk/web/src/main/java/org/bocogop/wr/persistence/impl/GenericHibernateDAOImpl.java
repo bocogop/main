@@ -16,19 +16,14 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.bocogop.wr.model.core.IdentifiedPersistent;
 import org.bocogop.wr.persistence.dao.CustomizableAppDAO;
 import org.bocogop.wr.persistence.queryCustomization.QueryCustomization;
-import org.bocogop.wr.util.DateUtil;
 import org.bocogop.wr.util.TypeUtil;
 import org.bocogop.wr.util.cache.CacheUtil;
 import org.hibernate.jpa.QueryHints;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Iterables;
 
 public abstract class GenericHibernateDAOImpl<T extends IdentifiedPersistent> extends AbstractAppDAOImpl<T>
 		implements CustomizableAppDAO<T> {
-
-	@Autowired
-	protected DateUtil dateUtil;
 
 	@SuppressWarnings("unchecked")
 	public GenericHibernateDAOImpl() {

@@ -9,7 +9,6 @@ import static org.bocogop.wr.persistence.dao.voter.demographics.VolDemoColumn.UN
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -59,9 +58,6 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 			params.put(name, val);
 		}
 	}
-
-	@Autowired
-	private DateUtil dateUtil;
 
 	@Override
 	public List<VoterDemographics> findDemographics(VolDemoSearchParams searchParams, int start, int length) {
@@ -320,9 +316,6 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 				"DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) <= 60");
 		processAdvancedOption(sb, "lastVolOptions=have, haveLastVolOption=haveLastVolLast90",
 				"DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) <= 90");
-		processAdvancedOption(sb, "lastVolOptions=have, haveLastVolOption=haveLastVolThisFiscalYear",
-				"svh.LastVoteredDate >= :fyStart", "fyStart",
-				dateUtil.getCurrentFiscalYearStartDate(ZoneId.systemDefault()));
 		String haveLastVolAfter = searchParams.restrictions.get("haveLastVolAfter");
 		if (StringUtils.isNotBlank(haveLastVolAfter))
 			processAdvancedOption(sb, "lastVolOptions=have, haveLastVolOption=haveLastVolAfter",
@@ -335,9 +328,6 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 				"svh.LastVoteredDate is null or DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) >= 60");
 		processAdvancedOption(sb, "lastVolOptions=havent, haventLastVolOption=haventLastVolIn90",
 				"svh.LastVoteredDate is null or DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) >= 90");
-		processAdvancedOption(sb, "lastVolOptions=havent, haventLastVolOption=haventLastVolInYear",
-				"svh.LastVoteredDate is null or svh.LastVoteredDate < :fyStart", "fyStart",
-				dateUtil.getCurrentFiscalYearStartDate(ZoneId.systemDefault()));
 		processAdvancedOption(sb, "lastVolOptions=havent, haventLastVolOption=haventLastVolEver",
 				"svh.LastVoteredDate is null");
 		String haventlastVolSince = searchParams.restrictions.get("haventLastVolSince");
@@ -369,11 +359,6 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 			processAdvancedOption(sb, "statusDateOptions=between",
 					"v.StatusDate >= :statusDateAfter and v.StatusDate <= :statusDateBefore", newParams);
 		}
-
-		processAdvancedOption(sb, "statusDateOptions=within2FY", "v.StatusDate >= :statusDateAfter2FY",
-				"statusDateAfter2FY", dateUtil.getPreviousFiscalYearStartDate(ZoneId.systemDefault()));
-		processAdvancedOption(sb, "statusDateOptions=within1FY", "v.StatusDate >= :statusDateAfter1FY",
-				"statusDateAfter1FY", dateUtil.getCurrentFiscalYearStartDate(ZoneId.systemDefault()));
 
 	}
 

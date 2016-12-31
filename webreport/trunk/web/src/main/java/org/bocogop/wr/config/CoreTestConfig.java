@@ -10,9 +10,10 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ComponentScan(basePackages = {
-		"org.bocogop.shared", }, excludeFilters = @ComponentScan.Filter(type = REGEX, pattern = { "org.bocogop.shared.web.*" }) )
+		"org.bocogop.shared", }, excludeFilters = @ComponentScan.Filter(type = REGEX, pattern = {
+				"org.bocogop.shared.web.*" }))
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@Import({ CoreTestDataConfig.class, CoreTestSecurityConfig.class, LdapConfig.class })
+@Import({ CoreTestDataConfig.class, CoreTestSecurityConfig.class })
 @PropertySource("file:///${AppPropertiesDir:" + AbstractConfig.DEFAULT_APP_PROPERTIES_DIR + "}/app.properties")
 @PropertySource("file:///${AppPropertiesDir:" + AbstractConfig.DEFAULT_APP_PROPERTIES_DIR + "}/version.properties")
 public class CoreTestConfig extends AbstractConfig {

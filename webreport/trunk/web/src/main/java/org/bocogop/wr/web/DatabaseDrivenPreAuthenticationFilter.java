@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.bocogop.wr.model.AppUser;
-import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.wr.service.AppUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,14 +30,10 @@ public class DatabaseDrivenPreAuthenticationFilter extends AbstractPreAuthentica
 
 	@Value("${app.production:false}")
 	private boolean isProduction;
-	@Value("${app.preauth.username:_none}")
+	@Value("${bocogop.wr.preauth.username:_none}")
 	private String preauthUsername;
-	@Value("${app.preauth.stationNumber:_none}")
-	private String preauthStationNumber;
 	@Autowired
 	private AppUserDetailsService appUserDetailsService;
-	@Autowired
-	private PrecinctDAO precinctDAO;
 
 	@Autowired
 	private AuthenticationCustomizations authenticationCustomizations;
@@ -83,8 +78,7 @@ public class DatabaseDrivenPreAuthenticationFilter extends AbstractPreAuthentica
 	}
 
 	private boolean isRunPreauth() {
-		return !preauthDisabled && !isProduction && !"_none".equals(preauthUsername)
-				&& !"_none".equals(preauthStationNumber);
+		return !preauthDisabled && !isProduction && !"_none".equals(preauthUsername);
 	}
 
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,

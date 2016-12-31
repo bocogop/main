@@ -28,8 +28,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "APP_USER_GLOBAL_ROLE", schema = "CORE")
-@AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "APP_USER_GLOBAL_ROLE_ID") ) })
+@Table(name = "AppUserGlobalRole", schema = "Core")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = PUBLIC_ONLY, isGetterVisibility = PUBLIC_ONLY)
 public class AppUserGlobalRole extends AbstractAuditedPersistent<AppUserGlobalRole> implements LookupContainer<Role> {
 	private static final long serialVersionUID = 1L;
@@ -91,7 +90,7 @@ public class AppUserGlobalRole extends AbstractAuditedPersistent<AppUserGlobalRo
 	// -------------------------------------- Accessor Methods
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "APP_USER_ID", nullable = false)
+	@JoinColumn(name = "AppUserFK", nullable = false)
 	@JsonIgnore
 	public AppUser getAppUser() {
 		return appUser;
@@ -102,7 +101,7 @@ public class AppUserGlobalRole extends AbstractAuditedPersistent<AppUserGlobalRo
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ROLE_ID", nullable = false)
+	@JoinColumn(name = "RoleFK", nullable = false)
 	@BatchSize(size = 500)
 	public Role getRole() {
 		return role;

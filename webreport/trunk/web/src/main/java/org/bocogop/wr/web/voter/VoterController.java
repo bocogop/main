@@ -2,7 +2,6 @@ package org.bocogop.wr.web.voter;
 
 import static org.bocogop.wr.util.SecurityUtil.hasAllPermissionsAtCurrentPrecinct;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +21,8 @@ import org.bocogop.wr.model.precinct.Precinct;
 import org.bocogop.wr.model.precinct.Precinct.PrecinctView;
 import org.bocogop.wr.model.voter.Voter;
 import org.bocogop.wr.model.voter.Voter.VoterView;
-import org.bocogop.wr.service.validation.ServiceValidationException;
 import org.bocogop.wr.model.voter.VoterHistoryEntry;
+import org.bocogop.wr.service.validation.ServiceValidationException;
 import org.bocogop.wr.util.DateUtil;
 import org.bocogop.wr.util.StringUtil;
 import org.bocogop.wr.web.AbstractAppController;
@@ -156,9 +155,6 @@ public class VoterController extends AbstractAppController {
 		 * Will be overwritten during the saveOrUpdate; this prevents the UI
 		 * from displaying this initially - CPB
 		 */
-		voter.setMealsEligible(1);
-		voter.setStatusDate(LocalDate.now());
-
 		VoterSearchParams params = (VoterSearchParams) request.getSession().getAttribute(VOTER_SEARCH_PARAMS);
 
 		if (params != null) {

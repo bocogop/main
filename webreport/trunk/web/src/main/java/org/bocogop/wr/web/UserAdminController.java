@@ -21,15 +21,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.bocogop.wr.model.AppUser;
+import org.bocogop.wr.model.AppUser.AppUserView;
 import org.bocogop.wr.model.AppUserGlobalRole;
 import org.bocogop.wr.model.AppUserPrecinct;
-import org.bocogop.wr.model.Role;
-import org.bocogop.wr.model.AppUser.AppUserView;
 import org.bocogop.wr.model.Permission.PermissionType;
+import org.bocogop.wr.model.Role;
 import org.bocogop.wr.model.precinct.Precinct;
 import org.bocogop.wr.persistence.AppUserDAO;
-import org.bocogop.wr.persistence.AppUserPrecinctDAO;
 import org.bocogop.wr.persistence.AppUserDAO.QuickSearchResult;
+import org.bocogop.wr.persistence.AppUserPrecinctDAO;
 import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.wr.persistence.lookup.RoleDAO;
 import org.bocogop.wr.service.AppUserService;
@@ -42,7 +42,6 @@ import org.bocogop.wr.util.TimeZoneUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
@@ -76,8 +75,6 @@ public class UserAdminController {
 	private UserAdminCustomizations userAdminCustomizations;
 	@Autowired
 	private CoreAjaxRequestHandler coreAjaxRequestHandler;
-	@Value("${ldapIgnoreConnectivityErrors}")
-	private boolean ignoreConnectivityErrors;
 
 	@ExceptionHandler(Throwable.class)
 	public ModelAndView processError(Throwable ex, HttpServletRequest request, HttpServletResponse response) {

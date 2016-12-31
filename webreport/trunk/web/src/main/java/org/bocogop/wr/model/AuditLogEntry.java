@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
  * Represents an instance where a user called an audited method.
  */
 @Entity
-@Table(name = "AUDIT_LOG", schema = "CORE")
-@AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "AUDIT_LOG_ID") ) })
+@Table(name = "AuditLog", schema = "Core")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = NONE, isGetterVisibility = NONE)
 public class AuditLogEntry extends AbstractAuditedPersistent<AuditLogEntry>implements Comparable<AuditLogEntry> {
 	private static final long serialVersionUID = -1207845227302313398L;
@@ -61,7 +60,7 @@ public class AuditLogEntry extends AbstractAuditedPersistent<AuditLogEntry>imple
 
 	// ---------------------------------------- Accessor Methods
 
-	@Column(name = "APP_USER_ID", nullable = false)
+	@Column(name = "AppUserFK", nullable = false)
 	public String getAppUserId() {
 		return appUserId;
 	}
@@ -70,7 +69,7 @@ public class AuditLogEntry extends AbstractAuditedPersistent<AuditLogEntry>imple
 		this.appUserId = appUserId;
 	}
 
-	@Column(name = "EXECUTION_DATE", nullable = false)
+	@Column(name = "ExecutionDate", nullable = false)
 	public ZonedDateTime getDate() {
 		return date;
 	}
@@ -79,7 +78,7 @@ public class AuditLogEntry extends AbstractAuditedPersistent<AuditLogEntry>imple
 		this.date = date;
 	}
 
-	@Column(name = "METHOD_NAME", length = 100, nullable = false)
+	@Column(name = "MethodName", length = 100, nullable = false)
 	public String getMethod() {
 		return method;
 	}
@@ -88,7 +87,7 @@ public class AuditLogEntry extends AbstractAuditedPersistent<AuditLogEntry>imple
 		this.method = method;
 	}
 
-	@Column(name = "PARAMETER_VALUES")
+	@Column(name = "ParameterValues")
 	public String getParamValues() {
 		return paramValues;
 	}

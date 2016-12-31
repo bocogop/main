@@ -25,8 +25,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 				"org.bocogop\\..*\\.config\\..*", "org.bocogop\\..*\\.web\\..*" }))
 @EnableAsync(proxyTargetClass = true)
 @EnableMBeanExport
-@Import({ AOPConfig.class, CacheConfig.class, DataConfig.class, EmailConfig.class, LdapConfig.class,
-		ScheduledTasksConfig.class, TemplateConfig.class, WebSecurityConfig.class })
+@Import({ AOPConfig.class, CacheConfig.class, DataConfig.class, EmailConfig.class, TemplateConfig.class,
+		WebSecurityConfig.class })
 public class WebAppConfig extends AbstractConfig {
 
 	public static final String DEFAULT_WEB_MESSAGES_DIR = DEFAULT_BASEDIR + "/web/src/main/resources";

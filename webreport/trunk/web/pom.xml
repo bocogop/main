@@ -42,15 +42,14 @@
 			<version>1.0</version>
 			<type>pom</type>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${org.springframework.security.version}</version>
+		</dependency>
 
 		<!-- ========================================== Provided -->
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-			<scope>provided</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
@@ -79,11 +78,12 @@
 			<version>1.4.7</version>
 			<scope>provided</scope>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-taglibs</artifactId>
-			<version>${org.springframework.security.version}</version>
+			<groupId>microsoft</groupId>
+			<artifactId>sqljdbc</artifactId>
+			<version>4.2</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- ========================================== Runtime -->
@@ -108,13 +108,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>microsoft</groupId>
-			<artifactId>sqljdbc</artifactId>
-			<version>4.2</version>
-			<scope>provided</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -153,12 +147,14 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<version>${org.springframework.security.version}</version>
+			<scope>test</scope>
 		</dependency>
 		
 	</dependencies>

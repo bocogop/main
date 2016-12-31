@@ -129,10 +129,6 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	@Transient
 	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
 	public String getAddressMultilineDisplay() {
-		return getAddressDisplay();
-	}
-
-	private String getAddressDisplay() {
 		return StringUtil.getAddressDisplay(getAddress(), null, null, getCity(), getState(), getZip(), "\n");
 	}
 

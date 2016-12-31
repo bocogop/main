@@ -29,7 +29,7 @@
 		<div class="login-input-group">
 			<div class="input-group input-sm">
 				<label class="input-group-addon" for="username"><i
-					class="fa fa-user">VA Username:</i></label> <input type="text"
+					class="fa fa-user">Username:</i></label> <input type="text"
 					class="form-control" id="username" name="username"
 					placeholder="Enter Username" required>
 			</div>

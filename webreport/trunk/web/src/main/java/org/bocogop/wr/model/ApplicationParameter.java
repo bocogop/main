@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bocogop.wr.model.core.AbstractAuditedVersionedPersistent;
 
 @Entity
-@Table(name = "APP_PARAMETER", schema = "CORE")
+@Table(name = "AppParameter", schema = "Core")
 @AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "APP_PARAMETER_ID") ) })
 public class ApplicationParameter extends AbstractAuditedVersionedPersistent<ApplicationParameter> {
 	private static final long serialVersionUID = 6904844123870655771L;
@@ -37,7 +37,6 @@ public class ApplicationParameter extends AbstractAuditedVersionedPersistent<App
 
 	// -------------------------------------- Accessor Methods
 
-	@Column(name = "PARAMETER_NAME")
 	public String getParameterName() {
 		return parameterName;
 	}
@@ -46,7 +45,6 @@ public class ApplicationParameter extends AbstractAuditedVersionedPersistent<App
 		this.parameterName = parameterName;
 	}
 
-	@Column(name = "PARAMETER_VALUE")
 	public String getParameterValue() {
 		return parameterValue;
 	}

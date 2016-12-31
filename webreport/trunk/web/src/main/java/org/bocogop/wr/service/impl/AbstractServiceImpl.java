@@ -46,8 +46,6 @@ public class AbstractServiceImpl {
 	@Autowired
 	protected SessionUtil sessionUtil;
 	@Autowired
-	protected DateUtil dateUtil;
-	@Autowired
 	protected EmailService emailService;
 	@Autowired
 	protected MessageSource messageSource;

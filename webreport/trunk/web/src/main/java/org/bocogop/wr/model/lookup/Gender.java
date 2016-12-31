@@ -53,7 +53,7 @@ public class Gender extends AbstractIdentifiedPersistent<Gender> implements Comp
 
 	// -------------------------------- Accessor Methods
 
-	@Column(name = "NAME", length = 100)
+	@Column(length = 100)
 	@JsonProperty
 	public String getName() {
 		return name;
@@ -63,7 +63,7 @@ public class Gender extends AbstractIdentifiedPersistent<Gender> implements Comp
 		this.name = name;
 	}
 
-	@Column(name = "CODE", length = 4)
+	@Column(length = 4)
 	@JsonProperty
 	public String getCode() {
 		return code;

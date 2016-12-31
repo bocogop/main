@@ -1,174 +1,175 @@
 -- drop tables if needed - CPB
 /*
+if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'AppParameter' AND TABLE_SCHEMA = 'Core') drop table dbo.AppParameter;
+if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'AppUserGlobalRole' AND TABLE_SCHEMA = 'Core') drop table dbo.AppUserGlobalRole;
+if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'AppUserPreferences' AND TABLE_SCHEMA = 'Core') drop table dbo.AppUserPreferences;
+if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'AuditLog' AND TABLE_SCHEMA = 'Core') drop table dbo.AuditLog;
+if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'RolePermission' AND TABLE_SCHEMA = 'Core') drop table dbo.RolePermission;
+if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Role' AND TABLE_SCHEMA = 'Core') drop table dbo.Role;
+if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Permission' AND TABLE_SCHEMA = 'Core') drop table dbo.Permission;
+if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'AppUser' AND TABLE_SCHEMA = 'Core') drop table dbo.AppUser;
+if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Template' AND TABLE_SCHEMA = 'Core') drop table dbo.Template;
+
 if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Voter' AND TABLE_SCHEMA = 'dbo') drop table dbo.Voter;
 if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Gender' AND TABLE_SCHEMA = 'dbo') drop table dbo.Gender;
 if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Party' AND TABLE_SCHEMA = 'dbo') drop table dbo.Party;
 if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Precinct' AND TABLE_SCHEMA = 'dbo') drop table dbo.Precinct;
 */
 
-CREATE TABLE [CORE].[APP_PARAMETER](
-	[APP_PARAMETER_ID] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
-	[PARAMETER_NAME] [varchar](80) NOT NULL,
-	[PARAMETER_VALUE] [varchar](255) NOT NULL,
-	[CREATED_BY] [varchar](30) NULL,
-	[CREATED_DATE] [datetime] NULL,
-	[MODIFIED_BY] [varchar](30) NULL,
-	[MODIFIED_DATE] [datetime] NULL,
+CREATE TABLE [Core].[AppParameter](
+	[Id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[ParameterName] [varchar](80) NOT NULL,
+	[ParameterValue] [varchar](255) NOT NULL,
+	[CreatedBy] [varchar](30) NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedBy] [varchar](30) NULL,
+	[ModifiedDate] [datetime] NULL,
 	[Ver] [numeric](10, 0) NOT NULL,
- CONSTRAINT [PK__APP_PARAMETER] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_APP_PARAMETER] PRIMARY KEY CLUSTERED 
 (
-	[APP_PARAMETER_ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO
 
-CREATE TABLE [CORE].[APP_USER](
-	[APP_USER_ID] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
-	[USERNAME] [varchar](20) NULL,
-	[PASSWORD_HASH] [varchar](250) NULL,
-	[TIME_ZONE] [varchar](50) NULL,
-	[FIRST_NAME] [varchar](50) NULL,
-	[MIDDLE_NAME] [varchar](50) NULL,
-	[LAST_NAME] [varchar](50) NULL,
-	[DESCRIPTION] [varchar](255) NULL,
-	[PHONE] [varchar](30) NULL,
-	[EMAIL] [varchar](255) NULL,
-	[LAST_VISITED_PRECINCT_ID] [numeric](18, 0) NULL,
-	[ENABLED_IND] [char](1) NOT NULL,
-	[CREATED_BY] [varchar](30) NULL,
-	[CREATED_DATE] [datetime] NULL,
-	[MODIFIED_BY] [varchar](30) NULL,
-	[MODIFIED_DATE] [datetime] NULL,
+CREATE TABLE [Core].[AppUser](
+	[Id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[Username] [varchar](20) NULL,
+	[PasswordHash] [varchar](250) NULL,
+	[TimeZone] [varchar](50) NULL,
+	[FirstName] [varchar](50) NULL,
+	[MiddleName] [varchar](50) NULL,
+	[LastName] [varchar](50) NULL,
+	[Description] [varchar](255) NULL,
+	[Phone] [varchar](30) NULL,
+	[Email] [varchar](255) NULL,
+	[EnabledInd] [char](1) NOT NULL,
+	[CreatedBy] [varchar](30) NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedBy] [varchar](30) NULL,
+	[ModifiedDate] [datetime] NULL,
 	[Ver] [numeric](10, 0) NOT NULL,
  CONSTRAINT [PK__APP_USER] PRIMARY KEY CLUSTERED 
 (
-	[APP_USER_ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO
 
-CREATE TABLE [CORE].[APP_USER_GLOBAL_ROLE](
-	[APP_USER_GLOBAL_ROLE_ID] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
-	[APP_USER_ID] [numeric](18, 0) NOT NULL,
-	[ROLE_ID] [numeric](18, 0) NOT NULL,
-	[CREATED_BY] [varchar](30) NULL,
-	[CREATED_DATE] [datetime] NULL,
-	[MODIFIED_BY] [varchar](30) NULL,
-	[MODIFIED_DATE] [datetime] NULL,
- CONSTRAINT [PK__APP_USER_GLOBAL_ROLE] PRIMARY KEY CLUSTERED 
+CREATE TABLE [Core].[AppUserGlobalRole](
+	[Id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[AppUserFK] [numeric](18, 0) NOT NULL,
+	[RoleFK] [numeric](18, 0) NOT NULL,
+	[CreatedBy] [varchar](30) NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedBy] [varchar](30) NULL,
+	[ModifiedDate] [datetime] NULL,
+ CONSTRAINT [PK_AppUserGlobalRole] PRIMARY KEY CLUSTERED 
 (
-	[APP_USER_GLOBAL_ROLE_ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO
 
-CREATE TABLE [CORE].[APP_USER_PREFERENCES](
-	[ID] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
-	[APP_USER_ID] [numeric](18, 0) NOT NULL,
+CREATE TABLE [Core].[AppUserPreferences](
+	[Id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[AppUserFK] [numeric](18, 0) NOT NULL,
 	[Ver] [numeric](10, 0) NOT NULL,
-	[CREATED_BY] [varchar](30) NOT NULL,
-	[CREATED_DATE] [datetime] NOT NULL,
-	[MODIFIED_BY] [varchar](30) NOT NULL,
-	[MODIFIED_DATE] [datetime] NOT NULL,
- CONSTRAINT [XPK_APP_USER_PREFERENCES] PRIMARY KEY CLUSTERED 
+	[CreatedBy] [varchar](30) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[ModifiedBy] [varchar](30) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL,
+ CONSTRAINT [XPK_AppUserPreferences] PRIMARY KEY CLUSTERED 
 (
-	[ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
 ) ON [PRIMARY]
 
 GO
 
-CREATE TABLE [CORE].[AUDIT_LOG](
-	[ID] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
-	[APP_USER_ID] [varchar](512) NOT NULL,
-	[EXECUTION_DATE] [datetime] NOT NULL,
-	[METHOD_NAME] [varchar](512) NOT NULL,
-	[PARAMETER_VALUES] [varchar](max) NULL,
-	[CREATED_BY] [varchar](30) NOT NULL,
-	[CREATED_DATE] [datetime] NOT NULL,
-	[MODIFIED_BY] [varchar](30) NOT NULL,
-	[MODIFIED_DATE] [datetime] NOT NULL,
- CONSTRAINT [XPKAUDIT_LOG] PRIMARY KEY CLUSTERED 
+CREATE TABLE [Core].[AuditLog](
+	[Id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[AppUserFK] [varchar](512) NOT NULL,
+	[ExecutionDate] [datetime] NOT NULL,
+	[MethodName] [varchar](512) NOT NULL,
+	[ParameterValues] [varchar](max) NULL,
+	[CreatedBy] [varchar](30) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[ModifiedBy] [varchar](30) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL,
+ CONSTRAINT [XPK_AuditLog] PRIMARY KEY CLUSTERED 
 (
-	[ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-
 GO
 
-CREATE TABLE [CORE].[PERMISSION](
-	[PERMISSION_ID] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
-	[NAME] [varchar](80) NOT NULL,
-	[DESCRIPTION] [varchar](255) NOT NULL,
-	[SORT_ORDER] [numeric](6, 0) NULL,
-	[EFFECTIVE_DATE] [datetime] NOT NULL,
-	[EXPIRATION_DATE] [datetime] NULL,
-	[CREATED_BY] [varchar](30) NULL,
-	[CREATED_DATE] [datetime] NULL,
-	[MODIFIED_BY] [varchar](30) NULL,
-	[MODIFIED_DATE] [datetime] NULL,
- CONSTRAINT [PK__PERMISSION] PRIMARY KEY CLUSTERED 
+CREATE TABLE [Core].[Permission](
+	[Id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](80) NOT NULL,
+	[Description] [varchar](255) NOT NULL,
+	[SortOrder] [numeric](6, 0) NULL,
+	[EffectiveDate] [datetime] NOT NULL,
+	[ExpirationDate] [datetime] NULL,
+	[CreatedBy] [varchar](30) NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedBy] [varchar](30) NULL,
+	[ModifiedDate] [datetime] NULL,
+ CONSTRAINT [PK_Permission] PRIMARY KEY CLUSTERED 
 (
-	[PERMISSION_ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO
 
-CREATE TABLE [CORE].[ROLE](
-	[ROLE_ID] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
-	[NAME] [varchar](80) NOT NULL,
-	[DESCRIPTION] [varchar](255) NOT NULL,
-	[SORT_ORDER] [numeric](6, 0) NULL,
-	[EFFECTIVE_DATE] [datetime] NOT NULL,
-	[EXPIRATION_DATE] [datetime] NULL,
-	[USED_AS_PERMISSION_IND] [char](1) NOT NULL,
-	[CREATED_BY] [varchar](30) NULL,
-	[CREATED_DATE] [datetime] NULL,
-	[MODIFIED_BY] [varchar](30) NULL,
-	[MODIFIED_DATE] [datetime] NULL,
- CONSTRAINT [PK__ROLE] PRIMARY KEY CLUSTERED 
+CREATE TABLE [Core].[Role](
+	[Id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](80) NOT NULL,
+	[Description] [varchar](255) NOT NULL,
+	[SortOrder] [numeric](6, 0) NULL,
+	[EffectiveDate] [datetime] NOT NULL,
+	[ExpirationDate] [datetime] NULL,
+	[UsedAsPermissionInd] [char](1) NOT NULL,
+	[CreatedBy] [varchar](30) NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedBy] [varchar](30) NULL,
+	[ModifiedDate] [datetime] NULL,
+ CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
 (
-	[ROLE_ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO
 
-CREATE TABLE [CORE].[ROLE_PERMISSION](
-	[ROLE_PERMISSION_ID] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
-	[ROLE_ID] [numeric](18, 0) NOT NULL,
-	[PERMISSION_ID] [numeric](18, 0) NOT NULL,
-	[CREATED_BY] [varchar](30) NULL,
-	[CREATED_DATE] [datetime] NULL,
-	[MODIFIED_BY] [varchar](30) NULL,
-	[MODIFIED_DATE] [datetime] NULL,
- CONSTRAINT [PK__ROLE_PERMISSION] PRIMARY KEY CLUSTERED 
+CREATE TABLE [Core].[RolePermission](
+	[Id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[RoleFK] [numeric](18, 0) NOT NULL,
+	[PermissionFK] [numeric](18, 0) NOT NULL,
+	[CreatedBy] [varchar](30) NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedBy] [varchar](30) NULL,
+	[ModifiedDate] [datetime] NULL,
+ CONSTRAINT [PK_RolePermission] PRIMARY KEY CLUSTERED 
 (
-	[ROLE_PERMISSION_ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO
 
-CREATE TABLE [CORE].[STD_TEMPLATE](
-	[STD_TEMPLATE_ID] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
-	[TEMPLATE_NAME] [varchar](40) NOT NULL,
-	[TEMPLATE_BODY] [varbinary](max) NOT NULL,
-	[CREATED_BY] [varchar](30) NOT NULL,
-	[CREATED_DATE] [datetime] NOT NULL,
-	[MODIFIED_BY] [varchar](30) NOT NULL,
-	[MODIFIED_DATE] [datetime] NOT NULL,
+CREATE TABLE [Core].[Template](
+	[Id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[TemplateName] [varchar](40) NOT NULL,
+	[TemplateBody] [varbinary](max) NOT NULL,
+	[CreatedBy] [varchar](30) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[ModifiedBy] [varchar](30) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL,
 	[Ver] [numeric](10, 0) NOT NULL,
- CONSTRAINT [XPKPCM_STD_TEMPLATE] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [XPK_Template] PRIMARY KEY CLUSTERED 
 (
-	[STD_TEMPLATE_ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-
 GO
 
 create table dbo.Precinct(
@@ -325,6 +326,56 @@ GO
 
 ----------------------------------------- Constraints
 
+ALTER TABLE [Core].[AppUser] ADD  DEFAULT ('N') FOR [EnabledInd]
+GO
+
+ALTER TABLE [Core].[AppUser] ADD  DEFAULT ((0)) FOR [Ver]
+GO
+
+ALTER TABLE [Core].[AppUserGlobalRole]  WITH CHECK ADD  CONSTRAINT [FK_AppUserGlobalRole_AppUser] FOREIGN KEY([AppUserFK])
+REFERENCES [Core].[AppUser] ([Id])
+GO
+
+ALTER TABLE [Core].[AppUserGlobalRole] CHECK CONSTRAINT [FK_AppUserGlobalRole_AppUser]
+GO
+
+ALTER TABLE [Core].[AppUserGlobalRole]  WITH CHECK ADD  CONSTRAINT [FK_AppUserGlobalRole_Role] FOREIGN KEY([RoleFK])
+REFERENCES [Core].[Role] ([Id])
+GO
+
+ALTER TABLE [Core].[AppUserGlobalRole] CHECK CONSTRAINT [FK_AppUserGlobalRole_Role]
+GO
+
+ALTER TABLE [Core].[AppUserPreferences] ADD  CONSTRAINT [DF_APP_USER_PREFERENCES_Ver]  DEFAULT ((0)) FOR [Ver]
+GO
+
+ALTER TABLE [Core].[AppUserPreferences]  WITH NOCHECK ADD  CONSTRAINT [FK_AppUserPref_AppUser] FOREIGN KEY([AppUserFK])
+REFERENCES [Core].[AppUser] ([Id])
+GO
+
+ALTER TABLE [Core].[AppUserPreferences] CHECK CONSTRAINT [FK_AppUserPref_AppUser]
+GO
+
+ALTER TABLE [Core].[Role] ADD  DEFAULT ('N') FOR [UsedAsPermissionInd]
+GO
+
+ALTER TABLE [Core].[RolePermission]  WITH CHECK ADD  CONSTRAINT [FK_RolePermission_Permission] FOREIGN KEY([PermissionFK])
+REFERENCES [Core].[Permission] ([Id])
+GO
+
+ALTER TABLE [Core].[RolePermission] CHECK CONSTRAINT [FK_RolePermission_Permission]
+GO
+
+ALTER TABLE [Core].[RolePermission]  WITH CHECK ADD  CONSTRAINT [FK_RolePermission_Role] FOREIGN KEY([RoleFK])
+REFERENCES [Core].[Role] ([Id])
+GO
+
+ALTER TABLE [Core].[RolePermission] CHECK CONSTRAINT [FK_RolePermission_Role]
+GO
+
+ALTER TABLE [Core].[Template] ADD CONSTRAINT [DF_Template_Ver]  DEFAULT ((0)) FOR [Ver]
+GO
+
 ALTER TABLE [dbo].[Voter] WITH CHECK ADD CONSTRAINT [FK_Voter_Party] FOREIGN KEY (PartyFK) REFERENCES [dbo].Party([Id]);
 ALTER TABLE [dbo].[Voter] CHECK CONSTRAINT [FK_Voter_Party];
 
@@ -333,56 +384,6 @@ ALTER TABLE [dbo].[Voter] CHECK CONSTRAINT [FK_Voter_Gender];
 
 ALTER TABLE [dbo].[Voter] WITH CHECK ADD CONSTRAINT [FK_Voter_Precinct] FOREIGN KEY (PrecinctFK) REFERENCES [dbo].Precinct([Id]);
 ALTER TABLE [dbo].[Voter] CHECK CONSTRAINT [FK_Voter_Precinct];
-
-ALTER TABLE [CORE].[APP_USER] ADD  DEFAULT ('N') FOR [ENABLED_IND]
-GO
-
-ALTER TABLE [CORE].[APP_USER] ADD  DEFAULT ((0)) FOR [Ver]
-GO
-
-ALTER TABLE [CORE].[APP_USER_GLOBAL_ROLE]  WITH CHECK ADD  CONSTRAINT [FK_AppUserGlobalRole_AppUser] FOREIGN KEY([APP_USER_ID])
-REFERENCES [CORE].[APP_USER] ([APP_USER_ID])
-GO
-
-ALTER TABLE [CORE].[APP_USER_GLOBAL_ROLE] CHECK CONSTRAINT [FK_AppUserGlobalRole_AppUser]
-GO
-
-ALTER TABLE [CORE].[APP_USER_GLOBAL_ROLE]  WITH CHECK ADD  CONSTRAINT [FK_AppUserGlobalRole_Role] FOREIGN KEY([ROLE_ID])
-REFERENCES [CORE].[ROLE] ([ROLE_ID])
-GO
-
-ALTER TABLE [CORE].[APP_USER_GLOBAL_ROLE] CHECK CONSTRAINT [FK_AppUserGlobalRole_Role]
-GO
-
-ALTER TABLE [CORE].[APP_USER_PREFERENCES] ADD  CONSTRAINT [DF_APP_USER_PREFERENCES_Ver]  DEFAULT ((0)) FOR [Ver]
-GO
-
-ALTER TABLE [CORE].[APP_USER_PREFERENCES]  WITH NOCHECK ADD  CONSTRAINT [FK_AppUserPref_AppUser] FOREIGN KEY([APP_USER_ID])
-REFERENCES [CORE].[APP_USER] ([APP_USER_ID])
-GO
-
-ALTER TABLE [CORE].[APP_USER_PREFERENCES] CHECK CONSTRAINT [FK_AppUserPref_AppUser]
-GO
-
-ALTER TABLE [CORE].[ROLE] ADD  DEFAULT ('N') FOR [USED_AS_PERMISSION_IND]
-GO
-
-ALTER TABLE [CORE].[ROLE_PERMISSION]  WITH CHECK ADD  CONSTRAINT [FK_RolePermission_Permission] FOREIGN KEY([PERMISSION_ID])
-REFERENCES [CORE].[PERMISSION] ([PERMISSION_ID])
-GO
-
-ALTER TABLE [CORE].[ROLE_PERMISSION] CHECK CONSTRAINT [FK_RolePermission_Permission]
-GO
-
-ALTER TABLE [CORE].[ROLE_PERMISSION]  WITH CHECK ADD  CONSTRAINT [FK_RolePermission_Role] FOREIGN KEY([ROLE_ID])
-REFERENCES [CORE].[ROLE] ([ROLE_ID])
-GO
-
-ALTER TABLE [CORE].[ROLE_PERMISSION] CHECK CONSTRAINT [FK_RolePermission_Role]
-GO
-
-ALTER TABLE [CORE].[STD_TEMPLATE] ADD  CONSTRAINT [DF_PCM_STD_TEMPLATE_Ver]  DEFAULT ((0)) FOR [Ver]
-GO
 
 ---------------------------------------------- Indexes
 
@@ -401,7 +402,7 @@ GO
 
 ---------------------------------------------- Triggers
 
-CREATE TRIGGER [CORE].[TR_Voter_INS_H] ON dbo.Voter
+CREATE TRIGGER [Core].[TR_Voter_INS_H] ON dbo.Voter
 WITH EXEC AS CALLER
 AFTER INSERT
 AS
@@ -647,3 +648,21 @@ insert into dbo.Gender(Code, Name) values('M', 'Male');
 insert into dbo.Gender(Code, Name) values('U', 'Unknown');
 GO
 
+insert into Core.Template(TemplateName, TemplateBody, CreatedBy, CreatedDate, ModifiedBy, ModifiedDate, Ver)
+values('refDataLinks', cast('<li id="refMainMenu" role="menuitem" aria-haspopup="true">
+<a href="#" title="sub menu">Policies</a>
+<ul id="refPoliciesMenu" role="menu">
+        <li role="menuitem"><a href="http://www.google.com" target="_blank">Google</a></li>
+</ul></li>
+<li role="menuitem"><a href="http://www.bocogop.org" target="_blank">Boulder County GOP Website</a></li>' as varbinary(max)), 'Initial Load', SYSUTCDATETIME(), 'Initial Load', SYSUTCDATETIME(), 1);
+
+insert into Core.Template(TemplateName, TemplateBody, CreatedBy, CreatedDate, ModifiedBy, ModifiedDate, Ver)
+values('footerContent', cast(' <ul style="padding-top: 5px; padding-bottom: 5px; margin-top: 0px; margin-bottom: 0px">
+    <li><span style="color: red"><b>WARNING:</b> All
+                    actions are audited and reported by this application.
+    </span></li>
+    <li>If you are experiencing problems or have a question about this website, please contact the <a href="mailto:bocogop@slickapps.com">BOCOGOP data team</a>.</li>
+</ul>' as varbinary(max)), 'Initial Load', SYSUTCDATETIME(), 'Initial Load', SYSUTCDATETIME(), 1);
+
+insert into Core.Template(TemplateName, TemplateBody, CreatedBy, CreatedDate, ModifiedBy, ModifiedDate, Ver)
+values('systemNotification', cast('' as varbinary(max)), 'Initial Load', SYSUTCDATETIME(), 'Initial Load', SYSUTCDATETIME(), 1);

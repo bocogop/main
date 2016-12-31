@@ -3,8 +3,6 @@ package org.bocogop.wr.service.impl;
 import static org.apache.commons.lang.WordUtils.capitalizeFully;
 import static org.apache.commons.lang3.StringUtils.trim;
 
-import java.time.LocalDate;
-
 import org.bocogop.wr.model.CoreUserDetails;
 import org.bocogop.wr.model.Permission;
 import org.bocogop.wr.model.Permission.PermissionType;
@@ -23,26 +21,12 @@ import org.springframework.stereotype.Service;
 public class VoterServiceImpl extends AbstractServiceImpl implements VoterService {
 	private static final Logger log = LoggerFactory.getLogger(VoterServiceImpl.class);
 
-	@Value("${maxIdleDaysBeforeVoterInactivation}")
-	private int maxIdleDaysBeforeVoterInactivation;
-	@Value("${voterInactivationGracePeriod}")
-	private int voterInactivationGracePeriod;
-	@Value("${notification.voterSelfService.expirationDaysOut}")
-	private int expirationDaysOut;
 
 	@Override
 	// @PreAuthorize("hasAuthority('" + Permission.VOTER_EDIT + "')")
 	public Voter saveOrUpdate(Voter vol, boolean createDataChangeNotifications, boolean autoTerminateIfLEIEMatch)
 			throws ServiceValidationException {
-		CoreUserDetails userContext = null;
-
-		/*
-		 * If the person has LOGIN_KIOSK permission, allow them to proceed only
-		 * if they are editing the same voter as the logged in context.
-		 * Otherwise let the person proceed only if they have VOTER_EDIT
-		 * permission.
-		 */
-		userContext = getCurrentUser();
+		CoreUserDetails userContext = getCurrentUser();
 		if (!SecurityUtil.hasAllPermissionsAtCurrentPrecinct(PermissionType.VOTER_EDIT)) {
 			log.warn(userContext.getClass().getSimpleName() + " with ID " + userContext.getId()
 					+ " tried to update voter " + vol.getId() + " but does not have permission");
@@ -66,9 +50,6 @@ public class VoterServiceImpl extends AbstractServiceImpl implements VoterServic
 		if (log.isDebugEnabled())
 			log.debug("vol saveOrUpdate ver3=" + vol.getVersion());
 
-		if (isNew) {
-			vol.setEntryDate(LocalDate.now());
-		}
 		vol.setFirstName(trim(capitalizeFully(vol.getFirstName())));
 		vol.setMiddleName(trim(capitalizeFully(vol.getMiddleName())));
 		vol.setLastName(trim(capitalizeFully(vol.getLastName())));

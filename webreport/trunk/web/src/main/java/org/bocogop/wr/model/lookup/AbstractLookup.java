@@ -142,7 +142,7 @@ public abstract class AbstractLookup<T extends AbstractLookup<T, U>, U extends L
 		this.description = description;
 	}
 
-	@Column(name = "SORT_ORDER")
+	@Column(name = "SortOrder")
 	@XmlTransient
 	public Integer getSortOrder() {
 		return sortOrder;
@@ -152,7 +152,7 @@ public abstract class AbstractLookup<T extends AbstractLookup<T, U>, U extends L
 		this.sortOrder = sortOrder;
 	}
 
-	@Column(name = "EFFECTIVE_DATE", nullable = false)
+	@Column(name = "EffectiveDate", nullable = false)
 	@XmlTransient
 	public ZonedDateTime getEffectiveDate() {
 		return effectiveDate;
@@ -162,7 +162,7 @@ public abstract class AbstractLookup<T extends AbstractLookup<T, U>, U extends L
 		this.effectiveDate = effectiveDate;
 	}
 
-	@Column(name = "EXPIRATION_DATE")
+	@Column(name = "ExpirationDate")
 	public ZonedDateTime getExpirationDate() {
 		return expirationDate;
 	}

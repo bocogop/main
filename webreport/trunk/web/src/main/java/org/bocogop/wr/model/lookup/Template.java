@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "STD_TEMPLATE", schema = "CORE")
+@Table(name = "Template", schema = "Core")
 public class Template extends AbstractAuditedVersionedPersistent<Template> implements Comparable<Template> {
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(Template.class);
@@ -75,7 +75,7 @@ public class Template extends AbstractAuditedVersionedPersistent<Template> imple
 
 	// ---------------------------------------- Accessor Methods
 
-	@Column(name = "TEMPLATE_NAME", length = 40, nullable = false)
+	@Column(length = 40, nullable = false)
 	@JsonProperty
 	public String getName() {
 		return name;
@@ -87,7 +87,7 @@ public class Template extends AbstractAuditedVersionedPersistent<Template> imple
 
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
-	@Column(name = "TEMPLATE_BODY", nullable = false)
+	@Column(nullable = false)
 	public byte[] getBodyBytes() {
 		return bodyBytes;
 	}
