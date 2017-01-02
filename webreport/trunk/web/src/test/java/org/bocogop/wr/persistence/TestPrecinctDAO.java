@@ -1,8 +1,8 @@
 package org.bocogop.wr.persistence;
 
+import org.bocogop.shared.model.precinct.Precinct;
+import org.bocogop.shared.persistence.AppDAO;
 import org.bocogop.wr.AbstractTransactionalCoreDAOTest;
-import org.bocogop.wr.model.precinct.Precinct;
-import org.bocogop.wr.persistence.AppDAO;
 import org.junit.Test;
 
 public class TestPrecinctDAO extends AbstractTransactionalCoreDAOTest<Precinct> {

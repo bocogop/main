@@ -5,12 +5,12 @@ import javax.persistence.PersistenceContext;
 import javax.security.auth.login.LoginContext;
 import javax.sql.DataSource;
 
+import org.bocogop.shared.model.AppUser;
+import org.bocogop.shared.persistence.AppUserDAO;
+import org.bocogop.shared.persistence.dao.GenderDAO;
+import org.bocogop.shared.service.PrecinctService;
 import org.bocogop.wr.config.WebAppConfig;
 import org.bocogop.wr.config.testOnly.AppTestConfig;
-import org.bocogop.wr.model.AppUser;
-import org.bocogop.wr.persistence.AppUserDAO;
-import org.bocogop.wr.persistence.lookup.GenderDAO;
-import org.bocogop.wr.service.PrecinctService;
 import org.bocogop.wr.test.AbstractAppTest;
 import org.bocogop.wr.test.util.TestObjectFactory;
 import org.junit.Before;

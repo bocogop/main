@@ -1,7 +1,7 @@
 package org.bocogop.wr.web.precinct;
 
-import org.bocogop.wr.model.precinct.Precinct;
-import org.bocogop.wr.web.AbstractAppValidator;
+import org.bocogop.shared.model.precinct.Precinct;
+import org.bocogop.shared.web.AbstractAppValidator;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;

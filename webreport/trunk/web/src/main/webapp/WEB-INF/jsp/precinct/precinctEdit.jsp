@@ -7,7 +7,7 @@
 	<sec:authorize access="hasAnyAuthority('${PERMISSION_PRECINCT_EDIT_ALL}')">
 		canEditAllPrecincts = true
 	</sec:authorize>
-	var statusCheckCutoff = ${kioskStatusCheckCutoff}
+	var statusCheckCutoff = ${eventStatusCheckCutoff}
 	
 	$(function() {
 		onPageLoad(${not empty command.precinct},
@@ -77,7 +77,7 @@ div.dataTables_filter input {
 	width: 100px;
 }
 
-#kioskList div.DataTables_sort_wrapper {
+#eventList div.DataTables_sort_wrapper {
 	white-space: nowrap
 }
 </style>
@@ -362,7 +362,7 @@ div.dataTables_filter input {
 					</div>
 				</fieldset>
 				<fieldset class="persistentPrecinctOnlyFields" style="display: none">
-					<legend>Kiosks</legend>
+					<legend>Events</legend>
 					
 					<div style="margin-top: 5px">
 						<table>
@@ -392,14 +392,14 @@ div.dataTables_filter input {
 										
 					
 					<div class="clearCenter" style="margin-bottom: 15px;margin-top: 10px">
-						<table id="kioskList" class="stripe"
-							summary="List of Kiosks">
+						<table id="eventList" class="stripe"
+							summary="List of Events">
 							<thead>
 								<tr>
-									<th width="35%" class="kioskHeader">Kiosk Location</th>
-									<th width="5%" class="kioskHeader">Registered</th>
-									<th width="35%" class="kioskHeader">Printer Status</th>
-									<th width="20%" class="kioskHeader">Queued Print Jobs</th>
+									<th width="35%" class="eventHeader">Event Location</th>
+									<th width="5%" class="eventHeader">Registered</th>
+									<th width="35%" class="eventHeader">Printer Status</th>
+									<th width="20%" class="eventHeader">Queued Print Jobs</th>
 									<c:if test="${not FORM_READ_ONLY}">
 										<th width="5%">Action</th>
 									</c:if>
@@ -410,8 +410,8 @@ div.dataTables_filter input {
 						</table>
 						<div align="center" style="margin-top: 10px">
 							<c:if test="${not FORM_READ_ONLY}">
-								<a class="buttonAnchor" id="createKioskButton"
-									href="javascript:popupKioskEdit()">Add Kiosk</a>
+								<a class="buttonAnchor" id="createEventButton"
+									href="javascript:popupEventEdit()">Add Event</a>
 							</c:if>
 						</div>
 					</div>
@@ -526,8 +526,8 @@ div.dataTables_filter input {
 	</div>
 </div>
 
-<div id="kioskFieldsWrapper" style="display: none"
-	title="Kiosk Details">
+<div id="eventFieldsWrapper" style="display: none"
+	title="Event Details">
 	<div class="clearCenter">
 		<table>
 			<tr>
@@ -535,10 +535,10 @@ div.dataTables_filter input {
 					class="invisibleRequiredFor508">*</span></td>
 				<td style="padding: 4px; text-align: center" width="5%"><span
 					class='requdIndicator'>*</span></td>
-				<td><input type="text" id="kioskLocation" size="30" maxlength="50" /></td>
+				<td><input type="text" id="eventLocation" size="30" maxlength="50" /></td>
 			</tr>
 			<tr>
-				<td align="right" colspan="2"><input type="checkbox" id="kioskRegistered" /></td>
+				<td align="right" colspan="2"><input type="checkbox" id="eventRegistered" /></td>
 				<td>Registered<span
 					class="invisibleRequiredFor508">*</span></td>
 			</tr>

@@ -1,5 +1,7 @@
 package org.bocogop.wr.config;
 
+import org.bocogop.shared.config.AppContainerConfig;
+import org.bocogop.shared.config.CommonWebConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class InitializeApp extends AbstractAnnotationConfigDispatcherServletInitializer {

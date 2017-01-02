@@ -1,6 +1,6 @@
 package org.bocogop.wr.web.voter;
 
-import static org.bocogop.wr.util.SecurityUtil.hasAllPermissionsAtCurrentPrecinct;
+import static org.bocogop.shared.util.SecurityUtil.hasAllPermissionsAtCurrentPrecinct;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,19 +15,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bocogop.wr.model.Permission;
-import org.bocogop.wr.model.Permission.PermissionType;
-import org.bocogop.wr.model.precinct.Precinct;
-import org.bocogop.wr.model.precinct.Precinct.PrecinctView;
-import org.bocogop.wr.model.voter.Voter;
-import org.bocogop.wr.model.voter.Voter.VoterView;
-import org.bocogop.wr.model.voter.VoterHistoryEntry;
-import org.bocogop.wr.service.validation.ServiceValidationException;
-import org.bocogop.wr.util.DateUtil;
-import org.bocogop.wr.util.StringUtil;
-import org.bocogop.wr.web.AbstractAppController;
+import org.bocogop.shared.model.Permission;
+import org.bocogop.shared.model.Permission.PermissionType;
+import org.bocogop.shared.model.precinct.Precinct;
+import org.bocogop.shared.model.precinct.Precinct.PrecinctView;
+import org.bocogop.shared.model.voter.Voter;
+import org.bocogop.shared.model.voter.Voter.VoterView;
+import org.bocogop.shared.service.validation.ServiceValidationException;
+import org.bocogop.shared.model.voter.VoterHistoryEntry;
+import org.bocogop.shared.util.DateUtil;
+import org.bocogop.shared.util.StringUtil;
+import org.bocogop.shared.web.AbstractAppController;
+import org.bocogop.shared.web.validation.ValidationException;
 import org.bocogop.wr.web.breadcrumbs.Breadcrumb;
-import org.bocogop.wr.web.validation.ValidationException;
 import org.bocogop.wr.web.voter.VoterSearchResults.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

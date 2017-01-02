@@ -13,8 +13,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.bocogop.wr.model.AppUser;
-import org.bocogop.wr.service.AppUserDetailsService;
+import org.bocogop.shared.model.AppUser;
+import org.bocogop.shared.service.AppUserDetailsService;
+import org.bocogop.shared.web.AuthenticationCustomizations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

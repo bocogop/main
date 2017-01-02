@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.bocogop.wr.model.lookup.AbstractLookup;
-import org.bocogop.wr.model.lookup.LookupType;
-import org.bocogop.wr.util.LookupUtil;
+import org.bocogop.shared.model.lookup.AbstractLookup;
+import org.bocogop.shared.model.lookup.LookupType;
+import org.bocogop.shared.util.LookupUtil;
 
 public class LookupCriteria<T extends LookupType> {
 

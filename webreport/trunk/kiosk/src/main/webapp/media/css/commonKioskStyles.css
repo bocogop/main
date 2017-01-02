@@ -1,0 +1,73 @@
+body, table, textarea, select, input, pre {
+    font-size: 12pt;
+}
+
+td.blueBar {
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
+	background-color: #0e54be;
+	vertical-align: middle;
+}
+
+.login-input-group {
+	font-size:16pt;
+}
+
+.login-input-group input {
+	font-size:16pt;
+}
+
+.stationHeaderText {
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
+	font-size: 12pt;
+	color: white;
+}
+
+.changeStationText {
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
+	font-size: 12pt;
+	color: black;
+}
+
+a.changeStationLink, a.changeStationLink:active, a.changeStationLink:visited
+	{
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
+	font-size: 12pt;
+	text-decoration: underline;
+	border-bottom: 1px solid #ffffff;
+	color: black;
+	background-color: Transparent;
+}
+
+a.logoutLink:link, a.logoutLink:active, a.logoutLink:visited {
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
+	font-size: 12pt;
+	text-decoration: underline;
+	border-bottom: 1px solid #ffffff;
+	color: white;
+	background-color: Transparent;
+}
+
+.noticeOfNonProdEnvironment {
+	position: absolute;
+	left: 10px;
+	z-index: 10;
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
+	font-size: 12pt;
+	font-weight: bold;
+	font-style: italic;
+	color: #FFCCCC;
+	text-align: left;
+}
+#appTitle {
+	color: #222222;
+	float: none;
+	font-weight: bold;
+	padding: 5px 60px 5px 60px;
+	/** text-shadow: 1px 1px #FFFFFF;**/
+	margin: 0px;
+	text-align: center;
+	font-size: 1.1em;
+}
+span#pageTitleSpan {
+	/* border-bottom: 3px double; */
+}

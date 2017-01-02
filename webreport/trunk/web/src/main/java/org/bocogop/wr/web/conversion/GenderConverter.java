@@ -1,7 +1,7 @@
 package org.bocogop.wr.web.conversion;
 
-import org.bocogop.wr.model.lookup.Gender;
-import org.bocogop.wr.persistence.lookup.GenderDAO;
+import org.bocogop.shared.model.lookup.Gender;
+import org.bocogop.shared.persistence.dao.GenderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

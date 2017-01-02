@@ -53,7 +53,7 @@
 		<Logger name="org.bocogop.wr" level="error" additivity="false">
 			<AppenderRef ref="appender.app" />
 		</Logger>
-		<Logger name="org.bocogop.wr.util.MethodTimerAspect" level="info"
+		<Logger name="org.bocogop.shared.util.MethodTimerAspect" level="info"
 			additivity="false">
 			<AppenderRef ref="appender.timings" />
 		</Logger>

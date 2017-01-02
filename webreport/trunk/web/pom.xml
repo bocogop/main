@@ -44,6 +44,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.bocogop.shared</groupId>
+			<artifactId>core</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>${org.springframework.security.version}</version>

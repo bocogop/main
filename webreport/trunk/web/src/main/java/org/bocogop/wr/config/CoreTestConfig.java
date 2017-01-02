@@ -2,6 +2,7 @@ package org.bocogop.wr.config;
 
 import static org.springframework.context.annotation.FilterType.REGEX;
 
+import org.bocogop.shared.config.AbstractConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;

@@ -24,9 +24,9 @@ function onPageLoad(precinctSelected, createNew, editPrecinctId, precinctSet, ed
 	if (precinctSelected && !createNew)
 		refreshLocations()
 		
-	buildKioskListTable()
+	buildEventListTable()
 	if (precinctSelected && !createNew)
-		refreshKiosks()
+		refreshEvents()
 	
 	buildDonGenPostFundListTable()
 	refreshDonGenPostFundList()
@@ -35,7 +35,7 @@ function onPageLoad(precinctSelected, createNew, editPrecinctId, precinctSet, ed
 	
 	buildPrecinctPopup()
 	buildLocationPopup()
-	buildKioskPopup()
+	buildEventPopup()
 	buildDonGenPostFundPopup()
 	buildDonReferencePopup()
 	
@@ -291,8 +291,8 @@ function buildLocationListTable() {
 	})
 }
 
-function buildKioskListTable() {
-	var kioskListCols = [{
+function buildEventListTable() {
+	var eventListCols = [{
 		"targets" : 0,
 		"data" : function(row, type, set, meta) {
 			return row.location
@@ -316,23 +316,23 @@ function buildKioskListTable() {
 	
 	// if we want to make screen read-only, change this - CPB
 	if (true) {
-		kioskListCols[kioskListCols.length] = {
+		eventListCols[eventListCols.length] = {
 			"targets" : 4,
 			"data" : function(row, type, set, meta) {
 				var actions = '<div style="margin:0 auto; text-align:center">'
-				actions += '<a href="javascript:popupKioskEdit(' + row.id + ')"><img src="' + imgHomePath
-					+ '/edit-small.gif" border="0" hspace="5" align="center" alt="Edit Kiosk" /></a>'
-				actions += '<a href="javascript:deleteKiosk('
+				actions += '<a href="javascript:popupEventEdit(' + row.id + ')"><img src="' + imgHomePath
+					+ '/edit-small.gif" border="0" hspace="5" align="center" alt="Edit Event" /></a>'
+				actions += '<a href="javascript:deleteEvent('
 						+ row.id + ')"><img src="' + imgHomePath
-						+ '/delete.gif" border="0" hspace="5" align="center" alt="Delete Kiosk" /></a>'
+						+ '/delete.gif" border="0" hspace="5" align="center" alt="Delete Event" /></a>'
 				actions += '</div>'
 				return actions;
 			}
 		}
 	}
 	    			
-	$('#kioskList').DataTable({
-		"columnDefs" : kioskListCols,
+	$('#eventList').DataTable({
+		"columnDefs" : eventListCols,
 		"dom" : '<"top">rt<"bottom"pl><"clear">',
 		"order" : [],
 		"paging" : false,
@@ -402,11 +402,11 @@ function submitLocationAddOrEdit() {
 	})
 }
 
-function submitKioskAddOrEdit() {
-   doubleClickSafeguard($("#kioskPopupSubmit"))
-	var kioskId = $("#kioskFieldsWrapper").data('kioskId')
-	var location = $("#kioskLocation").val()
-	var registered = $("#kioskRegistered").is(':checked')
+function submitEventAddOrEdit() {
+   doubleClickSafeguard($("#eventPopupSubmit"))
+	var eventId = $("#eventFieldsWrapper").data('eventId')
+	var location = $("#eventLocation").val()
+	var registered = $("#eventRegistered").is(':checked')
 	
 	var errors = new Array()
 	
@@ -420,18 +420,18 @@ function submitKioskAddOrEdit() {
 	}
 	
 	$.ajax({
-		url : ajaxHomePath + '/precinct/kiosk/saveOrUpdate',
+		url : ajaxHomePath + '/precinct/event/saveOrUpdate',
 		dataType : 'json',
 		data : {
 			precinctId : precinctId,
-			kioskId : kioskId,
+			eventId : eventId,
 			location : location,
 			registered : registered
 		},
 		error : commonAjaxErrorHandler,
 		success : function() {
-			$("#kioskFieldsWrapper").dialog('close')
-			refreshKiosks()
+			$("#eventFieldsWrapper").dialog('close')
+			refreshEvents()
 		}
 	})
 }
@@ -462,8 +462,8 @@ function buildLocationPopup() {
 	})
 }
 
-function buildKioskPopup() {
-	$("#kioskFieldsWrapper").dialog({
+function buildEventPopup() {
+	$("#eventFieldsWrapper").dialog({
 		autoOpen : false,
 		modal : false,
 		width : 400,
@@ -473,12 +473,12 @@ function buildKioskPopup() {
 		resizable : true,
 		buttons : [
 		           {
-		               id: "kioskPopupSubmit",
+		               id: "eventPopupSubmit",
 		               text: "Submit",
-		               click: submitKioskAddOrEdit
+		               click: submitEventAddOrEdit
 		           },
 		           {
-		               id: "kioskPopupCancel",
+		               id: "eventPopupCancel",
 		               text: "Cancel",
 		               click: function() {
 		   				$(this).dialog('close')
@@ -618,65 +618,65 @@ function reactivateLocation(locationId) {
 	})
 }
 
-var allKiosks = {}
-function refreshKiosks() {
-	var table = $('#kioskList').DataTable()
+var allEvents = {}
+function refreshEvents() {
+	var table = $('#eventList').DataTable()
 	table.clear()
 	
 	$.ajax({
-		url : ajaxHomePath + '/precinct/kiosk',
+		url : ajaxHomePath + '/precinct/event',
 		dataType : 'json',
 		data : {
 			precinctId : precinctId
 		},
 		error : commonAjaxErrorHandler,
 		success : function(r) {
-			var kiosks = r.kiosks
-			var statusMap = r.kioskStatusMap
-			var kioskPrintRequestCountMap = r.kioskPrintRequestCountMap
+			var events = r.events
+			var statusMap = r.eventStatusMap
+			var eventPrintRequestCountMap = r.eventPrintRequestCountMap
 			var rArray = new Array()
 			
-			allKiosks = {}
-			for (var i = 0; i < kiosks.length; i++) {
-				var kiosk = kiosks[i]
-				allKiosks['' + kiosk.id] = kiosk
-				rArray[rArray.length] = $.extend({}, kiosk, {
-					printerStatus : statusMap[kiosk.id],
-					printRequestCount : kioskPrintRequestCountMap[kiosk.id]
+			allEvents = {}
+			for (var i = 0; i < events.length; i++) {
+				var event = events[i]
+				allEvents['' + event.id] = event
+				rArray[rArray.length] = $.extend({}, event, {
+					printerStatus : statusMap[event.id],
+					printRequestCount : eventPrintRequestCountMap[event.id]
 				})
 			}
 			
 			table.rows.add(rArray)
-			rebuildTableFilters('kioskList')
+			rebuildTableFilters('eventList')
 			table.draw()
 		}
 	})
 }
 
-function popupKioskEdit(kioskId) {
-	var kiosk = null
-	if (kioskId && allKiosks[kioskId])
-		kiosk = allKiosks[kioskId]
-	$("#kioskFieldsWrapper").data('kioskId', kioskId ? kioskId : '')
+function popupEventEdit(eventId) {
+	var event = null
+	if (eventId && allEvents[eventId])
+		event = allEvents[eventId]
+	$("#eventFieldsWrapper").data('eventId', eventId ? eventId : '')
 	
-	$("#kioskLocation").val(kiosk ? kiosk.location : '')
-	$("#kioskRegistered").prop('checked', kiosk ? kiosk.registered : false)
-	$("#kioskFieldsWrapper").dialog('open')
+	$("#eventLocation").val(event ? event.location : '')
+	$("#eventRegistered").prop('checked', event ? event.registered : false)
+	$("#eventFieldsWrapper").dialog('open')
 }
 
-function deleteKiosk(kioskId) {
-	var kiosk = allKiosks[kioskId]
+function deleteEvent(eventId) {
+	var event = allEvents[eventId]
 	
-	confirmDialog('Are you sure you want to delete this kiosk?<p>Deleting this entry will disable the kiosk currently configured for it.' +
-			' If the kiosk is being moved, please rename it instead. The kiosk will need to be reconfigured by IT staff before it will work with a new entry.', function() {
+	confirmDialog('Are you sure you want to delete this event?<p>Deleting this entry will disable the event currently configured for it.' +
+			' If the event is being moved, please rename it instead. The event will need to be reconfigured by IT staff before it will work with a new entry.', function() {
 		$.ajax({
-			url : ajaxHomePath + '/precinct/kiosk/delete',
+			url : ajaxHomePath + '/precinct/event/delete',
 			dataType : 'json',
 			data : {
-				kioskId : kioskId
+				eventId : eventId
 			},
 			error : commonAjaxErrorHandler,
-			success : refreshKiosks
+			success : refreshEvents
 		})
 	}, {
 		height : 250

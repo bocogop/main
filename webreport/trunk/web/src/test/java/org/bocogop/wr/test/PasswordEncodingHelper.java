@@ -1,6 +1,6 @@
 package org.bocogop.wr.test;
 
-import org.bocogop.wr.util.HashUtils;
+import org.bocogop.shared.util.HashUtils;
 import org.junit.Test;
 
 public class PasswordEncodingHelper {

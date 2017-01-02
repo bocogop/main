@@ -3,8 +3,11 @@ package org.bocogop.wr.config;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bocogop.wr.model.Permission;
-import org.bocogop.wr.service.AppUserDetailsService;
+import org.bocogop.shared.config.AbstractSecurityConfig;
+import org.bocogop.shared.config.AjaxAwareAuthenticationEntryPoint;
+import org.bocogop.shared.config.CommonWebConfig;
+import org.bocogop.shared.model.Permission;
+import org.bocogop.shared.service.AppUserDetailsService;
 import org.bocogop.wr.web.DatabaseDrivenPreAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

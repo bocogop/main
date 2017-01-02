@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="root" template="/WEB-INF/jsp/root.jsp">
+		<!-- An example of a common attribute, copy this into definitions that 
+			extend root to override its value - CPB -->
+		<put-attribute name="pageTitle" value="pageTitle.default" />
+		<put-attribute name="pageDescription" value="Welcome to the Voluntary Service System (VSS) Event" />
+		<put-attribute name="topLeftImage" value="va_full_logo.png" />
+		<put-attribute name="activateCountdownTimer" value="true" />
+		<put-attribute name="headerRowHeight" value="99" />
+		<put-attribute name="showHelp" value="true" />
+	</definition>
+
+	<!-- Used in the event we have an unchecked exception that bubbles up to 
+		the servlet layer - CPB -->
+	<definition name="error" extends="root">
+		<put-attribute name="body" value="/WEB-INF/jsp/error.jsp" />
+		<put-attribute name="pageTitle" value="pageTitle.error" />
+		<put-attribute name="pageDescription" value="Error" />
+	</definition>
+	
+	<definition name="eventMissing" extends="root">
+		<put-attribute name="body" value="/WEB-INF/jsp/eventMissing.jsp" />
+	</definition>
+
+	<definition name="login" extends="root">
+		<put-attribute name="body" value="/WEB-INF/jsp/login.jsp" />
+		<put-attribute name="pageTitle" value="pageTitle.login" />
+		<put-attribute name="activateCountdownTimer" value="false" />
+		<!-- 
+		<put-list-attribute name="extraHeadEntries">
+			<add-attribute value="&lt;meta http-equiv='refresh' content='200;URL=login.htm?locale=en' /&gt;" />
+		</put-list-attribute>
+		 -->
+	</definition>
+
+	<definition name="help" extends="root">
+		<put-attribute name="body" value="/WEB-INF/jsp/help.jsp" />
+		<put-attribute name="pageTitle" value="pageTitle.help" />
+		<put-attribute name="topLeftImage"
+			value="va_full_logo.png" />
+		<put-attribute name="showHelp" value="false" />
+	</definition>
+
+	<definition name="home" extends="root">
+		<put-attribute name="body" value="/WEB-INF/jsp/home.jsp" />
+		<put-attribute name="pageTitle" value="pageTitle.home" />
+		<put-attribute name="topLeftImage"
+			value="va_full_logo.png" />
+	</definition>
+	
+	<definition name="postTime" extends="root">
+		<put-attribute name="body" value="/WEB-INF/jsp/postTime.jsp" />
+		<put-attribute name="pageTitle" value="pageTitle.postTime" />
+	</definition>
+
+	<definition name="eventChange" extends="root">
+		<put-attribute name="body" value="/WEB-INF/jsp/changeEvent.jsp" />
+		<put-attribute name="pageTitle" value="pageTitle.selectEvent" />
+		<put-attribute name="pageDescription"
+			value="This screen allows the user to select or change their event" />
+		<put-attribute name="activateCountdownTimer" value="false" />
+		<put-attribute name="showHelp" value="false" />
+	</definition>
+
+	<definition name="timeEntry" extends="root">
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/timeEntry.jsp" />
+		<put-attribute name="pageTitle" value="pageTitle.timeEntry" />
+		<put-attribute name="pageDescription"
+			value="This screen allows the user to enter votered time" />
+	</definition>
+	
+	<definition name="mealTicketPrint" extends="root">
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/mealTicketPrint.jsp" />
+		<put-attribute name="pageTitle" value="pageTitle.printMealTickets" />
+		<put-attribute name="pageDescription"
+			value="This screen allows the user to print meal tickets" />
+	</definition>
+	
+	<definition name="editVoter" extends="root">
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/voterProfile.jsp" />
+		<put-attribute name="pageTitle" value="pageTitle.voterProfile" />
+		<put-attribute name="pageDescription"
+			value="This screen allows the user to self edit voter profile" />
+	</definition>
+	
+</tiles-definitions>

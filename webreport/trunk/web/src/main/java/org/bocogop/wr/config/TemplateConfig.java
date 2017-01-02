@@ -5,7 +5,7 @@ import java.util.Properties;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
-import org.bocogop.wr.persistence.VelocityDataSourceResourceLoader;
+import org.bocogop.shared.persistence.VelocityDataSourceResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,9 +1,9 @@
 package org.bocogop.wr.service.impl;
 
+import org.bocogop.shared.model.AppUser;
+import org.bocogop.shared.model.Permission;
+import org.bocogop.shared.service.AppUserService;
 import org.bocogop.wr.AbstractTransactionalCoreTest;
-import org.bocogop.wr.model.AppUser;
-import org.bocogop.wr.model.Permission;
-import org.bocogop.wr.service.AppUserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;

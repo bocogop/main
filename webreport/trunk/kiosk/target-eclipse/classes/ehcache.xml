@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="false"
+	monitoring="autodetect" dynamicConfig="true">
+
+	<diskStore path="java.io.tmpdir" />
+
+	<!-- Default Cache. There must be at least one cache entry define. This 
+		default cache is applied to caches programmatically created through the CacheManager -->
+	<defaultCache maxElementsInMemory="500" eternal="false"
+		overflowToDisk="false" timeToIdleSeconds="120" timeToLiveSeconds="120"
+		diskPersistent="false" diskExpiryThreadIntervalSeconds="120" />
+
+	<!-- Standard Query Cache. This cache is used to cache any hibernate Query 
+		that sets a cacheable flag to true and doesn't have a CacheRegion set. For 
+		instance: final Query query = session.getNamedQuery("MyQuery"); query.setCacheable( 
+		true ); The following configuration caches 10 query result sets in memory 
+		and flushes any exceeding result set to a disk store. Each search result 
+		in a cache is only kept valid for 5 minutes. -->
+	<cache name="org.hibernate.cache.internal.StandardQueryCache"
+		maxElementsInMemory="1000" eternal="false" timeToLiveSeconds="300"
+		overflowToDisk="false" diskExpiryThreadIntervalSeconds="300" />
+
+	<!-- Update Timestamps Cache. This cache tracks the timestamps of the most 
+		recent updates to particular tables. It is important that the cache timeout 
+		of the underlying cache implementation be set to a higher value than the 
+		timeouts of any of the query caches. In fact, it is recommend that the the 
+		underlying cache not be configured for expiry at all. -->
+	<cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
+		maxElementsInMemory="500" eternal="true" overflowToDisk="false" />
+
+	<cache name="ajaxViews" maxElementsInMemory="200" eternal="false"
+		timeToIdleSeconds="300" timeToLiveSeconds="600" overflowToDisk="false" />
+
+	<cache name="queries.sharedDAO" maxElementsInMemory="1000"
+		eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		overflowToDisk="false" />
+
+	<!-- Specific caches -->
+
+	<cache name="queries.excludedEntityDAO.totalAndFiltered"
+		maxElementsInMemory="150" eternal="false" timeToIdleSeconds="60"
+		timeToLiveSeconds="300" overflowToDisk="false" copyOnRead="true" />
+
+	<cache name="queries.exclusionTypeDAO" maxElementsInMemory="250"
+		eternal="false" timeToIdleSeconds="360" timeToLiveSeconds="360"
+		overflowToDisk="false" copyOnRead="true" />
+
+	<cache name="queries.facilityDAO" maxElementsInMemory="5000"
+		eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="1200"
+		overflowToDisk="false" />
+
+	<cache name="queries.facilityAndVisnDAO" maxElementsInMemory="2000"
+		eternal="true" overflowToDisk="false" copyOnRead="true" />
+
+	<cache name="queries.genderDAO" maxElementsInMemory="5" eternal="true"
+		overflowToDisk="false" copyOnRead="true" />
+
+	<cache name="queries.grantableRoleDAO" maxElementsInMemory="2000"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
+		overflowToDisk="false" />
+
+	<cache name="queries.permissionDAO" maxElementsInMemory="1000" eternal="false"
+		timeToIdleSeconds="3600" timeToLiveSeconds="7200" overflowToDisk="false"
+		copyOnRead="true" />
+
+	<cache name="queries.roleDAO" maxElementsInMemory="1000" eternal="false"
+		timeToIdleSeconds="3600" timeToLiveSeconds="7200" overflowToDisk="false"
+		copyOnRead="true" />
+
+	<cache name="queries.vaFacilityDAO" maxElementsInMemory="15000"
+		eternal="true" overflowToDisk="false" copyOnRead="true"></cache>
+
+	<cache name="queries.vistaStationDataDAO" maxElementsInMemory="2500"
+		eternal="false" timeToIdleSeconds="180" timeToLiveSeconds="180"
+		overflowToDisk="false" copyOnRead="true" />
+
+	<cache name="queries.stateDAO" maxElementsInMemory="1000"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
+		overflowToDisk="false" copyOnRead="true" />
+
+	<!-- App classes -->
+
+	<cache name="gov.va.shared.model.lookup.sds.Gender"
+		maxElementsInMemory="20" eternal="true" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.lookup.sds.State"
+		maxElementsInMemory="500" eternal="true" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.lookup.sds.VAFacility"
+		maxElementsInMemory="5000" eternal="true" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.lookup.sds.VAFacilityType"
+		maxElementsInMemory="250" eternal="true" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.lookup.sds.VAFacilityType.facilityList"
+		maxElementsInMemory="500" eternal="true" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.lookup.ActiveStatus"
+		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.GrantableRole"
+		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.Role" maxElementsInMemory="250"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
+		overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.Role.internalPermissions"
+		maxElementsInMemory="5000" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.Role.grantableRoles"
+		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.RolePermission"
+		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.RolePermission.role"
+		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.RolePermission.permission"
+		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.Permission" maxElementsInMemory="250"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
+		overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.Permission.roles"
+		maxElementsInMemory="250" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.benefitingService.BenefitingServiceRoleType"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.facility.AbstractUpdateableLocation"
+		maxElementsInMemory="5000" eternal="false" timeToIdleSeconds="1200"
+		timeToLiveSeconds="1200" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.facility.Facility"
+		maxElementsInMemory="5000" eternal="false" timeToIdleSeconds="1200"
+		timeToLiveSeconds="1200" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.facility.FacilityType"
+		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="1200"
+		timeToLiveSeconds="1200" overflowToDisk="false" />
+
+	<cache name="gov.va.shared.model.lookup.InactiveReason"
+		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="300"
+		timeToLiveSeconds="600" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.organization.NACStatus"
+		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="300"
+		timeToLiveSeconds="600" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.organization.OrganizationType"
+		maxElementsInMemory="25" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.requirement.RequirementDateType"
+		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
+		
+	<cache name="gov.va.vss.model.requirement.RequirementStatus"
+		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.donation.StdCreditCardType"
+		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="300"
+		timeToLiveSeconds="600" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.organization.StdVAVSTitle"
+		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="300"
+		timeToLiveSeconds="600" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.volunteer.TransportationMethod"
+		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.volunteer.VolunteerStatus"
+		maxElementsInMemory="10" eternal="true" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.facility.AdministrativeUnit"
+		maxElementsInMemory="50" eternal="false" timeToIdleSeconds="300"
+		timeToLiveSeconds="600" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.leie.ExclusionType"
+		maxElementsInMemory="250" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="3600" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.donation.DonationType"
+		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.donation.DonorType"
+		maxElementsInMemory="10" eternal="true" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.lookup.Language"
+		maxElementsInMemory="500" eternal="false" timeToIdleSeconds="300"
+		timeToLiveSeconds="600" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.voluntaryService.VoluntaryServiceType"
+		maxElementsInMemory="20" eternal="true" overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.award.Award" maxElementsInMemory="250"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
+		overflowToDisk="false" />
+		
+	<cache name="gov.va.vss.model.expenditure.ExpenditureType"
+		maxElementsInMemory="5" eternal="true" overflowToDisk="false" />
+		
+	<cache name="gov.va.vss.model.volunteer.ShirtSize" maxElementsInMemory="20"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
+		overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.facility.StaffTitle" maxElementsInMemory="100"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
+		overflowToDisk="false" />
+
+	<cache name="gov.va.vss.model.lookup.JobExecutionType"
+		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
+
+</ehcache>

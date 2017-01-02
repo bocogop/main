@@ -1,7 +1,7 @@
 package org.bocogop.wr.config;
 
-import org.bocogop.wr.model.AppUser;
-import org.bocogop.wr.service.AppUserDetailsService;
+import org.bocogop.shared.model.AppUser;
+import org.bocogop.shared.service.AppUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;

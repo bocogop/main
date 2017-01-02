@@ -1,8 +1,8 @@
 package org.bocogop.wr.persistence.impl.precinct;
 
-import org.bocogop.wr.model.precinct.Precinct;
+import org.bocogop.shared.model.precinct.Precinct;
+import org.bocogop.shared.persistence.dao.CustomizableSortedDAO;
 import org.bocogop.wr.persistence.AbstractSortedDAOTest;
-import org.bocogop.wr.persistence.dao.CustomizableSortedDAO;
 
 public class TestPrecinctDAO extends AbstractSortedDAOTest<Precinct> {
 

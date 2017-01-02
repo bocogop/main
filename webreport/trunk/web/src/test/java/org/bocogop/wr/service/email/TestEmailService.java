@@ -5,9 +5,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bocogop.shared.service.email.EmailService;
+import org.bocogop.shared.service.email.EmailType;
+import org.bocogop.shared.util.DateUtil;
 import org.bocogop.wr.AbstractWebAppTest;
 import org.bocogop.wr.service.email.impl.TestEmailServiceImpl;
-import org.bocogop.wr.util.DateUtil;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

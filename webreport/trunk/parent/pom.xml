@@ -23,6 +23,8 @@
 	</properties>
 
 	<modules>
+		<module>../core</module>
+		<module>../event</module>
 		<module>../lib</module>
 		<module>../web</module>
 	</modules>

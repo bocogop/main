@@ -20,25 +20,26 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.bocogop.wr.model.AppUser;
-import org.bocogop.wr.model.AppUser.AppUserView;
-import org.bocogop.wr.model.AppUserGlobalRole;
-import org.bocogop.wr.model.AppUserPrecinct;
-import org.bocogop.wr.model.Permission.PermissionType;
-import org.bocogop.wr.model.Role;
-import org.bocogop.wr.model.precinct.Precinct;
-import org.bocogop.wr.persistence.AppUserDAO;
-import org.bocogop.wr.persistence.AppUserDAO.QuickSearchResult;
-import org.bocogop.wr.persistence.AppUserPrecinctDAO;
-import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
-import org.bocogop.wr.persistence.lookup.RoleDAO;
-import org.bocogop.wr.service.AppUserService;
-import org.bocogop.wr.service.UserAdminCustomizations;
-import org.bocogop.wr.service.validation.ServiceValidationException;
-import org.bocogop.wr.util.PersistenceUtil;
-import org.bocogop.wr.util.SecurityUtil;
-import org.bocogop.wr.util.StringUtil;
-import org.bocogop.wr.util.TimeZoneUtils;
+import org.bocogop.shared.model.AppUser;
+import org.bocogop.shared.model.AppUser.AppUserView;
+import org.bocogop.shared.model.AppUserGlobalRole;
+import org.bocogop.shared.model.AppUserPrecinct;
+import org.bocogop.shared.model.Permission.PermissionType;
+import org.bocogop.shared.model.Role;
+import org.bocogop.shared.model.precinct.Precinct;
+import org.bocogop.shared.persistence.AppUserDAO;
+import org.bocogop.shared.persistence.AppUserDAO.QuickSearchResult;
+import org.bocogop.shared.persistence.AppUserPrecinctDAO;
+import org.bocogop.shared.persistence.dao.RoleDAO;
+import org.bocogop.shared.persistence.dao.precinct.PrecinctDAO;
+import org.bocogop.shared.service.AppUserService;
+import org.bocogop.shared.service.UserAdminCustomizations;
+import org.bocogop.shared.service.validation.ServiceValidationException;
+import org.bocogop.shared.util.PersistenceUtil;
+import org.bocogop.shared.util.SecurityUtil;
+import org.bocogop.shared.util.StringUtil;
+import org.bocogop.shared.util.TimeZoneUtils;
+import org.bocogop.shared.web.CoreAjaxRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,13 +157,7 @@ public class UserAdminController {
 		Precinct primaryPrecinct = null;
 
 		if (includeRolesAndPrecincts) {
-			SortedSet<Precinct> availablePrecincts = new TreeSet<>();
-
-			SortedSet<Precinct> precincts = userAdminCustomizations.getAssignablePrecincts();
-			if (precincts == null)
-				precincts = precinctDAO.findAllSorted();
-
-			availablePrecincts.addAll(precincts);
+			SortedSet<Precinct> availablePrecincts = precinctDAO.findAllSorted();
 
 			List<AppUserPrecinct> appUserPrecinctList = appUserPrecinctDAO.findByUserSorted(user.getId());
 			for (AppUserPrecinct precinct : appUserPrecinctList) {

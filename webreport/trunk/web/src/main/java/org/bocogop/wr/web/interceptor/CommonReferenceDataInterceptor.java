@@ -11,10 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bocogop.wr.model.AppUser;
-import org.bocogop.wr.model.lookup.TemplateType;
-import org.bocogop.wr.util.SecurityUtil;
-import org.bocogop.wr.web.AbstractAppController;
+import org.bocogop.shared.model.AppUser;
+import org.bocogop.shared.model.lookup.TemplateType;
+import org.bocogop.shared.util.SecurityUtil;
+import org.bocogop.shared.web.AbstractAppController;
+import org.bocogop.shared.web.interceptor.AbstractReferenceDataInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

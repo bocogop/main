@@ -2,7 +2,7 @@ package org.bocogop.wr.web.conversion;
 
 import java.io.IOException;
 
-import org.bocogop.wr.model.core.IdentifiedPersistent;
+import org.bocogop.shared.model.IdentifiedPersistent;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;

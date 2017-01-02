@@ -2,9 +2,9 @@ package org.bocogop.wr.web.voter;
 
 import java.time.LocalDate;
 
-import org.bocogop.wr.model.voter.Voter;
-import org.bocogop.wr.util.ValidationUtil;
-import org.bocogop.wr.web.AbstractAppValidator;
+import org.bocogop.shared.model.voter.Voter;
+import org.bocogop.shared.util.ValidationUtil;
+import org.bocogop.shared.web.AbstractAppValidator;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 

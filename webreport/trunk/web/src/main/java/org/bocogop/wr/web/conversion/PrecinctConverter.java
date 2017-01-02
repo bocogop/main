@@ -1,7 +1,7 @@
 package org.bocogop.wr.web.conversion;
 
-import org.bocogop.wr.model.precinct.Precinct;
-import org.bocogop.wr.persistence.dao.precinct.PrecinctDAO;
+import org.bocogop.shared.model.precinct.Precinct;
+import org.bocogop.shared.persistence.dao.precinct.PrecinctDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

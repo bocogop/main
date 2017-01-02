@@ -51,38 +51,38 @@
 
 	<!-- App classes -->
 
-	<cache name="org.bocogop.wr.model.lookup.Gender"
+	<cache name="org.bocogop.shared.model.lookup.Gender"
 		maxElementsInMemory="20" eternal="true" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.Role" maxElementsInMemory="250"
+	<cache name="org.bocogop.shared.model.Role" maxElementsInMemory="250"
 		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
 		overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.Role.internalPermissions"
+	<cache name="org.bocogop.shared.model.Role.internalPermissions"
 		maxElementsInMemory="5000" eternal="false" timeToIdleSeconds="3600"
 		timeToLiveSeconds="7200" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.RolePermission"
+	<cache name="org.bocogop.shared.model.RolePermission"
 		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
 		timeToLiveSeconds="7200" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.RolePermission.role"
+	<cache name="org.bocogop.shared.model.RolePermission.role"
 		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
 		timeToLiveSeconds="7200" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.RolePermission.permission"
+	<cache name="org.bocogop.shared.model.RolePermission.permission"
 		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
 		timeToLiveSeconds="7200" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.Permission" maxElementsInMemory="250"
+	<cache name="org.bocogop.shared.model.Permission" maxElementsInMemory="250"
 		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
 		overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.Permission.roles"
+	<cache name="org.bocogop.shared.model.Permission.roles"
 		maxElementsInMemory="250" eternal="false" timeToIdleSeconds="3600"
 		timeToLiveSeconds="7200" overflowToDisk="false" />
 
-	<cache name="org.bocogop.wr.model.precinct.Precinct"
+	<cache name="org.bocogop.shared.model.precinct.Precinct"
 		maxElementsInMemory="5000" eternal="false" timeToIdleSeconds="1200"
 		timeToLiveSeconds="1200" overflowToDisk="false" />
 

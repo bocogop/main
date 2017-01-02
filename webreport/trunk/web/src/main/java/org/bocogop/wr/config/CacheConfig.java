@@ -1,7 +1,7 @@
 package org.bocogop.wr.config;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.bocogop.wr.util.cache.AppCacheKeyGenerator;
+import org.bocogop.shared.util.cache.AppCacheKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;

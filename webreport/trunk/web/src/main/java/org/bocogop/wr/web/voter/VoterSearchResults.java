@@ -2,7 +2,7 @@ package org.bocogop.wr.web.voter;
 
 import java.util.SortedSet;
 
-import org.bocogop.wr.model.voter.Voter;
+import org.bocogop.shared.model.voter.Voter;
 
 public class VoterSearchResults {
 

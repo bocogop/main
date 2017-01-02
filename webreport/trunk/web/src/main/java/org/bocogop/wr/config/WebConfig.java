@@ -4,7 +4,8 @@ import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
 
-import org.bocogop.wr.web.ajax.AjaxRequestHandler.CustomJsonObjectMapper;
+import org.bocogop.shared.config.AbstractConfig;
+import org.bocogop.shared.web.ajax.AjaxRequestHandler.CustomJsonObjectMapper;
 import org.bocogop.wr.web.conversion.Jsr310DateTimeFormatAnnotationFormatterFactory;
 import org.bocogop.wr.web.interceptor.BreadcrumbsInterceptor;
 import org.bocogop.wr.web.interceptor.CommonReferenceDataInterceptor;
@@ -81,7 +82,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
 	protected void addInterceptors(InterceptorRegistry registry) {
 		registry.addWebRequestInterceptor(openSessionInViewInterceptor());
 
-		registry.addInterceptor(breadcrumbsInterceptor).addPathPatterns("/**").excludePathPatterns("/kiosk/**",
+		registry.addInterceptor(breadcrumbsInterceptor).addPathPatterns("/**").excludePathPatterns("/event/**",
 				"/index.htm", WebSecurityConfig.URI_LOGIN, WebSecurityConfig.URI_LOGOUT, "/selectStation.htm");
 		registry.addInterceptor(commonReferenceDataInterceptor).addPathPatterns("/**").excludePathPatterns("/index.htm",
 				WebSecurityConfig.URI_LOGOUT);

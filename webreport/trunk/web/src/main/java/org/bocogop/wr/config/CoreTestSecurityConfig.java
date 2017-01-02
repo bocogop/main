@@ -1,6 +1,7 @@
 package org.bocogop.wr.config;
 
-import org.bocogop.wr.model.Role.RoleType;
+import org.bocogop.shared.config.AbstractSecurityConfig;
+import org.bocogop.shared.model.Role.RoleType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

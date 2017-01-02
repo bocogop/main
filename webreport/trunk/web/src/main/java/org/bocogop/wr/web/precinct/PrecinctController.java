@@ -15,11 +15,11 @@ import java.util.TreeSet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.bocogop.wr.model.precinct.Precinct;
-import org.bocogop.wr.service.validation.ServiceValidationException;
-import org.bocogop.wr.web.AbstractAppController;
+import org.bocogop.shared.model.precinct.Precinct;
+import org.bocogop.shared.service.validation.ServiceValidationException;
+import org.bocogop.shared.web.AbstractAppController;
+import org.bocogop.shared.web.validation.ValidationException;
 import org.bocogop.wr.web.breadcrumbs.Breadcrumb;
-import org.bocogop.wr.web.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

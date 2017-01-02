@@ -8,7 +8,7 @@
 <%@ attribute name="zoneId" required="false" type="java.time.ZoneId" %>
 <%@ attribute name="zoneIdName" required="false" type="java.lang.String" %>
 
-<spring:eval var="timeFormatter" expression="T(org.bocogop.wr.util.DateUtil).MILITARY_DATE_TIME_FORMAT"/>
+<spring:eval var="timeFormatter" expression="T(org.bocogop.shared.util.DateUtil).MILITARY_DATE_TIME_FORMAT"/>
 <c:if test="${not empty pattern}">
 	<spring:eval var="timeFormatter" expression="T(java.time.format.DateTimeFormatter).ofPattern(pattern)"/>
 </c:if>

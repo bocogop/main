@@ -1,6 +1,6 @@
 package org.bocogop.wr.web.precinct;
 
-import org.bocogop.wr.model.precinct.Precinct;
+import org.bocogop.shared.model.precinct.Precinct;
 
 public class PrecinctCommand {
 

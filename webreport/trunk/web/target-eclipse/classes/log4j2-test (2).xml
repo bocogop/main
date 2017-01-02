@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{DEFAULT} [%p] [%c{1}] - %m%n" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<!-- SQL server: suppress WARN errors for "WARN  [com.arjuna.ats.jta] (Periodic Recovery) ARJUNA016027: Local XARecoveryModule.xaRecovery 
+		got XA exception XAException.XAER_RMERR: javax.transaction.xa.XAException: The function RECOVER: failed. The status is: -3" -->
+		<Logger name="com.arjuna" level="error" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+		<Root level="warn">
+			<AppenderRef ref="console" />
+		</Root>
+	</Loggers>
+</Configuration>
+
+	
+
