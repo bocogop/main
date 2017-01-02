@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.bocogop.shared.util.ServletUtil;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component(value="coreSessionUtil")
 public class SessionUtil {
 
 	protected static ThreadLocal<ContextManager> contextManagerThreadOverride = new ThreadLocal<>();

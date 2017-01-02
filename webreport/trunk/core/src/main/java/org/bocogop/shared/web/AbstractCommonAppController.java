@@ -30,6 +30,7 @@ import org.bocogop.shared.web.validation.WebValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -88,6 +89,7 @@ public abstract class AbstractCommonAppController {
 	@Autowired
 	protected AjaxRequestHandler ajaxRequestHandler;
 	@Autowired
+	@Qualifier("coreSessionUtil")
 	protected SessionUtil sessionUtil;
 	@Autowired
 	protected Environment env;

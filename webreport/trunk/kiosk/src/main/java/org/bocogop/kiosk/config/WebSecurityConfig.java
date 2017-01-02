@@ -59,9 +59,7 @@ public class WebSecurityConfig extends AbstractSecurityConfig {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests() //
-				.antMatchers("/selectEvent.htm", URI_LOGIN, URI_LOGOUT, URI_HELP, URI_AUTH_EXCEPTION, MEDIA_DIR + "/**"
-				// uses HTTP basic auth from print client
-						, "/rest/getNextPrintRequest") //
+				.antMatchers("/selectEvent.htm", URI_LOGIN, URI_LOGOUT, URI_HELP, URI_AUTH_EXCEPTION, MEDIA_DIR + "/**") //
 				.permitAll() //
 				.antMatchers(URI_DEFAULT, CommonWebConfig.AJAX_CONTEXT_PATH_PREFIX + "/**") //
 				.authenticated() //
@@ -75,10 +73,12 @@ public class WebSecurityConfig extends AbstractSecurityConfig {
 				.csrf().disable()
 				//
 				.logout().invalidateHttpSession(true).deleteCookies(cookieSessionId)
-				
-				// .headers() not working for requests that return Tiles views, not sure exactly why but
-				// I'm implementing these in standalone.xml as response-headers - CPB
-				
+
+				// .headers() not working for requests that return Tiles views,
+				// not sure exactly why but
+				// I'm implementing these in standalone.xml as response-headers
+				// - CPB
+
 				.and() //
 				.exceptionHandling() //
 				.authenticationEntryPoint(new AjaxAwareAuthenticationEntryPoint(URI_LOGIN)) //
@@ -92,7 +92,7 @@ public class WebSecurityConfig extends AbstractSecurityConfig {
 			http.portMapper().http(httpPort).mapsTo(httpsPort);
 		}
 	}
-	
+
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers(MEDIA_DIR + "/**");

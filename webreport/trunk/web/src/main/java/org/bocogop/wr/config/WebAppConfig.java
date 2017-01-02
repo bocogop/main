@@ -5,6 +5,9 @@ import java.io.File;
 import javax.management.MBeanServer;
 
 import org.bocogop.shared.config.AbstractConfig;
+import org.bocogop.shared.config.CacheConfig;
+import org.bocogop.shared.config.EmailConfig;
+import org.bocogop.shared.config.TemplateConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +28,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 		"org.bocogop.wr" }, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = {
 				"org.bocogop\\..*\\.config\\..*", "org.bocogop\\..*\\.web\\..*" }))
 @EnableAsync(proxyTargetClass = true)
-@EnableMBeanExport
 @Import({ AOPConfig.class, CacheConfig.class, DataConfig.class, EmailConfig.class, TemplateConfig.class,
 		WebSecurityConfig.class })
 public class WebAppConfig extends AbstractConfig {

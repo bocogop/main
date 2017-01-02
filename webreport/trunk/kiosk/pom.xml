@@ -7,9 +7,9 @@
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>wr_event</artifactId>
+	<artifactId>wr_kiosk</artifactId>
 	<packaging>war</packaging>
-	<name>WR Event</name>
+	<name>Kiosk</name>
 
 	<build>
 		<plugins>

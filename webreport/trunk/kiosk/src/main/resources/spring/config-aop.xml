@@ -9,7 +9,7 @@
 
 		<aop:config>
 			<aop:aspect id="auditLoggging" ref="auditLoggingAspect">
-				<aop:before method="logBefore" pointcut="${event.aop.auditLogging.pointcutBefore}" />
+				<aop:before method="logBefore" pointcut="${kiosk.aop.auditLogging.pointcutBefore}" />
 			</aop:aspect>
 		</aop:config>
 

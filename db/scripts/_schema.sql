@@ -14,6 +14,7 @@ if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Voter' AN
 if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Gender' AND TABLE_SCHEMA = 'dbo') drop table dbo.Gender;
 if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Party' AND TABLE_SCHEMA = 'dbo') drop table dbo.Party;
 if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Precinct' AND TABLE_SCHEMA = 'dbo') drop table dbo.Precinct;
+if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Event' AND TABLE_SCHEMA = 'dbo') drop table dbo.Event;
 */
 
 CREATE TABLE [Core].[AppParameter](
@@ -321,6 +322,19 @@ CREATE TABLE [dbo].[Voter_H](
 	[ModifiedDate] [datetime] NOT NULL,
 	[Ver] [numeric](10, 0) NOT NULL,
 	CONSTRAINT [PK_voter_H] PRIMARY KEY CLUSTERED ([Id_H] ASC)
+)
+GO
+
+create table dbo.Event(
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Date] date not null,
+	Name varchar(100) not null,
+	[CreatedBy] [varchar](30) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[ModifiedBy] [varchar](30) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL,
+	[Ver] [numeric](10, 0) NOT NULL,
+	CONSTRAINT [PK_Event] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
 GO
 

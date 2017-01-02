@@ -6,7 +6,7 @@ import javax.persistence.EntityManagerFactory;
 
 import org.bocogop.shared.config.AbstractConfig;
 import org.bocogop.shared.web.ajax.AjaxRequestHandler.CustomJsonObjectMapper;
-import org.bocogop.wr.web.conversion.Jsr310DateTimeFormatAnnotationFormatterFactory;
+import org.bocogop.shared.web.conversion.Jsr310DateTimeFormatAnnotationFormatterFactory;
 import org.bocogop.wr.web.interceptor.BreadcrumbsInterceptor;
 import org.bocogop.wr.web.interceptor.CommonReferenceDataInterceptor;
 import org.bocogop.wr.web.interceptor.StoreLastGetRequestInterceptor;

@@ -1,7 +1,7 @@
 package org.bocogop.wr;
 
+import org.bocogop.shared.config.CoreTestConfig;
 import org.bocogop.shared.model.IdentifiedPersistent;
-import org.bocogop.wr.config.CoreTestConfig;
 import org.bocogop.wr.config.testOnly.BaseTestConfig;
 import org.bocogop.wr.test.AbstractTransactionalDAOTest;
 import org.springframework.test.context.ContextConfiguration;

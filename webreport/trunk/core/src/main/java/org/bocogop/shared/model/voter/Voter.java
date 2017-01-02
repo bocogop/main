@@ -110,12 +110,14 @@ public class Voter extends AbstractVoter<Voter> implements CoreUserDetails {
 		return true;
 	}
 
+	@Transient
 	@Override
 	public boolean isNationalAdmin() {
 		return false;
 	}
 
 	@Override
+	@Transient
 	public ZoneId getTimeZone() {
 		return ZoneId.of("America/Denver");
 	}

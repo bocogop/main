@@ -44,7 +44,7 @@
 		<Logger name="com.arjuna" level="error" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
-		<Logger name="gov.va.shared.config" level="debug" additivity="false">
+		<Logger name="org.bocogop.shared.config" level="debug" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
 		<Logger name="org.bocogop.kiosk" level="error" additivity="false">

@@ -24,7 +24,7 @@
 			bound value.
 		</description>
 		<name>input</name>
-		<tag-class>org.bocogop.wr.web.tags.InputTag</tag-class>
+		<tag-class>org.bocogop.shared.web.tags.InputTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>Path to property for data binding</description>
@@ -229,7 +229,7 @@
 	<tag>
 		<description>Renders an HTML 'textarea'.</description>
 		<name>textarea</name>
-		<tag-class>org.bocogop.wr.web.tags.TextareaTag</tag-class>
+		<tag-class>org.bocogop.shared.web.tags.TextareaTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>Path to property for data binding</description>
@@ -422,7 +422,7 @@
 	<tag>
 		<description>Renders field errors in an HTML 'span' tag.</description>
 		<name>errors</name>
-		<tag-class>org.bocogop.wr.web.tags.ErrorsTag</tag-class>
+		<tag-class>org.bocogop.shared.web.tags.ErrorsTag</tag-class>
 		<body-content>JSP</body-content>
 		<variable>
 			<name-given>messages</name-given>
@@ -565,7 +565,7 @@
 	<tag>
 		<description>Renders an HTML 'select' element. Supports databinding to the selected option.</description>
 		<name>select</name>
-		<tag-class>org.bocogop.wr.web.tags.SelectTag</tag-class>
+		<tag-class>org.bocogop.shared.web.tags.SelectTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
 			<description>Path to property for data binding</description>

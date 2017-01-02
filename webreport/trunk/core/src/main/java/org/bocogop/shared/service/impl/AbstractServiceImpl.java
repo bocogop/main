@@ -46,6 +46,7 @@ public class AbstractServiceImpl {
 	protected VoterDAO voterDAO;
 
 	@Autowired
+	@Qualifier("coreSessionUtil")
 	protected SessionUtil sessionUtil;
 	@Autowired
 	protected EmailService emailService;

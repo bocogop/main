@@ -6,7 +6,6 @@ import org.bocogop.kiosk.service.VoterUserDetailsProvider;
 import org.bocogop.shared.model.voter.Voter;
 import org.bocogop.shared.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
@@ -18,13 +17,6 @@ public class VoterDaoAuthenticationProvider extends AbstractUserDetailsAuthentic
 
 	@Autowired
 	private VoterUserDetailsProvider voterUserDetailsProvider;
-
-	@Value("${maxAllowedFailedLogins}")
-	private int maxAllowedFailedLogins;
-	@Value("${autoUnlockMinutes}")
-	private int autoUnlockMinutes;
-	@Value("${autoDisableAfterDays}")
-	private int autoDisableAfterDays;
 
 	public VoterDaoAuthenticationProvider() {
 		setHideUserNotFoundExceptions(false);

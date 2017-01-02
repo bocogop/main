@@ -33,7 +33,7 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
-@ComponentScan({ "gov.va.shared.web", "org.bocogop.kiosk.web" })
+@ComponentScan({ "org.bocogop.shared.web", "org.bocogop.kiosk.web" })
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @PropertySource("file:///${AppEventPropertiesDir:" + AbstractConfig.DEFAULT_APP_PROPERTIES_DIR + "}/app.properties")
 @PropertySource("file:///${AppEventPropertiesDir:" + AbstractConfig.DEFAULT_APP_PROPERTIES_DIR + "}/version.properties")

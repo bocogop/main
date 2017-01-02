@@ -2,19 +2,6 @@ package org.bocogop.kiosk.web;
 
 import static org.bocogop.kiosk.config.WebSecurityConfig.URI_LOGIN;
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,13 +9,10 @@ import javax.servlet.http.HttpSession;
 import javax.validation.ValidationException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.bocogop.kiosk.config.WebSecurityConfig;
 import org.bocogop.shared.model.Event;
-import org.bocogop.shared.model.Event.EventAssignmentsAndOrgsView;
 import org.bocogop.shared.model.lookup.TemplateType;
 import org.bocogop.shared.model.voter.Voter;
-import org.bocogop.shared.persistence.impl.AbstractAppDAOImpl;
 import org.bocogop.shared.service.VelocityService;
 import org.bocogop.shared.service.validation.ServiceValidationException;
 import org.slf4j.Logger;
@@ -42,8 +26,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,8 +34,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-
-import com.fasterxml.jackson.annotation.JsonView;
 
 @Controller
 @SessionAttributes(value = { "command" })
@@ -70,8 +50,6 @@ public class EventController extends AbstractKioskController {
 	private VelocityService velocityService;
 	@Value("${session.kiosk.expirationSeconds}")
 	private int sessionExpirationSeconds;
-	@Value("${printerStatusCheckFailureMinutes}")
-	private int printerStatusCheckFailureMinutes;
 
 	// @Autowired
 	// private LocaleResolver localeResolver;

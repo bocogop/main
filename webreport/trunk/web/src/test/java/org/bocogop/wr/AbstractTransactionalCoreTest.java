@@ -1,6 +1,6 @@
 package org.bocogop.wr;
 
-import org.bocogop.wr.config.CoreTestConfig;
+import org.bocogop.shared.config.CoreTestConfig;
 import org.bocogop.wr.config.testOnly.BaseTestConfig;
 import org.bocogop.wr.test.AbstractTransactionalAppTest;
 import org.springframework.test.context.ContextConfiguration;

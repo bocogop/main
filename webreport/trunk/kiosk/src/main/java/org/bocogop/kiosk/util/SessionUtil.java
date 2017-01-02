@@ -6,8 +6,10 @@ import org.bocogop.shared.model.Event;
 import org.bocogop.shared.persistence.dao.EventDAO;
 import org.bocogop.shared.util.context.ContextManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Component
 public class SessionUtil extends org.bocogop.shared.util.context.SessionUtil {
 
 	private static String KEY_PREFIX = SessionUtil.class.getName();
