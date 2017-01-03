@@ -42,22 +42,28 @@
 			<version>1.0</version>
 			<type>pom</type>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.bocogop.shared</groupId>
 			<artifactId>core</artifactId>
-			<version>${core.version}</version>
-			<type>jar</type>
+			<version>1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.bocogop.wr</groupId>
+			<artifactId>wr_common_web</artifactId>
+			<version>1.0</version>
+			<type>war</type>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${org.springframework.security.version}</version>
 		</dependency>
 
 		<!-- ========================================== Provided -->
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-			<scope>provided</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
@@ -86,11 +92,12 @@
 			<version>1.4.7</version>
 			<scope>provided</scope>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-taglibs</artifactId>
-			<version>${org.springframework.security.version}</version>
+			<groupId>microsoft</groupId>
+			<artifactId>sqljdbc</artifactId>
+			<version>4.2</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- ========================================== Runtime -->
@@ -105,14 +112,6 @@
 		<!-- ========================================== Test -->
 
 		<dependency>
-			<groupId>org.bocogop.shared</groupId>
-			<artifactId>core</artifactId>
-			<version>${core.version}</version>
-			<type>test-jar</type>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
@@ -123,13 +122,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>microsoft</groupId>
-			<artifactId>sqljdbc</artifactId>
-			<version>4.2</version>
-			<scope>provided</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -168,53 +161,16 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<version>${org.springframework.security.version}</version>
+			<scope>test</scope>
 		</dependency>
 		
-		<!-- ========== Apache directory server -->
-
-		<dependency>
-			<groupId>org.apache.directory.server</groupId>
-			<artifactId>apacheds-core</artifactId>
-			<version>1.5.5</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.directory.server</groupId>
-			<artifactId>apacheds-core-entry</artifactId>
-			<version>1.5.5</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.directory.server</groupId>
-			<artifactId>apacheds-protocol-ldap</artifactId>
-			<version>1.5.5</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.directory.server</groupId>
-			<artifactId>apacheds-protocol-shared</artifactId>
-			<version>1.5.5</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.directory.server</groupId>
-			<artifactId>apacheds-server-jndi</artifactId>
-			<version>1.5.5</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.directory.shared</groupId>
-			<artifactId>shared-ldap</artifactId>
-			<version>0.9.15</version>
-			<scope>compile</scope>
-		</dependency>
-
 	</dependencies>
 
 </project>

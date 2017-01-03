@@ -2,6 +2,7 @@ package org.bocogop.shared.web;
 
 import java.util.Locale;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -175,6 +176,28 @@ public abstract class AbstractCommonAppController {
 
 	protected String getCurrentUserName() {
 		return SecurityUtil.getCurrentUserName();
+	}
+
+	/**
+	 * @param cookieName
+	 *            The cookie to delete; if null, all cookies will be deleted
+	 * @param req
+	 * @param resp
+	 */
+	protected void eraseCookie(String cookieName, HttpServletRequest req, HttpServletResponse resp) {
+		Cookie[] cookies = req.getCookies();
+		if (cookies == null)
+			return;
+
+		for (int i = 0; i < cookies.length; i++) {
+			if (cookieName != null && cookies[i].getName().equals(cookieName))
+				continue;
+
+			cookies[i].setValue("");
+			cookies[i].setPath("/");
+			cookies[i].setMaxAge(0);
+			resp.addCookie(cookies[i]);
+		}
 	}
 
 }

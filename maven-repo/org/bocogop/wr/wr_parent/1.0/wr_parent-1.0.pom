@@ -20,13 +20,14 @@
 		<org.springframework.security.version>4.2.0.RELEASE</org.springframework.security.version>
 		<org.springframework.version>4.3.4.RELEASE</org.springframework.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<core.version>1.0</core.version>
 	</properties>
 
 	<modules>
 		<module>../core</module>
+		<module>../kiosk</module>
 		<module>../lib</module>
 		<module>../web</module>
+		<module>../common_web</module>
 	</modules>
 
 	<build>

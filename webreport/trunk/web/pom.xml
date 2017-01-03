@@ -12,6 +12,7 @@
 	<name>WR Web</name>
 
 	<build>
+		<finalName>web</finalName>
 		<plugins>
 			<plugin>
 				<!-- Error "(webxml attribute is missing from war task, or ignoreWebxml 

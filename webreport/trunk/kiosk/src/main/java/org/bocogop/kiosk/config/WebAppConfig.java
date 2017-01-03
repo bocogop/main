@@ -18,8 +18,8 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration
-@PropertySource("file:///${AppEventPropertiesDir:" + AbstractConfig.DEFAULT_APP_PROPERTIES_DIR + "}/app.properties")
-@PropertySource("file:///${AppEventPropertiesDir:" + AbstractConfig.DEFAULT_APP_PROPERTIES_DIR + "}/version.properties")
+@PropertySource("file:///${AppKioskPropertiesDir:" + AbstractConfig.DEFAULT_APP_PROPERTIES_DIR + "}/app.properties")
+@PropertySource("file:///${AppKioskPropertiesDir:" + AbstractConfig.DEFAULT_APP_PROPERTIES_DIR + "}/version.properties")
 @ComponentScan(basePackages = { "org.bocogop.shared",
 		"org.bocogop.kiosk" }, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = {
 				"org.bocogop\\..*\\.config\\..*", "org.bocogop\\..*\\.web\\..*" }))

@@ -20,7 +20,6 @@ import org.bocogop.shared.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,6 +42,7 @@ public class KioskController extends AbstractKioskController {
 	private static final Logger log = LoggerFactory.getLogger(KioskController.class);
 
 	public static final String SESSION_ATTR_EVENT_ID = "eventId";
+	public static final String COOKIE_EVENT_ID = "eventId";
 	private static final String VIEW_EVENT_CHANGE = "eventChange";
 	public static final String BREADCRUMB_HOME = "Home";
 	public static final String URL_HOME = "/home.htm";
@@ -59,7 +59,7 @@ public class KioskController extends AbstractKioskController {
 	@RequestMapping(value = URI_LOGIN, method = RequestMethod.GET)
 	public String loginPage(@RequestParam(required = false) String error, @RequestParam(required = false) Long eventId,
 			@RequestParam(required = false) Boolean thankYou,
-			@CookieValue(required = false, name = "eventId") Long cookieEventId, ModelMap model,
+			@CookieValue(required = false, name = COOKIE_EVENT_ID) Long cookieEventId, ModelMap model,
 			HttpServletResponse response) {
 		String locale = LocaleContextHolder.getLocale().getLanguage();
 
@@ -102,7 +102,7 @@ public class KioskController extends AbstractKioskController {
 	}
 
 	public Cookie getCookie(Long eventId) {
-		Cookie cookie = new Cookie("eventId", String.valueOf(eventId));
+		Cookie cookie = new Cookie(COOKIE_EVENT_ID, String.valueOf(eventId));
 		cookie.setHttpOnly(true);
 		// 10 years ought to do it
 		cookie.setMaxAge(60 * 60 * 24 * 365 * 10);
@@ -122,10 +122,10 @@ public class KioskController extends AbstractKioskController {
 
 	@RequestMapping("/index.htm")
 	public String index(ModelMap model, HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			@CookieValue(name = "eventId") long cookieEventId) {
+			@CookieValue(name = COOKIE_EVENT_ID) long cookieEventId) {
 		Event event = eventDAO.findRequiredByPrimaryKey(cookieEventId);
 		setEventContext(event);
-		
+
 		MultiVoterTempUserDetails multiMatch = SecurityUtil.getCurrentUserAsOrNull(MultiVoterTempUserDetails.class);
 		if (multiMatch != null) {
 			return "redirect:/refineUser.htm";
@@ -146,7 +146,7 @@ public class KioskController extends AbstractKioskController {
 		MultiVoterTempUserDetails multiMatch = SecurityUtil.getCurrentUserAsOrNull(MultiVoterTempUserDetails.class);
 		if (multiMatch == null)
 			return "redirect:/index.htm";
-		
+
 		return "refineUser";
 	}
 
@@ -162,28 +162,33 @@ public class KioskController extends AbstractKioskController {
 	@RequestMapping(URL_HOME)
 	public String home(ModelMap model) {
 		Voter v = getCurrentUser();
-		
+
 		participationService.logParticipation(v.getId(), getRequiredEventContextId());
-		
+
 		String locale = LocaleContextHolder.getLocale().getLanguage();
-		model.put("homepageContent",
-				velocityService.mergeTemplateIntoString("kiosk." + TemplateType.HOMEPAGE_CONTENT.getName() + "." + locale));
-		model.put("homepageAnnouncement",
-				velocityService.mergeTemplateIntoString("kiosk." + TemplateType.HOMEPAGE_ANNOUNCEMENT.getName() + "." + locale));
+		model.put("homepageContent", velocityService
+				.mergeTemplateIntoString("kiosk." + TemplateType.HOMEPAGE_CONTENT.getName() + "." + locale));
+		model.put("homepageAnnouncement", velocityService
+				.mergeTemplateIntoString("kiosk." + TemplateType.HOMEPAGE_ANNOUNCEMENT.getName() + "." + locale));
 
 		// Already a station in session. Do nothing, redirect to sitemap.
 		return VIEW_HOME;
 	}
 
 	@RequestMapping(value = "/selectEvent.htm", method = RequestMethod.GET)
-	public String selectStation(ModelMap model) {
+	public String selectEvent(ModelMap model, HttpServletRequest request, HttpServletResponse response) {
+		eraseCookie(COOKIE_EVENT_ID, request, response);
+
 		model.put("eventList", eventDAO.findAllSorted());
 		model.put("cancelAllowed", false);
 		return VIEW_EVENT_CHANGE;
 	}
 
 	@RequestMapping(value = "/selectEvent.htm", method = RequestMethod.POST)
-	public String processSelectStation(@RequestParam long eventId, HttpServletResponse response) {
+	public String selectEventSubmit(@RequestParam long eventId, HttpServletResponse response) {
+		Event event = eventDAO.findRequiredByPrimaryKey(eventId);
+		setEventContext(event);
+		
 		return "redirect:" + URI_LOGIN + "?eventId=" + eventId;
 	}
 

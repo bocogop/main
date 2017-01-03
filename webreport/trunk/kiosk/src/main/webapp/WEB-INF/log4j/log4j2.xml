@@ -5,7 +5,7 @@
 			<PatternLayout pattern="%d{DEFAULT} [%p] [%c{1}] - %m%n" />
 		</Console>
 		<RollingFile append="true" bufferedIO="true" name="appender.app"
-			fileName="log/app.log" filePattern="log/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz"
+			fileName="D:/home/site/wwwroot/bin/tomcat/logs/app.log" filePattern="log/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz"
 			ignoreExceptions="false">
 			<PatternLayout>
 				<Pattern>%d{DEFAULT} [%p] [%c{1}] - %m%n</Pattern>
@@ -16,7 +16,7 @@
 			</Policies>
 		</RollingFile>
 		<RollingFile append="true" bufferedIO="true" name="appender.timings"
-			fileName="log/app-timings.log" filePattern="log/$${date:yyyy-MM}/app-timings-%d{MM-dd-yyyy}-%i.log.gz"
+			fileName="D:/home/site/wwwroot/bin/tomcat/logs/app-timings.log" filePattern="log/$${date:yyyy-MM}/app-timings-%d{MM-dd-yyyy}-%i.log.gz"
 			ignoreExceptions="false">
 			<PatternLayout>
 				<Pattern>%d{DEFAULT} [%c{1}] - %m%n</Pattern>
@@ -27,7 +27,7 @@
 			</Policies>
 		</RollingFile>
 		<RollingFile append="true" bufferedIO="true" name="appender.cache"
-			fileName="log/app-cache.log" filePattern="log/$${date:yyyy-MM}/app-cache-%d{MM-dd-yyyy}-%i.log.gz"
+			fileName="D:/home/site/wwwroot/bin/tomcat/logs/app-cache.log" filePattern="log/$${date:yyyy-MM}/app-cache-%d{MM-dd-yyyy}-%i.log.gz"
 			ignoreExceptions="false">
 			<PatternLayout>
 				<Pattern>%d{DEFAULT} [%c{1}] - %m%n</Pattern>

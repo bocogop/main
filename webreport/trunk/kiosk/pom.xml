@@ -12,6 +12,7 @@
 	<name>Kiosk</name>
 
 	<build>
+		<finalName>kiosk</finalName>
 		<plugins>
 			<plugin>
 				<!-- Error "(webxml attribute is missing from war task, or ignoreWebxml 

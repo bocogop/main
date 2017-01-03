@@ -35,8 +35,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 @ComponentScan({ "org.bocogop.shared.web", "org.bocogop.kiosk.web" })
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@PropertySource("file:///${AppEventPropertiesDir:" + AbstractConfig.DEFAULT_APP_PROPERTIES_DIR + "}/app.properties")
-@PropertySource("file:///${AppEventPropertiesDir:" + AbstractConfig.DEFAULT_APP_PROPERTIES_DIR + "}/version.properties")
+@PropertySource("file:///${AppKioskPropertiesDir:" + AbstractConfig.DEFAULT_APP_PROPERTIES_DIR + "}/app.properties")
+@PropertySource("file:///${AppKioskPropertiesDir:" + AbstractConfig.DEFAULT_APP_PROPERTIES_DIR + "}/version.properties")
 public class WebConfig extends WebMvcConfigurationSupport {
 
 	@Autowired
