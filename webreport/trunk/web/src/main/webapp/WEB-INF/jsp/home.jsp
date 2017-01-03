@@ -30,6 +30,7 @@
 		})
 	}
 </script>
+
 <%@ include file="voter/voterRequirementPopup.jsp"%>
 
 <script type="text/javascript" src="${jsHome}/homeJavascript.js"></script>
@@ -40,13 +41,6 @@ ul.notificationRefList {
 	margin-bottom: 2px;
 }
 </style>
-
-<c:if test="${empty precinctContextId}">
-	<script type="text/javascript">
-		alert('Your working precinct configuration is invalid; please contact the national coordinator. You will be logged out until this is corrected.')
-		document.location.href = '${home}/logout.htm'
-	</script>
-</c:if>
 
 <c:set var="notificationWidth" value="900" />
 <c:if test="${currentUser.nationalAdmin}">

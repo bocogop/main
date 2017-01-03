@@ -3,10 +3,12 @@ package org.bocogop.shared.service.impl;
 import org.bocogop.shared.model.CoreUserDetails;
 import org.bocogop.shared.persistence.AppUserDAO;
 import org.bocogop.shared.persistence.dao.ApplicationParametersDAO;
+import org.bocogop.shared.persistence.dao.CountryDAO;
 import org.bocogop.shared.persistence.dao.EventDAO;
 import org.bocogop.shared.persistence.dao.GenderDAO;
 import org.bocogop.shared.persistence.dao.PermissionDAO;
 import org.bocogop.shared.persistence.dao.RoleDAO;
+import org.bocogop.shared.persistence.dao.StateDAO;
 import org.bocogop.shared.persistence.dao.TemplateDAO;
 import org.bocogop.shared.persistence.dao.audit.AuditLogEntryDAO;
 import org.bocogop.shared.persistence.dao.precinct.PrecinctDAO;
@@ -31,6 +33,8 @@ public class AbstractServiceImpl {
 	@Autowired
 	protected AuditLogEntryDAO auditLogEntryDAO;
 	@Autowired
+	protected CountryDAO countryDAO;
+	@Autowired
 	protected EventDAO eventDAO;
 	@Autowired
 	protected GenderDAO genderDAO;
@@ -38,6 +42,8 @@ public class AbstractServiceImpl {
 	protected PermissionDAO permissionDAO;
 	@Autowired
 	protected RoleDAO roleDAO;
+	@Autowired
+	protected StateDAO stateDAO;
 	@Autowired
 	protected TemplateDAO templateDAO;
 	@Autowired

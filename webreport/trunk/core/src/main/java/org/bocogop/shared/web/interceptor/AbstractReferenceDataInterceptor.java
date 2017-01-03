@@ -13,6 +13,7 @@ import org.bocogop.shared.model.Permission;
 import org.bocogop.shared.model.Permission.PermissionType;
 import org.bocogop.shared.model.Role.RoleType;
 import org.bocogop.shared.persistence.AppUserDAO;
+import org.bocogop.shared.persistence.dao.EventDAO;
 import org.bocogop.shared.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.shared.service.VelocityService;
 import org.bocogop.shared.util.DateUtil;
@@ -32,6 +33,8 @@ public abstract class AbstractReferenceDataInterceptor extends AbstractIntercept
 
 	@Autowired
 	protected AppUserDAO appUserDAO;
+	@Autowired
+	protected EventDAO eventDAO;
 	@Autowired
 	protected PrecinctDAO precinctDAO;
 	@Autowired

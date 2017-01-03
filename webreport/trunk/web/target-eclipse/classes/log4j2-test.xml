@@ -14,7 +14,7 @@
 		<Logger name="org.bocogop.wr" level="warn" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
-		<Logger name="org.bocogop.wr.util.MethodTimerAspect" level="info"
+		<Logger name="org.bocogop.shared.util.MethodTimerAspect" level="info"
 			additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>

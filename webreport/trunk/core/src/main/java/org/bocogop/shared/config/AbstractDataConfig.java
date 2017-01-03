@@ -72,7 +72,6 @@ public abstract class AbstractDataConfig {
 				"hibernate.connection.isolation", //
 				"hibernate.dialect", //
 				"hibernate.format_sql", //
-				"hibernate.generate_statistics", //
 				"hibernate.jdbc.batch_size", //
 				"hibernate.jdbc.batch_versioned_data", //
 				"hibernate.max_fetch_depth", //
@@ -90,7 +89,6 @@ public abstract class AbstractDataConfig {
 		if (unitTest) {
 			for (String[] p : new String[][] { //
 					{ "hibernate.format_sql", "true" }, //
-					{ "hibernate.generate_statistics", "true" }, //
 					{ "hibernate.show_sql", "true" }, //
 					{ "hibernate.use_sql_comments", "true" } }) {
 				jpaProperties.put(p[0], p[1]);

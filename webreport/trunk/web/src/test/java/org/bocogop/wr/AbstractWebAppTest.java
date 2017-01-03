@@ -7,7 +7,9 @@ import javax.sql.DataSource;
 
 import org.bocogop.shared.model.AppUser;
 import org.bocogop.shared.persistence.AppUserDAO;
+import org.bocogop.shared.persistence.dao.CountryDAO;
 import org.bocogop.shared.persistence.dao.GenderDAO;
+import org.bocogop.shared.persistence.dao.StateDAO;
 import org.bocogop.shared.service.PrecinctService;
 import org.bocogop.wr.config.WebAppConfig;
 import org.bocogop.wr.config.testOnly.AppTestConfig;
@@ -29,7 +31,11 @@ public abstract class AbstractWebAppTest extends AbstractJUnit4SpringContextTest
 	@Autowired
 	protected AppUserDAO appUserDAO;
 	@Autowired
+	protected CountryDAO countryDAO;
+	@Autowired
 	protected GenderDAO genderDAO;
+	@Autowired
+	protected StateDAO stateDAO;
 
 	@Autowired
 	protected PrecinctService precinctService;

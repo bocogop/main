@@ -46,6 +46,12 @@ public class AuditLoggingAspect {
 		ale.setMethod(s.toShortString());
 
 		String userId = SecurityUtil.getCurrentUserName();
+		if (userId == null) {
+			log.warn("Couldn't log method {} on {} with params {} because no user context was set yet", ale.getMethod(),
+					ale.getDate(), ale.getParamValues());
+			return;
+		}
+
 		ale.setAppUserId(userId);
 		ZonedDateTime now = ZonedDateTime.now();
 		ale.setDate(now);

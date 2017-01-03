@@ -31,7 +31,7 @@
 </c:forEach>
 </head>
 <body>
-	<%@ include file="javascript/inc_common_staff.jsp"%>
+	<%@ include file="javascript/inc_common_web.jsp"%>
 	<div id="skip">
 		<a href="#appTitleLink" aria-label="Skip to Page Content" title="Skip to Page Content">Skip to Page Content</a>
 	</div>
@@ -42,9 +42,8 @@
 						test="${not empty pageScope.topLeftImage}">
 						<a href="${home}/home.htm"><img
 							src="${imgHome}/${pageScope.topLeftImage}" height="99" border="0"
-							align="left" alt="Department of Veterans Affairs logo"></a>
-					</c:if><img src="${imgHome}/wrlogo_top.png" align="right" height="99"
-					alt="Department of Veterans Affairs Voluntary Services System"></td>
+							align="left"></a>
+					</c:if><img src="${imgHome}/wrlogo_top.png" align="right" height="99"></td>
 			</tr>
 		</c:if>
 		
@@ -62,8 +61,7 @@
 						&nbsp;
 						</c:if>
 						<c:if test="${not showFullHeader}">
-						<img src="${imgHome}/wrlogo_oneline.png" height="40"
-					alt="Department of Veterans Affairs Voluntary Services System" />
+						<img src="${imgHome}/wrlogo_oneline.png" height="40" />
 						</c:if></td>
 						<c:if test="${not empty precinctContextName}">
 							<td align="right" class="stationHeaderText" nowrap><img

@@ -2,8 +2,13 @@
 
 <script type="text/javascript">
 	function submitLogin() {
-		$("#password").val(
-				$("#mm").val() + '/' + $("#dd").val() + '/' + $("#yyyy").val())
+		var voterId = $("#voterId").val().replace('|', '')
+		var firstName = $("#firstName").val().replace('|', '')
+		var lastName = $("#lastName").val().replace('|', '')
+		var birthYear = $("#birthYear").val().replace('|', '')
+
+		$("#username").val(voterId + '|' + firstName + '|' + lastName)
+		$("#password").val(voterId + '|' + birthYear)
 
 		$("#loginSpinner").show()
 		doubleClickSafeguard($("#loginButton"), 20000, function() {
@@ -15,28 +20,6 @@
 		setTimeout(function() {
 			$("#oneTimeMessages").fadeOut(2000)
 		}, 10000)
-		
-		$("#mm").keydown(function(e) {
-			var keyCode = e.keyCode || e.which
-			if (keyCode == 191 || keyCode == 111) {
-				e.preventDefault()
-				var v = $("#mm").val()
-				if (v.length == 1)
-					$("#mm").val('0' + v)
-				$("#dd").focus()
-			}
-		})
-		
-		$("#dd").keydown(function(e) {
-			var keyCode = e.keyCode || e.which
-			if (keyCode == 191 || keyCode == 111) {
-				e.preventDefault()
-				var v = $("#dd").val()
-				if (v.length == 1)
-					$("#dd").val('0' + v)
-				$("#yyyy").focus()
-			}
-		})
 	})
 </script>
 
@@ -51,19 +34,10 @@
 }
 </style>
 
-<c:if test="${showBookmarkMsg}">
-	<div class="clearCenter">
-		<span class="redText bookmarkMsg">Please immediately set this page as
-			your browser homepage. This is <u>required</u> to enable printing
-			functionality.
-		</span>
-	</div>
-</c:if>
-
 <div class="login-form">
 	<c:url var="loginUrl" value="/login.htm" />
 	<form action="${loginUrl}" method="post" class="form-horizontal"
-		onsubmit="return submitLogin();" autocomplete="off">
+		onsubmit="return submitLogin();" autocomplete="${!isProduction}">
 		<div class="clearCenter" style="max-width: 85%">
 			<div class="clearCenter" style="padding: 25px 0px 25px 0px">
 				<a name="content"></a>
@@ -86,44 +60,82 @@
 					</div>
 				</c:if>
 			</div>
-			<div class="leftHalf"
-				style="padding-top: 40px; width: 40%; max-width: 40%">
-				<c:out value="${globalIntroText}" />
+
+			<div class="clearCenter">
+				<table>
+					<tr>
+						<td><img src="${imgHome}/profile.png" width="75"
+							align="absmiddle" /></td>
+						<td align="left">Today's Event: <b><c:out value="${event.name}" /></b>
+						<p>
+								<c:out value="${globalIntroText}" /></td>
+					</tr>
+				</table>
 			</div>
-			<div class="rightHalf" style="width: 60%; max-width: 60%">
-				<div class="clearCenter">
-					<img src="${imgHome}/flag.jpg" alt="Picture of American flag" />
-					<table cellpadding="5">
-						<tr>
-							<td align="right"><label class="loginLabel" for="username"><spring:message code="identifyingCode"/>:</label></td>
-							<td align="left"><input type="password" id="username"
-								name="username" placeholder="e.g. ABC123" required size="12" /></td>
-						</tr>
-						<tr>
-							<td align="right" class="loginLabel"><spring:message code="dateOfBirth"/>:</td>
-							<td align="left"><input id="mm" type="password"
-								placeholder="MM" maxlength="2" size="2" required /> / <input
-								id="dd" type="password" placeholder="DD" maxlength="2" size="2"
-								required /> / <input id="yyyy" type="password"
-								placeholder="YYYY" maxlength="4" size="4" required /> <input
-								type="password" style="visibility:hidden;display:none" id="password" name="password" /></td>
-						</tr>
-					</table>
-					<div align="center">
-						<img src="${imgHome}/spacer.gif" align="absmiddle" height="32"
-							width="1" alt="" /> <span id="loginSpinner"
-							style="display: none"> <img src="${imgHome}/spinner.gif"
-							align="absmiddle" alt="Spinner Icon" /> <spring:message code="loggingIn"/>...
-						</span> <img src="${imgHome}/spacer.gif" align="absmiddle" height="32"
-							width="1" alt="" />
+
+			<div class="clearCenter" style="padding: 15px 0px 10px 0px">
+				<div class="leftHalf"
+					style="padding-top: 15px; width: 44%; max-width: 44%">
+					<div class="clearCenter">
+						<table cellpadding="5">
+							<tr>
+								<td align="right"><label class="loginLabel" for="username"><spring:message
+											code="identifyingCode" />:</label></td>
+								<td align="left"><input type="text" id="voterId"
+									 size="12" /></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="leftHalf"
+					style="padding-top: 25px; width: 5%; max-width: 5%">
+					<nobr>
+						-
+						<spring:message code="or" />
+						-
+					</nobr>
+				</div>
+				<div class="leftHalf"
+					style="padding-left: 20px; width: 44%; max-width: 44%">
+					<div class="clearCenter">
+						<table cellpadding="5">
+							<tr>
+								<td align="right" nowrap><label class="loginLabel"
+									for="firstName"><spring:message code="name" />:</label></td>
+								<td align="left" nowrap><input type="text" id="firstName"
+									size="12" placeholder="first" /> <input type="text"
+									id="lastName" size="12" placeholder="last" /></td>
+							</tr>
+							<tr>
+								<td align="right" class="loginLabel" nowrap><spring:message
+										code="yearOfBirth" />:</td>
+								<td align="left"><input id="birthYear" type="password"
+									placeholder="YYYY" maxlength="4" size="4" /></td>
+							</tr>
+						</table>
 					</div>
 				</div>
 				<input type="hidden" name="${_csrf.parameterName}"
 					value="${_csrf.token}" />
-				<p>
+			</div>
+			<p>
+			<div class="clearCenter" style="padding: 10px 0px 0px 0px">
 				<div class="form-actions">
 					<input type="submit" class="btn btn-block btn-primary btn-default"
-						value="Log in" id="loginButton">
+						value="Log in" id="loginButton"> <input type="hidden"
+						style="visibility: hidden; display: none" id="username"
+						name="username" /> <input type="hidden"
+						style="visibility: hidden; display: none" id="password"
+						name="password" />
+					<div align="center">
+						<img src="${imgHome}/spacer.gif" align="absmiddle" height="32"
+							width="1" alt="" /> <span id="loginSpinner"
+							style="display: none"> <img src="${imgHome}/spinner.gif"
+							align="absmiddle" alt="Spinner Icon" /> <spring:message
+								code="loggingIn" />...
+						</span> <img src="${imgHome}/spacer.gif" align="absmiddle" height="32"
+							width="1" alt="" />
+					</div>
 				</div>
 			</div>
 	</form>

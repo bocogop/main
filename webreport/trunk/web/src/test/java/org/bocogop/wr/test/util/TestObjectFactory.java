@@ -7,7 +7,4 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestObjectFactory {
 
-	@Autowired
-	protected GenderDAO genderDAO;
-
 }

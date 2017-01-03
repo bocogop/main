@@ -24,9 +24,10 @@
 
 	<modules>
 		<module>../core</module>
-		<module>../event</module>
+		<module>../kiosk</module>
 		<module>../lib</module>
 		<module>../web</module>
+		<module>../common_web</module>
 	</modules>
 
 	<build>

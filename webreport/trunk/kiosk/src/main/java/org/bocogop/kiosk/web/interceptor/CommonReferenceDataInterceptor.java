@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bocogop.shared.model.Event;
 import org.bocogop.shared.model.lookup.TemplateType;
 import org.bocogop.shared.model.voter.Voter;
 import org.bocogop.shared.util.SecurityUtil;
@@ -29,26 +30,39 @@ public class CommonReferenceDataInterceptor extends AbstractReferenceDataInterce
 
 	@Value("${session.kiosk.idleAfterSeconds}")
 	private int sessionIdleAfterSeconds;
+	@Value("${session.kiosk.expirationSeconds}")
+	private int sessionExpirationSeconds;
+	@Value("${app.production:false}")
+	private boolean isProduction;
 
 	@Override
 	protected void addAdditionalReferenceData(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		Cookie eventIdCookie = WebUtils.getCookie(request, "eventId");
-		Long eventId = eventIdCookie == null ? null : new Long(eventIdCookie.getValue());
+		HttpSession session = request.getSession();
+		session.setAttribute("sessionIdleAfterSeconds", new Integer(sessionIdleAfterSeconds));
+		session.setMaxInactiveInterval(sessionExpirationSeconds);
 
 		Map<String, Object> model = modelAndView.getModel();
+		model.put("isProduction", isProduction);
 
-		Voter voterUser = SecurityUtil.getCurrentUserAs(Voter.class);
+		Cookie eventIdCookie = WebUtils.getCookie(request, "eventId");
 
-		if (voterUser != null) {
-			model.put("currentUser", voterUser);
+		Long eventId = eventIdCookie == null ? null : new Long(eventIdCookie.getValue());
+		if (eventId != null) {
+			Event event = eventDAO.findByPrimaryKey(eventId);
+			if (event != null) {
+				model.put("event", event);
+			}
 		}
 
-		HttpSession session = request.getSession();
+		Voter voterUser = SecurityUtil.getCurrentUserAsOrNull(Voter.class);
+		model.put("voter", voterUser);
 
-		session.setAttribute("sessionIdleAfterSeconds", new Integer(sessionIdleAfterSeconds));
-
-		ZoneId timeZone = voterUser.getTimeZone();
+		ZoneId timeZone = null;
+		if (voterUser != null) {
+			model.put("currentUser", voterUser);
+			timeZone = voterUser.getTimeZone();
+		}
 
 		ZonedDateTime now = ZonedDateTime.now();
 		if (timeZone != null)
@@ -58,8 +72,8 @@ public class CommonReferenceDataInterceptor extends AbstractReferenceDataInterce
 		/* Velocity caches these vals per the engine setup - CPB */
 		Locale locale = LocaleContextHolder.getLocale();
 		model.put("locale", locale.getLanguage());
-		model.put("systemNotification", StringUtils.trim(velocityService
-				.mergeTemplateIntoString(TemplateType.SYSTEM_NOTIFICATION.getName() + "." + locale.getLanguage())));
+		model.put("systemNotification", StringUtils.trim(velocityService.mergeTemplateIntoString(
+				"kiosk." + TemplateType.SYSTEM_NOTIFICATION.getName() + "." + locale.getLanguage())));
 	}
 
 }

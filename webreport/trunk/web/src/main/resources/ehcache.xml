@@ -34,6 +34,9 @@
 
 	<!-- Specific caches -->
 
+	<cache name="queries.countryDAO" maxElementsInMemory="500"
+		eternal="true" overflowToDisk="false" />
+
 	<cache name="queries.precinctDAO" maxElementsInMemory="5000"
 		eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="1200"
 		overflowToDisk="false" />
@@ -41,13 +44,16 @@
 	<cache name="queries.genderDAO" maxElementsInMemory="5" eternal="true"
 		overflowToDisk="false" copyOnRead="true" />
 
-	<cache name="queries.permissionDAO" maxElementsInMemory="1000" eternal="false"
-		timeToIdleSeconds="3600" timeToLiveSeconds="7200" overflowToDisk="false"
-		copyOnRead="true" />
+	<cache name="queries.permissionDAO" maxElementsInMemory="1000"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
+		overflowToDisk="false" copyOnRead="true" />
 
 	<cache name="queries.roleDAO" maxElementsInMemory="1000" eternal="false"
 		timeToIdleSeconds="3600" timeToLiveSeconds="7200" overflowToDisk="false"
 		copyOnRead="true" />
+
+	<cache name="queries.stateDAO" maxElementsInMemory="500" eternal="true"
+		overflowToDisk="false" />
 
 	<!-- App classes -->
 
@@ -74,9 +80,9 @@
 		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
 		timeToLiveSeconds="7200" overflowToDisk="false" />
 
-	<cache name="org.bocogop.shared.model.Permission" maxElementsInMemory="250"
-		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
-		overflowToDisk="false" />
+	<cache name="org.bocogop.shared.model.Permission"
+		maxElementsInMemory="250" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="false" />
 
 	<cache name="org.bocogop.shared.model.Permission.roles"
 		maxElementsInMemory="250" eternal="false" timeToIdleSeconds="3600"
@@ -97,5 +103,5 @@
 
 	<cache name="org.bocogop.wr.model.lookup.JobExecutionType"
 		maxElementsInMemory="100" eternal="true" overflowToDisk="false" />
-		
+
 </ehcache>

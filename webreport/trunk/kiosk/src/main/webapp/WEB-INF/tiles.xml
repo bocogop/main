@@ -7,11 +7,9 @@
 		<!-- An example of a common attribute, copy this into definitions that 
 			extend root to override its value - CPB -->
 		<put-attribute name="pageTitle" value="pageTitle.default" />
-		<put-attribute name="pageDescription" value="Welcome to the Voluntary Service System (VSS) Event" />
-		<put-attribute name="topLeftImage" value="va_full_logo.png" />
+		<put-attribute name="pageDescription" value="Welcome to the Buolder County GOP Kiosk" />
 		<put-attribute name="activateCountdownTimer" value="true" />
 		<put-attribute name="headerRowHeight" value="99" />
-		<put-attribute name="showHelp" value="true" />
 	</definition>
 
 	<!-- Used in the event we have an unchecked exception that bubbles up to 
@@ -40,21 +38,16 @@
 	<definition name="help" extends="root">
 		<put-attribute name="body" value="/WEB-INF/jsp/help.jsp" />
 		<put-attribute name="pageTitle" value="pageTitle.help" />
-		<put-attribute name="topLeftImage"
-			value="va_full_logo.png" />
-		<put-attribute name="showHelp" value="false" />
 	</definition>
 
 	<definition name="home" extends="root">
 		<put-attribute name="body" value="/WEB-INF/jsp/home.jsp" />
 		<put-attribute name="pageTitle" value="pageTitle.home" />
-		<put-attribute name="topLeftImage"
-			value="va_full_logo.png" />
 	</definition>
 	
-	<definition name="postTime" extends="root">
-		<put-attribute name="body" value="/WEB-INF/jsp/postTime.jsp" />
-		<put-attribute name="pageTitle" value="pageTitle.postTime" />
+	<definition name="refineUser" extends="root">
+		<put-attribute name="body" value="/WEB-INF/jsp/refineUser.jsp" />
+		<put-attribute name="pageTitle" value="pageTitle.refineUser" />
 	</definition>
 
 	<definition name="eventChange" extends="root">
@@ -63,7 +56,6 @@
 		<put-attribute name="pageDescription"
 			value="This screen allows the user to select or change their event" />
 		<put-attribute name="activateCountdownTimer" value="false" />
-		<put-attribute name="showHelp" value="false" />
 	</definition>
 
 	<definition name="timeEntry" extends="root">

@@ -132,7 +132,7 @@ div.dataTables_filter input {
 							</tr>
 							<c:if test="${command.precinct.persistent}">
 								<tr valign="top">
-									<td class='appFieldLabel' nowrap>Official VA Precinct:</td>
+									<td class='appFieldLabel' nowrap>Precinct:</td>
 									<td></td>
 									<td><c:if test="${empty command.precinct.precinct}">(none) 
 										<sec:authorize

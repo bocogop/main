@@ -39,6 +39,7 @@ public class Permission extends AbstractLookup<Permission, PermissionType> imple
 
 	public static final String EVENT_EDIT = "Edit Events";
 	public static final String LOGIN_APPLICATION = "Login Application";
+	public static final String SPECIFY_VOTER_MATCH = "Specify Voter Match";
 	public static final String LOGIN_KIOSK = "Login Kiosk";
 	public static final String PRECINCT_ASSIGN = "Assign Precincts";
 	public static final String PRECINCT_EDIT = "Edit Precincts";
@@ -83,6 +84,7 @@ public class Permission extends AbstractLookup<Permission, PermissionType> imple
 		VOTER_EDIT(Permission.VOTER_EDIT, 5), //
 		EVENT_EDIT(Permission.EVENT_EDIT, 6), //
 		LOGIN_KIOSK(Permission.LOGIN_KIOSK, 50), //
+		SPECIFY_VOTER_MATCH(Permission.SPECIFY_VOTER_MATCH, 51), //
 		;
 
 		private String name;

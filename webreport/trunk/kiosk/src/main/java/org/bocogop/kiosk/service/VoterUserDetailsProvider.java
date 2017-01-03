@@ -5,15 +5,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bocogop.shared.model.Permission;
 import org.bocogop.shared.model.Role;
 import org.bocogop.shared.model.Role.RoleType;
+import org.bocogop.shared.model.voter.MultiVoterTempUserDetails;
 import org.bocogop.shared.model.voter.Voter;
 import org.bocogop.shared.persistence.dao.voter.VoterDAO;
 import org.bocogop.shared.service.AbstractAppServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +27,51 @@ public class VoterUserDetailsProvider extends AbstractAppServiceImpl {
 	@Autowired
 	private VoterDAO voterDAO;
 
-	public Voter retrieveUser(String voterId, UsernamePasswordAuthenticationToken authentication) {
-		List<Voter> vols = voterDAO.findByCriteria(voterId, null, null, null, false, false, null, null, null, null,
-				null, null, null, null);
-		if (vols.isEmpty())
-			throw new UsernameNotFoundException("Sorry, that voter ID was not found.");
-		Voter v = vols.get(0);
+	public UserDetails retrieveUser(String combinedUsername, UsernamePasswordAuthenticationToken authentication) {
+		String[] usernameTokens = combinedUsername.split("\\|", -1);
+		if (usernameTokens.length != 3)
+			throw new UsernameNotFoundException("Invalid username specified");
+
+		String voterId = usernameTokens[0];
+		String firstName = usernameTokens[1];
+		String lastName = usernameTokens[2];
+
+		Voter v = null;
+
+		if (StringUtils.isNotBlank(voterId)) {
+			List<Voter> vols = voterDAO.findByCriteria(voterId, null, null, null, false, false, null, null, null, null,
+					null, null, null, null);
+			if (vols.size() > 1) {
+				return new MultiVoterTempUserDetails(vols);
+			} else if (vols.size() == 1) {
+				v = vols.get(0);
+			}
+		} else {
+			Integer birthYear = null;
+
+			Object credentials = authentication.getCredentials();
+			if (credentials instanceof String) {
+				String[] passwordTokens = ((String) credentials).split("\\|", -1);
+				if (passwordTokens.length != 2)
+					throw new BadCredentialsException("Invalid password specified");
+				try {
+					birthYear = Integer.parseInt(passwordTokens[1].trim());
+				} catch (NumberFormatException e) {
+					throw new BadCredentialsException("Invalid password specified");
+				}
+			}
+
+			List<Voter> vols = voterDAO.findByCriteria(null, firstName, null, lastName, false, true, birthYear, null,
+					null, null, null, null, null, null);
+			if (vols.size() > 1) {
+				return new MultiVoterTempUserDetails(vols);
+			} else if (vols.size() == 1) {
+				v = vols.get(0);
+			}
+		}
+
+		if (v == null)
+			throw new BadCredentialsException("Sorry, no voter was found.");
 
 		Role voterRole = roleDAO.findByLookup(RoleType.VOTER);
 		Set<Permission> permissions = voterRole.getPermissions();

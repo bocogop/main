@@ -5,8 +5,8 @@
 			<PatternLayout pattern="%d{DEFAULT} [%p] [%c{1}] - %m%n" />
 		</Console>
 		<RollingFile append="true" bufferedIO="true" name="appender.app"
-			fileName="C:/data/projects-hp/VSS/deploymentsLocal/logs/app.log"
-			filePattern="C:/data/projects-hp/VSS/deploymentsLocal/logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz"
+			fileName="C:/dev/code/bocogop/main/software/apache-tomcat/logs/app.log"
+			filePattern="C:/dev/code/bocogop/main/software/apache-tomcat/logs/logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz"
 			ignoreExceptions="false">
 			<PatternLayout>
 				<Pattern>%d{DEFAULT} [%p] [%c{1}] - %m%n</Pattern>
@@ -17,8 +17,8 @@
 			</Policies>
 		</RollingFile>
 		<RollingFile append="true" bufferedIO="true" name="appender.timings"
-			fileName="C:/data/projects-hp/VSS/deploymentsLocal/logs/app-timings.log"
-			filePattern="C:/data/projects-hp/VSS/deploymentsLocal/logs/$${date:yyyy-MM}/app-timings-%d{MM-dd-yyyy}-%i.log.gz"
+			fileName="C:/dev/code/bocogop/main/software/apache-tomcat/logs/app-timings.log"
+			filePattern="C:/dev/code/bocogop/main/software/apache-tomcat/logs/$${date:yyyy-MM}/app-timings-%d{MM-dd-yyyy}-%i.log.gz"
 			ignoreExceptions="false">
 			<PatternLayout>
 				<Pattern>%d{DEFAULT} [%c{1}] - %m%n</Pattern>
@@ -29,8 +29,8 @@
 			</Policies>
 		</RollingFile>
 		<RollingFile append="true" bufferedIO="true" name="appender.cache"
-			fileName="C:/data/projects-hp/VSS/deploymentsLocal/logs/app-cache.log"
-			filePattern="C:/data/projects-hp/VSS/deploymentsLocal/logs/$${date:yyyy-MM}/app-cache-%d{MM-dd-yyyy}-%i.log.gz"
+			fileName="C:/dev/code/bocogop/main/software/apache-tomcat/logs/app-cache.log"
+			filePattern="C:/dev/code/bocogop/main/software/apache-tomcat/logs/$${date:yyyy-MM}/app-cache-%d{MM-dd-yyyy}-%i.log.gz"
 			ignoreExceptions="false">
 			<PatternLayout>
 				<Pattern>%d{DEFAULT} [%c{1}] - %m%n</Pattern>
@@ -48,14 +48,6 @@
 			<AppenderRef ref="console" />
 		</Logger>
 		<Logger name="org.bocogop.kiosk" level="error" additivity="false">
-			<AppenderRef ref="appender.app" />
-		</Logger>
-		<Logger name="org.bocogop.kiosk.util.MethodTimerAspect" level="info"
-			additivity="false">
-			<AppenderRef ref="appender.timings" />
-		</Logger>
-		<Logger name="org.bocogop.kiosk.service.scheduledJobs" level="error"
-			additivity="false">
 			<AppenderRef ref="appender.app" />
 		</Logger>
 		<Logger name="org.bocogop.kiosk.service.scheduledJobs" level="error"

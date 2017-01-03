@@ -1,4 +1,4 @@
-<Context reloadable="true">
+<Context reloadable="false">
 
     <ResourceLink name="jdbc/bocogop" global="jdbc/bocogop" type="javax.sql.DataSource"/>
     

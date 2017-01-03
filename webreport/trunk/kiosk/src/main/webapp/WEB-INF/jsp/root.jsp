@@ -1,6 +1,5 @@
 <%@ include file="shared/inc_header.jsp"%>
 
-<tiles:importAttribute name="topLeftImage" scope="page" ignore="true" />
 <tiles:importAttribute name="extraHeadEntries" scope="page"
 	ignore="true" />
 <%--Allow these to be set either in the model or in the tiles config - CPB --%>
@@ -19,7 +18,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<title>VSS</title>
+<title>Boulder County GOP Kiosk</title>
 <style>
 .noticeOfNonProdEnvironment {
 	top: <c:out value="${headerRowHeight + 5}"/>px;
@@ -38,7 +37,7 @@
 </c:forEach>
 </head>
 <body>
-	<%@ include file="inc_common_event.jsp"%>
+	<%@ include file="inc_common_kiosk.jsp"%>
 	<span class="noticeOfNonProdEnvironment"><spring:message
 			code="testEnvironmentWarning" /></span>
 	<div id="skip">
@@ -49,15 +48,12 @@
 	<table cellpadding="0" cellspacing="0" width="100%">
 
 		<tr valign="middle">
-			<td id="headerRowCell" background="${imgHome}/top-banner-bg-red.gif"><c:if
-					test="${not empty pageScope.topLeftImage}">
+			<td id="headerRowCell" background="${imgHome}/top-banner-bg-red.gif">
 					<a href="${home}/home.htm"><img
-						src="${imgHome}/${pageScope.topLeftImage}"
-						height="${headerRowHeight}" border="0" align="left"
-						alt="Department of Veterans Affairs logo"></a>
-				</c:if><img src="${imgHome}/vsslogo_top.png" align="right"
-				height="${headerRowHeight}"
-				alt="Department of Veterans Affairs Voluntary Services System"></td>
+						src="${imgHome}/flag.png"
+						border="0" align="left"></a>
+				<img src="${imgHome}/meeting-people.png" align="right"
+				height="${headerRowHeight}"></td>
 		</tr>
 		<tr>
 			<td align="center" class="blueBar" height="28" nowrap><table
@@ -100,12 +96,7 @@
 
 				<table width="100%">
 					<tr valign="top" id="titleRow">
-						<td width="150"><tiles:importAttribute name="showHelp" scope="page" />
-						<c:if test="${showHelp}">
-						<a id='helpLink' href="help.htm"><img
-							style="border: 0px; margin-bottom: 15px" alt="Access Help for this Page"
-							src="${imgHome}/Helpicon-blue.png"></a>
-						</c:if></td>
+						<td width="150">&nbsp;</td>
 						<td>
 							<table align="center">
 								<tr>
@@ -161,8 +152,7 @@
 							</ul>
 						</td>
 						<td valign="middle" align="left" width="180"><img
-							src="${imgHome}/VA_Excellence_4C.gif" width="180" height="72"
-							alt="VA Health Care Defining Excellence in the 21st Century" /></td>
+							src="${imgHome}/bcr_logo.png" height="72" /></td>
 					</tr>
 					<tr class="bodyTextSmall">
 						<td colspan="2" align="center" nowrap="nowrap"><input
@@ -172,9 +162,7 @@
 							type="radio" name="localeRadio"
 							onclick="document.location.href='?locale=es'"
 							${locale == 'es' ? ' checked' : ''}>Spanish/Español |
-							<vss:zonedDateTime value="${currentTime}" /> |
-							<spring:message code="printerStatus" />: <c:out
-								value="${eventPrinterStatusHealthy ? 'Online' : 'Offline'}" />
+							<wr:zonedDateTime value="${currentTime}" />
 						</td>
 					</tr>
 				</table>

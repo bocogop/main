@@ -10,7 +10,7 @@
 	
 	<context-param>
 		<param-name>spring.profiles.active</param-name>
-		<param-value>attended, attendedEvent</param-value>
+		<param-value>attended, attendedKiosk</param-value>
 	</context-param>
 	
 	<welcome-file-list>

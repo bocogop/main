@@ -50,7 +50,8 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	@NotBlank
 	private String lastName;
 	private String suffix;
-
+	private Gender gender;
+	
 	private String driversLicense;
 	private String ssn;
 
@@ -58,7 +59,9 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	private LocalDate effectiveDate;
 
 	private String phone;
-
+	private String fax;
+	private String email;
+	
 	private String houseNumber;
 	private String houseSuffix;
 	private String preDirection;
@@ -72,6 +75,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	private String state;
 	private String zip;
 	private String zipPlus;
+	
 	private String mailingAddress1;
 	private String mailingAddress2;
 	private String mailingAddress3;
@@ -80,6 +84,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	private String mailingZip;
 	private String mailingZipPlus;
 	private String mailingCountry;
+	
 	private String ballotAddress1;
 	private String ballotAddress2;
 	private String ballotAddress3;
@@ -88,17 +93,16 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	private String ballotZip;
 	private String ballotZipPlus;
 	private String ballotCountry;
+	
 	private Boolean statusActive;
 	private String statusReason;
+	
 	private LocalDate affiliatedDate;
 	private Boolean idRequired;
 	private Integer birthYear;
 	private Boolean uocava;
 	private String issueMethod;
-	private String fax;
-	private String email;
-
-	private Gender gender;
+	
 
 	// -------------------------------------- Constructors
 
@@ -159,7 +163,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 
 	// -------------------------------------- Accessor Methods
 
-	@Column(length = 30)
+	@Column(length = 100)
 	@JsonView(VoterView.Extended.class)
 	public String getLastName() {
 		return lastName;
@@ -169,7 +173,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.lastName = lastName;
 	}
 
-	@Column(length = 30)
+	@Column(length = 100)
 	@JsonView(VoterView.Extended.class)
 	public String getFirstName() {
 		return firstName;
@@ -179,7 +183,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.firstName = firstName;
 	}
 
-	@Column(length = 20)
+	@Column(length = 100)
 	@JsonView(VoterView.Extended.class)
 	public String getMiddleName() {
 		return middleName;
@@ -189,7 +193,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.middleName = middleName;
 	}
 
-	@Column(name = "NameSuffix", length = 10)
+	@Column(name = "NameSuffix", length = 20)
 	@JsonView(VoterView.Extended.class)
 	public String getSuffix() {
 		return suffix;
@@ -199,7 +203,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.suffix = suffix;
 	}
 
-	@Column(length = 30, nullable = false)
+	@Column(name = "ResidentialCity", length = 255)
 	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	public String getCity() {
 		return city;
@@ -209,7 +213,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.city = city;
 	}
 
-	@Column(name = "ZipCode", length = 10)
+	@Column(name = "ResidentialZip", length = 15)
 	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	public String getZip() {
 		return zip;
@@ -219,7 +223,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.zip = zip;
 	}
 
-	@Column(name = "Telephone", length = 30)
+	@Column(length = 30)
 	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
 	public String getPhone() {
 		return phone;
@@ -229,7 +233,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.phone = phone;
 	}
 
-	@Column(name = "EMailAddress", length = 250)
+	@Column(name = "Email", length = 255)
 	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
 	public String getEmail() {
 		return email;
@@ -239,7 +243,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.email = email;
 	}
 
-	@Column(length = 2)
+	@Column(name = "ResidentialState", length = 2)
 	public String getState() {
 		return state;
 	}
@@ -248,6 +252,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.state = state;
 	}
 
+	@Column(length = 255)
 	public String getVoterId() {
 		return voterId;
 	}
@@ -256,6 +261,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.voterId = voterId;
 	}
 
+	@Column(length = 30)
 	public String getDriversLicense() {
 		return driversLicense;
 	}
@@ -264,6 +270,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.driversLicense = driversLicense;
 	}
 
+	@Column(length = 9)
 	public String getSsn() {
 		return ssn;
 	}
@@ -288,6 +295,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.effectiveDate = effectiveDate;
 	}
 
+	@Column(length = 10)
 	public String getHouseNumber() {
 		return houseNumber;
 	}
@@ -296,6 +304,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.houseNumber = houseNumber;
 	}
 
+	@Column(length = 20)
 	public String getHouseSuffix() {
 		return houseSuffix;
 	}
@@ -304,6 +313,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.houseSuffix = houseSuffix;
 	}
 
+	@Column(length = 5)
 	public String getPreDirection() {
 		return preDirection;
 	}
@@ -312,6 +322,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.preDirection = preDirection;
 	}
 
+	@Column(length = 255)
 	public String getStreetName() {
 		return streetName;
 	}
@@ -320,6 +331,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.streetName = streetName;
 	}
 
+	@Column(length = 10)
 	public String getStreetType() {
 		return streetType;
 	}
@@ -328,6 +340,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.streetType = streetType;
 	}
 
+	@Column(length = 255)	
 	public String getPostDirection() {
 		return postDirection;
 	}
@@ -336,6 +349,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.postDirection = postDirection;
 	}
 
+	@Column(length = 20)
 	public String getUnitType() {
 		return unitType;
 	}
@@ -344,6 +358,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.unitType = unitType;
 	}
 
+	@Column(length = 15)
 	public String getUnitNumber() {
 		return unitNumber;
 	}
@@ -352,6 +367,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.unitNumber = unitNumber;
 	}
 
+	@Column(name = "ResidentialZipPlus", length = 20)
 	public String getZipPlus() {
 		return zipPlus;
 	}
@@ -360,6 +376,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.zipPlus = zipPlus;
 	}
 
+	@Column(length = 255)
 	public String getMailingAddress1() {
 		return mailingAddress1;
 	}
@@ -368,6 +385,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.mailingAddress1 = mailingAddress1;
 	}
 
+	@Column(length = 255)
 	public String getMailingAddress2() {
 		return mailingAddress2;
 	}
@@ -376,6 +394,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.mailingAddress2 = mailingAddress2;
 	}
 
+	@Column(length = 255)
 	public String getMailingAddress3() {
 		return mailingAddress3;
 	}
@@ -384,6 +403,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.mailingAddress3 = mailingAddress3;
 	}
 
+	@Column(length = 255)
 	public String getMailingCity() {
 		return mailingCity;
 	}
@@ -392,6 +412,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.mailingCity = mailingCity;
 	}
 
+	@Column(length = 2)
 	public String getMailingState() {
 		return mailingState;
 	}
@@ -400,6 +421,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.mailingState = mailingState;
 	}
 
+	@Column(length = 15)
 	public String getMailingZip() {
 		return mailingZip;
 	}
@@ -408,6 +430,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.mailingZip = mailingZip;
 	}
 
+	@Column(length = 20)
 	public String getMailingZipPlus() {
 		return mailingZipPlus;
 	}
@@ -416,6 +439,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.mailingZipPlus = mailingZipPlus;
 	}
 
+	@Column(length = 100)
 	public String getMailingCountry() {
 		return mailingCountry;
 	}
@@ -424,6 +448,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.mailingCountry = mailingCountry;
 	}
 
+	@Column(length = 255)
 	public String getBallotAddress1() {
 		return ballotAddress1;
 	}
@@ -432,6 +457,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.ballotAddress1 = ballotAddress1;
 	}
 
+	@Column(length = 255)
 	public String getBallotAddress2() {
 		return ballotAddress2;
 	}
@@ -440,6 +466,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.ballotAddress2 = ballotAddress2;
 	}
 
+	@Column(length = 255)
 	public String getBallotAddress3() {
 		return ballotAddress3;
 	}
@@ -448,6 +475,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.ballotAddress3 = ballotAddress3;
 	}
 
+	@Column(length = 255)
 	public String getBallotCity() {
 		return ballotCity;
 	}
@@ -456,6 +484,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.ballotCity = ballotCity;
 	}
 
+	@Column(length = 2)
 	public String getBallotState() {
 		return ballotState;
 	}
@@ -464,6 +493,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.ballotState = ballotState;
 	}
 
+	@Column(length = 15)
 	public String getBallotZip() {
 		return ballotZip;
 	}
@@ -472,6 +502,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.ballotZip = ballotZip;
 	}
 
+	@Column(length = 20)
 	public String getBallotZipPlus() {
 		return ballotZipPlus;
 	}
@@ -480,6 +511,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.ballotZipPlus = ballotZipPlus;
 	}
 
+	@Column(length = 100)
 	public String getBallotCountry() {
 		return ballotCountry;
 	}
@@ -488,6 +520,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.ballotCountry = ballotCountry;
 	}
 
+	@Column(name = "VoterStatusActive")
 	public Boolean getStatusActive() {
 		return statusActive;
 	}
@@ -496,6 +529,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.statusActive = statusActive;
 	}
 
+	@Column(name = "VoterStatusReason", length = 255)
 	public String getStatusReason() {
 		return statusReason;
 	}
@@ -536,6 +570,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.uocava = uocava;
 	}
 
+	@Column(length = 255)
 	public String getIssueMethod() {
 		return issueMethod;
 	}
@@ -544,6 +579,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.issueMethod = issueMethod;
 	}
 
+	@Column(length = 255)
 	public String getFax() {
 		return fax;
 	}
@@ -552,6 +588,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.fax = fax;
 	}
 
+	@Column(name = "ResidentialAddress", length = 255)
 	public String getAddress() {
 		return address;
 	}

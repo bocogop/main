@@ -45,9 +45,20 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/javax/servlet/jsp/jsp-api/2.2/jsp-api-2.2.jar" sourcepath="M2_REPO/javax/servlet/jsp/jsp-api/2.2/jsp-api-2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/javax/servlet/jsp/jsp-api/2.2/jsp-api-2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar" sourcepath="M2_REPO/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1.1/activation-1.1.1.jar" sourcepath="M2_REPO/javax/activation/activation/1.1.1/activation-1.1.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4.7/mail-1.4.7.jar" sourcepath="M2_REPO/javax/mail/mail/1.4.7/mail-1.4.7-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/javax/mail/mail/1.4.7/mail-1.4.7-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">

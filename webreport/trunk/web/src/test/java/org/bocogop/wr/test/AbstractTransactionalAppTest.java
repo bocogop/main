@@ -18,8 +18,10 @@ import org.bocogop.shared.model.Role;
 import org.bocogop.shared.model.Role.RoleType;
 import org.bocogop.shared.model.precinct.Precinct;
 import org.bocogop.shared.persistence.AppUserDAO;
+import org.bocogop.shared.persistence.dao.CountryDAO;
 import org.bocogop.shared.persistence.dao.GenderDAO;
 import org.bocogop.shared.persistence.dao.RoleDAO;
+import org.bocogop.shared.persistence.dao.StateDAO;
 import org.bocogop.shared.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.shared.service.AppUserService;
 import org.bocogop.shared.service.AppUserTestService;
@@ -75,6 +77,8 @@ public abstract class AbstractTransactionalAppTest extends AbstractTransactional
 	@Autowired
 	protected AppUserDAO appUserDAO;
 	@Autowired
+	protected CountryDAO countryDAO;
+	@Autowired
 	protected GenderDAO genderDAO;
 	@Autowired
 	protected RoleDAO roleDAO;
@@ -82,6 +86,8 @@ public abstract class AbstractTransactionalAppTest extends AbstractTransactional
 	protected PrecinctDAO precinctDAO;
 	@Autowired
 	protected PrecinctService precinctService;
+	@Autowired
+	protected StateDAO stateDAO;
 
 	// Services
 	@Autowired
