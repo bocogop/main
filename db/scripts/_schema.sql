@@ -17,6 +17,7 @@ if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Gender' A
 if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Party' AND TABLE_SCHEMA = 'dbo') drop table dbo.Party;
 if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Precinct' AND TABLE_SCHEMA = 'dbo') drop table dbo.Precinct;
 if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Event' AND TABLE_SCHEMA = 'dbo') drop table dbo.Event;
+if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'Participation' AND TABLE_SCHEMA = 'dbo') drop table dbo.Participation;
 */
 
 CREATE TABLE [Core].[AppParameter](
@@ -359,6 +360,19 @@ create table dbo.Event(
 )
 GO
 
+create table dbo.Participation(
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[EventFK] int not null,
+	[VoterFK] int not null,
+	[CreatedBy] [varchar](30) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[ModifiedBy] [varchar](30) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL,
+	[Ver] [numeric](10, 0) NOT NULL,
+	CONSTRAINT [PK_Participation] PRIMARY KEY CLUSTERED ([Id] ASC)
+)
+GO
+
 ----------------------------------------- Constraints
 
 ALTER TABLE [Core].[AppUser] ADD  DEFAULT ('N') FOR [EnabledInd]
@@ -436,6 +450,8 @@ GO
 CREATE NONCLUSTERED INDEX [IX_Voter_H_Id] ON [dbo].[Voter_H]([Id] ASC)
 GO
 CREATE NONCLUSTERED INDEX [IX_Voter_H_VoterId] ON [dbo].[Voter_H]([VoterId] ASC)
+GO
+CREATE UNIQUE NONCLUSTERED INDEX UQ_Participation ON [dbo].[Participation] (VoterFK, EventFK);
 GO
 
 ---------------------------------------------- Triggers

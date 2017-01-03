@@ -161,6 +161,10 @@ public class KioskController extends AbstractKioskController {
 
 	@RequestMapping(URL_HOME)
 	public String home(ModelMap model) {
+		Voter v = getCurrentUser();
+		
+		participationService.logParticipation(v.getId(), getRequiredEventContextId());
+		
 		String locale = LocaleContextHolder.getLocale().getLanguage();
 		model.put("homepageContent",
 				velocityService.mergeTemplateIntoString("kiosk." + TemplateType.HOMEPAGE_CONTENT.getName() + "." + locale));

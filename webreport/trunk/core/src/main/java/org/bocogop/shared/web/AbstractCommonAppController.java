@@ -14,6 +14,7 @@ import org.bocogop.shared.persistence.dao.ApplicationParametersDAO;
 import org.bocogop.shared.persistence.dao.CountryDAO;
 import org.bocogop.shared.persistence.dao.EventDAO;
 import org.bocogop.shared.persistence.dao.GenderDAO;
+import org.bocogop.shared.persistence.dao.ParticipationDAO;
 import org.bocogop.shared.persistence.dao.StateDAO;
 import org.bocogop.shared.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.shared.persistence.dao.voter.VoterDAO;
@@ -21,6 +22,7 @@ import org.bocogop.shared.persistence.dao.voter.VoterHistoryEntryDAO;
 import org.bocogop.shared.persistence.dao.voter.demographics.VolDemoDAO;
 import org.bocogop.shared.service.AppUserService;
 import org.bocogop.shared.service.EventService;
+import org.bocogop.shared.service.ParticipationService;
 import org.bocogop.shared.service.PrecinctService;
 import org.bocogop.shared.service.email.EmailService;
 import org.bocogop.shared.service.voter.VoterService;
@@ -67,6 +69,8 @@ public abstract class AbstractCommonAppController {
 	@Autowired
 	protected GenderDAO genderDAO;
 	@Autowired
+	protected ParticipationDAO participationDAO;
+	@Autowired
 	protected PrecinctDAO precinctDAO;
 	@Autowired
 	protected StateDAO stateDAO;
@@ -85,6 +89,8 @@ public abstract class AbstractCommonAppController {
 	protected EmailService emailService;
 	@Autowired
 	protected EventService eventService;
+	@Autowired
+	protected ParticipationService participationService;
 	@Autowired
 	protected PrecinctService precinctService;
 	@Autowired

@@ -20,7 +20,7 @@ public abstract class AbstractKioskController extends AbstractCommonAppControlle
 		return SecurityUtil.getCurrentUserAs(Voter.class);
 	}
 
-	public Long getEventId(HttpServletRequest request) {
+	public Long getEventIdFromCookie(HttpServletRequest request) {
 		Cookie eventIdCookie = WebUtils.getCookie(request, "eventId");
 		Long eventId = eventIdCookie == null ? null : new Long(eventIdCookie.getValue());
 		return eventId;
@@ -33,6 +33,13 @@ public abstract class AbstractKioskController extends AbstractCommonAppControlle
 	protected Long getEventContextId() {
 		Event f = SessionUtil.getEventContext();
 		return f == null ? null : f.getId();
+	}
+	
+	protected Long getRequiredEventContextId() {
+		Long id = getEventContextId();
+		if (id == null)
+			throw new IllegalArgumentException("Required event context ID was not found");
+		return id;
 	}
 
 	protected Event getEventContext() {

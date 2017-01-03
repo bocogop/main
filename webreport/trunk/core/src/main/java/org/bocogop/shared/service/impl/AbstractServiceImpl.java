@@ -6,6 +6,7 @@ import org.bocogop.shared.persistence.dao.ApplicationParametersDAO;
 import org.bocogop.shared.persistence.dao.CountryDAO;
 import org.bocogop.shared.persistence.dao.EventDAO;
 import org.bocogop.shared.persistence.dao.GenderDAO;
+import org.bocogop.shared.persistence.dao.ParticipationDAO;
 import org.bocogop.shared.persistence.dao.PermissionDAO;
 import org.bocogop.shared.persistence.dao.RoleDAO;
 import org.bocogop.shared.persistence.dao.StateDAO;
@@ -38,6 +39,8 @@ public class AbstractServiceImpl {
 	protected EventDAO eventDAO;
 	@Autowired
 	protected GenderDAO genderDAO;
+	@Autowired
+	protected ParticipationDAO participationDAO;
 	@Autowired
 	protected PermissionDAO permissionDAO;
 	@Autowired

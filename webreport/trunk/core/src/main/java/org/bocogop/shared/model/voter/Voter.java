@@ -4,13 +4,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.bocogop.shared.model.CoreUserDetails;
+import org.bocogop.shared.model.Participation;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -41,6 +47,8 @@ public class Voter extends AbstractVoter<Voter> implements CoreUserDetails {
 	}
 
 	// -------------------------------------- Fields
+
+	private List<Participation> participations;
 
 	/* Transient security fields */
 	private Collection<? extends GrantedAuthority> authorities = null;
@@ -119,7 +127,21 @@ public class Voter extends AbstractVoter<Voter> implements CoreUserDetails {
 	@Override
 	@Transient
 	public ZoneId getTimeZone() {
+		// TODO BOCOGOP hardcoded for now - CPB
 		return ZoneId.of("America/Denver");
+	}
+
+	@OneToMany(mappedBy = "voter", fetch = FetchType.LAZY)
+	@BatchSize(size = 500)
+	@JsonIgnore
+	public List<Participation> getParticipations() {
+		if (participations == null)
+			participations = new ArrayList<>();
+		return participations;
+	}
+
+	public void setParticipations(List<Participation> participations) {
+		this.participations = participations;
 	}
 
 }

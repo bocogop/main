@@ -39,10 +39,13 @@
 	<form action="${loginUrl}" method="post" class="form-horizontal"
 		onsubmit="return submitLogin();" autocomplete="${!isProduction}">
 		<div class="clearCenter" style="max-width: 85%">
+			<c:if test="${not empty introductoryText}">
 			<div class="clearCenter" style="padding: 25px 0px 25px 0px">
 				<a name="content"></a>
 				<c:out value="${introductoryText}" />
 			</div>
+			</c:if>
+			
 			<c:if test="${not empty errorMessage}">
 				<div class="oneTimeUserNotification clearCenter">
 					<c:out value="${errorMessage}" />
@@ -73,32 +76,17 @@
 				</table>
 			</div>
 
-			<div class="clearCenter" style="padding: 15px 0px 10px 0px">
+			<div class="clearCenter">
 				<div class="leftHalf"
 					style="padding-top: 15px; width: 44%; max-width: 44%">
 					<div class="clearCenter">
 						<table cellpadding="5">
 							<tr>
-								<td align="right"><label class="loginLabel" for="username"><spring:message
+								<td align="right" nowrap><label class="loginLabel" for="username"><spring:message
 											code="identifyingCode" />:</label></td>
 								<td align="left"><input type="text" id="voterId"
-									 size="12" /></td>
+									 size="12" /> <spring:message code="or" /></td>
 							</tr>
-						</table>
-					</div>
-				</div>
-				<div class="leftHalf"
-					style="padding-top: 25px; width: 5%; max-width: 5%">
-					<nobr>
-						-
-						<spring:message code="or" />
-						-
-					</nobr>
-				</div>
-				<div class="leftHalf"
-					style="padding-left: 20px; width: 44%; max-width: 44%">
-					<div class="clearCenter">
-						<table cellpadding="5">
 							<tr>
 								<td align="right" nowrap><label class="loginLabel"
 									for="firstName"><spring:message code="name" />:</label></td>
@@ -106,10 +94,12 @@
 									size="12" placeholder="first" /> <input type="text"
 									id="lastName" size="12" placeholder="last" /></td>
 							</tr>
+							<tr align="right"><td><spring:message code="and" /></td></tr>
 							<tr>
-								<td align="right" class="loginLabel" nowrap><spring:message
-										code="yearOfBirth" />:</td>
-								<td align="left"><input id="birthYear" type="password"
+								<td align="right" nowrap><label class="loginLabel"
+									for="birthYear"><spring:message
+										code="yearOfBirth" />:</label></td>
+								<td align="left" nowrap><input id="birthYear" type="password"
 									placeholder="YYYY" maxlength="4" size="4" /></td>
 							</tr>
 						</table>

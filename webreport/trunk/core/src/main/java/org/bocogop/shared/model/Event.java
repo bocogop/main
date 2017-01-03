@@ -4,16 +4,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.BatchSize;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "Event")
@@ -39,6 +44,8 @@ public class Event extends AbstractAuditedVersionedPersistent<Event> implements 
 	private String name;
 	private LocalDate date;
 
+	private List<Participation> participations;
+	
 	// ---------------------------------------- Business Methods
 
 	// ---------------------------------------- Common Methods
@@ -80,4 +87,15 @@ public class Event extends AbstractAuditedVersionedPersistent<Event> implements 
 		this.date = date;
 	}
 
+	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+	@BatchSize(size = 500)
+	@JsonIgnore
+	public List<Participation> getParticipations() {
+		return participations;
+	}
+
+	public void setParticipations(List<Participation> participations) {
+		this.participations = participations;
+	}
+	
 }
