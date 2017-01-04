@@ -32,9 +32,6 @@
 </head>
 <body>
 	<%@ include file="javascript/inc_common_web.jsp"%>
-	<div id="skip">
-		<a href="#appTitleLink" aria-label="Skip to Page Content" title="Skip to Page Content">Skip to Page Content</a>
-	</div>
 	<table cellpadding="0" cellspacing="0" width="100%">
 		<c:if test="${showFullHeader}">
 			<tr valign="middle">

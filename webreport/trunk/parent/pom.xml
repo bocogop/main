@@ -4,7 +4,7 @@
 	<groupId>org.bocogop.wr</groupId>
 	<artifactId>wr_parent</artifactId>
 	<version>1.0</version>
-	<name>WR Parent</name>
+	<name>Parent</name>
 	<packaging>pom</packaging>
 
 	<properties>

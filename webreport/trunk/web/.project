@@ -5,6 +5,7 @@
 	<projects>
 		<project>wr_lib</project>
 		<project>core</project>
+		<project>wr_common_web</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

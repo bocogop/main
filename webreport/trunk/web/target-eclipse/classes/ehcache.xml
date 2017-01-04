@@ -42,6 +42,9 @@
 		eternal="false" timeToIdleSeconds="180" timeToLiveSeconds="180"
 		overflowToDisk="false" />
 
+	<cache name="queries.countryDAO" maxElementsInMemory="500"
+		eternal="true" overflowToDisk="false" />
+
 	<cache name="queries.genderDAO" maxElementsInMemory="5" eternal="false"
 		timeToIdleSeconds="300" timeToLiveSeconds="600" overflowToDisk="false" />
 
@@ -57,8 +60,8 @@
 		eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600"
 		overflowToDisk="false" />
 
-	<cache name="queries.stateDAO" maxElementsInMemory="55" eternal="false"
-		timeToIdleSeconds="300" timeToLiveSeconds="600" overflowToDisk="false" />
+	<cache name="queries.stateDAO" maxElementsInMemory="500" eternal="true"
+		overflowToDisk="false" />
 
 	<cache name="queries.vistaStationDataDAO" maxElementsInMemory="2500"
 		eternal="false" timeToIdleSeconds="180" timeToLiveSeconds="180"
@@ -70,59 +73,49 @@
 		maxElementsInMemory="250" eternal="false" timeToIdleSeconds="300"
 		timeToLiveSeconds="600" overflowToDisk="false" />
 
-	<!-- 
-	<cache name="org.bocogop.wr.model.lookup.sds.Gender"
-		maxElementsInMemory="25" eternal="false" timeToIdleSeconds="300"
-		timeToLiveSeconds="600" overflowToDisk="false" />
+	<!-- <cache name="org.bocogop.wr.model.lookup.sds.Gender" maxElementsInMemory="25" 
+		eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600" overflowToDisk="false" 
+		/> <cache name="org.bocogop.wr.model.lookup.sds.PersonClass" maxElementsInMemory="1500" 
+		eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600" overflowToDisk="false" 
+		/> <cache name="org.bocogop.wr.model.lookup.sds.PersonClassClassification" 
+		maxElementsInMemory="300" eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600" 
+		overflowToDisk="false" /> <cache name="org.bocogop.wr.model.lookup.sds.PersonClassProviderType" 
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600" 
+		overflowToDisk="false" /> <cache name="org.bocogop.wr.model.lookup.sds.States" 
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600" 
+		overflowToDisk="false" /> -->
 
-	<cache name="org.bocogop.wr.model.lookup.sds.PersonClass"
-		maxElementsInMemory="1500" eternal="false" timeToIdleSeconds="300"
-		timeToLiveSeconds="600" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.lookup.sds.PersonClassClassification"
-		maxElementsInMemory="300" eternal="false" timeToIdleSeconds="300"
-		timeToLiveSeconds="600" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.lookup.sds.PersonClassProviderType"
-		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="300"
-		timeToLiveSeconds="600" overflowToDisk="false" />
-
-	<cache name="org.bocogop.wr.model.lookup.sds.States"
-		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="300"
-		timeToLiveSeconds="600" overflowToDisk="false" />
-	-->
-	
 	<cache name="org.bocogop.shared.model.lookup.Gender"
 		maxElementsInMemory="20" eternal="true" overflowToDisk="false" />
-	
+
 	<cache name="org.bocogop.shared.model.lookup.sds.Precinct"
 		maxElementsInMemory="5000" eternal="true" overflowToDisk="false" />
-	
+
 	<cache name="org.bocogop.wr.model.lookup.State"
 		maxElementsInMemory="500" eternal="true" overflowToDisk="false" />
-	
+
 	<cache name="org.bocogop.shared.model.GrantableRole"
 		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
 		timeToLiveSeconds="7200" overflowToDisk="false" />
-	
-	<cache name="org.bocogop.shared.model.Permission" maxElementsInMemory="250"
-		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
-		overflowToDisk="false" />
-		
+
+	<cache name="org.bocogop.shared.model.Permission"
+		maxElementsInMemory="250" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="false" />
+
 	<cache name="org.bocogop.shared.model.Role" maxElementsInMemory="250"
 		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
 		overflowToDisk="false" />
-		
+
 	<cache name="org.bocogop.shared.model.RolePermission"
 		maxElementsInMemory="2500" eternal="false" timeToIdleSeconds="3600"
 		timeToLiveSeconds="7200" overflowToDisk="false" />
-	 
+
 	<cache name="org.bocogop.shared.model.lookup.ActiveStatus"
 		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="300"
 		timeToLiveSeconds="600" overflowToDisk="false" />
-		
+
 	<cache name="org.bocogop.shared.model.lookup.InactiveReason"
 		maxElementsInMemory="20" eternal="false" timeToIdleSeconds="300"
 		timeToLiveSeconds="600" overflowToDisk="false" />
-		
+
 </ehcache>

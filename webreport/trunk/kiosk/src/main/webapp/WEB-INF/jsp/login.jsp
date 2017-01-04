@@ -2,13 +2,26 @@
 
 <script type="text/javascript">
 	function submitLogin() {
-		var voterId = $("#voterId").val().replace('|', '')
-		var firstName = $("#firstName").val().replace('|', '')
-		var lastName = $("#lastName").val().replace('|', '')
-		var birthYear = $("#birthYear").val().replace('|', '')
+		var voterId = $.trim($("#voterId").val()).replace('|', '')
+		var firstName = $.trim($("#firstName").val()).replace('|', '')
+		var lastName = $.trim($("#lastName").val()).replace('|', '')
+		var birthYear = $.trim($("#birthYear").val()).replace('|', '')
 
+		if (voterId == '' && firstName == '' && lastName == '') {
+			displayAttentionDialog('Please enter either your voter ID or your first and last name.')
+			return false
+		} else if (voterId == '' && (firstName == '' || lastName == '')) {
+			displayAttentionDialog('Please enter both your first and last name.')
+			return false
+		}
+		
+		if (birthYear == '') {
+			displayAttentionDialog('Please enter your year of birth.')
+			return false
+		}
+		
 		$("#username").val(voterId + '|' + firstName + '|' + lastName)
-		$("#password").val(voterId + '|' + birthYear)
+		$("#password").val(birthYear)
 
 		$("#loginSpinner").show()
 		doubleClickSafeguard($("#loginButton"), 20000, function() {
@@ -16,6 +29,13 @@
 		})
 		return true
 	}
+	
+	function showOtherMethods() {
+		$("#voterIdRow").show()
+		$("#andRow").show()
+		$("#otherMethods").hide()
+	}
+	
 	$(function() {
 		setTimeout(function() {
 			$("#oneTimeMessages").fadeOut(2000)
@@ -69,7 +89,7 @@
 					<tr>
 						<td><img src="${imgHome}/profile.png" width="75"
 							align="absmiddle" /></td>
-						<td align="left">Today's Event: <b><c:out value="${event.name}" /></b>
+						<td align="left"><spring:message code="todaysEvent" />: <b><c:out value="${event.name}" /></b>
 						<p>
 								<c:out value="${globalIntroText}" /></td>
 					</tr>
@@ -82,25 +102,25 @@
 					<div class="clearCenter">
 						<table cellpadding="5">
 							<tr>
-								<td align="right" nowrap><label class="loginLabel" for="username"><spring:message
-											code="identifyingCode" />:</label></td>
-								<td align="left"><input type="text" id="voterId"
-									 size="12" /> <spring:message code="or" /></td>
-							</tr>
-							<tr>
 								<td align="right" nowrap><label class="loginLabel"
 									for="firstName"><spring:message code="name" />:</label></td>
 								<td align="left" nowrap><input type="text" id="firstName"
-									size="12" placeholder="first" /> <input type="text"
-									id="lastName" size="12" placeholder="last" /></td>
+									size="12" placeholder="first" tabindex="1" /> <input type="text"
+									id="lastName" size="12" placeholder="last" tabindex="2" /> <spring:message code="or" /> <a id="otherMethods" href="javascript:showOtherMethods()">other methods</a></td>
 							</tr>
-							<tr align="right"><td><spring:message code="and" /></td></tr>
+							<tr style="display:none" id="voterIdRow">
+								<td align="right" nowrap><spring:message
+											code="identifyingCode" />:</td>
+								<td align="left"><input type="text" id="voterId"
+									 size="12" /></td>
+							</tr>
+							<tr style="display:none" id="andRow"><td></td><td align="left"><spring:message code="and" /></td></tr>
 							<tr>
 								<td align="right" nowrap><label class="loginLabel"
 									for="birthYear"><spring:message
 										code="yearOfBirth" />:</label></td>
 								<td align="left" nowrap><input id="birthYear" type="password"
-									placeholder="YYYY" maxlength="4" size="4" /></td>
+									placeholder="YYYY" maxlength="4" size="4" tabindex="3" /></td>
 							</tr>
 						</table>
 					</div>
@@ -111,7 +131,7 @@
 			<p>
 			<div class="clearCenter" style="padding: 10px 0px 0px 0px">
 				<div class="form-actions">
-					<input type="submit" class="btn btn-block btn-primary btn-default"
+					<input type="submit" tabindex="4" class="btn btn-block btn-primary btn-default"
 						value="Log in" id="loginButton"> <input type="hidden"
 						style="visibility: hidden; display: none" id="username"
 						name="username" /> <input type="hidden"

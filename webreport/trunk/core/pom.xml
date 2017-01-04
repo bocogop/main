@@ -10,7 +10,7 @@
 	<groupId>org.bocogop.shared</groupId>
 	<artifactId>core</artifactId>
 	<packaging>jar</packaging>
-	<name>Core library</name>
+	<name>Core</name>
 
 	<build>
 		<plugins>

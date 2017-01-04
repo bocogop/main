@@ -36,10 +36,21 @@ public class VoterUserDetailsProvider extends AbstractAppServiceImpl {
 		String firstName = usernameTokens[1];
 		String lastName = usernameTokens[2];
 
+		Integer birthYear = null;
+
+		Object credentials = authentication.getCredentials();
+		if (credentials instanceof String) {
+			try {
+				birthYear = Integer.parseInt(((String) credentials).trim());
+			} catch (NumberFormatException e) {
+				throw new BadCredentialsException("Invalid birth year specified");
+			}
+		}
+
 		Voter v = null;
 
 		if (StringUtils.isNotBlank(voterId)) {
-			List<Voter> vols = voterDAO.findByCriteria(voterId, null, null, null, false, false, null, null, null, null,
+			List<Voter> vols = voterDAO.findByCriteria(voterId, null, null, null, false, false, birthYear, null, null, null,
 					null, null, null, null);
 			if (vols.size() > 1) {
 				return new MultiVoterTempUserDetails(vols);
@@ -47,20 +58,6 @@ public class VoterUserDetailsProvider extends AbstractAppServiceImpl {
 				v = vols.get(0);
 			}
 		} else {
-			Integer birthYear = null;
-
-			Object credentials = authentication.getCredentials();
-			if (credentials instanceof String) {
-				String[] passwordTokens = ((String) credentials).split("\\|", -1);
-				if (passwordTokens.length != 2)
-					throw new BadCredentialsException("Invalid password specified");
-				try {
-					birthYear = Integer.parseInt(passwordTokens[1].trim());
-				} catch (NumberFormatException e) {
-					throw new BadCredentialsException("Invalid password specified");
-				}
-			}
-
 			List<Voter> vols = voterDAO.findByCriteria(null, firstName, null, lastName, false, true, birthYear, null,
 					null, null, null, null, null, null);
 			if (vols.size() > 1) {

@@ -38,13 +38,6 @@
 </head>
 <body>
 	<%@ include file="inc_common_kiosk.jsp"%>
-	<span class="noticeOfNonProdEnvironment"><spring:message
-			code="testEnvironmentWarning" /></span>
-	<div id="skip">
-		<a href="#content" on
-			onclick="javascript:document.getElementById('content').focus()">Skip
-			to Page Content</a>
-	</div>
 	<table cellpadding="0" cellspacing="0" width="100%">
 
 		<tr valign="middle">
@@ -113,7 +106,7 @@
 										</div>
 									</td>
 								</tr>
-							</table> <a id="content" href="#skipToPageContent"></a> <!--for 508 compliance "Skip to Page Content" -->
+							</table>
 						</td>
 						<td width="150" align="right" nowrap><sec:authorize access="isAuthenticated()">
 							<a style="margin-top:5px;margin-bottom:5px;border:2px solid blue;" class="buttonAnchor" href="${home}/logout.htm"
