@@ -3,7 +3,7 @@
 <div class="clearCenter">More than one matching user was found.
 	Which address below is familiar?</div>
 
-<div class="clearCenter">
+<div class="clearCenter" style="text-align:center">
 	<c:forEach items="${multiMatch.matches}" var="a">
 		<div class="blueDiv" style="display: inline-block; text-align: center">
 			<pre>

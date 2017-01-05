@@ -35,7 +35,7 @@
 </script>
 
 <form:form id="eventSettingsForm" name='eventSettingsForm'
-	method="POST" action="${home}/selectEvent.htm">
+	method="GET" action="${home}/login.htm">
 	
 	<table cellpadding="8" align="center">
 		<tr valign="top">

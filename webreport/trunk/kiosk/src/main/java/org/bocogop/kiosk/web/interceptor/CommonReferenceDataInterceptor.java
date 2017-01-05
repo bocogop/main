@@ -5,12 +5,12 @@ import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bocogop.kiosk.util.SessionUtil;
 import org.bocogop.shared.model.Event;
 import org.bocogop.shared.model.lookup.TemplateType;
 import org.bocogop.shared.model.voter.Voter;
@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.WebUtils;
 
 @Component
 public class CommonReferenceDataInterceptor extends AbstractReferenceDataInterceptor {
@@ -45,15 +44,8 @@ public class CommonReferenceDataInterceptor extends AbstractReferenceDataInterce
 		Map<String, Object> model = modelAndView.getModel();
 		model.put("isProduction", isProduction);
 
-		Cookie eventIdCookie = WebUtils.getCookie(request, "eventId");
-
-		Long eventId = eventIdCookie == null ? null : new Long(eventIdCookie.getValue());
-		if (eventId != null) {
-			Event event = eventDAO.findByPrimaryKey(eventId);
-			if (event != null) {
-				model.put("event", event);
-			}
-		}
+		if (!model.containsKey("event"))
+			model.put("event", SessionUtil.getEventContext());
 
 		Voter voterUser = SecurityUtil.getCurrentUserAsOrNull(Voter.class);
 

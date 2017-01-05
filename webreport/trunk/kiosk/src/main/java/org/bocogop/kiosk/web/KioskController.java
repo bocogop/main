@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.ValidationException;
@@ -25,7 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.access.method.P;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,6 +42,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.util.WebUtils;
 
 @Controller
 @SessionAttributes(value = { "command" })
@@ -67,9 +68,9 @@ public class KioskController extends AbstractKioskController {
 
 	@RequestMapping(value = URI_LOGIN, method = RequestMethod.GET)
 	public String loginPage(@RequestParam(required = false) String error, @RequestParam(required = false) Long eventId,
-			@RequestParam(required = false) Boolean thankYou, @RequestParam(required = false) Boolean noUserFound, 
+			@RequestParam(required = false) Boolean thankYou, @RequestParam(required = false) Boolean noUserFound,
 			@CookieValue(required = false, name = COOKIE_EVENT_ID) Long cookieEventId, ModelMap model,
-			HttpServletResponse response) {
+			HttpServletRequest request, HttpServletResponse response) {
 		String locale = LocaleContextHolder.getLocale().getLanguage();
 
 		if (eventId == null) {
@@ -100,12 +101,19 @@ public class KioskController extends AbstractKioskController {
 		if (event == null) {
 			return "eventMissing";
 		}
+		model.put("event", event);
 
+		HttpServletRequestWrapper requestWrapper = WebUtils.getNativeRequest(request, HttpServletRequestWrapper.class);
+		if (requestWrapper != null) {
+			HttpServletRequest sr = (HttpServletRequest) requestWrapper.getRequest();
+			model.put("isEventManager", sr.isUserInRole("BOCOGOPEventManager"));
+		}
+		
 		if (StringUtils.isNotBlank(error)) {
 			model.addAttribute("errorMessage",
 					velocityService.mergeTemplateIntoString("login.error." + error + "." + locale));
 		}
-		
+
 		if (noUserFound != null && noUserFound) {
 			model.addAttribute("noUserFound", true);
 		}
@@ -220,14 +228,6 @@ public class KioskController extends AbstractKioskController {
 		model.put("eventList", eventDAO.findAllSorted());
 		model.put("cancelAllowed", false);
 		return VIEW_EVENT_CHANGE;
-	}
-
-	@RequestMapping(value = "/selectEvent.htm", method = RequestMethod.POST)
-	public String selectEventSubmit(@RequestParam long eventId, HttpServletResponse response) {
-		Event event = eventDAO.findRequiredByPrimaryKey(eventId);
-		setEventContext(event);
-
-		return "redirect:" + URI_LOGIN + "?eventId=" + eventId;
 	}
 
 	@RequestMapping("/voterEdit.htm")

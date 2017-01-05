@@ -156,6 +156,9 @@
 							onclick="document.location.href='?locale=es'"
 							${locale == 'es' ? ' checked' : ''}>Spanish/Español |
 							<wr:zonedDateTime value="${currentTime}" />
+							<c:if test="${isEventManager}">
+							| <a href="<c:url value="/selectEvent.htm" />">Change Event</a>
+							</c:if>
 						</td>
 					</tr>
 				</table>

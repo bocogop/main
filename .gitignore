@@ -31,3 +31,14 @@ hs_err_pid*
 /maven-repo/org/bocogop/wr/wr_kiosk/1.0/wr_kiosk-1.0-classes.jar
 /maven-repo/org/bocogop/wr/wr_kiosk/1.0/wr_kiosk-1.0.pom
 /maven-repo/org/bocogop/wr/wr_kiosk/maven-metadata-local.xml
+/maven-repo/org/bocogop/shared/core/1.0/_remote.repositories
+/maven-repo/org/bocogop/shared/core/1.0/core-1.0.pom
+/maven-repo/org/bocogop/shared/core/maven-metadata-local.xml
+/maven-repo/org/bocogop/wr/wr_lib/1.0/_remote.repositories
+/maven-repo/org/bocogop/wr/wr_lib/1.0/wr_lib-1.0.pom
+/maven-repo/org/bocogop/wr/wr_lib/maven-metadata-local.xml
+/maven-repo/org/bocogop/wr/wr_parent/1.0/_remote.repositories
+/maven-repo/org/bocogop/wr/wr_parent/1.0/wr_parent-1.0.pom
+/maven-repo/org/bocogop/wr/wr_parent/maven-metadata-local.xml
+/maven-repo/org/bocogop/wr/wr_web/1.0/_remote.repositories
+/maven-repo/org/bocogop/wr/wr_web/maven-metadata-local.xml
