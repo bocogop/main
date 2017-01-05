@@ -58,22 +58,6 @@
 		<put-attribute name="activateCountdownTimer" value="false" />
 	</definition>
 
-	<definition name="timeEntry" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/timeEntry.jsp" />
-		<put-attribute name="pageTitle" value="pageTitle.timeEntry" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to enter votered time" />
-	</definition>
-	
-	<definition name="mealTicketPrint" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/mealTicketPrint.jsp" />
-		<put-attribute name="pageTitle" value="pageTitle.printMealTickets" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to print meal tickets" />
-	</definition>
-	
 	<definition name="editVoter" extends="root">
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/voterProfile.jsp" />

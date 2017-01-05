@@ -142,15 +142,15 @@ public abstract class AbstractCommonAppController {
 
 	// ----------------------------------------- Utility Methods
 
-	protected void requirePermissionsAtPrecinct(long precinctId, PermissionType... requiredPermissionsAtStation) {
+	protected void requirePermissionsAtPrecinct(PermissionType... requiredPermissionsAtStation) {
 		if (ArrayUtils.isNotEmpty(requiredPermissionsAtStation)) {
-			SecurityUtil.ensureAllPermissionsAtPrecinct(precinctId, requiredPermissionsAtStation);
+			SecurityUtil.ensureAllPermissions(requiredPermissionsAtStation);
 		}
 	}
 
 	protected void requirePermissionsAtCurrentPrecinct(PermissionType... requiredPermissionsAtPrecinct) {
 		if (ArrayUtils.isNotEmpty(requiredPermissionsAtPrecinct)) {
-			SecurityUtil.ensureAllPermissionsAtCurrentPrecinct(requiredPermissionsAtPrecinct);
+			SecurityUtil.ensureAllPermissions(requiredPermissionsAtPrecinct);
 		}
 	}
 
@@ -164,7 +164,7 @@ public abstract class AbstractCommonAppController {
 	}
 
 	protected void setFormAsReadOnlyUnlessUserHasPermissions(ModelMap model, PermissionType... permissions) {
-		boolean userHasPermissions = SecurityUtil.hasAllPermissionsAtCurrentPrecinct(permissions);
+		boolean userHasPermissions = SecurityUtil.hasAllPermissions(permissions);
 		setFormAsReadOnly(model, !userHasPermissions);
 	}
 

@@ -1,7 +1,6 @@
 package org.bocogop.wr.web;
 
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,9 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bocogop.shared.model.AppUser;
-import org.bocogop.shared.model.Permission.PermissionType;
 import org.bocogop.shared.model.lookup.TemplateType;
-import org.bocogop.shared.model.precinct.Precinct;
 import org.bocogop.shared.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.shared.persistence.impl.AbstractAppDAOImpl;
 import org.bocogop.shared.service.VelocityService;
@@ -130,13 +127,6 @@ public class CommonController extends AbstractAppController {
 		AppUser user = getCurrentUser();
 		appUserService.updatePreferences(user.getId());
 		return true;
-	}
-
-	@RequestMapping("/getPrecinctsWithUserPermission")
-	public @ResponseBody Set<Precinct> getPrecinctsWithUserPermission(@RequestParam PermissionType permission,
-			@RequestParam(required = false) Boolean activeStatus) {
-		Set<Precinct> s = getCurrentUser().getPrecinctsWhereUserHasAllPermissions(permission);
-		return s;
 	}
 
 	@RequestMapping("/flushEveryOp")

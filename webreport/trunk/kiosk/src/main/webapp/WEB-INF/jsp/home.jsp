@@ -1,5 +1,11 @@
 <%@ include file="shared/inc_header.jsp"%>
 
+<script type="text/javascript">
+$(function() {
+	$("#homepageContentDiv").show( "blind", {direction: "horizontal"}, 1000 );
+})
+</script>
+
 <style>
 .eventButton {
 	display: inline-block;
@@ -113,7 +119,9 @@
 
 </div>
 
-<div class="clearCenter" style="margin-top:25px; margin-bottom:20px; text-align:center">${homepageContent}</div>
+<div class="clearCenter">
+	<div id="homepageContentDiv" style="margin-top:10px; margin-bottom:10px; text-align:center; display:none">${homepageContent}</div>
+</div>
 
 <div class="clearCenter timeEntryContainer" style="margin-top: 10px;">
 	<div class="leftHalf">
@@ -136,22 +144,23 @@
 				<tr>
 					<td align="right" class="userSummaryField"><spring:message
 							code="name" />:</td>
-					<td><c:out value="${voter.displayName}" /></td>
+					<td><c:out value="${voter.displayName}" />
+					<c:if test="${voter.firstName != voter.nickname}">("<c:out value="${voter.nickname}" />")</c:if></td>
 				</tr>
 				<tr>
 					<td align="right" class="userSummaryField" nowrap><spring:message
 							code="phoneNumber" />:</td>
-					<td><c:if test="${not empty voter.phone}">
-							<c:out value="${voter.phone}" />
-						</c:if> <c:if test="${empty voter.phone}"><span class="redText">(none)</span></c:if></td>
+					<td><c:if test="${not empty voter.finalPhone}">
+							<c:out value="${voter.finalPhone}" />
+						</c:if> <c:if test="${empty voter.finalPhone}"><span class="redText">(none)</span></c:if></td>
 				</tr>
 
 				<tr>
 					<td align="right" class="userSummaryField" nowrap><spring:message
 							code="email" />:</td>
-					<td><c:if test="${not empty voter.email}">
-						<c:out value="${voter.email}" />
-					</c:if> <c:if test="${empty voter.email}"><span class="redText">(none)</span></c:if></td>
+					<td><c:if test="${not empty voter.finalEmail}">
+						<c:out value="${voter.finalEmail}" />
+					</c:if> <c:if test="${empty voter.finalEmail}"><span class="redText">(none)</span></c:if></td>
 				</tr>
 					<tr valign="top">
 						<td align="right" class="userSummaryField" nowrap><spring:message

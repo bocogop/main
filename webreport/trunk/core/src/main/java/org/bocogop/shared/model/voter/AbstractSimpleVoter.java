@@ -13,6 +13,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -51,7 +52,8 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	private String lastName;
 	private String suffix;
 	private Gender gender;
-	
+	private String nickname;
+
 	private String driversLicense;
 	private String ssn;
 
@@ -59,9 +61,12 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	private LocalDate effectiveDate;
 
 	private String phone;
+	private String userProvidedPhone;
+
 	private String fax;
 	private String email;
-	
+	private String userProvidedEmail;
+
 	private String houseNumber;
 	private String houseSuffix;
 	private String preDirection;
@@ -75,7 +80,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	private String state;
 	private String zip;
 	private String zipPlus;
-	
+
 	private String mailingAddress1;
 	private String mailingAddress2;
 	private String mailingAddress3;
@@ -84,7 +89,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	private String mailingZip;
 	private String mailingZipPlus;
 	private String mailingCountry;
-	
+
 	private String ballotAddress1;
 	private String ballotAddress2;
 	private String ballotAddress3;
@@ -93,16 +98,15 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	private String ballotZip;
 	private String ballotZipPlus;
 	private String ballotCountry;
-	
+
 	private Boolean statusActive;
 	private String statusReason;
-	
+
 	private LocalDate affiliatedDate;
 	private Boolean idRequired;
 	private Integer birthYear;
 	private Boolean uocava;
 	private String issueMethod;
-	
 
 	// -------------------------------------- Constructors
 
@@ -134,6 +138,21 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
 	public String getAddressMultilineDisplay() {
 		return StringUtil.getAddressDisplay(getAddress(), null, null, getCity(), getState(), getZip(), "\n");
+	}
+
+	@Transient
+	public String getFinalPhone() {
+		return StringUtils.isNotBlank(getUserProvidedPhone()) ? getUserProvidedPhone() : getPhone();
+	}
+	
+	@Transient
+	public String getFinalEmail() {
+		return StringUtils.isNotBlank(getUserProvidedEmail()) ? getUserProvidedEmail() : getEmail();
+	}
+	
+	@Transient
+	public String getFinalZip() {
+		return StringUtils.isNotBlank(getZipPlus()) ? getZipPlus() : getZip();
 	}
 
 	// -------------------------------------- Common Methods
@@ -340,7 +359,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.streetType = streetType;
 	}
 
-	@Column(length = 255)	
+	@Column(length = 255)
 	public String getPostDirection() {
 		return postDirection;
 	}
@@ -605,6 +624,36 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 
 	public void setGender(Gender gender) {
 		this.gender = gender;
+	}
+
+	@Column(length = 100)
+	@JsonView(VoterView.Extended.class)
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	@Column(name = "PhoneUserProvided", length = 30)
+	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
+	public String getUserProvidedPhone() {
+		return userProvidedPhone;
+	}
+
+	public void setUserProvidedPhone(String userProvidedPhone) {
+		this.userProvidedPhone = userProvidedPhone;
+	}
+
+	@Column(name = "EmailUserProvided", length = 255)
+	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
+	public String getUserProvidedEmail() {
+		return userProvidedEmail;
+	}
+
+	public void setUserProvidedEmail(String userProvidedEmail) {
+		this.userProvidedEmail = userProvidedEmail;
 	}
 
 }

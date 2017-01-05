@@ -98,7 +98,7 @@ public class UserAdminController {
 	}
 
 	private boolean hasUMPermission() {
-		return SecurityUtil.hasAllPermissionsAtCurrentPrecinct(PermissionType.USER_MANAGER);
+		return SecurityUtil.hasAllPermissions(PermissionType.USER_MANAGER);
 	}
 
 	private void ensureUserAccess(Long userId, String username) {

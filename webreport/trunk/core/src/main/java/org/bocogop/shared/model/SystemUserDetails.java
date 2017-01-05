@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 
-public class SystemUserDetails implements CoreUserDetails {
+public class SystemUserDetails implements CoreUserDetails<SystemUserDetails> {
 	private static final long serialVersionUID = 5238699990913115861L;
 
 	private Collection<? extends GrantedAuthority> authorities;
@@ -17,6 +17,10 @@ public class SystemUserDetails implements CoreUserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
+	}
+
+	protected void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+		this.authorities = authorities;
 	}
 
 	@Override

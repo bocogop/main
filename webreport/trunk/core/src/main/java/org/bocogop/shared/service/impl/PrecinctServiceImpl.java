@@ -16,7 +16,7 @@ public class PrecinctServiceImpl extends AbstractServiceImpl implements Precinct
 	@Override
 	public Precinct saveOrUpdate(Precinct precinct) throws ServiceValidationException {
 		/* Business-level validations */
-		if (SecurityUtil.hasAllPermissionsAtCurrentPrecinct(PermissionType.PRECINCT_EDIT)) {
+		if (SecurityUtil.hasAllPermissions(PermissionType.PRECINCT_EDIT)) {
 			precinct = precinctDAO.saveOrUpdate(precinct);
 		}
 

@@ -132,7 +132,7 @@
 	<div id="appContainerDiv">
 		<tiles:insertAttribute name="body" />
 	</div>
-	<p />
+	
 	<table cellpadding="0" cellspacing="0" width="90%" align="center">
 		<tr>
 			<td align="center">

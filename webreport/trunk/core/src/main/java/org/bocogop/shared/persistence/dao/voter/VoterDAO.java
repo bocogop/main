@@ -15,13 +15,9 @@ public interface VoterDAO extends CustomizableSortedDAO<Voter> {
 	 * 
 	 * @param middleName
 	 *            TODO
-	 * @param firstNameOrLastNameMatches
+	 * @param firstNameCanMatchNickname
 	 *            TODO
 	 * @param useExactNameMatching
-	 *            TODO
-	 * @param identifyingCode
-	 *            TODO
-	 * @param dateOfBirth
 	 *            TODO
 	 * @param addressStreet
 	 *            TODO
@@ -35,9 +31,13 @@ public interface VoterDAO extends CustomizableSortedDAO<Voter> {
 	 *            TODO
 	 * @param email
 	 *            TODO
-	 * @param status
-	 *            TODO
 	 * @param precinctIds
+	 *            TODO
+	 * @param identifyingCode
+	 *            TODO
+	 * @param dateOfBirth
+	 *            TODO
+	 * @param status
 	 *            TODO
 	 * @param name
 	 *            All or part of the first name (case-insensitive)
@@ -46,7 +46,7 @@ public interface VoterDAO extends CustomizableSortedDAO<Voter> {
 	 * @return The list of Voters matching the above criteria
 	 */
 	List<Voter> findByCriteria(String voterId, String firstName, String middleName, String lastName,
-			boolean firstNameOrLastNameMatches, boolean useExactNameMatching, Integer birthYear, String addressStreet,
+			boolean firstNameCanMatchNickname, boolean useExactNameMatching, Integer birthYear, String addressStreet,
 			String city, String state, String zip, String phone, String email, Collection<Long> precinctIds,
 			QueryCustomization... customization);
 

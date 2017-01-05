@@ -80,7 +80,7 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 		final AppUser user = appUserDAO.findRequiredByPrimaryKey(userId);
 
 		boolean isEditingSelf = userId == currentUser.getId();
-		boolean hasUMPermission = SecurityUtil.hasAllPermissionsAtCurrentPrecinct(PermissionType.USER_MANAGER);
+		boolean hasUMPermission = SecurityUtil.hasAllPermissions(PermissionType.USER_MANAGER);
 
 		boolean updatedBasics = false;
 

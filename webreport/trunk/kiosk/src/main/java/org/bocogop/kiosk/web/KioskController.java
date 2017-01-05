@@ -2,6 +2,9 @@ package org.bocogop.kiosk.web;
 
 import static org.bocogop.kiosk.config.WebSecurityConfig.URI_LOGIN;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +14,7 @@ import javax.validation.ValidationException;
 import org.apache.commons.lang3.StringUtils;
 import org.bocogop.kiosk.config.WebSecurityConfig;
 import org.bocogop.shared.model.Event;
+import org.bocogop.shared.model.lookup.State;
 import org.bocogop.shared.model.lookup.TemplateType;
 import org.bocogop.shared.model.voter.MultiVoterTempUserDetails;
 import org.bocogop.shared.model.voter.Voter;
@@ -160,8 +164,9 @@ public class KioskController extends AbstractKioskController {
 	}
 
 	@RequestMapping(URL_HOME)
-	public String home(ModelMap model) {
-		Voter v = getCurrentUser();
+	public String home(ModelMap model, @RequestParam(required = false) Long id) {
+		Voter v = id == null ? getCurrentUser() : voterDAO.findRequiredByPrimaryKey(id);
+		model.put("voter", v);
 
 		participationService.logParticipation(v.getId(), getRequiredEventContextId());
 
@@ -188,7 +193,7 @@ public class KioskController extends AbstractKioskController {
 	public String selectEventSubmit(@RequestParam long eventId, HttpServletResponse response) {
 		Event event = eventDAO.findRequiredByPrimaryKey(eventId);
 		setEventContext(event);
-		
+
 		return "redirect:" + URI_LOGIN + "?eventId=" + eventId;
 	}
 
@@ -197,6 +202,13 @@ public class KioskController extends AbstractKioskController {
 		Long voterId = getCurrentUser().getId();
 		Voter voter = voterDAO.findRequiredByPrimaryKey(voterId);
 
+		if (StringUtils.isBlank(voter.getUserProvidedEmail()))
+			voter.setUserProvidedEmail(voter.getEmail());
+		if (StringUtils.isBlank(voter.getUserProvidedPhone()))
+			voter.setUserProvidedPhone(voter.getPhone());
+		if (StringUtils.isBlank(voter.getNickname()))
+			voter.setNickname(voter.getFirstName());
+		
 		VoterCommand command = new VoterCommand(voter);
 		model.put(DEFAULT_COMMAND_NAME, command);
 		createReferenceData(model);
@@ -206,7 +218,9 @@ public class KioskController extends AbstractKioskController {
 
 	private void createReferenceData(ModelMap model) {
 		model.put("allGenders", genderDAO.findAllSorted());
-		model.put("allStates", stateDAO.findAllSortedByCountry());
+		List<State> allStates = stateDAO.findAllSortedByCountry();
+		model.put("allStates", allStates);
+		model.put("stateMap", allStates.stream().collect(Collectors.toMap(a -> a.getCode(), a -> a)));
 	}
 
 	@RequestMapping("/voterSubmit.htm")
@@ -220,7 +234,7 @@ public class KioskController extends AbstractKioskController {
 
 		if (!hasErrors) {
 			try {
-				voter = voterService.saveOrUpdate(voter, true, true);
+				voter = voterService.saveOrUpdate(voter);
 				// if voter is terminated, logout
 				userNotifier.notifyUserOnceWithMessage(request, getMessage("voter.update.success"));
 			} catch (ServiceValidationException e) {
@@ -234,7 +248,7 @@ public class KioskController extends AbstractKioskController {
 			return "editVoter";
 		} else {
 			status.setComplete();
-			return "redirect:/voterEdit.htm?id=" + voter.getId();
+			return "redirect:" + URL_HOME + "?id=" + voter.getId();
 		}
 	}
 

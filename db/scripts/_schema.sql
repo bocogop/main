@@ -224,12 +224,14 @@ CREATE TABLE [dbo].[Voter](
 	MiddleName [varchar](100) NULL,
 	LastName [varchar](100) NULL,
 	NameSuffix [varchar](20) NULL,
+	Nickname [varchar](100) null,
 	VoterName as REPLACE(RTRIM(COALESCE(FirstName + ' ','') + COALESCE(MiddleName + ' ','') + COALESCE(LastName + ' ','') + COALESCE(NameSuffix + ' ','')), SPACE(2),SPACE(1)),
 	DriversLicense [varchar](30) NULL,
 	SSN [varchar](9) NULL,
 	RegistrationDate date NULL,
 	EffectiveDate date NULL,
 	Phone [varchar](30) NULL,
+	PhoneUserProvided [varchar](30) NULL,
 	HouseNumber [varchar](10) NULL,
 	HouseSuffix [varchar](20) NULL,
 	PreDirection [varchar](5) NULL,
@@ -271,6 +273,7 @@ CREATE TABLE [dbo].[Voter](
 	IssueMethod [varchar](255) NULL,
 	Fax [varchar](255) NULL,
 	Email [varchar](255) NULL,
+	[EmailUserProvided] [varchar](255) NULL,
 	[CreatedBy] [varchar](30) NOT NULL,
 	[CreatedDate] [datetime] NOT NULL,
 	[ModifiedBy] [varchar](30) NOT NULL,
@@ -291,12 +294,14 @@ CREATE TABLE [dbo].[Voter_H](
 	[MiddleName] [varchar](100) NULL,
 	[LastName] [varchar](100) NULL,
 	[NameSuffix] [varchar](20) NULL,
+	[Nickname] [varchar](100) null,
 	[VoterName]  [varchar](330) NULL,
 	[DriversLicense] [varchar](30) NULL,
 	[SSN] [varchar](9) NULL,
 	[RegistrationDate] [date] NULL,
 	[EffectiveDate] [date] NULL,
 	[Phone] [varchar](30) NULL,
+	[PhoneUserProvided] [varchar](255) NULL,
 	[HouseNumber] [varchar](10) NULL,
 	[HouseSuffix] [varchar](20) NULL,
 	[PreDirection] [varchar](5) NULL,
@@ -338,6 +343,7 @@ CREATE TABLE [dbo].[Voter_H](
 	[IssueMethod] [varchar](255) NULL,
 	[Fax] [varchar](255) NULL,
 	[Email] [varchar](255) NULL,
+	[EmailUserProvided] [varchar](255) NULL,
 	[CreatedBy] [varchar](30) NOT NULL,
 	[CreatedDate] [datetime] NOT NULL,
 	[ModifiedBy] [varchar](30) NOT NULL,
@@ -456,7 +462,7 @@ GO
 
 ---------------------------------------------- Triggers
 
-CREATE TRIGGER [Core].[TR_Voter_INS_H] ON dbo.Voter
+CREATE TRIGGER dbo.[TR_Voter_INS_H] ON dbo.Voter
 WITH EXEC AS CALLER
 AFTER INSERT
 AS
@@ -470,12 +476,14 @@ INSERT INTO dbo.Voter_H
            ,[MiddleName]
            ,[LastName]
            ,[NameSuffix]
+		   ,[NickName]
            ,[VoterName]
            ,[DriversLicense]
            ,[SSN]
            ,[RegistrationDate]
            ,[EffectiveDate]
            ,[Phone]
+		   ,[PhoneUserProvided]
            ,[HouseNumber]
            ,[HouseSuffix]
            ,[PreDirection]
@@ -517,12 +525,14 @@ INSERT INTO dbo.Voter_H
            ,[IssueMethod]
            ,[Fax]
            ,[Email]
+		   ,[EmailUserProvided]
 		   ,[CreatedBy]
 			,[CreatedDate]
 			,[ModifiedBy]
 			,[ModifiedDate]
 			,[Ver])
-SELECT 'I',SYSUTCDATETIME(), i.*
+SELECT 'I',SYSUTCDATETIME()
+           ,i.*
   FROM inserted i
 END
 GO
@@ -545,12 +555,14 @@ INSERT INTO dbo.Voter_H
            ,[MiddleName]
            ,[LastName]
            ,[NameSuffix]
+		   ,[NickName]
            ,[VoterName]
            ,[DriversLicense]
            ,[SSN]
            ,[RegistrationDate]
            ,[EffectiveDate]
            ,[Phone]
+		   ,[PhoneUserProvided]
            ,[HouseNumber]
            ,[HouseSuffix]
            ,[PreDirection]
@@ -592,6 +604,7 @@ INSERT INTO dbo.Voter_H
            ,[IssueMethod]
            ,[Fax]
            ,[Email]
+		   ,[EmailUserProvided]
 		   ,[CreatedBy]
 			,[CreatedDate]
 			,[ModifiedBy]
@@ -620,12 +633,14 @@ INSERT INTO dbo.Voter_H
            ,[MiddleName]
            ,[LastName]
            ,[NameSuffix]
+		   ,[NickName]
            ,[VoterName]
            ,[DriversLicense]
            ,[SSN]
            ,[RegistrationDate]
            ,[EffectiveDate]
            ,[Phone]
+		   ,[PhoneUserProvided]
            ,[HouseNumber]
            ,[HouseSuffix]
            ,[PreDirection]
@@ -667,6 +682,7 @@ INSERT INTO dbo.Voter_H
            ,[IssueMethod]
            ,[Fax]
            ,[Email]
+		   ,[EmailUserProvided]
 		   ,[CreatedBy]
 			,[CreatedDate]
 			,[ModifiedBy]
@@ -817,10 +833,23 @@ insert into Core.Template(TemplateName, TemplateBody, CreatedBy, CreatedDate, Mo
 values('login.error.locked.es', cast('Lo sentimos, tu cuenta está bloqueada. Por favor, póngase en contacto con el administrador de Boulder County o esperar 15 minutos para su cuenta para desbloquear.' as varbinary(max)), 'Initial Load', SYSUTCDATETIME(), 'Initial Load', SYSUTCDATETIME(), 1);
 
 insert into Core.Template(TemplateName, TemplateBody, CreatedBy, CreatedDate, ModifiedBy, ModifiedDate, Ver)
-values('kiosk.globalIntroText.en', cast('Please enter your voter ID, or your full name and year of birth:' as varbinary(max)), 'Initial Load', SYSUTCDATETIME(), 'Initial Load', SYSUTCDATETIME(), 1);
+values('kiosk.globalIntroText.en', cast('Please enter your name and year of birth:' as varbinary(max)), 'Initial Load', SYSUTCDATETIME(), 'Initial Load', SYSUTCDATETIME(), 1);
 
 insert into Core.Template(TemplateName, TemplateBody, CreatedBy, CreatedDate, ModifiedBy, ModifiedDate, Ver)
-values('kiosk.globalIntroText.es', cast('Por favor ingrese su identificación de votante, o su nombre completo y año de nacimiento:' as varbinary(max)), 'Initial Load', SYSUTCDATETIME(), 'Initial Load', SYSUTCDATETIME(), 1);
+values('kiosk.globalIntroText.es', cast('Ingrese su nombre y año de nacimiento:' as varbinary(max)), 'Initial Load', SYSUTCDATETIME(), 'Initial Load', SYSUTCDATETIME(), 1);
+
+insert into Core.Template(TemplateName, TemplateBody, CreatedBy, CreatedDate, ModifiedBy, ModifiedDate, Ver)
+values('kiosk.homepageContent.en', cast('Thank you for checking into today''s event!<p>Please confirm your personal information and note upcoming opportunities below.' as varbinary(max)), 'Initial Load', SYSUTCDATETIME(), 'Initial Load', SYSUTCDATETIME(), 1);
+
+insert into Core.Template(TemplateName, TemplateBody, CreatedBy, CreatedDate, ModifiedBy, ModifiedDate, Ver)
+values('kiosk.homepageContent.es', cast('
+¡Gracias por visitar el evento de hoy!<p> Confirme su información personal y anote las próximas oportunidades a continuación.' as varbinary(max)), 'Initial Load', SYSUTCDATETIME(), 'Initial Load', SYSUTCDATETIME(), 1);
+
+insert into Core.Template(TemplateName, TemplateBody, CreatedBy, CreatedDate, ModifiedBy, ModifiedDate, Ver)
+values('kiosk.homepageAnnouncement.en', cast('' as varbinary(max)), 'Initial Load', SYSUTCDATETIME(), 'Initial Load', SYSUTCDATETIME(), 1);
+
+insert into Core.Template(TemplateName, TemplateBody, CreatedBy, CreatedDate, ModifiedBy, ModifiedDate, Ver)
+values('kiosk.homepageAnnouncement.es', cast('' as varbinary(max)), 'Initial Load', SYSUTCDATETIME(), 'Initial Load', SYSUTCDATETIME(), 1);
 
 INSERT INTO [dbo].[Event]([Date]
            ,[Name]

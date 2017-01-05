@@ -120,11 +120,13 @@ WHEN NOT MATCHED THEN
            ,[MiddleName]
            ,[LastName]
            ,[NameSuffix]
+		   ,[Nickname]
            ,[DriversLicense]
            ,[SSN]
            ,[RegistrationDate]
            ,[EffectiveDate]
            ,[Phone]
+		   ,[PhoneUserProvided]
            ,[HouseNumber]
            ,[HouseSuffix]
            ,[PreDirection]
@@ -166,6 +168,7 @@ WHEN NOT MATCHED THEN
            ,[IssueMethod]
            ,[Fax]
            ,[Email]
+		   ,[EmailUserProvided]
 		   ,[CreatedBy]
 		   ,[CreatedDate]
 		   ,[ModifiedBy]
@@ -177,11 +180,13 @@ WHEN NOT MATCHED THEN
       ,s.MIDDLE_NAME
       ,s.LAST_NAME
       ,s.NAME_SUFFIX
+	  ,s.FIRST_NAME
       ,s.DRIVERS_LICENSE
       ,s.SSN
       ,CONVERT(date, s.REGISTRATION_DATE, 101)
       ,CONVERT(date, s.EFFECTIVE_DATE, 101)
       ,s.PHONE_NUM
+	  ,null
       ,s.HOUSE_NUM
       ,s.HOUSE_SUFFIX
       ,s.PRE_DIR
@@ -223,6 +228,7 @@ WHEN NOT MATCHED THEN
       ,s.ISSUE_METHOD
       ,s.FAX
       ,s.EMAIL
+	  ,null
 	  ,'AutoImport'
 	  ,SYSUTCDATETIME()
 	  ,'AutoImport'

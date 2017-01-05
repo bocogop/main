@@ -106,10 +106,11 @@
 									for="firstName"><spring:message code="name" />:</label></td>
 								<td align="left" nowrap><input type="text" id="firstName"
 									size="12" placeholder="first" tabindex="1" /> <input type="text"
-									id="lastName" size="12" placeholder="last" tabindex="2" /> <spring:message code="or" /> <a id="otherMethods" href="javascript:showOtherMethods()">other methods</a></td>
+									id="lastName" size="12" placeholder="last" tabindex="2" /></td>
 							</tr>
 							<tr style="display:none" id="voterIdRow">
 								<td align="right" nowrap><spring:message
+											code="or" /> <spring:message
 											code="identifyingCode" />:</td>
 								<td align="left"><input type="text" id="voterId"
 									 size="12" /></td>
@@ -132,7 +133,7 @@
 			<div class="clearCenter" style="padding: 10px 0px 0px 0px">
 				<div class="form-actions">
 					<input type="submit" tabindex="4" class="btn btn-block btn-primary btn-default"
-						value="Log in" id="loginButton"> <input type="hidden"
+						value="<spring:message code="login" />" id="loginButton"> <input type="hidden"
 						style="visibility: hidden; display: none" id="username"
 						name="username" /> <input type="hidden"
 						style="visibility: hidden; display: none" id="password"
@@ -146,6 +147,8 @@
 						</span> <img src="${imgHome}/spacer.gif" align="absmiddle" height="32"
 							width="1" alt="" />
 					</div>
+					<br>
+					<span style="font-size:0.8em"><a style="color:black;" id="otherMethods" href="javascript:showOtherMethods()"><spring:message code="otherLogin" /></a></span>
 				</div>
 			</div>
 	</form>

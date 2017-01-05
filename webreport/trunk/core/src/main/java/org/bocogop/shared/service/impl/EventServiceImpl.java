@@ -16,7 +16,7 @@ public class EventServiceImpl extends AbstractServiceImpl implements EventServic
 	@Override
 	public Event saveOrUpdate(Event event) throws ServiceValidationException {
 		/* Business-level validations */
-		if (SecurityUtil.hasAllPermissionsAtCurrentPrecinct(PermissionType.EVENT_EDIT)) {
+		if (SecurityUtil.hasAllPermissions(PermissionType.EVENT_EDIT)) {
 			event = eventDAO.saveOrUpdate(event);
 		}
 

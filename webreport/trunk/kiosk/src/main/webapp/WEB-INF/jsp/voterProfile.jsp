@@ -1,6 +1,9 @@
 <%@ include file="shared/inc_header.jsp"%>
 
 <script type="text/javascript">
+	var invalidEmailText = "<spring:message code="voter.error.email" />"
+	var pleaseCorrectText = "<spring:message code="pleaseCorrect" />"
+	
 	$(function() {
 		onPageLoad()
 	})
@@ -98,56 +101,60 @@
 	<div class="clearCenter">
 		<div class="leftHalf" style="max-width:${leftMaxWidth}px">
 			<div class="blueDiv">
-				<div class="label" style="width: 170px;">Voter Information</div>
+				<div class="label" style="width: 170px;"><spring:message code="voterInformation" /></div>
 				<table>
 					<tr>
 						<td class='appFieldLabel' nowrap><spring:message
-								code="lastName" />:<span class="invisibleRequiredFor508">*</span></td>
+								code="iGoBy" />:</td>
 						<td style="padding: 4px; text-align: center" width="1"><span
 							class='requdIndicator'>*</span></td>
-						<td><app:input id="lastNameInput" path="voter.lastName" /></td>
+						<td><app:input id="nicknameInput" path="voter.nickname" /></td>
 					</tr>
 					<tr>
 						<td class='appFieldLabel' nowrap><spring:message
-								code="firstName" />:<span class="invisibleRequiredFor508">*</span></td>
+								code="lastName" />:</td>
 						<td style="padding: 4px; text-align: center" width="1"><span
 							class='requdIndicator'>*</span></td>
-						<td><app:input id="firstNameInput" path="voter.firstName" /></td>
+						<td><input id="lastNameInput" disabled="true" value="<c:out value="${command.voter.lastName}" />" /></td>
+					</tr>
+					<tr>
+						<td class='appFieldLabel' nowrap><spring:message
+								code="firstName" />:</td>
+						<td style="padding: 4px; text-align: center" width="1"><span
+							class='requdIndicator'>*</span></td>
+						<td><input id="firstNameInput" disabled="true" value="<c:out value="${command.voter.firstName}" />" /></td>
 					</tr>
 					<tr>
 						<td class='appFieldLabel' nowrap><spring:message
 								code="middleName" />:</td>
 						<td></td>
-						<td><app:input id="middleNameInput"
-								path="voter.middleName" /></td>
+						<td><input id="middleNameInput" disabled="true" value="<c:out value="${command.voter.middleName}" />" /></td>
 					</tr>
 					<tr>
 						<td class='appFieldLabel' nowrap><spring:message
 								code="suffix" />:</td>
 						<td style="padding: 4px; text-align: center" width="1"><span
 							class='requdIndicator'></span></td>
-						<td><app:input id="suffixInput" path="voter.suffix" /></td>
+						<td><input id="suffixInput" disabled="true" value="<c:out value="${command.voter.suffix}" />" /></td>
 					</tr>
 					<tr>
 						<td class='appFieldLabel'><spring:message code="gender" />:</td>
 						<td style="padding: 4px; text-align: center" width="5%"><span
 							class='requdIndicator'>*</span></td>
-						<td><app:select id="genderSelect" path="voter.gender">
+						<td><%--<app:select id="genderSelect" path="voter.gender">
 								<form:option value="">-- Select --</form:option>
 								<form:options items="${allGenders}" itemLabel="name"
 									itemValue="id" />
-							</app:select></td>
-
+							</app:select> --%>
+							<input id="genderInput" disabled="true" value="<c:out value="${command.voter.gender.name}" />" /></td>
 					</tr>
 					<tr>
 						<td class='appFieldLabel' nowrap><label for='birthYearInput'><spring:message
-									code="yearOfBirth" /><span class="invisibleRequiredFor508">*</span>
+									code="yearOfBirth" />
 						</label></td>
 						<td style="padding: 4px; text-align: center" width="5%"><span
 							class='requdIndicator'>*</span></td>
-
-						<td nowrap><app:input size="10" id="birthYearInput"
-								path="voter.birthYear" /> <app:errors
+						<td nowrap><input size="10" id="birthYearInput" disabled="true" value="<c:out value="${command.voter.birthYear}" />" /> <app:errors
 								path="voter.birthYear" cssClass="msg-error" element="div" /></td>
 					</tr>
 				</table>
@@ -156,70 +163,73 @@
 
 		<div class="leftHalf"  style="max-width:${rightMaxWidth}px">
 			<div class="blueDiv">
-				<div class="label" style="width:190px;">Contact Information</div>
+				<div class="label" style="width:190px;"><spring:message code="contactInformation" /></div>
 				<table>
 					<tr>
-						<td class='appFieldLabel' nowrap>Address:<span
+						<td class='appFieldLabel' nowrap><spring:message code="address" />:<span
 							class="invisibleRequiredFor508">*</span></td>
 						<td style="padding: 4px; text-align: center" width="1"><span
 							class='requdIndicator'>*</span></td>
-						<td><app:input id="address"
-								path="voter.address" /> <app:errors
+						<td><input id="addressInput" disabled="true" value="<c:out value="${command.voter.address}" />" /> <app:errors
 								path="voter.address" cssClass="msg-error" element="div" /></td>
 					</tr>
 					<tr>
-						<td class='appFieldLabel'>City:<span
+						<td class='appFieldLabel'><spring:message code="city" />:<span
 							class="invisibleRequiredFor508">*</span></td>
 						<td style="padding: 4px; text-align: center" width="1"><span
 							class='requdIndicator'>*</span></td>
-						<td><app:input id="addressCity" path="voter.city" /> <app:errors
+						<td><input id="cityInput" disabled="true" value="<c:out value="${command.voter.city}" />" /> <app:errors
 								path="voter.city" cssClass="msg-error" element="div" /></td>
 					</tr>
 					<tr>
-						<td class='appFieldLabel' nowrap>State:<span
+						<td class='appFieldLabel' nowrap><spring:message code="state" />:<span
 							class="invisibleRequiredFor508">*</span></td>
 						<td style="padding: 4px; text-align: center" width="1"><span
 							class='requdIndicator'>*</span></td>
-						<td nowrap><app:select id="stateSelect"
+						<td nowrap><%--<app:select id="stateSelect"
 								path="voter.state">
 								<form:option value="">-- Select --</form:option>
 								<form:options items="${allStates}" itemLabel="name"
 									itemValue="code" />
-							</app:select> <app:errors path="voter.state" cssClass="msg-error"
+							</app:select>--%>
+							<input id="stateInput" disabled="true" value="<c:out value="${stateMap[command.voter.state].name}" />" />
+							 <app:errors path="voter.state" cssClass="msg-error"
 								element="div" /></td>
 					</tr>
 					<tr>
 						<td class='appFieldLabel' nowrap><span
-							style="margin-left: 20px">Zip:</span><span
+							style="margin-left: 20px"><spring:message code="zip" />:</span><span
 							class="invisibleRequiredFor508">*</span></td>
 						<td style="padding: 4px; text-align: center" width="1"><span
 							class='requdIndicator'>*</span></td>
-						<td><app:input id="addressZip" path="voter.zip" size="8" />
+						<td><input size="8" id="zipInput" disabled="true" value="<c:out value="${command.voter.finalZip}" />" />
 							<app:errors path="voter.zip" cssClass="msg-error"
 								element="div" /></td>
 					</tr>
 					<tr>
-						<td class='appFieldLabel'>Email:</td>
+						<td class='appFieldLabel'><spring:message code="email" />:</td>
 						<td></td>
 						<td><app:input id="volEmail" cssClass="emailInput"
-								path="voter.email" size="30" /> <app:errors path="voter.email"
+								path="voter.userProvidedEmail" size="30" /> <app:errors path="voter.userProvidedEmail"
 								cssClass="msg-error" element="div" /></td>
 					</tr>
 					<tr>
-						<td class='appFieldLabel'>Phone:</td>
+						<td class='appFieldLabel'><spring:message code="phone" />:</td>
 						<td></td>
-						<td><app:input cssClass="phoneextmask" path="voter.phone" />
-							<app:errors path="voter.phone" cssClass="msg-error"
+						<td><app:input cssClass="phoneextmask" path="voter.userProvidedPhone" />
+							<app:errors path="voter.userProvidedPhone" cssClass="msg-error"
 								element="div" /></td>
 					</tr>
 				</table>
 			</div>
 		</div>
 	</div>
-
+	<div class="clearCenter" style="margin-top:15px;margin-bottom:15px">
+	<i><spring:message code="lockedFields" /> (<a href="https://www.sos.state.co.us/" target="_blank">https://www.sos.state.co.us/</a>)</i>
+	</div>
 	<div style="clear: both" align="center">
-		<input id="submitButton" type="submit" value="Submit"
+		<input id="submitButton" type="submit" value="<spring:message code="submit" />"
 			class="alwaysEnabled" /> <a id="cancelOperationBtn"
-			class="buttonAnchor" href="${home}/index.htm">Cancel</a>
+			class="buttonAnchor" href="${home}/index.htm"><spring:message code="cancel" /></a>
 	</div>
 </form:form>

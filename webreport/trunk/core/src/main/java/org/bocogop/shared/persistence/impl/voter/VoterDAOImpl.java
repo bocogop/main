@@ -36,7 +36,7 @@ public class VoterDAOImpl extends GenericHibernateSortedDAOImpl<Voter> implement
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Voter> findByCriteria(String voterId, String firstName, String middleName, String lastName,
-			boolean firstNameOrLastNameMatches, boolean useExactNameMatching, Integer birthYear, String addressStreet,
+			boolean firstNameCanMatchNickname, boolean useExactNameMatching, Integer birthYear, String addressStreet,
 			String city, String state, String zip, String phone, String email, Collection<Long> precinctIds,
 			QueryCustomization... customization) {
 		boolean hasPrecinctIds = CollectionUtils.isNotEmpty(precinctIds);
@@ -59,21 +59,19 @@ public class VoterDAOImpl extends GenericHibernateSortedDAOImpl<Voter> implement
 		String comparator = useExactNameMatching ? "=" : "like";
 		String wildcard = useExactNameMatching ? "" : "%";
 
-		if (firstNameOrLastNameMatches && hasFirst && hasLast) {
-			whereClauseItems
-					.add("(v.firstName " + comparator + " :firstName or v.lastName " + comparator + " :lastName)");
-			params.put("firstName", wildcard + firstName + wildcard);
-			params.put("lastName", wildcard + lastName + wildcard);
-		} else {
-			if (hasFirst) {
+		if (hasFirst) {
+			if (firstNameCanMatchNickname) {
+				whereClauseItems
+						.add("(v.firstName " + comparator + " :firstName or v.nickname " + comparator + " :firstName)");
+			} else {
 				whereClauseItems.add("v.firstName " + comparator + " :firstName");
-				params.put("firstName", wildcard + firstName + wildcard);
 			}
+			params.put("firstName", wildcard + firstName + wildcard);
+		}
 
-			if (hasLast) {
-				whereClauseItems.add("v.lastName " + comparator + " :lastName");
-				params.put("lastName", wildcard + lastName + wildcard);
-			}
+		if (hasLast) {
+			whereClauseItems.add("v.lastName " + comparator + " :lastName");
+			params.put("lastName", wildcard + lastName + wildcard);
 		}
 
 		if (StringUtils.isNotBlank(voterId)) {

@@ -27,10 +27,8 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bocogop.shared.model.AppUserGlobalRole.CompareByRole;
-import org.bocogop.shared.model.Permission.PermissionType;
 import org.bocogop.shared.model.Role.RoleType;
 import org.bocogop.shared.model.precinct.Precinct;
-import org.bocogop.shared.util.SecurityUtil;
 import org.bocogop.shared.util.StringUtil;
 import org.bocogop.shared.web.conversion.ZoneIdSerializer;
 import org.hibernate.annotations.BatchSize;
@@ -46,7 +44,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Table(name = "AppUser", schema = "Core")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = PUBLIC_ONLY, isGetterVisibility = PUBLIC_ONLY)
 public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
-		implements CoreUserDetails, Comparable<AppUser> {
+		implements CoreUserDetails<AppUser>, Comparable<AppUser> {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -193,16 +191,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	public SortedSet<AppUserGlobalRole> getGlobalRolesSorted() {
 		SortedSet<AppUserGlobalRole> results = new TreeSet<>(new CompareByRole());
 		results.addAll(getGlobalRoles());
-		return results;
-	}
-
-	public Set<Precinct> getPrecinctsWhereUserHasAllPermissions(PermissionType... permissionsRequired) {
-		Set<Precinct> results = new HashSet<Precinct>();
-
-		for (AppUserPrecinct auf : getPrecincts()) {
-			if (SecurityUtil.hasAllPermissionsAtPrecinct(auf.getPrecinct().getId(), permissionsRequired))
-				results.add(auf.getPrecinct());
-		}
 		return results;
 	}
 

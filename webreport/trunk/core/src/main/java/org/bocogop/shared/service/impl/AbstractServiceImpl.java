@@ -70,11 +70,12 @@ public class AbstractServiceImpl {
 	 * current user is not an AppUser (e.g. is a background daemon user). See
 	 * SecurityUtil.getCurrentUserAsOrNull for details. CPB
 	 */
-	protected CoreUserDetails getCurrentUser() {
+	@SuppressWarnings("unchecked")
+	protected CoreUserDetails<?> getCurrentUser() {
 		return SecurityUtil.getCurrentUserAsOrNull(CoreUserDetails.class);
 	}
 
-	protected <T extends CoreUserDetails> T getCurrentUserAsOrNull(Class<T> c) {
+	protected <T extends CoreUserDetails<T>> T getCurrentUserAsOrNull(Class<T> c) {
 		return SecurityUtil.getCurrentUserAsOrNull(c);
 	}
 

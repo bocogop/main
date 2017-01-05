@@ -58,7 +58,7 @@ public class VoterUserDetailsProvider extends AbstractAppServiceImpl {
 				v = vols.get(0);
 			}
 		} else {
-			List<Voter> vols = voterDAO.findByCriteria(null, firstName, null, lastName, false, true, birthYear, null,
+			List<Voter> vols = voterDAO.findByCriteria(null, firstName, null, lastName, true, true, birthYear, null,
 					null, null, null, null, null, null);
 			if (vols.size() > 1) {
 				return new MultiVoterTempUserDetails(vols);

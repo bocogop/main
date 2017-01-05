@@ -1,6 +1,6 @@
 package org.bocogop.wr.web.voter;
 
-import static org.bocogop.shared.util.SecurityUtil.hasAllPermissionsAtCurrentPrecinct;
+import static org.bocogop.shared.util.SecurityUtil.hasAllPermissions;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -83,7 +83,7 @@ public class VoterController extends AbstractAppController {
 			precinctId = null;
 
 		SortedSet<Voter> voters = new TreeSet<>(
-				voterDAO.findByCriteria(voterId, firstName, null, lastName, false, false, birthYear, null, null, null,
+				voterDAO.findByCriteria(voterId, firstName, null, lastName, true, false, birthYear, null, null, null,
 						null, null, email, precinctId != null ? Arrays.asList(precinctId) : null));
 
 		// save the search params into a session object
@@ -117,32 +117,6 @@ public class VoterController extends AbstractAppController {
 
 	// ------------------------------------------------------- Voter form
 	// display and submit methods
-
-	@RequestMapping("/voter/preSubmitChecks")
-	@JsonView(VoterView.Search.class)
-	public @ResponseBody Map<String, Object> preSubmitCheckFindDuplicateVoters(@RequestParam String firstName,
-			@RequestParam String lastName,
-			@DateTimeFormat(pattern = DateUtil.TWO_DIGIT_DATE_ONLY) @RequestParam Integer birthYear,
-			@RequestParam(required = false) Long id) {
-		if (StringUtils.isBlank(lastName) || StringUtils.isBlank(firstName))
-			throw new IllegalArgumentException("Both last name and first name are required.");
-
-		boolean isEdit = id != null;
-
-		Map<String, Object> results = new HashMap<>();
-
-		SortedSet<Voter> voters = new TreeSet<>();
-		List<Voter> nameMatches = voterDAO.findByCriteria(null, firstName, null, lastName, true, true, birthYear, null,
-				null, null, null, null, null, null);
-		voters.addAll(nameMatches);
-
-		if (isEdit) {
-			voters = voters.stream().filter(p -> !p.getId().equals(id)).collect(Collectors.toCollection(TreeSet::new));
-		}
-		results.put("potentialDuplicates", voters);
-
-		return results;
-	}
 
 	@RequestMapping("/voterCreate.htm")
 	// Don't want a Breadcrumb here since we want to force them to search first
@@ -193,16 +167,12 @@ public class VoterController extends AbstractAppController {
 		Voter voter = command.getVoter();
 		model.put("allGenders", genderDAO.findAllSorted());
 
-		Set<Precinct> editSites = getCurrentUser().getPrecinctsWhereUserHasAllPermissions(PermissionType.VOTER_EDIT);
-		List<Long> precinctIds = editSites.stream().map(p -> p.getId()).collect(Collectors.toList());
-		model.addAttribute("voterEditSiteIds", StringUtils.join(precinctIds, ','));
-
 		model.addAttribute("backgroundStatus", "No Issue Reported");
 		if (voter.isPersistent()) {
 			model.addAttribute("allVoterPrecincts", voterDAO.findPrecinctsForVoter(voter.getId()));
 		}
 
-		if (!hasAllPermissionsAtCurrentPrecinct(PermissionType.VOTER_EDIT))
+		if (!hasAllPermissions(PermissionType.VOTER_EDIT))
 			setFormAsReadOnly(model, true);
 	}
 
@@ -219,7 +189,7 @@ public class VoterController extends AbstractAppController {
 
 		if (!hasErrors) {
 			try {
-				voter = voterService.saveOrUpdate(voter, false, false);
+				voter = voterService.saveOrUpdate(voter);
 				userNotifier.notifyUserOnceWithMessage(request,
 						getMessage(isEdit ? "voter.update.success" : "voter.create.success"));
 			} catch (ServiceValidationException e) {

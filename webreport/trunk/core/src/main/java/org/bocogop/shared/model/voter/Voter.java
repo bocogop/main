@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bocogop.shared.model.CoreUserDetails;
 import org.bocogop.shared.model.Participation;
 import org.hibernate.annotations.BatchSize;
@@ -29,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "Voter")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = PUBLIC_ONLY, isGetterVisibility = PUBLIC_ONLY)
-public class Voter extends AbstractVoter<Voter> implements CoreUserDetails {
+public class Voter extends AbstractVoter<Voter> implements CoreUserDetails<Voter> {
 	private static final long serialVersionUID = 6904844123870655771L;
 
 	public static class VoterView {
@@ -63,11 +64,13 @@ public class Voter extends AbstractVoter<Voter> implements CoreUserDetails {
 	}
 
 	// -------------------------------------- Business Methods
-
+	
 	@Override
 	@Transient
 	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if (authorities == null)
+			authorities = new ArrayList<>();
 		return authorities;
 	}
 

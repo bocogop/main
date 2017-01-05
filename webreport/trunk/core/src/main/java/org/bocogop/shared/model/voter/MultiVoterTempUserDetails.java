@@ -10,7 +10,7 @@ import org.bocogop.shared.model.Permission;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-public class MultiVoterTempUserDetails implements CoreUserDetails {
+public class MultiVoterTempUserDetails implements CoreUserDetails<MultiVoterTempUserDetails> {
 	private static final long serialVersionUID = -7663004971330754422L;
 
 	private List<Voter> matches;
@@ -75,6 +75,10 @@ public class MultiVoterTempUserDetails implements CoreUserDetails {
 	@Override
 	public ZoneId getTimeZone() {
 		return ZoneId.systemDefault();
+	}
+
+	protected void setMatches(List<Voter> matches) {
+		this.matches = matches;
 	}
 
 	public List<Voter> getMatches() {

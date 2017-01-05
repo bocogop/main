@@ -56,11 +56,9 @@ public class CommonReferenceDataInterceptor extends AbstractReferenceDataInterce
 		}
 
 		Voter voterUser = SecurityUtil.getCurrentUserAsOrNull(Voter.class);
-		model.put("voter", voterUser);
 
 		ZoneId timeZone = null;
 		if (voterUser != null) {
-			model.put("currentUser", voterUser);
 			timeZone = voterUser.getTimeZone();
 		}
 
