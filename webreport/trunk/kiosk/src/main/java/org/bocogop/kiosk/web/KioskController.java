@@ -25,6 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.method.P;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -54,6 +57,8 @@ public class KioskController extends AbstractKioskController {
 
 	@Autowired
 	private VelocityService velocityService;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	// @Autowired
 	// private LocaleResolver localeResolver;
@@ -62,7 +67,7 @@ public class KioskController extends AbstractKioskController {
 
 	@RequestMapping(value = URI_LOGIN, method = RequestMethod.GET)
 	public String loginPage(@RequestParam(required = false) String error, @RequestParam(required = false) Long eventId,
-			@RequestParam(required = false) Boolean thankYou,
+			@RequestParam(required = false) Boolean thankYou, @RequestParam(required = false) Boolean noUserFound, 
 			@CookieValue(required = false, name = COOKIE_EVENT_ID) Long cookieEventId, ModelMap model,
 			HttpServletResponse response) {
 		String locale = LocaleContextHolder.getLocale().getLanguage();
@@ -76,7 +81,8 @@ public class KioskController extends AbstractKioskController {
 				} else {
 					return "redirect:/login.htm?eventId=" + cookieEventId //
 							+ (error != null ? "&error=" + error : "") //
-							+ (thankYou != null ? "&thankYou=" + thankYou : "");
+							+ (thankYou != null ? "&thankYou=" + thankYou : "") //
+							+ (noUserFound != null ? "&noUserFound=" + noUserFound : "");
 				}
 			}
 		} else {
@@ -99,6 +105,10 @@ public class KioskController extends AbstractKioskController {
 			model.addAttribute("errorMessage",
 					velocityService.mergeTemplateIntoString("login.error." + error + "." + locale));
 		}
+		
+		if (noUserFound != null && noUserFound) {
+			model.addAttribute("noUserFound", true);
+		}
 
 		model.addAttribute("globalIntroText",
 				velocityService.mergeTemplateIntoString("kiosk.globalIntroText" + "." + locale));
@@ -114,14 +124,16 @@ public class KioskController extends AbstractKioskController {
 	}
 
 	@RequestMapping(value = WebSecurityConfig.URI_LOGOUT, method = RequestMethod.GET)
-	public String logoutPage(@RequestParam(required = false) Boolean thankYou, HttpServletRequest request,
+	public String logoutPage(@RequestParam(required = false) Boolean thankYou,
+			@RequestParam(required = false) Boolean noUserFound, HttpServletRequest request,
 			HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
 
-		return "redirect:/login.htm?logout" + (thankYou != null && thankYou ? "&thankYou=true" : "");
+		return "redirect:/login.htm?logout" + (thankYou != null && thankYou ? "&thankYou=true" : "")
+				+ (noUserFound != null && noUserFound ? "&noUserFound=true" : "");
 	}
 
 	@RequestMapping("/index.htm")
@@ -146,11 +158,32 @@ public class KioskController extends AbstractKioskController {
 	}
 
 	@RequestMapping("/refineUser.htm")
-	public String refineUser(ModelMap model) {
+	public String refineUser(ModelMap model, @RequestParam(required = false) Long id, HttpServletRequest request,
+			HttpServletResponse response) {
 		MultiVoterTempUserDetails multiMatch = SecurityUtil.getCurrentUserAsOrNull(MultiVoterTempUserDetails.class);
 		if (multiMatch == null)
 			return "redirect:/index.htm";
+		if (id != null) {
 
+			if (id.equals(-1L)) {
+				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+				if (auth != null) {
+					new SecurityContextLogoutHandler().logout(request, response, auth);
+				}
+				return "redirect:/login.htm?logout&noUserFound=true";
+			}
+
+			Voter match = multiMatch.getMatches().stream().filter(p -> p.getId().equals(id)).findFirst().orElse(null);
+			if (match != null) {
+				Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+						match.getVoterId() + "||", String.valueOf(match.getBirthYear())));
+				SecurityContextHolder.getContext().setAuthentication(auth);
+				return "redirect:" + URL_HOME;
+			} else
+				throw new IllegalArgumentException("The specified ID is invalid");
+		}
+
+		model.put("multiMatch", multiMatch);
 		return "refineUser";
 	}
 
@@ -208,7 +241,7 @@ public class KioskController extends AbstractKioskController {
 			voter.setUserProvidedPhone(voter.getPhone());
 		if (StringUtils.isBlank(voter.getNickname()))
 			voter.setNickname(voter.getFirstName());
-		
+
 		VoterCommand command = new VoterCommand(voter);
 		model.put(DEFAULT_COMMAND_NAME, command);
 		createReferenceData(model);

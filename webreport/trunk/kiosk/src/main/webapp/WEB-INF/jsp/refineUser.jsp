@@ -1,13 +1,23 @@
 <%@ include file="shared/inc_header.jsp"%>
 
-<script type="text/javascript">
-	// var uniqueAssignmentsAndOrgsText = "<spring:message code="uniqueAssignmentsAndOrgsText" />"
-</script>
-
-<style>
-</style>
+<div class="clearCenter">More than one matching user was found.
+	Which address below is familiar?</div>
 
 <div class="clearCenter">
-	More than one user was found with the given information. Which address below is familiar?
-	
+	<c:forEach items="${multiMatch.matches}" var="a">
+		<div class="blueDiv" style="display: inline-block; text-align: center">
+			<pre>
+				<c:out value="${a.addressMultilineDisplay}" />
+			</pre>
+			<br> <a class="buttonAnchor"
+				href="<c:url value="/refineUser.htm?id=${a.id}" />">Select</a>
+		</div>
+	</c:forEach>
+	<div class="blueDiv" style="display: inline-block; text-align: center">
+		<pre>
+				None are familiar!
+			</pre>
+		<br> <a class="buttonAnchor"
+			href="<c:url value="/refineUser.htm?id=-1" />">Select</a>
+	</div>
 </div>

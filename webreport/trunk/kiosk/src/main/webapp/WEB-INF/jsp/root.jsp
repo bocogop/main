@@ -45,7 +45,7 @@
 					<a href="${home}/home.htm"><img
 						src="${imgHome}/flag.png"
 						border="0" align="left"></a>
-				<img src="${imgHome}/meeting-people.png" align="right"
+				<img src="${imgHome}/flatirons.png" align="right"
 				height="${headerRowHeight}"></td>
 		</tr>
 		<tr>

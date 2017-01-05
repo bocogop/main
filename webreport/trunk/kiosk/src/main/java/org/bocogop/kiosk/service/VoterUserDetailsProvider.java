@@ -45,13 +45,14 @@ public class VoterUserDetailsProvider extends AbstractAppServiceImpl {
 			} catch (NumberFormatException e) {
 				throw new BadCredentialsException("Invalid birth year specified");
 			}
-		}
+		} else
+			throw new BadCredentialsException("Unsupported credentials type");
 
 		Voter v = null;
 
 		if (StringUtils.isNotBlank(voterId)) {
-			List<Voter> vols = voterDAO.findByCriteria(voterId, null, null, null, false, false, birthYear, null, null, null,
-					null, null, null, null);
+			List<Voter> vols = voterDAO.findByCriteria(voterId, null, null, null, false, false, birthYear, null, null,
+					null, null, null, null, null);
 			if (vols.size() > 1) {
 				return new MultiVoterTempUserDetails(vols);
 			} else if (vols.size() == 1) {

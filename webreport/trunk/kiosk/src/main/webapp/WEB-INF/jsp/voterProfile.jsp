@@ -49,27 +49,6 @@
 	vertical-align: top;
 }
 
-.blueDiv {
-	border: 2px solid #0033DD;
-	border-radius: 15px;
-	margin: 10px 20px;
-	padding: 6px;
-}
-
-.blueDiv fieldset {
-	border: none;
-}
-
-.blueDiv legend {
-	margin-left: 20px;
-	margin-top: -30px;
-	background: white;
-}
-
-.blueDiv hr {
-	border-top: dotted 2px;
-	color: #f13458;
-}
 
 .opportunitiesDiv {
 	min-width: 600px;

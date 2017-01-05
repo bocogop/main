@@ -72,14 +72,14 @@
 				</div>
 			</c:if>
 			<div id="oneTimeMessages">
-				<c:if test="${fn:escapeXml(param.thankYou) != ''}">
-					<div align="center" class="oneTimeUserNotification">
-						<spring:message code="mealTicket.noneDue" />
+				<c:if test="${fn:escapeXml(param.logout) != ''}">
+					<div class="oneTimeUserNotification">
+						<p>You have been logged out successfully.</p>
 					</div>
 				</c:if>
-				<c:if test="${fn:escapeXml(param.logout) != ''}">
-					<div>
-						<p>You have been logged out successfully.</p>
+				<c:if test="${noUserFound}">
+					<div class="oneTimeUserNotification">
+						<p>Sorry your user was not found! Please request a new account from the Boulder County GOP staff.</p>
 					</div>
 				</c:if>
 			</div>
