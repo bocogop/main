@@ -101,7 +101,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
 	@Profile({ "attended" })
 	public TilesConfigurer tilesConfigurer() {
 		TilesConfigurer tc = new TilesConfigurer();
-		tc.setDefinitions("/WEB-INF/tiles.xml", "/WEB-INF/tiles-reports.xml");
+		tc.setDefinitions("/WEB-INF/tiles.xml");
 		return tc;
 	}
 

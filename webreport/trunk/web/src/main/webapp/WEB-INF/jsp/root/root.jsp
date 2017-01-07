@@ -1,6 +1,5 @@
 <%@ include file="../shared/inc_header.jsp"%>
 
-<tiles:importAttribute name="topLeftImage" scope="page" ignore="true" />
 <tiles:importAttribute name="extraHeadEntries" scope="page"
 	ignore="true" />
 <%--Allow these to be set either in the model or in the tiles config - CPB --%>
@@ -12,7 +11,6 @@
 		ignore="true" />
 </c:if>
 
-<tiles:importAttribute name="showFullHeader" scope="page" />
 <tiles:importAttribute name="additionalFooterItem" scope="page" ignore="true" />
 
 <!DOCTYPE html>
@@ -20,7 +18,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<title>WR</title>
+<title>Boulder County GOP Staff</title>
 <style>
 #headerRowCell {
 	background-size:100% 100%;
@@ -33,53 +31,22 @@
 <body>
 	<%@ include file="javascript/inc_common_web.jsp"%>
 	<table cellpadding="0" cellspacing="0" width="100%">
-		<c:if test="${showFullHeader}">
 			<tr valign="middle">
-				<td id="headerRowCell" background="${imgHome}/top-banner-middle.gif"><c:if
-						test="${not empty pageScope.topLeftImage}">
+				<td id="headerRowCell" background="${imgHome}/top-banner-middle.gif">
 						<a href="${home}/home.htm"><img
-							src="${imgHome}/${pageScope.topLeftImage}" height="99" border="0"
+							src="${imgHome}/elephant.png" height="99" border="0"
 							align="left"></a>
-					</c:if><img src="${imgHome}/wrlogo_top.png" align="right" height="99"></td>
+					<img src="${imgHome}/flatirons.png" align="right" height="99"></td>
 			</tr>
-		</c:if>
 		
-		<c:set var="logoutBarHeight" value="40" />
-		<c:if test="${showFullHeader}">
 			<c:set var="logoutBarHeight" value="20" />
-		</c:if>
-		
 		<tr>
 			<td align="center" class="blueBar" height="${logoutBarHeight}" nowrap><table
 					cellpadding="0" cellspacing="0" width="100%">
 					<tr valign="middle">
 						<td width="100%" class="stationHeaderText">
-						<c:if test="${showFullHeader}">
 						&nbsp;
-						</c:if>
-						<c:if test="${not showFullHeader}">
-						<img src="${imgHome}/wrlogo_oneline.png" height="40" />
-						</c:if></td>
-						<c:if test="${not empty precinctContextName}">
-							<td align="right" class="stationHeaderText" nowrap><img
-								src="${imgHome}/spacer.gif" alt="" height="0"><strong>Precinct:</strong>&nbsp;</td>
-							<td align="left" class="stationHeaderText" width="0" nowrap
-								id="dutyStationId"><div
-									style="display: inline-block; background-color: white; padding: 2px; border-radius: 2px">
-									<c:if
-										test="${multipleStationsAssigned}">
-										<a class="changeStationLink" href="${home}/changeStation.htm"><c:out
-												value="${precinctContextName}" /><img
-											src="${imgHome}/uparrow.png" height="14" hspace="4"
-											border="0" align="absmiddle" alt="Change Precinct Arrow" /></a>
-									</c:if>
-									<c:if
-										test="${not multipleStationsAssigned}">
-										<span class="changeStationText"><c:out
-												value="${precinctContextName}" /></span>
-									</c:if>
-								</div></td>
-						</c:if>
+						</td>
 						<c:if test="${not empty currentUser}">
 							<td align="right" class="stationHeaderText" nowrap><img
 								src="${imgHome}/spacer.gif" alt="" height="0" width="20"><strong>User
@@ -148,7 +115,7 @@
 												<div class="notificationAlert notificationBox"
 													style="min-width: 350px;">
 													<h1 style="text-align: center">
-														<u>Voluntary Service System Announcements:</u>
+														<u>Announcements:</u>
 													</h1>
 													<p />
 													<div align="center">${homepageAnnouncement}</div>

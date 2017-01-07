@@ -8,9 +8,7 @@
 			extend root to override its value - CPB -->
 		<put-attribute name="pageTitle" value="CHANGE-ME" />
 		<put-attribute name="pageDescription" value="CHANGE-ME" />
-		<put-attribute name="topLeftImage" value="va_full_logo.png" />
 		<put-attribute name="activateCountdownTimer" value="true" />
-		<put-attribute name="showFullHeader" value="false" />
 		<put-attribute name="additionalFooterItem" value="" />
 		<put-attribute name="showPageTitle" value="true" />
 		<put-attribute name="showAnnouncements" value="false" />
@@ -21,7 +19,7 @@
 		<put-attribute name="breadcrumbs"
 			value="/WEB-INF/jsp/root/inc_breadcrumbs.jsp" />
 		<put-attribute name="pageDescription"
-			value="This is the Voluntary Service System (WR)" />
+			value="This is the Boulder County GOP Staff Site" />
 	</definition>
 
 	<!-- Used in the event we have an unchecked exception that bubbles up to 
@@ -54,30 +52,21 @@
 
 	<definition name="login" extends="root-no-menu">
 		<put-attribute name="body" value="/WEB-INF/jsp/login.jsp" />
-		<put-attribute name="pageTitle" value="Voluntary Service System" />
+		<put-attribute name="pageTitle" value="Boulder County GOP Staff Site" />
 		<put-attribute name="helpContextID" value="9" />
 		<put-attribute name="activateCountdownTimer" value="false" />
-		<put-attribute name="showFullHeader" value="true" />
-		<put-attribute name="additionalFooterItem" value="This login page will refresh every 10 minutes to ensure an active session." />
-		<put-list-attribute name="extraHeadEntries">
-			<add-attribute value="&lt;meta http-equiv='refresh' content='600' /&gt;" />
-		</put-list-attribute>
 	</definition>
 	
 	<definition name="userError" extends="root-no-menu">
 		<put-attribute name="body" value="/WEB-INF/jsp/userError.jsp" />
 		<put-attribute name="pageTitle" value="User Error" />
 		<put-attribute name="activateCountdownTimer" value="false" />
-		<put-attribute name="showFullHeader" value="true" />
 	</definition>
 
 	<definition name="home" extends="root">
 		<put-attribute name="body" value="/WEB-INF/jsp/home.jsp" />
-		<put-attribute name="pageTitle" value="Voluntary Service System" />
+		<put-attribute name="pageTitle" value="Boulder County GOP Staff Site" />
 		<put-attribute name="helpContextID" value="14" />
-		<put-attribute name="topLeftImage"
-			value="va_full_logo.png" />
-		<put-attribute name="showFullHeader" value="true" />
 		<put-attribute name="showPageTitle" value="false" />
 		<put-attribute name="showAnnouncements" value="true" />
 	</definition>
@@ -88,7 +77,6 @@
 		<put-attribute name="pageDescription"
 			value="This screen allows the user to select or change their precinct" />
 		<put-attribute name="helpContextID" value="2" />
-		<put-attribute name="showFullHeader" value="true" />
 	</definition>
 
 	<definition name="userAdmin" extends="root">
@@ -99,40 +87,6 @@
 		<put-attribute name="helpContextID" value="15" />
 	</definition>
 
-	<definition name="organizationProfile" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/organization/organizationProfile.jsp" />
-	</definition>
-
-	<definition name="createOrganization" extends="organizationProfile">
-		<put-attribute name="pageTitle" value="Organization Detail" />
-		<put-attribute name="pageDescription"
-			value="This screen provides the user the abibility to creat or edit an organization" />
-		<put-attribute name="helpContextID" value="32" />
-	</definition>
-
-	<definition name="editOrganization" extends="organizationProfile">
-		<put-attribute name="pageTitle" value="Organization Detail" />
-		<put-attribute name="pageDescription"
-			value="This screen provides the user the abibility to creat or edit an organization" />
-		<put-attribute name="helpContextID" value="32" />
-	</definition>
-
-	<definition name="organizationList" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/organization/organizationList.jsp" />
-		<put-attribute name="pageTitle" value="Organization List" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to view a list or search for organizations" />
-		<put-attribute name="helpContextID" value="32" />
-	</definition>
-
-	<definition name="editVoluntaryService" extends="root">
-		<put-attribute name="pageTitle" value="Voluntary Service" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/serviceParameters/serviceParametersProfile.jsp" />
-		<put-attribute name="helpContextID" value="34" />
-	</definition>
 
 	<definition name="voterProfile" extends="root">
 		<put-attribute name="body"
@@ -149,185 +103,6 @@
 		<put-attribute name="helpContextID" value="17" />
 	</definition>
 
-	<definition name="donorProfile" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/donation/donorProfile.jsp" />
-	</definition>
-
-	<definition name="createDonor" extends="donorProfile">
-		<put-attribute name="pageTitle" value="Create Donor" />
-		<put-attribute name="pageDescription"
-			value="This screen provides the user the ability to create a donor" />
-	</definition>
-
-	<definition name="editDonor" extends="donorProfile">
-		<put-attribute name="pageTitle" value="Edit Donor" />
-		<put-attribute name="pageDescription"
-			value="This screen provides the user the ability to edit a donor" />
-	</definition>
-
-	<definition name="donationSummaryList" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/donation/donationSummaryList.jsp" />
-		<put-attribute name="pageTitle" value="Donation List" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to search and display a list of donation summaries" />
-		<put-attribute name="helpContextID" value="26" />
-	</definition>
-
-	<definition name="donationProfile" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/donation/donationProfile.jsp" />
-	</definition>
-
-	<definition name="editDonation" extends="donationProfile">
-		<put-attribute name="pageTitle" value="Donation Detail" />
-		<put-attribute name="pageDescription"
-			value="This screen enables the user to edit a donation" />
-	</definition>
-
-	<definition name="createDonation" extends="donationProfile">
-		<put-attribute name="pageTitle" value="Create Donation" />
-		<put-attribute name="pageDescription"
-			value="This screen enables the user to create a donation" />
-		<put-attribute name="helpContextID" value="24" />
-	</definition>
-
-	<definition name="letterTemplateEdit" extends="root">
-		<put-attribute name="pageTitle" value="Manage Letter Templates" />
-		<put-attribute name="pageDescription"
-			value="This screen enables the user to manage letter templates" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/letterTemplate/letterTemplateEdit.jsp" />
-	</definition>
-
-	<definition name="precinctEdit" extends="root">
-		<put-attribute name="pageTitle" value="Manage Precincts" />
-		<put-attribute name="pageDescription"
-			value="This screen enables the user to manage precincts" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/precinct/precinctEdit.jsp" />
-		<put-attribute name="helpContextID" value="31" />
-	</definition>
-
-	<definition name="precinctCreate" extends="precinctEdit">
-		<put-attribute name="pageTitle" value="Create New Precinct" />
-		<put-attribute name="pageDescription"
-			value="This screen enables the user to create a new precinct" />
-	</definition>
-
-	<definition name="excludedEntityList" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/leie/excludedEntityList.jsp" />
-		<put-attribute name="pageTitle" value="Excluded Entity Matches" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to view a list of excluded entities which match WR voters" />
-	</definition>
-
-	<definition name="excludedEntityListAll" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/leie/excludedEntityListAll.jsp" />
-		<put-attribute name="pageTitle" value="All Excluded Entities" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to view a list of excluded entities" />
-	</definition>
-
-	<definition name="manageBenefitingServices" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/benefitingServices/benefitingServicesEdit.jsp" />
-		<put-attribute name="pageTitle"
-			value="Manage Benefiting Services &amp; Roles" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to manage benefiting services and roles" />
-		<put-attribute name="helpContextID" value="35" />
-	</definition>
-
-	<definition name="manageBenefitingServiceTemplates" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/benefitingServiceTemplates/benefitingServiceTemplateEdit.jsp" />
-		<put-attribute name="pageTitle"
-			value="Manage Templates for Benefiting Services &amp; Roles" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to manage templates for benefiting services and roles" />
-	</definition>
-
-	<definition name="manageRequirements" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/requirement/requirementList.jsp" />
-		<put-attribute name="pageTitle" value="Manage Requirements" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to manage requirements" />
-	</definition>
-
-	<definition name="manageStaffTitle" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/staffTitle/staffTitleEdit.jsp" />
-		<put-attribute name="pageTitle" value="Manage Staff Title" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to manage staff title" />
-	</definition>
-
-	<definition name="timeEntry" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/timeEntry/timeEntry.jsp" />
-		<put-attribute name="pageTitle" value="Time Entry" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to enter votered time" />
-		<put-attribute name="helpContextID" value="21" />
-	</definition>
-	
-	<definition name="occasionalTimeEntry" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/timeEntry/occasionalTimeEntry.jsp" />
-		<put-attribute name="pageTitle" value="Occasional Time Entry" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to enter occasional votered time" />
-		<put-attribute name="helpContextID" value="22" />
-	</definition>
-	
-	<definition name="mealTicketList" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/mealTicket/mealTicketList.jsp" />
-		<put-attribute name="pageTitle" value="Daily Meal Tickets" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to view a list of meal tickets" />
-		<put-attribute name="helpContextID" value="3" />
-	</definition>
-	
-	<definition name="mealTicketPrint" template="/WEB-INF/jsp/mealTicket/mealTicketPrint.jsp" />
-	
-	<definition name="awardList" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/award/awardList.jsp" />
-		<put-attribute name="pageTitle" value="Awards List" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to view a list of volunnteer awards" />
-	</definition>
-
-	<definition name="manageAwardCodes" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/award/awardCodeEdit.jsp" />
-		<put-attribute name="pageTitle" value="Manage Award Codes" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to manage award codes" />
-	</definition>
-	
-	<definition name="requirementProfile" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/requirement/requirementEdit.jsp" />
-	</definition>
-	
-	<definition name="editRequirement" extends="requirementProfile">
-		<put-attribute name="pageTitle" value="Requirement Detail" />
-		<put-attribute name="pageDescription"
-			value="This screen enables the user to edit a requirement" />
-	</definition>
-
-	<definition name="createRequirement" extends="requirementProfile">
-		<put-attribute name="pageTitle" value="Create Requirement" />
-		<put-attribute name="pageDescription"
-			value="This screen enables the user to create a requirement" />
-	</definition>
 
 	<definition name="voterDemographics" extends="root">
 		<put-attribute name="body"
@@ -335,55 +110,6 @@
 		<put-attribute name="pageTitle" value="Voter Demographics" />
 		<put-attribute name="pageDescription"
 			value="This screen allows the user to view a list of active voter demographics." />
-	</definition>
-
-	<definition name="donationLogList" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/donation/donationLogList.jsp" />
-		<put-attribute name="pageTitle" value="E-Donation List" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to view a list of the existing donations received from PAY.GOV" />
-	</definition>
-
-	<definition name="ledger" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/ledger/ledger.jsp" />
-		<put-attribute name="pageTitle" value="General Ledger" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to view total donations and expenditures for each GPF at the working precinct" />
-	</definition>
-	
-	<definition name="expenditureList" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/expenditure/expenditureList.jsp" />
-		<put-attribute name="pageTitle" value="Expenditure List" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to search and display a list of expenditures" />
-		<!-- 
-		<put-attribute name="helpContextID" value="26" />
-		 -->
-	</definition>
-
-	<definition name="ledgerAdjustmentList" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/ledger/ledgerAdjustmentList.jsp" />
-		<put-attribute name="pageTitle" value="Ledger Adjustment List" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to search and display a list of ledger adjustments" />
-		<!-- 
-		<put-attribute name="helpContextID" value="26" />
-		 -->
-	</definition>
-	
-	<definition name="ledgerDaily" extends="root">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/ledger/ledgerDaily.jsp" />
-		<put-attribute name="pageTitle" value="General Post Fund Daily Ledger" />
-		<put-attribute name="pageDescription"
-			value="This screen allows the user to display a summary of transactions by day for a general post fund" />
-		<!-- 
-		<put-attribute name="helpContextID" value="26" />
-		 -->
 	</definition>
 
 </tiles-definitions>

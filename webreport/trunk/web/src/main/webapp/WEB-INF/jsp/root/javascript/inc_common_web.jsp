@@ -10,7 +10,6 @@
 <script type="text/javascript" src="${jsHome}/voterSearchJavascript.js"></script>
 <script type="text/javascript" src="${jsHome}/dataTableJavascript.js"></script>
 
-<%@ include file="inc_sounds.jsp"%>
 
 <script type="text/javascript">
 	function onIdleCallback() {

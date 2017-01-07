@@ -5,7 +5,7 @@
 
 echo Building Core (including test jar)...
 cd %WR_CC_PATH%\core
-call mvn install -s %MAVEN_SETTINGS_FILE%
+call mvn install -s %MAVEN_SETTINGS_FILE% -U
 
 echo Building WR from %WR_CC_PATH%\parent...
 cd %WR_CC_PATH%\parent
