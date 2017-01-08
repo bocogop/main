@@ -1,7 +1,6 @@
 jQuery.fn.reverse = [].reverse
 
 function logoutConfirm() {
-	beep()
 	confirmDialog("Are you sure you want to logout?", function() {
 		document.location.href = homePath + '/logout.htm'
 	})

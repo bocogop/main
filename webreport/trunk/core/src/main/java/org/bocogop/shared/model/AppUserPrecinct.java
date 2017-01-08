@@ -23,10 +23,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "AppUserPrecinct", schema = "Core")
+@Table(name = "AppUserPrecinct")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = PUBLIC_ONLY, isGetterVisibility = PUBLIC_ONLY)
 public class AppUserPrecinct extends AbstractAuditedPersistent<AppUserPrecinct> {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4928083791827168547L;
 
 	/*
 	 * Exposing this functionality on a per-request basis since the precinct
@@ -96,7 +96,7 @@ public class AppUserPrecinct extends AbstractAuditedPersistent<AppUserPrecinct> 
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "AppUserFK", nullable = false)
+	@JoinColumn(name = "AppUserFK", nullable = false, updatable = false)
 	@JsonIgnore
 	public AppUser getAppUser() {
 		return appUser;
@@ -107,7 +107,7 @@ public class AppUserPrecinct extends AbstractAuditedPersistent<AppUserPrecinct> 
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "PrecinctFK", updatable = false)
+	@JoinColumn(name = "PrecinctFK", nullable = false, updatable = false)
 	@BatchSize(size = 500)
 	public Precinct getPrecinct() {
 		return precinct;

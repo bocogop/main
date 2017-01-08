@@ -36,18 +36,19 @@ public class RolePermission extends AbstractAuditedPersistent<RolePermission> {
 		initialize(getPermission());
 		getPermission().initializeAll();
 	}
-	
+
 	// -------------------------------------- Common Methods
 
 	@Override
 	protected boolean requiredEquals(RolePermission oo) {
-		return new EqualsBuilder().append(nullSafeGetId(role), nullSafeGetId(oo.getRole()))
-				.append(nullSafeGetId(permission), nullSafeGetId(oo.getPermission())).isEquals();
+		return new EqualsBuilder().append(nullSafeGetId(getRole()), nullSafeGetId(oo.getRole()))
+				.append(nullSafeGetId(getPermission()), nullSafeGetId(oo.getPermission())).isEquals();
 	}
 
 	@Override
 	protected int requiredHashCode() {
-		return new HashCodeBuilder().append(nullSafeGetId(role)).append(nullSafeGetId(permission)).toHashCode();
+		return new HashCodeBuilder().append(nullSafeGetId(getRole())).append(nullSafeGetId(getPermission()))
+				.toHashCode();
 	}
 
 	// -------------------------------------- Accessor Methods

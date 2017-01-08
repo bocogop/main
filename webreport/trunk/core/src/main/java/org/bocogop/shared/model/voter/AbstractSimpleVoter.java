@@ -152,7 +152,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	
 	@Transient
 	public String getFinalZip() {
-		return StringUtils.isNotBlank(getZipPlus()) ? getZipPlus() : getZip();
+		return StringUtils.isNotBlank(getZipPlus()) ? getZip() + "-" + getZipPlus() : getZip();
 	}
 
 	// -------------------------------------- Common Methods

@@ -45,7 +45,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = PUBLIC_ONLY, isGetterVisibility = PUBLIC_ONLY)
 public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		implements CoreUserDetails<AppUser>, Comparable<AppUser> {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3675278963814073675L;
 
 	/**
 	 * See @JsonView documentation - CPB
@@ -70,13 +70,11 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	private String description;
 	private String telephoneNumber;
 	private String email;
-
-	private Set<AppUserGlobalRole> globalRoles;
-
-	private Set<AppUserPrecinct> precincts;
-
 	/* Has someone completely disabled this user from logging in */
 	private boolean enabled;
+
+	private Set<AppUserGlobalRole> globalRoles;
+	private Set<AppUserPrecinct> precincts;
 
 	/*
 	 * Only contains one item, lazy-loaded; mapping like this instead
@@ -288,6 +286,7 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	}
 
 	@JsonSerialize(using = ZoneIdSerializer.class)
+	@Transient
 	public ZoneId getTimeZone() {
 		return timeZone;
 	}

@@ -66,32 +66,64 @@ public class KioskController extends AbstractKioskController {
 	@Autowired
 	private VoterValidator voterValidator;
 
+	private boolean isEventManager(HttpServletRequest r) {
+		HttpServletRequestWrapper requestWrapper = WebUtils.getNativeRequest(r, HttpServletRequestWrapper.class);
+		if (requestWrapper != null) {
+			HttpServletRequest sr = (HttpServletRequest) requestWrapper.getRequest();
+			return sr.isUserInRole("BOCOGOPEventManager");
+		}
+		return false;
+	}
+
 	@RequestMapping(value = URI_LOGIN, method = RequestMethod.GET)
 	public String loginPage(@RequestParam(required = false) String error, @RequestParam(required = false) Long eventId,
-			@RequestParam(required = false) Boolean thankYou, @RequestParam(required = false) Boolean noUserFound,
+			@RequestParam(required = false) Boolean noUserFound,
 			@CookieValue(required = false, name = COOKIE_EVENT_ID) Long cookieEventId, ModelMap model,
 			HttpServletRequest request, HttpServletResponse response) {
 		String locale = LocaleContextHolder.getLocale().getLanguage();
 
+		// if we didn't specify an event in the URL
 		if (eventId == null) {
+			/*
+			 * look up the cookie.
+			 */
 			if (cookieEventId == null) {
+				/*
+				 * If the cookie is missing, send them to the selectEvent page.
+				 */
 				return "redirect:/selectEvent.htm";
 			} else {
+				/*
+				 * We have a cookie - make sure it still points to a valid event
+				 */
 				if (eventDAO.findByPrimaryKey(cookieEventId) == null) {
 					return "eventMissing";
 				} else {
+					/*
+					 * send the user back to this same page with the event ID
+					 * explicitly provided
+					 */
 					return "redirect:/login.htm?eventId=" + cookieEventId //
 							+ (error != null ? "&error=" + error : "") //
-							+ (thankYou != null ? "&thankYou=" + thankYou : "") //
 							+ (noUserFound != null ? "&noUserFound=" + noUserFound : "");
 				}
 			}
 		} else {
-			if (cookieEventId == null || cookieEventId.equals(eventId) == false) {
+			/* We have an event ID explicitly stated. */
+			if (cookieEventId == null || (!cookieEventId.equals(eventId))) {
+				/*
+				 * Check permissions to set the cookie. This isn't "real"
+				 * security since they could just spoof the cookie but assuming
+				 * a real kiosk would be locked down and filesystem cookies
+				 * inaccessible.
+				 */
+				if (!isEventManager(request))
+					throw new SecurityException("Please have a BOCOGOP administrator select the event.");
+
 				/*
 				 * Save a cookie so that we don't have to pass it thru the
 				 * spring login page, and so that we can retrieve it if they log
-				 * out - CPB
+				 * out. - CPB
 				 */
 				response.addCookie(getCookie(eventId));
 			}
@@ -101,14 +133,14 @@ public class KioskController extends AbstractKioskController {
 		if (event == null) {
 			return "eventMissing";
 		}
+		/*
+		 * Once we're logged in, we rely on the event context, but on the login
+		 * page we don't have a session context yet, so set it manually
+		 */
 		model.put("event", event);
 
-		HttpServletRequestWrapper requestWrapper = WebUtils.getNativeRequest(request, HttpServletRequestWrapper.class);
-		if (requestWrapper != null) {
-			HttpServletRequest sr = (HttpServletRequest) requestWrapper.getRequest();
-			model.put("isEventManager", sr.isUserInRole("BOCOGOPEventManager"));
-		}
-		
+		model.put("isEventManager", isEventManager(request));
+
 		if (StringUtils.isNotBlank(error)) {
 			model.addAttribute("errorMessage",
 					velocityService.mergeTemplateIntoString("login.error." + error + "." + locale));
@@ -132,16 +164,14 @@ public class KioskController extends AbstractKioskController {
 	}
 
 	@RequestMapping(value = WebSecurityConfig.URI_LOGOUT, method = RequestMethod.GET)
-	public String logoutPage(@RequestParam(required = false) Boolean thankYou,
-			@RequestParam(required = false) Boolean noUserFound, HttpServletRequest request,
+	public String logoutPage(@RequestParam(required = false) Boolean noUserFound, HttpServletRequest request,
 			HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
 
-		return "redirect:/login.htm?logout" + (thankYou != null && thankYou ? "&thankYou=true" : "")
-				+ (noUserFound != null && noUserFound ? "&noUserFound=true" : "");
+		return "redirect:/login.htm?logout" + (noUserFound != null && noUserFound ? "&noUserFound=true" : "");
 	}
 
 	@RequestMapping("/index.htm")
@@ -224,6 +254,9 @@ public class KioskController extends AbstractKioskController {
 	@RequestMapping(value = "/selectEvent.htm", method = RequestMethod.GET)
 	public String selectEvent(ModelMap model, HttpServletRequest request, HttpServletResponse response) {
 		eraseCookie(COOKIE_EVENT_ID, request, response);
+		if (!isEventManager(request)) {
+			throw new SecurityException("Please login as an event manager to select an event.");
+		}
 
 		model.put("eventList", eventDAO.findAllSorted());
 		model.put("cancelAllowed", false);

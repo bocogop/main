@@ -1,8 +1,6 @@
 package org.bocogop.shared.model;
 
-import java.io.Serializable;
-
-public interface IdentifiedPersistent extends Persistent, Serializable {
+public interface IdentifiedPersistent extends Persistent {
 
 	/**
 	 * @return The ID of the object, or null if the object is not persistent

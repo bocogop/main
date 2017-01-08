@@ -237,12 +237,13 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/org/apache/tiles/tiles-request-jsp/1.0.6/tiles-request-jsp-1.0.6-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-core/5.2.5.Final/hibernate-core-5.2.5.Final.jar" sourcepath="M2_REPO/org/hibernate/hibernate-core/5.2.5.Final/hibernate-core-5.2.5.Final-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-entitymanager/5.2.6.Final/hibernate-entitymanager-5.2.6.Final.jar" sourcepath="M2_REPO/org/hibernate/hibernate-entitymanager/5.2.6.Final/hibernate-entitymanager-5.2.6.Final-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/jboss/logging/jboss-logging/3.3.0.Final/jboss-logging-3.3.0.Final.jar" sourcepath="M2_REPO/org/jboss/logging/jboss-logging/3.3.0.Final/jboss-logging-3.3.0.Final-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/org/jboss/logging/jboss-logging/3.3.0.Final/jboss-logging-3.3.0.Final-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-core/5.2.6.Final/hibernate-core-5.2.6.Final.jar" sourcepath="M2_REPO/org/hibernate/hibernate-core/5.2.6.Final/hibernate-core-5.2.6.Final-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Final/hibernate-jpa-2.1-api-1.0.0.Final.jar" sourcepath="M2_REPO/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Final/hibernate-jpa-2.1-api-1.0.0.Final-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Final/hibernate-jpa-2.1-api-1.0.0.Final-javadoc.jar!/"/>
@@ -260,27 +261,25 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/org/jboss/jandex/2.0.3.Final/jandex-2.0.3.Final.jar" sourcepath="M2_REPO/org/jboss/jandex/2.0.3.Final/jandex-2.0.3.Final-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/fasterxml/classmate/1.3.0/classmate-1.3.0.jar" sourcepath="M2_REPO/com/fasterxml/classmate/1.3.0/classmate-1.3.0-sources.jar">
+	<classpathentry kind="var" path="M2_REPO/com/fasterxml/classmate/1.3.1/classmate-1.3.1.jar" sourcepath="M2_REPO/com/fasterxml/classmate/1.3.1/classmate-1.3.1-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/com/fasterxml/classmate/1.3.0/classmate-1.3.0-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/com/fasterxml/classmate/1.3.1/classmate-1.3.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/org/hibernate/common/hibernate-commons-annotations/5.0.1.Final/hibernate-commons-annotations-5.0.1.Final.jar" sourcepath="M2_REPO/org/hibernate/common/hibernate-commons-annotations/5.0.1.Final/hibernate-commons-annotations-5.0.1.Final-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/jboss/spec/javax/interceptor/jboss-interceptors-api_1.1_spec/1.0.0.Beta1/jboss-interceptors-api_1.1_spec-1.0.0.Beta1.jar" sourcepath="M2_REPO/org/jboss/spec/javax/interceptor/jboss-interceptors-api_1.1_spec/1.0.0.Beta1/jboss-interceptors-api_1.1_spec-1.0.0.Beta1-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-java8/5.2.5.Final/hibernate-java8-5.2.5.Final.jar" sourcepath="M2_REPO/org/hibernate/hibernate-java8/5.2.5.Final/hibernate-java8-5.2.5.Final-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-entitymanager/5.2.5.Final/hibernate-entitymanager-5.2.5.Final.jar" sourcepath="M2_REPO/org/hibernate/hibernate-entitymanager/5.2.5.Final/hibernate-entitymanager-5.2.5.Final-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/net/bytebuddy/byte-buddy/1.5.4/byte-buddy-1.5.4.jar" sourcepath="M2_REPO/net/bytebuddy/byte-buddy/1.5.4/byte-buddy-1.5.4-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/net/bytebuddy/byte-buddy/1.5.4/byte-buddy-1.5.4-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-ehcache/5.2.5.Final/hibernate-ehcache-5.2.5.Final.jar" sourcepath="M2_REPO/org/hibernate/hibernate-ehcache/5.2.5.Final/hibernate-ehcache-5.2.5.Final-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-ehcache/5.2.6.Final/hibernate-ehcache-5.2.6.Final.jar" sourcepath="M2_REPO/org/hibernate/hibernate-ehcache/5.2.6.Final/hibernate-ehcache-5.2.6.Final-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/net/sf/ehcache/ehcache/2.10.3/ehcache-2.10.3.jar" sourcepath="M2_REPO/net/sf/ehcache/ehcache/2.10.3/ehcache-2.10.3-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/net/sf/ehcache/ehcache/2.10.3/ehcache-2.10.3-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-validator/5.2.1.Final/hibernate-validator-5.2.1.Final.jar" sourcepath="M2_REPO/org/hibernate/hibernate-validator/5.2.1.Final/hibernate-validator-5.2.1.Final-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-validator/5.3.4.Final/hibernate-validator-5.3.4.Final.jar" sourcepath="M2_REPO/org/hibernate/hibernate-validator/5.3.4.Final/hibernate-validator-5.3.4.Final-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/4.3.4.RELEASE/spring-aop-4.3.4.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-aop/4.3.4.RELEASE/spring-aop-4.3.4.RELEASE-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/org/springframework/spring-aop/4.3.4.RELEASE/spring-aop-4.3.4.RELEASE-javadoc.jar!/"/>
@@ -408,12 +407,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="/core"/>
-	<classpathentry kind="var" path="M2_REPO/microsoft/sqljdbc/4.2/sqljdbc-4.2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/apache/logging/log4j/log4j-web/2.7/log4j-web-2.7.jar" sourcepath="M2_REPO/org/apache/logging/log4j/log4j-web/2.7/log4j-web-2.7-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/org/apache/logging/log4j/log4j-web/2.7/log4j-web-2.7-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar" sourcepath="M2_REPO/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4-javadoc.jar!/"/>
@@ -422,6 +415,12 @@
 	<classpathentry kind="var" path="M2_REPO/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar" sourcepath="M2_REPO/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/microsoft/sqljdbc/4.2/sqljdbc-4.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/logging/log4j/log4j-web/2.7/log4j-web-2.7.jar" sourcepath="M2_REPO/org/apache/logging/log4j/log4j-web/2.7/log4j-web-2.7-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/dev/code/bocogop/main/maven-repo/org/apache/logging/log4j/log4j-web/2.7/log4j-web-2.7-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/junit/junit/4.12/junit-4.12.jar" sourcepath="M2_REPO/junit/junit/4.12/junit-4.12-sources.jar">

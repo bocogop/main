@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
+import org.bocogop.shared.config.testOnly.AppTestConfig;
 import org.bocogop.shared.persistence.AppUserDAO;
 import org.bocogop.shared.persistence.AppUserPrecinctDAO;
 import org.bocogop.shared.persistence.dao.ApplicationParametersDAO;
@@ -14,7 +15,6 @@ import org.bocogop.shared.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.shared.persistence.dao.voter.VoterDAO;
 import org.bocogop.shared.service.PrecinctService;
 import org.bocogop.wr.config.WebAppConfig;
-import org.bocogop.wr.config.testOnly.AppTestConfig;
 import org.bocogop.wr.test.AbstractTransactionalAppTest;
 import org.bocogop.wr.test.util.TestObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
