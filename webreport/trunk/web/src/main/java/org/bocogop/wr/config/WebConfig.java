@@ -83,11 +83,11 @@ public class WebConfig extends WebMvcConfigurationSupport {
 		registry.addWebRequestInterceptor(openSessionInViewInterceptor());
 
 		registry.addInterceptor(breadcrumbsInterceptor).addPathPatterns("/**").excludePathPatterns("/event/**",
-				"/index.htm", WebSecurityConfig.URI_LOGIN, WebSecurityConfig.URI_LOGOUT, "/selectStation.htm");
+				"/index.htm", WebSecurityConfig.URI_LOGIN, WebSecurityConfig.URI_LOGOUT);
 		registry.addInterceptor(commonReferenceDataInterceptor).addPathPatterns("/**").excludePathPatterns("/index.htm",
 				WebSecurityConfig.URI_LOGOUT);
 		registry.addInterceptor(storeLastGetRequestInterceptor).addPathPatterns("/**").excludePathPatterns("/index.htm",
-				WebSecurityConfig.URI_LOGIN, WebSecurityConfig.URI_LOGOUT, "/selectStation.htm");
+				WebSecurityConfig.URI_LOGIN, WebSecurityConfig.URI_LOGOUT);
 	}
 
 	@Bean

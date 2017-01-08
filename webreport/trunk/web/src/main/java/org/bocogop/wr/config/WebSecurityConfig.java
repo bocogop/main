@@ -103,7 +103,7 @@ public class WebSecurityConfig extends AbstractSecurityConfig {
 		http.authorizeRequests() //
 				.antMatchers(URI_LOGIN, URI_LOGOUT, URI_AUTH_EXCEPTION, MEDIA_DIR + "/**") //
 				.permitAll()
-				.antMatchers(URI_DEFAULT, "/selectStation.htm", CommonWebConfig.AJAX_CONTEXT_PATH_PREFIX + "/**")
+				.antMatchers(URI_DEFAULT, CommonWebConfig.AJAX_CONTEXT_PATH_PREFIX + "/**")
 				.authenticated() //
 				.antMatchers("/**/*.htm") //
 				.hasAuthority(Permission.LOGIN_APPLICATION) //

@@ -74,6 +74,25 @@ INSERT INTO [CORE].[AppUser]
            ,1)
 GO
 
+INSERT INTO [CORE].[AppUserGlobalRole]
+           ([AppUserFK]
+           ,[RoleFK]
+           ,[CreatedBy]
+           ,[CreatedDate]
+           ,[ModifiedBy]
+           ,[ModifiedDate])
+     select a.id, 
+           r.id
+           ,'Initial Load'
+           ,SYSUTCDATETIME()
+           ,'Initial Load'
+           ,SYSUTCDATETIME()
+		from Core.AppUser a,
+		Core.Role r
+		where a.username = 'trekmbikes'
+		and r.Name <> 'Voter'
+GO
+
 /*
 ALTER TABLE [dbo].[Voter]
 	add NameLastUpdated datetime,

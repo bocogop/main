@@ -6,6 +6,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +35,7 @@ import org.bocogop.shared.web.conversion.ZoneIdSerializer;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -81,6 +83,9 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	 * of @OneToOne so it can be optional and still lazy-load - CPB
 	 */
 	private List<AppUserPreferences> appUserPreferencesList;
+
+	/* Transient security fields */
+	private Set<GrantedAuthority> authoritiesCache = null;
 
 	// ------------------------------------ Constructors
 
@@ -192,18 +197,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		return results;
 	}
 
-	/*
-	 * Safely returning nothing here, just to satisfy UserDetails contract. The
-	 * actual Security context is manually reset with the AppUser's
-	 * station-specific roles as they change stations in the app. CPB
-	 */
-	@Override
-	@Transient
-	@JsonIgnore
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new ArrayList<>();
-	}
-
 	@Override
 	@Transient
 	public boolean isAccountNonExpired() {
@@ -250,6 +243,24 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		}
 	}
 
+	@Override
+	@Transient
+	@JsonIgnore
+	public synchronized Collection<? extends GrantedAuthority> getAuthorities() {
+		if (authoritiesCache == null) {
+			Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+			for (Role r : getBasicGlobalRoles()) {
+				if (r.isUsedAsPermission())
+					authorities.add(new SimpleGrantedAuthority(r.getName()));
+				for (Permission p : r.getPermissions())
+					authorities.add(new SimpleGrantedAuthority(p.getName()));
+			}
+			this.authoritiesCache = Collections.unmodifiableSet(authorities);
+		}
+		
+		return authoritiesCache;
+	}
+	
 	// ------------------------------------ Common Methods
 
 	@Override
@@ -274,6 +285,7 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	}
 
 	// ------------------------------------ Accessor Methods
+
 
 	@Column(nullable = false)
 	@NotNull
