@@ -4,7 +4,7 @@ if "%1"=="" goto blank
 if "%2"=="" goto blank
 
 set server=bocogop.database.windows.net
-set db=bocogop
+set db=bocogop_dev
 set user=bcgop
 
 For /f "tokens=2-4 delims=/ " %%a in ('date /t') do (set mydate=%%c%%a%%b)
@@ -13,7 +13,7 @@ set staging_table=stg_%mydate%T%mytime%_%~n1
 echo Importing to new table "%staging_table%"...
 
 @rem Create the staging table on the server (dropping any existing with the same name if necessary)
-sqlcmd.exe -S %server% -d %db% -U %user% -b -P %2 -I -v TableName="%staging_table%" -i scripts/create-staging-table.sql
+sqlcmd.exe -S %server% -d %db% -U %user% -b -P %2 -I -v TableName="%staging_table%" -i scripts/stateImport_01_createStagingTable.sql
 IF ERRORLEVEL 1 goto err_handler
 
 @rem Copy the CSV rows into the staging table
@@ -22,7 +22,7 @@ bcp %staging_table% in "%1" -S %server% -d %db% -U %user% -P %2 -F 2 -f vr.fmt -
 IF ERRORLEVEL 1 goto err_handler
 
 @rem Clean up and merge the staged data into the target tables (primarily dbo.Voter)
-sqlcmd.exe -S %server% -d %db% -U %user% -b -P %2 -I -v TableName="%staging_table%" -i scripts/transform-data.sql
+sqlcmd.exe -S %server% -d %db% -U %user% -b -P %2 -I -v TableName="%staging_table%" -i scripts/stateImport_02_merge.sql
 IF ERRORLEVEL 1 goto err_handler
 
 EXIT /B 0

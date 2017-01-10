@@ -1016,3 +1016,83 @@ update core.State set CountryFK = 1 where Id <= 51 or Id in (54,58,60,61,62,63, 
 update core.State set CountryFK = 2 where CountryFK is null and Id >= 79 and Id <= 110;
 update core.State set CountryFK = 3 where CountryFK is null and Id <> 111;
 GO
+
+--------------------------------- Programmability
+
+CREATE FUNCTION [dbo].[MixedCase]  (@Name VARCHAR(500)) 
+RETURNS VARCHAR(500) AS
+/* Convert a name component (ex., Last Name) to mixed case. First letter and each letter
+   after punctuation or a space is in upper case, other letters are in lower case.
+   ex. Mc Donald, O'Brien. Unfortunately not smart enough to convert MCDONALD to McDonald.*/  
+BEGIN
+	DECLARE @oldname VARCHAR(500), @newname VARCHAR(500)
+	DECLARE @oldlength INT, @charcount INT, @uppercase BIT, @currchar CHAR(1)
+
+/* Convert the entire string to lower case in @oldname. @oldlength is the length of the name. 
+   @charcount will be used to count a single character in the name string.
+   @currchar will hold a single character from the name while we're examining it.
+   @uppercase flag is set to 1 so that we capitalize the first character in the name. */
+	SET @oldname = LOWER(RTRIM(@Name))
+	SET @newname = ''
+	SET @oldlength=LEN(@oldname)
+	SET @charcount=0
+	SET @uppercase = 1
+
+/* Count through each character in the string until we reach the end (i.e., @oldlength+1).
+   If the flag tells us the character needs to be upper case, convert it to upper case
+   and append it to the name.
+   Otherwise, just append the lower case version.
+   Then, if the current character is a blank or punctuation, set the flag so that
+   the following character will be converted to uppercase. */
+	WHILE @charcount < (@oldlength)  --(@oldlength+1); change per Tami.bug fix.
+	BEGIN
+		SET @charcount=@charcount+1
+		SET @currchar=SUBSTRING(@oldname,@charcount,@charcount)
+		IF @uppercase = 1
+		BEGIN
+			SET @newname = @newname + UPPER(@currchar)
+			SET @uppercase = 0
+		END
+		ELSE SET @newname=@newname + @currchar
+		IF ASCII(@currchar)<97 OR ASCII(@currchar)>122 SET @uppercase = 1
+	END
+
+	RETURN (@newname)
+END
+GO
+
+Create Function [dbo].[RemoveNonAlphaNumericCharacters](@Temp VarChar(1000))
+Returns VarChar(1000)
+AS
+Begin
+    Declare @KeepValues as varchar(50)
+    Set @KeepValues = '%[^a-z^0-9]%'
+    While PatIndex(@KeepValues, @Temp) > 0
+        Set @Temp = Stuff(@Temp, PatIndex(@KeepValues, @Temp), 1, '')
+    Return @Temp
+End
+GO
+
+Create Function [dbo].[RemoveNonAlphaCharacters](@Temp VarChar(1000))
+Returns VarChar(1000)
+AS
+Begin
+    Declare @KeepValues as varchar(50)
+    Set @KeepValues = '%[^a-z]%'
+    While PatIndex(@KeepValues, @Temp) > 0
+        Set @Temp = Stuff(@Temp, PatIndex(@KeepValues, @Temp), 1, '')
+    Return @Temp
+End
+GO
+
+Create Function [dbo].[RemoveNonNumericCharacters](@Temp VarChar(1000))
+Returns VarChar(1000)
+AS
+Begin
+    Declare @KeepValues as varchar(50)
+    Set @KeepValues = '%[^0-9]%'
+    While PatIndex(@KeepValues, @Temp) > 0
+        Set @Temp = Stuff(@Temp, PatIndex(@KeepValues, @Temp), 1, '')
+    Return @Temp
+End
+GO
