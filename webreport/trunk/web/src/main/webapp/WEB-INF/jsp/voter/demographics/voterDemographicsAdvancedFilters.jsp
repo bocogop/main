@@ -3,7 +3,7 @@
 <script type="text/javascript">
 	$(function() {
 
-		// ------------ last votered options
+		// ------------ last volunteered options
 
 		$("#rxLastVolOptions").change(function() {
 			$("#haveLastVolDiv").toggle($(this).val() == 'have')
@@ -61,11 +61,11 @@
 	
 	function validateAdvancedFilters(allErrors) {
 		if ($("#rxHaveLastVolAfter").is(":visible") && $("#rxHaveLastVolAfter").val() == '') {
-			allErrors.push('Please enter a "votered after" date.')
+			allErrors.push('Please enter a "volunteered after" date.')
 		}
 		
 		if ($("#rxHaventLastVolSince").is(":visible") && $("#rxHaventLastVolSince").val() == '') {
-			allErrors.push('Please enter a "votered since" date.')
+			allErrors.push('Please enter a "volunteered since" date.')
 		}
 		
 		if ($("#rxStatusDateBefore").is(":visible") && $("#rxStatusDateBefore").val() == '') {
@@ -115,8 +115,8 @@
 		<td>Show <select id="rxLastVolOptions"
 			class="allParamInputs primaryAdvancedSelect"><option
 					value="all">(all)</option>
-				<option value="have">those who have votered...</option>
-				<option value="havent">those who haven't votered...</option>
+				<option value="have">those who have volunteered...</option>
+				<option value="havent">those who haven't volunteered...</option>
 		</select>
 
 			<div class="restrictDiv" id="haveLastVolDiv" style="display: none">

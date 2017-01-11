@@ -3,8 +3,9 @@
 <script type="text/javascript">
 	colDefs.push({
 		"targets" : colDefs.length,
+		"visible" : false,
 		"data" : function(row, type, val, meta) {
-			return defaultStr(row.dateOfBirth)
+			return defaultStr(row.statusReason)
 		}
 	})
 </script>

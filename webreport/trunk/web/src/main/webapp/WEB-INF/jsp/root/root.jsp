@@ -33,10 +33,10 @@
 	<table cellpadding="0" cellspacing="0" width="100%">
 			<tr valign="middle">
 				<td id="headerRowCell" background="${imgHome}/top-banner-middle.gif">
-						<a href="${home}/home.htm"><img
+						<a href="${home}/home.htm"><img src="${imgHome}/flatirons.png" align="left" height="99"></a>
+					<a href="${home}/home.htm"><img
 							src="${imgHome}/elephant.png" height="99" border="0"
-							align="left"></a>
-					<img src="${imgHome}/flatirons.png" align="right" height="99"></td>
+							align="right"></a></td>
 			</tr>
 		
 			<c:set var="logoutBarHeight" value="20" />

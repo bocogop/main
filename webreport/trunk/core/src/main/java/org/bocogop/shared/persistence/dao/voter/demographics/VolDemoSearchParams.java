@@ -77,23 +77,4 @@ public class VolDemoSearchParams implements Serializable {
 		return precinctId != null;
 	}
 
-	public boolean isIncludeActive() {
-		return "true".equals(restrictions.get("includeActive"));
-	}
-
-	public boolean isIncludeInactive() {
-		return "true".equals(restrictions.get("includeInactive"));
-	}
-
-	public boolean isIncludeTerminated() {
-		return "true".equals(restrictions.get("includeTerminated"));
-	}
-
-	public boolean isIncludeTerminatedByCause() {
-		return "true".equals(restrictions.get("includeTerminatedByCause"));
-	}
-
-	public boolean onlyActive() {
-		return isIncludeActive() && !isIncludeInactive() && !isIncludeTerminated() && !isIncludeTerminatedByCause();
-	}
 }

@@ -11,6 +11,10 @@ public class VoterDemographics extends AbstractSimpleVoter<VoterDemographics> {
 
 	// -------------------------------------------- Fields
 
+	private String precinct;
+	private String party;
+	private String gender;
+
 	// add fields here specific to the demographics if needed - CPB
 
 	public VoterDemographics() {
@@ -19,5 +23,29 @@ public class VoterDemographics extends AbstractSimpleVoter<VoterDemographics> {
 	// -------------------------------------------- Business Methods
 
 	// -------------------------------------------- Accessor Methods
+
+	public String getPrecinct() {
+		return precinct;
+	}
+
+	public void setPrecinct(String precinct) {
+		this.precinct = precinct;
+	}
+
+	public String getParty() {
+		return party;
+	}
+
+	public void setParty(String party) {
+		this.party = party;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
 }

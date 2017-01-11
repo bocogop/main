@@ -99,36 +99,42 @@ public class Voter extends AbstractVoter<Voter> implements CoreUserDetails<Voter
 
 	@Override
 	@Transient
+	@JsonIgnore
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
 	@Override
 	@Transient
+	@JsonIgnore
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
 	@Override
 	@Transient
+	@JsonIgnore
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
 	@Override
 	@Transient
+	@JsonIgnore
 	public boolean isEnabled() {
 		return true;
 	}
 
 	@Transient
 	@Override
+	@JsonIgnore
 	public boolean isNationalAdmin() {
 		return false;
 	}
 
 	@Override
 	@Transient
+	@JsonIgnore
 	public ZoneId getTimeZone() {
 		// TODO BOCOGOP hardcoded for now - CPB
 		return ZoneId.of("America/Denver");

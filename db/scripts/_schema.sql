@@ -445,7 +445,7 @@ ALTER TABLE [dbo].[Voter] CHECK CONSTRAINT [FK_Voter_Precinct];
 
 CREATE UNIQUE NONCLUSTERED INDEX UQ_VoterId ON [dbo].[Voter] (VoterId);
 GO
-CREATE NONCLUSTERED INDEX IX_Voter_LastName on [dbo].[Voter] (LastName);
+CREATE NONCLUSTERED INDEX IX_Voter_LastName on [dbo].[Voter] (LastName, FirstName, MiddleName, NameSuffix);
 GO
 CREATE UNIQUE NONCLUSTERED INDEX UQ_PrecinctCode ON [dbo].Precinct (Code);
 GO

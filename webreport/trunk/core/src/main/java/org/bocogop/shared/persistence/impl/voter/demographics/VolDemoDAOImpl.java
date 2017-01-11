@@ -1,14 +1,5 @@
 package org.bocogop.shared.persistence.impl.voter.demographics;
 
-import static org.bocogop.shared.persistence.dao.voter.demographics.VolDemoColumn.ACTIVE_ASSIGNMENTS;
-import static org.bocogop.shared.persistence.dao.voter.demographics.VolDemoColumn.PARKING_STICKERS;
-import static org.bocogop.shared.persistence.dao.voter.demographics.VolDemoColumn.SUPERVISORS;
-import static org.bocogop.shared.persistence.dao.voter.demographics.VolDemoColumn.TOTAL_DONATIONS;
-import static org.bocogop.shared.persistence.dao.voter.demographics.VolDemoColumn.UNIFORMS;
-
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -60,91 +51,66 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 
 	@Override
 	public List<VoterDemographics> findDemographics(VolDemoSearchParams searchParams, int start, int length) {
-		if (!searchParams.isIncludeActive() && !searchParams.isIncludeInactive() && !searchParams.isIncludeTerminated()
-				&& !searchParams.isIncludeTerminatedByCause())
-			return new ArrayList<>();
-
 		SearchContext sc = new SearchContext(searchParams);
 
-		boolean includeAssignments = searchParams.displayCols.contains(ACTIVE_ASSIGNMENTS)
-				|| searchParams.displayCols.contains(SUPERVISORS);
-		boolean includeParkingStickers = searchParams.displayCols.contains(PARKING_STICKERS);
-		boolean includeUniforms = searchParams.displayCols.contains(UNIFORMS);
-		boolean includeDonations = searchParams.displayCols.contains(TOTAL_DONATIONS);
+		boolean includeParticipations = false; // searchParams.displayCols.contains(PARTICIPATIONS);
+		boolean includeIssues = false; // searchParams.displayCols.contains(ISSUES);
+
 		sc.append("WITH");
 
+		sc.append("	all_voters AS (") //
+				.append("	SELECT *") //
+				.append("	FROM Voter v");
 		if (searchParams.isLocal()) {
-			sc.append("			vols_at_precinct AS (") //
-					.append("		SELECT DISTINCT TOP 2000000000 va.WrVotersFK") //
-					.append("		FROM wr.VoterAssignments va") //
-					.append("		WHERE va.RootPrecinctFK = :precinctId");
-			if (searchParams.onlyActive())
-				sc.append(" 			AND va.IsInactive = 0");
-			sc.append("			), ");
+			sc.append("		WHERE v.PrecinctFK = :precinctId");
 			sc.addParam("precinctId", searchParams.precinctId);
 		}
-
-		sc.append("				all_assigned_vols AS (") //
-				.append("			SELECT *") //
-				.append("			FROM wr.Voters v");
-		if (searchParams.isLocal())
-			sc.append("					LEFT JOIN vols_at_precinct vaf ON v.id = vaf.WrVotersFK");
-		sc.append("					WHERE 1=1"); //
-		appendWhereClauseItemsForVoterRestrictions(sc);
 		sc.append("				)");
 
-		if (includeAssignments)
-			appendCTEForAssignments(sc);
-		if (includeParkingStickers)
-			appendCTEForParkingStickers(sc);
-		if (includeUniforms)
-			includeCTEForUniforms(sc);
+		if (includeParticipations)
+			appendCTEForParticipations(sc);
+		if (includeIssues)
+			appendCTEForIssues(sc);
 
 		sc.append("	SELECT v.id,") //
-				.append("		v.IdentifyingCode,") //
-				.append("		v.LastName, v.FirstName, v.MiddleName, v.NameSuffix, v.Nickname,") //
-				.append("		v.DateOfBirth, v.Age, v.IsYouth,") //
-				.append("		Gender = g.Name,") //
-				.append("		StatusName = vs.name, v.StatusDate,") //
-				.append("		v.StreetAddress1, v.StreetAddress2, v.City, State = st.Name, StateId = st.Id, v.Zipcode,") //
-				.append(includeParkingStickers ? " vps.combined_parking_stickers," : " combined_parking_stickers = '',") //
-				.append(includeUniforms ? " vu.combined_uniforms," : " combined_uniforms = '',") //
-				.append("		v.Telephone, v.AlternateTelephone, v.AlternateTelephone2,") //
-				.append("		v.EmailAddress,") //
-				.append("		v.EmergencyContactName, v.EmergencyContactRelationship, v.EmergencyContactTelephone, v.EmergencyContactAlternateTelephone,") //
-				.append("		v.PrimaryPrecinctFK, PrimaryPrecinctName = ci.nameofinstitution + ' (' + ci.StationNumber + ')',") //
-				.append("		v.EntryDate,") //
-				.append(includeAssignments ? "va.combined_assignments," : " combined_assignments = '',") //
-				.append("		svh.LastVoteredDate,") //
-				.append("		svh.CurrentYearHours,") //
-				.append("		svh.PriorYearHours,") //
-				.append("		svh.TotalAdjustedHours,") //
-				.append("		svh.TotalHours,") //
-				.append(includeDonations //
-						? "		TotalDonations = (select ISNULL(sum(dd.DonationValue), 0)" //
-								+ "	from wr.DonationDetail dd" //
-								+ "	join wr.DonationSummary ds on dd.DonationSummaryFK = ds.id" //
-								+ "	join wr.Donor d on ds.DonorFK = d.id" //
-								+ "	where d.WrVotersFK = v.id),"
-						: "	TotalDonations = 0,") //
-				.append("		v.HoursLastAward,") //
-				.append("		v.DateLastAward,") //
-				.append("		PrimaryOrganization = o.OrganizationName") //
+				.append("	v.LastName, v.FirstName, v.MiddleName, v.NameSuffix, v.Nickname,") //
+				.append("	v.VoterId,") //
+				.append("	PrecinctName = p.Name,") // precinct
+				.append("	PartyName = pa.Name,") // party
+				.append("	v.AffiliatedDate,")
+
+				.append("	v.RegistrationDate,") //
+				.append("	v.EffectiveDate,") //
+				.append("	v.VoterStatusActive,") //
+				.append("	v.VoterStatusReason,") //
+
+				.append("	v.ResidentialAddress, v.ResidentialCity, v.ResidentialState, v.ResidentialZip, v.ResidentialZipPlus,") //
+
+				.append("	GenderName = g.Name,") // Gender
+				.append("	v.BirthYear,") //
+				.append("	v.AgeApprox,") //
+
+				.append("	v.MailingAddress1, v.MailingAddress2, v.MailingAddress3, v.MailingCity, v.MailingState, v.MailingZip, v.MailingZipPlus, v.MailingCountry,") //
+				.append("	v.BallotAddress1, v.BallotAddress2, v.BallotAddress3, v.BallotCity, v.BallotState, v.BallotZip, v.BallotZipPlus, v.BallotCountry,") //
+
+				.append("	v.Phone,") //
+				.append("	v.PhoneUserProvided,") //
+				.append("	v.Fax,") //
+				.append("	v.Email,") //
+				.append("	v.EmailUserProvided,") //
+
+				.append(includeParticipations ? " vp.combined_participations," : " combined_participations = '',") //
+				.append(includeIssues ? " vi.combined_issues" : " combined_issues = ''") //
 		;
 
-		sc.append("	FROM all_assigned_vols v") //
-				.append("		JOIN sdsadm.std_gender g ON v.std_genderfk = g.id") //
-				.append("		JOIN wr.WR_STD_VoterStatus vs ON v.WR_STD_VoterStatusFK = vs.id") //
-				.append("		LEFT JOIN sdsadm.std_state st ON v.std_statefk = st.id") //
-				.append("		LEFT JOIN dbo.FinalOrganizationName o ON v.primaryorganizationfk = o.id") //
-				.append("		LEFT JOIN dbo.combinedinstitutions ci ON v.primaryprecinctfk = ci.id") //
-				.append("		LEFT JOIN wr.SUMM_Voter_Hours svh on v.id = svh.VoterId"); //
-		if (includeAssignments)
-			sc.append("			LEFT JOIN vol_assignments va on v.id = va.VoterId");
-		if (includeParkingStickers)
-			sc.append("		LEFT JOIN vol_parking_stickers vps on v.id = vps.VoterId");
-		if (includeUniforms)
-			sc.append("		LEFT JOIN vol_uniforms vu on v.id = vu.VoterId");
+		sc.append("	FROM all_voters v") //
+				.append("	JOIN Gender g ON v.GenderFK = g.id") //
+				.append("	JOIN Precinct p ON v.PrecinctFK = p.id") //
+				.append("	JOIN Party pa ON v.PartyFK = pa.id"); //
+		if (includeParticipations)
+			sc.append("		LEFT JOIN voter_participations vp on v.id = vp.VoterFK");
+		if (includeIssues)
+			sc.append("		LEFT JOIN voter_issues vi on v.id = vi.VoterFK");
 
 		sc.append("	WHERE 1=1");
 		appendFilterWhereClauseItems(sc);
@@ -180,46 +146,37 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 	public int[] findDemographicsTotalAndFilteredNumber(VolDemoSearchParams searchParams) {
 		SearchContext sc = new SearchContext(searchParams);
 
-		boolean includeAssignments = searchParams.displayCols.contains(ACTIVE_ASSIGNMENTS)
-				|| searchParams.displayCols.contains(SUPERVISORS);
+		boolean includeParticipations = false; // searchParams.displayCols.contains(PARTICIPATIONS);
+		boolean includeIssues = false; // searchParams.displayCols.contains(ISSUES);
 
 		sc.append("WITH");
 
 		if (searchParams.isLocal()) {
-			sc.append("			vols_at_precinct AS (") //
-					.append("		SELECT DISTINCT TOP 2000000000 va.WrVotersFK") //
-					.append("		FROM wr.VoterAssignments va") //
-					.append("		WHERE va.RootPrecinctFK = :precinctId");
-
-			if (searchParams.onlyActive())
-				sc.append(" 			AND va.IsInactive = 0");
+			sc.append("			voters_at_precinct AS (") //
+					.append("		SELECT TOP 2000000000 v.id") //
+					.append("		FROM Voter v") //
+					.append("		WHERE v.PrecinctFK = :precinctId");
 			sc //
 					.append("	), ");
 			sc.addParam("precinctId", searchParams.precinctId);
 		}
 
-		sc.append("				all_assigned_vols AS (") //
-				.append("			SELECT v.*") //
-				.append("			FROM wr.Voters v");
+		sc.append("				all_assigned_voters AS (") //
+				.append("			SELECT *") //
+				.append("			FROM Voter v");
 		if (searchParams.isLocal())
 			sc.append("					LEFT JOIN vols_at_precinct vaf ON v.id = vaf.WrVotersFK");
-		sc.append("					WHERE 1=1"); //
-		appendWhereClauseItemsForVoterRestrictions(sc);
 		sc.append("				)"); //
 
-		if (includeAssignments)
-			appendCTEForAssignments(sc);
+		if (includeParticipations)
+			appendCTEForParticipations(sc);
 
 		sc.append(" SELECT allCount = count(*), filteredCount = sum(case when (1=1");
 		appendFilterWhereClauseItems(sc);
 		sc.append(") then 1 else 0 end)") //
-				.append("	FROM all_assigned_vols v") //
-				.append("		LEFT JOIN sdsadm.std_state st ON v.std_statefk = st.id") //
-				.append("		LEFT JOIN dbo.FinalOrganizationName o ON v.primaryorganizationfk = o.id") //
-				.append("		LEFT JOIN dbo.combinedinstitutions ci ON v.primaryprecinctfk = ci.id") //
-				.append("		LEFT JOIN wr.SUMM_Voter_Hours svh on v.id = svh.VoterId"); //
-		if (includeAssignments)
-			sc.append("			LEFT JOIN vol_assignments va on v.id = va.VoterId");
+				.append("	FROM all_assigned_voters v"); //
+		if (includeParticipations)
+			sc.append("			LEFT JOIN voter_participations vp on v.id = vp.VoterFK");
 		sc.append("					WHERE 1=1"); //
 		appendWhereClauseItemsForAdvancedRestrictions(sc);
 
@@ -234,7 +191,7 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 		return new int[] { totalCount, subsetCount == null ? 0 : subsetCount.intValue() };
 	}
 
-	private void appendCTEForAssignments(SearchContext sb) {
+	private void appendCTEForParticipations(SearchContext sb) {
 		sb.append("				,vol_assignments AS (") //
 				.append("			SELECT VoterId = v.Id") //
 				.append("				,combined_assignments = STUFF((") //
@@ -252,24 +209,7 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 				.append("		)");
 	}
 
-	public void includeCTEForUniforms(SearchContext sb) {
-		sb.append("				,vol_uniforms AS (") //
-				.append("			SELECT VoterId = v.Id") //
-				.append("				,combined_uniforms = STUFF((") //
-				.append("					SELECT CONCAT(';', ss.SizeName, '|', u.NumberOfShirts)") //
-				.append("					FROM wr.Uniforms u") //
-				.append("					JOIN wr.ShirtSizes ss ON u.ShirtSizesFK = ss.id") //
-				.append("					WHERE u.WrVotersFK = v.Id"); //
-		if (sb.searchParams.isLocal())
-			sb.append("					AND u.PrecinctFK = :precinctId"); //
-		sb.append("					ORDER BY ss.SizeOrder, u.NumberOfShirts") //
-				.append("				FOR XML PATH('') ,TYPE).value('.', 'varchar(max)'), 1, 1, '')") //
-				.append("			FROM all_assigned_vols v") //
-				.append("			GROUP BY v.Id") //
-				.append("		)");
-	}
-
-	public void appendCTEForParkingStickers(SearchContext sb) {
+	public void appendCTEForIssues(SearchContext sb) {
 		sb.append("				,vol_parking_stickers AS (") //
 				.append("			SELECT VoterId = v.Id") //
 				.append("				,combined_parking_stickers = STUFF((") //
@@ -286,114 +226,103 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 				.append("		)");
 	}
 
-	private void appendWhereClauseItemsForVoterRestrictions(SearchContext sb) {
-		VolDemoSearchParams searchParams = sb.searchParams;
-
-		if (sb.searchParams.isLocal()) {
-			sb.append("				AND (") //
-					.append("			ISNULL(v.PrimaryPrecinctFK, v.OriginalPrecinctCreatedFK) = :precinctId") //
-					.append("			OR vaf.WrVotersFK IS NOT NULL)"); //
-		}
-
-		/*
-		 * If they want to include all statuses, no need to add any restrictions
-		 * - CPB
-		 */
-		if (searchParams.isIncludeActive() && searchParams.isIncludeInactive() && searchParams.isIncludeTerminated()
-				&& searchParams.isIncludeTerminatedByCause())
-			return;
-	}
-
 	private void appendWhereClauseItemsForAdvancedRestrictions(SearchContext sb) {
 		VolDemoSearchParams searchParams = sb.searchParams;
 
 		// ------------ Last Votered Options
 
-		processAdvancedOption(sb, "lastVolOptions=have, haveLastVolOption=haveLastVolLast30",
-				"DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) <= 30");
-		processAdvancedOption(sb, "lastVolOptions=have, haveLastVolOption=haveLastVolLast60",
-				"DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) <= 60");
-		processAdvancedOption(sb, "lastVolOptions=have, haveLastVolOption=haveLastVolLast90",
-				"DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) <= 90");
-		String haveLastVolAfter = searchParams.restrictions.get("haveLastVolAfter");
-		if (StringUtils.isNotBlank(haveLastVolAfter))
-			processAdvancedOption(sb, "lastVolOptions=have, haveLastVolOption=haveLastVolAfter",
-					"svh.LastVoteredDate >= :haveLastVolAfter", "haveLastVolAfter",
-					LocalDate.parse(haveLastVolAfter, DateUtil.TWO_DIGIT_DATE_ONLY_FORMAT));
-
-		processAdvancedOption(sb, "lastVolOptions=havent, haventLastVolOption=haventLastVolIn30",
-				"svh.LastVoteredDate is null or DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) >= 30");
-		processAdvancedOption(sb, "lastVolOptions=havent, haventLastVolOption=haventLastVolIn60",
-				"svh.LastVoteredDate is null or DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) >= 60");
-		processAdvancedOption(sb, "lastVolOptions=havent, haventLastVolOption=haventLastVolIn90",
-				"svh.LastVoteredDate is null or DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) >= 90");
-		processAdvancedOption(sb, "lastVolOptions=havent, haventLastVolOption=haventLastVolEver",
-				"svh.LastVoteredDate is null");
-		String haventlastVolSince = searchParams.restrictions.get("haventLastVolSince");
-		if (StringUtils.isNotBlank(haventlastVolSince))
-			processAdvancedOption(sb, "lastVolOptions=havent, haventLastVolOption=haventLastVolSince",
-					"svh.LastVoteredDate is null or svh.LastVoteredDate < :haventlastVolSince", "haventlastVolSince",
-					LocalDate.parse(haventlastVolSince, DateUtil.TWO_DIGIT_DATE_ONLY_FORMAT));
-
-		// ------------ Status Date options
-
-		String statusDateBefore = searchParams.restrictions.get("statusDateBefore");
-		if (StringUtils.isNotBlank(statusDateBefore))
-			processAdvancedOption(sb, "statusDateOptions=before", "v.StatusDate <= :statusDateBefore",
-					"statusDateBefore", LocalDate.parse(statusDateBefore, DateUtil.TWO_DIGIT_DATE_ONLY_FORMAT));
-
-		String statusDateAfter = searchParams.restrictions.get("statusDateAfter");
-		if (StringUtils.isNotBlank(statusDateAfter))
-			processAdvancedOption(sb, "statusDateOptions=after", "v.StatusDate >= :statusDateAfter", "statusDateAfter",
-					LocalDate.parse(statusDateAfter, DateUtil.TWO_DIGIT_DATE_ONLY_FORMAT));
-
-		String statusDateBetweenStart = searchParams.restrictions.get("statusDateBetweenStart");
-		String statusDateBetweenEnd = searchParams.restrictions.get("statusDateBetweenEnd");
-		if (StringUtils.isNotBlank(statusDateBetweenStart) && StringUtils.isNotBlank(statusDateBetweenEnd)) {
-			Map<String, Object> newParams = new HashMap<>();
-			newParams.put("statusDateAfter",
-					LocalDate.parse(statusDateBetweenStart, DateUtil.TWO_DIGIT_DATE_ONLY_FORMAT));
-			newParams.put("statusDateBefore",
-					LocalDate.parse(statusDateBetweenEnd, DateUtil.TWO_DIGIT_DATE_ONLY_FORMAT));
-			processAdvancedOption(sb, "statusDateOptions=between",
-					"v.StatusDate >= :statusDateAfter and v.StatusDate <= :statusDateBefore", newParams);
-		}
+		// processAdvancedOption(sb, "lastVolOptions=have,
+		// haveLastVolOption=haveLastVolLast30",
+		// "DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) <= 30");
+		// processAdvancedOption(sb, "lastVolOptions=have,
+		// haveLastVolOption=haveLastVolLast60",
+		// "DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) <= 60");
+		// processAdvancedOption(sb, "lastVolOptions=have,
+		// haveLastVolOption=haveLastVolLast90",
+		// "DATEDIFF(day, svh.LastVoteredDate, SYSDATETIME()) <= 90");
+		// String haveLastVolAfter =
+		// searchParams.restrictions.get("haveLastVolAfter");
+		// if (StringUtils.isNotBlank(haveLastVolAfter))
+		// processAdvancedOption(sb, "lastVolOptions=have,
+		// haveLastVolOption=haveLastVolAfter",
+		// "svh.LastVoteredDate >= :haveLastVolAfter", "haveLastVolAfter",
+		// LocalDate.parse(haveLastVolAfter,
+		// DateUtil.TWO_DIGIT_DATE_ONLY_FORMAT));
+		//
+		// // ------------ Status Date options
+		//
+		// String statusDateBefore =
+		// searchParams.restrictions.get("statusDateBefore");
+		// if (StringUtils.isNotBlank(statusDateBefore))
+		// processAdvancedOption(sb, "statusDateOptions=before", "v.StatusDate
+		// <= :statusDateBefore",
+		// "statusDateBefore", LocalDate.parse(statusDateBefore,
+		// DateUtil.TWO_DIGIT_DATE_ONLY_FORMAT));
+		//
+		// String statusDateAfter =
+		// searchParams.restrictions.get("statusDateAfter");
+		// if (StringUtils.isNotBlank(statusDateAfter))
+		// processAdvancedOption(sb, "statusDateOptions=after", "v.StatusDate >=
+		// :statusDateAfter", "statusDateAfter",
+		// LocalDate.parse(statusDateAfter,
+		// DateUtil.TWO_DIGIT_DATE_ONLY_FORMAT));
+		//
+		// String statusDateBetweenStart =
+		// searchParams.restrictions.get("statusDateBetweenStart");
+		// String statusDateBetweenEnd =
+		// searchParams.restrictions.get("statusDateBetweenEnd");
+		// if (StringUtils.isNotBlank(statusDateBetweenStart) &&
+		// StringUtils.isNotBlank(statusDateBetweenEnd)) {
+		// Map<String, Object> newParams = new HashMap<>();
+		// newParams.put("statusDateAfter",
+		// LocalDate.parse(statusDateBetweenStart,
+		// DateUtil.TWO_DIGIT_DATE_ONLY_FORMAT));
+		// newParams.put("statusDateBefore",
+		// LocalDate.parse(statusDateBetweenEnd,
+		// DateUtil.TWO_DIGIT_DATE_ONLY_FORMAT));
+		// processAdvancedOption(sb, "statusDateOptions=between",
+		// "v.StatusDate >= :statusDateAfter and v.StatusDate <=
+		// :statusDateBefore", newParams);
+		// }
 
 	}
 
-	private void processAdvancedOption(SearchContext sb, String nameValCSVs, String whereClauseItem) {
-		processAdvancedOption(sb, nameValCSVs, whereClauseItem, null);
-	}
+	// private void processAdvancedOption(SearchContext sb, String nameValCSVs,
+	// String whereClauseItem) {
+	// processAdvancedOption(sb, nameValCSVs, whereClauseItem, null);
+	// }
+	//
+	// private void processAdvancedOption(SearchContext sb, String nameValCSVs,
+	// String whereClauseItem, String paramName,
+	// Object paramValue) {
+	// Map<String, Object> paramsToAdd = new HashMap<>();
+	// if (paramName != null)
+	// paramsToAdd.put(paramName, paramValue);
+	// processAdvancedOption(sb, nameValCSVs, whereClauseItem, paramsToAdd);
+	// }
 
-	private void processAdvancedOption(SearchContext sb, String nameValCSVs, String whereClauseItem, String paramName,
-			Object paramValue) {
-		Map<String, Object> paramsToAdd = new HashMap<>();
-		if (paramName != null)
-			paramsToAdd.put(paramName, paramValue);
-		processAdvancedOption(sb, nameValCSVs, whereClauseItem, paramsToAdd);
-	}
-
-	private void processAdvancedOption(SearchContext sb, String nameValCSVs, String whereClauseItem,
-			Map<String, Object> newParams) {
-		Map<String, String> rMap = sb.searchParams.restrictions;
-
-		String[] tokens = nameValCSVs.split(",");
-		for (String t : tokens) {
-			String[] nameVal = t.split("=");
-			if (!nameVal[1].trim().equals(rMap.get(nameVal[0].trim())))
-				return;
-		}
-
-		sb.append(" AND (").append(whereClauseItem).append(")");
-		if (newParams != null)
-			sb.params.putAll(newParams);
-	}
+	// private void processAdvancedOption(SearchContext sb, String nameValCSVs,
+	// String whereClauseItem,
+	// Map<String, Object> newParams) {
+	// Map<String, String> rMap = sb.searchParams.restrictions;
+	//
+	// String[] tokens = nameValCSVs.split(",");
+	// for (String t : tokens) {
+	// String[] nameVal = t.split("=");
+	// if (!nameVal[1].trim().equals(rMap.get(nameVal[0].trim())))
+	// return;
+	// }
+	//
+	// sb.append(" AND (").append(whereClauseItem).append(")");
+	// if (newParams != null)
+	// sb.params.putAll(newParams);
+	// }
 
 	private void appendFilterWhereClauseItems(SearchContext sb) {
 		VolDemoSearchParams searchParams = sb.searchParams;
 
-		boolean includeAssignments = searchParams.displayCols.contains(ACTIVE_ASSIGNMENTS)
-				|| searchParams.displayCols.contains(SUPERVISORS);
+		boolean includeParticipations = false; // searchParams.displayCols.contains(PARTICIPATIONS);
+		boolean includeIssues = false; // searchParams.displayCols.contains(ISSUES);
 
 		List<String> whereClauseItems = new ArrayList<>();
 		String searchValue = searchParams.searchValue;
@@ -401,9 +330,11 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 		if (StringUtils.isNotBlank(searchValue)) {
 			searchValue = searchValue.replaceAll("[^\\p{Print}]", "");
 			String[] tokens = searchValue.split("\\s");
+
 			for (int i = 0; i < tokens.length; i++) {
 				if (StringUtils.isBlank(tokens[i]))
 					continue;
+
 				whereClauseItems.add("(" //
 						+ "    v.lastName like :search" + i //
 						+ " or v.firstName like :search" + i //
@@ -419,7 +350,7 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 						+ " or ci.nameofinstitution like :search" + i //
 						+ " or ci.stationnumber like :search" + i //
 						+ " or o.OrganizationName like :search" + i //
-						+ (includeAssignments ? " or va.combined_assignments like :search" + i : "") //
+						+ (includeParticipations ? " or vp.combined_participations like :search" + i : "") //
 						+ ")");
 				sb.addParam("search" + i, "%" + tokens[i] + "%");
 			}
@@ -432,72 +363,58 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 			 * all the where clause table references below have to exist in both
 			 * the main query and the totalAndFilteredNumber query - CPB
 			 */
-			if (colIndex == VolDemoColumn.DOB) {
-				// Birth month
-				whereClauseItems.add("DATEPART(month, v.DateOfBirth) = :monthIndex");
-				sb.addParam("monthIndex", filterText);
-			} else if (colIndex == VolDemoColumn.AGE_GROUP) {
-				// Age Group
-				whereClauseItems.add("v.IsYouth = :isYouth");
-				sb.addParam("isYouth", "Adult".equalsIgnoreCase(filterText) ? "0" : "1");
-			} else if (colIndex == VolDemoColumn.GENDER) {
-				// Gender
-				whereClauseItems.add("v.std_genderfk = :genderId");
-				sb.addParam("genderId", filterText);
-			} else if (colIndex == VolDemoColumn.ENTRY_DATE) {
-				String[] tokens = filterText.split("/", -1);
-				if (!"".equals(tokens[0])) {
-					whereClauseItems.add("DATEPART(month, v.EntryDate) = :entryDateMonthIndex");
-					sb.addParam("entryDateMonthIndex", tokens[0]);
-				}
-				if (!"".equals(tokens[1])) {
-					whereClauseItems.add("DATEPART(year, v.EntryDate) = :entryDateYearIndex");
-					sb.addParam("entryDateYearIndex", tokens[1]);
-				}
-			} else if (colIndex == VolDemoColumn.STATE) {
-				// State
-				whereClauseItems.add("st.id = :stateId");
-				sb.addParam("stateId", filterText);
-			} else if (colIndex == VolDemoColumn.STATUS_DATE) {
-				String[] tokens = filterText.split("/", -1);
-				if (!"".equals(tokens[0])) {
-					whereClauseItems.add("DATEPART(month, v.StatusDate) = :statusDateMonthIndex");
-					sb.addParam("statusDateMonthIndex", tokens[0]);
-				}
-				if (!"".equals(tokens[1])) {
-					whereClauseItems.add("DATEPART(year, v.StatusDate) = :statusDateYearIndex");
-					sb.addParam("statusDateYearIndex", tokens[1]);
-				}
-			} else if (colIndex == VolDemoColumn.PRIMARY_PRECINCT) {
-				// Primary Precinct - mine vs others
-				if ("mine".equals(filterText)) {
-					whereClauseItems.add("ci.id = :workingPrecinctId");
-					sb.addParam("workingPrecinctId", searchParams.workingPrecinctId);
-				} else if ("others".equals(filterText)) {
-					whereClauseItems.add("(ci.id is null or ci.id <> :workingPrecinctId)");
-					sb.addParam("workingPrecinctId", searchParams.workingPrecinctId);
-				}
-			} else if (colIndex == VolDemoColumn.LAST_VOTERED_DATE) {
-				String[] tokens = filterText.split("/", -1);
-				if (!"".equals(tokens[0])) {
-					whereClauseItems.add("DATEPART(month, svh.LastVoteredDate) = :lastVoteredDateMonthIndex");
-					sb.addParam("lastVoteredDateMonthIndex", tokens[0]);
-				}
-				if (!"".equals(tokens[1])) {
-					whereClauseItems.add("DATEPART(year, svh.LastVoteredDate) = :lastVoteredDateYearIndex");
-					sb.addParam("lastVoteredDateYearIndex", tokens[1]);
-				}
-			} else if (colIndex == VolDemoColumn.DATE_LAST_AWARD) {
-				String[] tokens = filterText.split("/", -1);
-				if (!"".equals(tokens[0])) {
-					whereClauseItems.add("DATEPART(month, v.DateLastAward) = :dateLastAwardMonthIndex");
-					sb.addParam("dateLastAwardMonthIndex", tokens[0]);
-				}
-				if (!"".equals(tokens[1])) {
-					whereClauseItems.add("DATEPART(year, v.DateLastAward) = :dateLastAwardYearIndex");
-					sb.addParam("dateLastAwardYearIndex", tokens[1]);
-				}
-			}
+			// if (colIndex == VolDemoColumn.DOB) {
+			// // Birth month
+			// whereClauseItems.add("DATEPART(month, v.DateOfBirth) =
+			// :monthIndex");
+			// sb.addParam("monthIndex", filterText);
+			// } else if (colIndex == VolDemoColumn.AGE_GROUP) {
+			// // Age Group
+			// whereClauseItems.add("v.IsYouth = :isYouth");
+			// sb.addParam("isYouth", "Adult".equalsIgnoreCase(filterText) ? "0"
+			// : "1");
+			// } else if (colIndex == VolDemoColumn.GENDER) {
+			// // Gender
+			// whereClauseItems.add("v.std_genderfk = :genderId");
+			// sb.addParam("genderId", filterText);
+			// } else if (colIndex == VolDemoColumn.ENTRY_DATE) {
+			// String[] tokens = filterText.split("/", -1);
+			// if (!"".equals(tokens[0])) {
+			// whereClauseItems.add("DATEPART(month, v.EntryDate) =
+			// :entryDateMonthIndex");
+			// sb.addParam("entryDateMonthIndex", tokens[0]);
+			// }
+			// if (!"".equals(tokens[1])) {
+			// whereClauseItems.add("DATEPART(year, v.EntryDate) =
+			// :entryDateYearIndex");
+			// sb.addParam("entryDateYearIndex", tokens[1]);
+			// }
+			// } else if (colIndex == VolDemoColumn.STATE) {
+			// // State
+			// whereClauseItems.add("st.id = :stateId");
+			// sb.addParam("stateId", filterText);
+			// } else if (colIndex == VolDemoColumn.STATUS_DATE) {
+			// String[] tokens = filterText.split("/", -1);
+			// if (!"".equals(tokens[0])) {
+			// whereClauseItems.add("DATEPART(month, v.StatusDate) =
+			// :statusDateMonthIndex");
+			// sb.addParam("statusDateMonthIndex", tokens[0]);
+			// }
+			// if (!"".equals(tokens[1])) {
+			// whereClauseItems.add("DATEPART(year, v.StatusDate) =
+			// :statusDateYearIndex");
+			// sb.addParam("statusDateYearIndex", tokens[1]);
+			// }
+			// } else if (colIndex == VolDemoColumn.PRIMARY_PRECINCT) {
+			// if ("mine".equals(filterText)) {
+			// whereClauseItems.add("ci.id = :workingPrecinctId");
+			// sb.addParam("workingPrecinctId", searchParams.workingPrecinctId);
+			// } else if ("others".equals(filterText)) {
+			// whereClauseItems.add("(ci.id is null or ci.id <>
+			// :workingPrecinctId)");
+			// sb.addParam("workingPrecinctId", searchParams.workingPrecinctId);
+			// }
+			// }
 		}
 
 		if (!whereClauseItems.isEmpty())
@@ -512,102 +429,90 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 															// checkbox column
 				"v.LastName" + orderDir + ", v.FirstName" + orderDir + ", v.MiddleName" + orderDir + ", v.NameSuffix"
 						+ orderDir, //
-				"v.DateOfBirth" + orderDir, //
-				"v.Age" + orderDir, //
-				"v.IsYouth" + orderDir, //
+				"v.VoterId" + orderDir, //
+				"p.Name" + orderDir, //
+				"pa.Name" + orderDir, //
+				"v.AffiliatedDate" + orderDir, //
+				"v.RegistrationDate" + orderDir, //
+				"v.EffectiveDate" + orderDir, //
+				"v.VoterStatusActive" + orderDir, //
+				"v.VoterStatusReason" + orderDir, //
+				"ISNULL(v.ResidentialAddress, '')" + orderDir + ", ISNULL(v.ResidentialCity, '')" + orderDir, //
+				"ISNULL(v.ResidentialAddress, '')" + orderDir, //
+				"ISNULL(v.ResidentialCity, '')" + orderDir, //
+				"ISNULL(v.ResidentialState, '')" + orderDir, //
+				"ISNULL(v.ResidentialZip, '')" + orderDir + ", ISNULL(v.ResidentialZipPlus, '')", //
 				"g.Name" + orderDir, //
-				"v.IdentifyingCode" + orderDir, //
-				"v.EntryDate" + orderDir, //
-				"ISNULL(v.StreetAddress1, '')" + orderDir + ", ISNULL(v.StreetAddress2, '')" + orderDir
-						+ ", ISNULL(v.City, '')" + orderDir, //
-				"ISNULL(v.StreetAddress1, '')" + orderDir + ", ISNULL(v.StreetAddress2, '')" + orderDir, //
-				"ISNULL(v.City, '')" + orderDir, //
-				"ISNULL(v.StateName, '')" + orderDir, //
-				"ISNULL(v.ZipCode, '')" + orderDir, //
-				"vps.combined_parking_stickers" + orderDir, //
-				"vu.combined_uniforms" + orderDir, //
-				"ISNULL(v.Telephone, '')" + orderDir + ", ISNULL(v.AlternateTelephone, '')" + orderDir
-						+ ", ISNULL(v.AlternateTelephone2, '')" + orderDir, //
-				"ISNULL(v.Telephone, '')" + orderDir, //
-				"ISNULL(v.AlternateTelephone, '')" + orderDir, //
-				"ISNULL(v.AlternateTelephone2, '')" + orderDir, //
-				"ISNULL(v.EmailAddress, '')" + orderDir, //
-				"ISNULL(v.EmergencyContactName, '')" + orderDir + ", ISNULL(v.EmergencyContactRelationship, '')"
-						+ orderDir, //
-				"vs.Name" + orderDir, //
-				"v.StatusDate" + orderDir, //
-				"ci.nameofinstitution" + orderDir, //
-				"va.combined_assignments" + orderDir, //
-				"STUFF(va.combined_assignments, 1, CHARINDEX('|', va.combined_assignments), '')" + orderDir, //
-				"svh.LastVoteredDate" + orderDir, //
-				"o.OrganizationName" + orderDir, //
-				"svh.CurrentYearHours" + orderDir, //
-				"svh.PriorYearHours" + orderDir, //
-				"svh.TotalAdjustedHours" + orderDir, //
-				"svh.TotalHours" + orderDir, //
-				"TotalDonations" + orderDir, //
-				"v.HoursLastAward" + orderDir, //
-				"v.DateLastAward" + orderDir, //
+				"v.BirthYear" + orderDir, //
+				"v.AgeApprox" + orderDir, //
+				"v.MailingAddress1" + orderDir + ", v.MailingAddress2" + orderDir + ", v.MailingAddress3" + orderDir
+						+ ", v.MailingCity" + orderDir + ", st.MailingState" + orderDir + ", v.MailingZip" + orderDir
+						+ ", v.MailingZipPlus" + orderDir + ", v.MailingCountry" + orderDir, //
+				"v.BallotAddress1" + orderDir + ", v.BallotAddress2" + orderDir + ", v.BallotAddress3" + orderDir
+						+ ", v.BallotCity" + orderDir + ", st.BallotState" + orderDir + ", v.BallotZip" + orderDir
+						+ ", v.BallotZipPlus" + orderDir + ", v.BallotCountry" + orderDir, //
+				"ISNULL(v.PhoneUserProvided, v.Phone), v.Fax, ISNULL(v.EmailUserProvided, v.Email)", //
+				"ISNULL(v.PhoneUserProvided, v.Phone)", //
+				"v.Fax", //
+				"ISNULL(v.EmailUserProvided, v.Email)", //
 		};
 		return orderByCols;
 	}
 
 	private VoterDemographics buildFromRow(Object[] row) {
 		int index = 0;
-		long id = ((Number) row[index++]).longValue();
-		String identifyingCode = (String) row[index++];
-		String lastName = (String) row[index++];
-		String firstName = (String) row[index++];
-		String middleName = (String) row[index++];
-		String nameSuffix = (String) row[index++];
-		String nickname = (String) row[index++];
-		LocalDate birthDate = ((Timestamp) row[index++]).toLocalDateTime().toLocalDate();
-		int age = ((Number) row[index++]).intValue();
-		boolean youth = 1 == ((Integer) row[index++]);
-		String gender = (String) row[index++];
-		String status = (String) row[index++];
-		LocalDate statusDate = DateUtil.asLocalDate((Date) row[index++]);
-		String streetAddress1 = (String) row[index++];
-		String streetAddress2 = (String) row[index++];
-		String city = (String) row[index++];
-		String state = (String) row[index++];
-		// possibly null so we don't convert until below
-		Number stateId = (Number) row[index++];
-		String zip = (String) row[index++];
-		String combinedParkingStickers = (String) row[index++];
-		String combinedUniforms = (String) row[index++];
-		String phone = (String) row[index++];
-		String altPhone = (String) row[index++];
-		String altPhone2 = (String) row[index++];
-		String email = (String) row[index++];
-		String emerContactName = (String) row[index++];
-		String emerContactRelationship = (String) row[index++];
-		String emerContactPhone = (String) row[index++];
-		String emerContactAltPhone = (String) row[index++];
-		// possibly null so we don't convert until below
-		Number primaryPrecinctId = (Number) row[index++];
-		String primaryPrecinctName = (String) row[index++];
-		LocalDate entryDate = DateUtil.asLocalDate((Date) row[index++]);
-		String combinedAssignments = (String) row[index++];
-		// possibly null so we don't convert until below
-		LocalDate lastVoteredDate = DateUtil.asLocalDate((Date) row[index++]);
-		// possibly null so we don't convert until below
-		Number currentYearHours = (Number) row[index++];
-		// possibly null so we don't convert until below
-		Number priorHours = (Number) row[index++];
-		// possibly null so we don't convert until below
-		Number adjustedHours = (Number) row[index++];
-		// possibly null so we don't convert until below
-		Number totalHours = (Number) row[index++];
-		BigDecimal totalDonations = new BigDecimal(((Number) row[index++]).toString());
-		// possibly null so we don't convert until below
-		Number hoursLastAward = (Number) row[index++];
-		// possibly null so we don't convert until below
-		LocalDate dateLastAward = DateUtil.asLocalDate((Date) row[index++]);
-		String primaryOrganization = (String) row[index++];
 
 		VoterDemographics vd = new VoterDemographics();
-		// TODO BOCOGOP
+		vd.setId(((Number) row[index++]).longValue());
+
+		vd.setLastName((String) row[index++]);
+		vd.setFirstName((String) row[index++]);
+		vd.setMiddleName((String) row[index++]);
+		vd.setSuffix((String) row[index++]);
+		vd.setNickname((String) row[index++]);
+		vd.setVoterId((String) row[index++]);
+		vd.setPrecinct((String) row[index++]);
+		vd.setParty((String) row[index++]);
+		vd.setAffiliatedDate(DateUtil.asLocalDate((Date) row[index++]));
+		vd.setRegistrationDate(DateUtil.asLocalDate((Date) row[index++]));
+		vd.setEffectiveDate(DateUtil.asLocalDate((Date) row[index++]));
+		vd.setStatusActive((Boolean) row[index++]);
+		vd.setStatusReason((String) row[index++]);
+
+		vd.setAddress((String) row[index++]);
+		vd.setCity((String) row[index++]);
+		vd.setState((String) row[index++]);
+		vd.setZip((String) row[index++]);
+		vd.setZipPlus((String) row[index++]);
+
+		vd.setGender((String) row[index++]);
+		vd.setBirthYear(((Integer) row[index++]));
+		vd.setAgeApprox(((Integer) row[index++]));
+
+		vd.setMailingAddress1((String) row[index++]);
+		vd.setMailingAddress2((String) row[index++]);
+		vd.setMailingAddress3((String) row[index++]);
+		vd.setMailingCity((String) row[index++]);
+		vd.setMailingState((String) row[index++]);
+		vd.setMailingZip((String) row[index++]);
+		vd.setMailingZipPlus((String) row[index++]);
+		vd.setMailingCountry((String) row[index++]);
+
+		vd.setBallotAddress1((String) row[index++]);
+		vd.setBallotAddress2((String) row[index++]);
+		vd.setBallotAddress3((String) row[index++]);
+		vd.setBallotCity((String) row[index++]);
+		vd.setBallotState((String) row[index++]);
+		vd.setBallotZip((String) row[index++]);
+		vd.setBallotZipPlus((String) row[index++]);
+		vd.setBallotCountry((String) row[index++]);
+
+		vd.setPhone((String) row[index++]);
+		vd.setUserProvidedPhone((String) row[index++]);
+		vd.setFax((String) row[index++]);
+		vd.setEmail((String) row[index++]);
+		vd.setUserProvidedEmail((String) row[index++]);
+
 		return vd;
 	}
 

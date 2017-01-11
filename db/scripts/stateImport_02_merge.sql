@@ -1,19 +1,19 @@
-update [dbo].[stg_20170109T2306_VR011_20170109] set VOTER_ID = SUBSTRING(VOTER_ID, 2, LEN(VOTER_ID))
+update [dbo].[$(TableName)] set VOTER_ID = SUBSTRING(VOTER_ID, 2, LEN(VOTER_ID))
 where LEFT(VOTER_ID, 1) = '"'
 GO
-update [dbo].[stg_20170109T2306_VR011_20170109] set SSN = null
+update [dbo].[$(TableName)] set SSN = null
 where SSN is not null
 	and LTRIM(RTRIM(SSN)) = ''
 GO
-update [dbo].[stg_20170109T2306_VR011_20170109] set PHONE_NUM = null
+update [dbo].[$(TableName)] set PHONE_NUM = null
 where PHONE_NUM is not null
 	and LTRIM(RTRIM(PHONE_NUM)) = ''
 GO
-update [dbo].[stg_20170109T2306_VR011_20170109] set FAX = null
+update [dbo].[$(TableName)] set FAX = null
 where FAX is not null
 	and LTRIM(RTRIM(FAX)) = ''
 GO
-update [dbo].[stg_20170109T2306_VR011_20170109] set EMAIL = null
+update [dbo].[$(TableName)] set EMAIL = null
 where EMAIL is not null
 	and LTRIM(RTRIM(EMAIL)) = ''
 GO
@@ -21,7 +21,7 @@ GO
 -- populate any new precincts
 insert into dbo.Precinct(Code, Name)
 select distinct n.PRECINCT_CODE, n.PRECINCT_NAME
-from [dbo].[stg_20170109T2306_VR011_20170109] n
+from [dbo].[$(TableName)] n
 where n.PRECINCT_CODE not in (
 	select Code from dbo.Precinct
 )
@@ -30,7 +30,7 @@ GO
 -- populate any new parties
 insert into dbo.Party(Code, Name)
 select distinct n.PARTY, 'UnknownNewName'
-from [dbo].[stg_20170109T2306_VR011_20170109] n
+from [dbo].[$(TableName)] n
 where n.Party not in (
 	select Code from dbo.Party
 )
@@ -39,7 +39,7 @@ GO
 -- populate any new genders
 insert into dbo.Gender(Code, Name)
 select distinct '?', n.GENDER
-from [dbo].[stg_20170109T2306_VR011_20170109] n
+from [dbo].[$(TableName)] n
 where n.GENDER not in (
 	select Name from dbo.Gender
 )
@@ -51,7 +51,7 @@ USING (
 		,PartyFK = p.id
 		,GenderFK = g.id
 		,PrecinctFK = pr.id
-	from [dbo].[stg_20170109T2306_VR011_20170109] s
+	from [dbo].[$(TableName)] s
 		left join dbo.Party p on s.PARTY = p.Code
 		left join dbo.Gender g on s.GENDER = g.Name
 		left join dbo.Precinct pr on s.PRECINCT_CODE = pr.Code
@@ -180,7 +180,7 @@ WHEN NOT MATCHED BY TARGET THEN
       ,dbo.MixedCase(s.MIDDLE_NAME)
       ,dbo.MixedCase(s.LAST_NAME)
       ,dbo.MixedCase(s.NAME_SUFFIX)
-	  ,dbo.MixedCase(s.FIRST_NAME)
+	  ,null
       ,s.DRIVERS_LICENSE
       ,s.SSN
       ,CONVERT(date, s.REGISTRATION_DATE, 101)

@@ -4,7 +4,7 @@
 	colDefs.push({
 		"targets" : colDefs.length,
 		"data" : function(row, type, val, meta) {
-			return defaultStr(row.entryDate)
+			return defaultStr(row.registrationDate)
 		}
 	})
 </script>

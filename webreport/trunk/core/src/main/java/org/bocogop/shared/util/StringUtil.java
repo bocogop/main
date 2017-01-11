@@ -159,6 +159,8 @@ public class StringUtil {
 		if (!hasLast && !hasFirst)
 			return "(unknown)";
 
+		boolean hasMiddle = StringUtils.isNotEmpty(middleName);
+
 		StringBuilder sb = new StringBuilder();
 		if (lastFirst) {
 			if (hasLast)
@@ -169,12 +171,12 @@ public class StringUtil {
 				sb.append(", ");
 			if (hasFirst)
 				sb.append(firstName);
-			if (StringUtils.isNotEmpty(middleName))
+			if (hasMiddle)
 				sb.append(" ").append(middleName);
 		} else {
 			if (hasFirst)
 				sb.append(firstName);
-			if (StringUtils.isNotEmpty(middleName))
+			if (hasMiddle)
 				sb.append(" ").append(middleName);
 			if (hasFirst && hasLast)
 				sb.append(" ");
@@ -187,7 +189,7 @@ public class StringUtil {
 	}
 
 	public static String getAddressDisplay(String addressLine1, String addressLine2, String addressLine3, String city,
-			String state, String zip, String separator) {
+			String state, String zip, String country, String separator) {
 		List<String> items = new ArrayList<>(7);
 		if (StringUtils.isNotBlank(addressLine1))
 			items.add(addressLine1);
@@ -209,6 +211,8 @@ public class StringUtil {
 		}
 		if (StringUtils.isNotBlank(zip))
 			items.add(zip);
+		if (StringUtils.isNotBlank(country))
+			items.add(country);
 		return items.isEmpty() ? "" : StringUtils.join(items, separator);
 	}
 

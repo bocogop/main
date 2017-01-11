@@ -19,11 +19,14 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bocogop.shared.model.AbstractAuditedVersionedPersistent;
 import org.bocogop.shared.model.lookup.Gender;
+import org.bocogop.shared.model.lookup.Party;
+import org.bocogop.shared.model.precinct.Precinct;
 import org.bocogop.shared.model.voter.Voter.VoterView;
 import org.bocogop.shared.util.StringUtil;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @MappedSuperclass
@@ -33,17 +36,17 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	private static final long serialVersionUID = 3222064615857480112L;
 
 	public static String getDisplayName(String firstName, String middleName, String lastName, String suffix,
-			boolean lastFirst) {
-		return WordUtils.capitalizeFully(StringUtil.getDisplayName(lastFirst, firstName, middleName, lastName, suffix));
+			String nickname, boolean lastFirst) {
+		return WordUtils.capitalizeFully(StringUtil.getDisplayName(lastFirst, firstName, middleName, lastName, suffix)
+				+ (StringUtils.isNotBlank(nickname) ? " (\"" + nickname + "\")" : ""));
 	}
 
-	public static String getDisplayName(String firstName, String middleName, String lastName, String suffix) {
-		return getDisplayName(firstName, middleName, lastName, suffix, true);
+	public static String getDisplayName(String firstName, String middleName, String lastName, String suffix,
+			String nickname) {
+		return getDisplayName(firstName, middleName, lastName, suffix, nickname, true);
 	}
 
 	// -------------------------------------- Fields
-
-	private String voterId;
 
 	@NotBlank
 	private String firstName;
@@ -51,35 +54,25 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	@NotBlank
 	private String lastName;
 	private String suffix;
-	private Gender gender;
 	private String nickname;
 
-	private String driversLicense;
-	private String ssn;
+	private String voterId;
+
+	private LocalDate affiliatedDate;
 
 	private LocalDate registrationDate;
 	private LocalDate effectiveDate;
+	private Boolean statusActive;
+	private String statusReason;
 
-	private String phone;
-	private String userProvidedPhone;
-
-	private String fax;
-	private String email;
-	private String userProvidedEmail;
-
-	private String houseNumber;
-	private String houseSuffix;
-	private String preDirection;
-	private String streetName;
-	private String streetType;
-	private String postDirection;
-	private String unitType;
-	private String unitNumber;
 	private String address;
 	private String city;
 	private String state;
 	private String zip;
 	private String zipPlus;
+
+	private Integer birthYear;
+	private Integer ageApprox;
 
 	private String mailingAddress1;
 	private String mailingAddress2;
@@ -99,14 +92,11 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	private String ballotZipPlus;
 	private String ballotCountry;
 
-	private Boolean statusActive;
-	private String statusReason;
-
-	private LocalDate affiliatedDate;
-	private Boolean idRequired;
-	private Integer birthYear;
-	private Boolean uocava;
-	private String issueMethod;
+	private String phone;
+	private String userProvidedPhone;
+	private String fax;
+	private String email;
+	private String userProvidedEmail;
 
 	// -------------------------------------- Constructors
 
@@ -124,12 +114,11 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 
 	@Transient
 	public String getDisplayName(boolean lastFirst) {
-		return getDisplayName(firstName, middleName, lastName, suffix, lastFirst);
+		return getDisplayName(firstName, middleName, lastName, suffix, nickname, lastFirst);
 	}
 
 	@Transient
-	@JsonView({ VoterView.Basic.class, //
-	})
+	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
 	public String getDisplayName() {
 		return getDisplayName(true);
 	}
@@ -137,22 +126,52 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	@Transient
 	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
 	public String getAddressMultilineDisplay() {
-		return StringUtil.getAddressDisplay(getAddress(), null, null, getCity(), getState(), getZip(), "\n");
+		return StringUtil.getAddressDisplay(getAddress(), null, null, getCity(), getState(), getZip(), null, "\n");
 	}
 
 	@Transient
+	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
+	public String getFullMailingAddressMultilineDisplay() {
+		return StringUtil.getAddressDisplay(getMailingAddress1(), getMailingAddress2(), getMailingAddress3(),
+				getMailingCity(), getMailingState(), getFullMailingZip(), getMailingCountry(), "\n");
+	}
+
+	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
+	@Transient
+	public String getFullBallotAddressMultilineDisplay() {
+		return StringUtil.getAddressDisplay(getBallotAddress1(), getBallotAddress2(), getBallotAddress3(),
+				getBallotCity(), getBallotState(), getFullBallotZip(), getBallotCountry(), "\n");
+	}
+
+	@Transient
+	@JsonView({ VoterView.Demographics.class })
+	public String getFullZip() {
+		return StringUtils.isNotBlank(getZipPlus()) ? getZip() + "-" + getZipPlus() : getZip();
+	}
+
+	@Transient
+	@JsonView({ VoterView.Demographics.class })
+	public String getFullMailingZip() {
+		return StringUtils.isNotBlank(getMailingZipPlus()) ? getMailingZip() + "-" + getMailingZipPlus()
+				: getMailingZip();
+	}
+
+	@Transient
+	@JsonView({ VoterView.Demographics.class })
+	public String getFullBallotZip() {
+		return StringUtils.isNotBlank(getBallotZipPlus()) ? getBallotZip() + "-" + getBallotZipPlus() : getBallotZip();
+	}
+
+	@Transient
+	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
 	public String getFinalPhone() {
 		return StringUtils.isNotBlank(getUserProvidedPhone()) ? getUserProvidedPhone() : getPhone();
 	}
-	
+
 	@Transient
+	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
 	public String getFinalEmail() {
 		return StringUtils.isNotBlank(getUserProvidedEmail()) ? getUserProvidedEmail() : getEmail();
-	}
-	
-	@Transient
-	public String getFinalZip() {
-		return StringUtils.isNotBlank(getZipPlus()) ? getZip() + "-" + getZipPlus() : getZip();
 	}
 
 	// -------------------------------------- Common Methods
@@ -280,24 +299,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.voterId = voterId;
 	}
 
-	@Column(length = 30)
-	public String getDriversLicense() {
-		return driversLicense;
-	}
-
-	public void setDriversLicense(String driversLicense) {
-		this.driversLicense = driversLicense;
-	}
-
-	@Column(length = 9)
-	public String getSsn() {
-		return ssn;
-	}
-
-	public void setSsn(String ssn) {
-		this.ssn = ssn;
-	}
-
+	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	public LocalDate getRegistrationDate() {
 		return registrationDate;
 	}
@@ -306,6 +308,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.registrationDate = registrationDate;
 	}
 
+	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	public LocalDate getEffectiveDate() {
 		return effectiveDate;
 	}
@@ -314,79 +317,8 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.effectiveDate = effectiveDate;
 	}
 
-	@Column(length = 10)
-	public String getHouseNumber() {
-		return houseNumber;
-	}
-
-	public void setHouseNumber(String houseNumber) {
-		this.houseNumber = houseNumber;
-	}
-
-	@Column(length = 20)
-	public String getHouseSuffix() {
-		return houseSuffix;
-	}
-
-	public void setHouseSuffix(String houseSuffix) {
-		this.houseSuffix = houseSuffix;
-	}
-
-	@Column(length = 5)
-	public String getPreDirection() {
-		return preDirection;
-	}
-
-	public void setPreDirection(String preDirection) {
-		this.preDirection = preDirection;
-	}
-
-	@Column(length = 255)
-	public String getStreetName() {
-		return streetName;
-	}
-
-	public void setStreetName(String streetName) {
-		this.streetName = streetName;
-	}
-
-	@Column(length = 10)
-	public String getStreetType() {
-		return streetType;
-	}
-
-	public void setStreetType(String streetType) {
-		this.streetType = streetType;
-	}
-
-	@Column(length = 255)
-	public String getPostDirection() {
-		return postDirection;
-	}
-
-	public void setPostDirection(String postDirection) {
-		this.postDirection = postDirection;
-	}
-
-	@Column(length = 20)
-	public String getUnitType() {
-		return unitType;
-	}
-
-	public void setUnitType(String unitType) {
-		this.unitType = unitType;
-	}
-
-	@Column(length = 15)
-	public String getUnitNumber() {
-		return unitNumber;
-	}
-
-	public void setUnitNumber(String unitNumber) {
-		this.unitNumber = unitNumber;
-	}
-
 	@Column(name = "ResidentialZipPlus", length = 20)
+	@JsonIgnore
 	public String getZipPlus() {
 		return zipPlus;
 	}
@@ -396,6 +328,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 255)
+	@JsonIgnore
 	public String getMailingAddress1() {
 		return mailingAddress1;
 	}
@@ -405,6 +338,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 255)
+	@JsonIgnore
 	public String getMailingAddress2() {
 		return mailingAddress2;
 	}
@@ -414,6 +348,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 255)
+	@JsonIgnore
 	public String getMailingAddress3() {
 		return mailingAddress3;
 	}
@@ -423,6 +358,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 255)
+	@JsonIgnore
 	public String getMailingCity() {
 		return mailingCity;
 	}
@@ -432,6 +368,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 2)
+	@JsonIgnore
 	public String getMailingState() {
 		return mailingState;
 	}
@@ -441,6 +378,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 15)
+	@JsonIgnore
 	public String getMailingZip() {
 		return mailingZip;
 	}
@@ -450,6 +388,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 20)
+	@JsonIgnore
 	public String getMailingZipPlus() {
 		return mailingZipPlus;
 	}
@@ -459,6 +398,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 100)
+	@JsonIgnore
 	public String getMailingCountry() {
 		return mailingCountry;
 	}
@@ -468,6 +408,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 255)
+	@JsonIgnore
 	public String getBallotAddress1() {
 		return ballotAddress1;
 	}
@@ -477,6 +418,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 255)
+	@JsonIgnore
 	public String getBallotAddress2() {
 		return ballotAddress2;
 	}
@@ -486,6 +428,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 255)
+	@JsonIgnore
 	public String getBallotAddress3() {
 		return ballotAddress3;
 	}
@@ -495,6 +438,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 255)
+	@JsonIgnore
 	public String getBallotCity() {
 		return ballotCity;
 	}
@@ -504,6 +448,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 2)
+	@JsonIgnore
 	public String getBallotState() {
 		return ballotState;
 	}
@@ -513,6 +458,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 15)
+	@JsonIgnore
 	public String getBallotZip() {
 		return ballotZip;
 	}
@@ -522,6 +468,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 20)
+	@JsonIgnore
 	public String getBallotZipPlus() {
 		return ballotZipPlus;
 	}
@@ -531,6 +478,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(length = 100)
+	@JsonIgnore
 	public String getBallotCountry() {
 		return ballotCountry;
 	}
@@ -540,6 +488,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(name = "VoterStatusActive")
+	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	public Boolean getStatusActive() {
 		return statusActive;
 	}
@@ -549,6 +498,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(name = "VoterStatusReason", length = 255)
+	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	public String getStatusReason() {
 		return statusReason;
 	}
@@ -557,6 +507,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.statusReason = statusReason;
 	}
 
+	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	public LocalDate getAffiliatedDate() {
 		return affiliatedDate;
 	}
@@ -565,14 +516,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.affiliatedDate = affiliatedDate;
 	}
 
-	public Boolean getIdRequired() {
-		return idRequired;
-	}
-
-	public void setIdRequired(Boolean idRequired) {
-		this.idRequired = idRequired;
-	}
-
+	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	public Integer getBirthYear() {
 		return birthYear;
 	}
@@ -581,24 +525,8 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.birthYear = birthYear;
 	}
 
-	public Boolean getUocava() {
-		return uocava;
-	}
-
-	public void setUocava(Boolean uocava) {
-		this.uocava = uocava;
-	}
-
 	@Column(length = 255)
-	public String getIssueMethod() {
-		return issueMethod;
-	}
-
-	public void setIssueMethod(String issueMethod) {
-		this.issueMethod = issueMethod;
-	}
-
-	@Column(length = 255)
+	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	public String getFax() {
 		return fax;
 	}
@@ -608,22 +536,13 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(name = "ResidentialAddress", length = 255)
+	@JsonIgnore
 	public String getAddress() {
 		return address;
 	}
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "GenderFK")
-	public Gender getGender() {
-		return gender;
-	}
-
-	public void setGender(Gender gender) {
-		this.gender = gender;
 	}
 
 	@Column(length = 100)
@@ -637,7 +556,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(name = "PhoneUserProvided", length = 30)
-	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
+	@JsonIgnore
 	public String getUserProvidedPhone() {
 		return userProvidedPhone;
 	}
@@ -647,13 +566,22 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(name = "EmailUserProvided", length = 255)
-	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
+	@JsonIgnore
 	public String getUserProvidedEmail() {
 		return userProvidedEmail;
 	}
 
 	public void setUserProvidedEmail(String userProvidedEmail) {
 		this.userProvidedEmail = userProvidedEmail;
+	}
+
+	@Column(insertable = false, updatable = false)
+	public Integer getAgeApprox() {
+		return ageApprox;
+	}
+
+	public void setAgeApprox(Integer ageApprox) {
+		this.ageApprox = ageApprox;
 	}
 
 }

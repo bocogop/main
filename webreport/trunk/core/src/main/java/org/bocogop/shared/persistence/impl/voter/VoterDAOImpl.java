@@ -181,7 +181,7 @@ public class VoterDAOImpl extends GenericHibernateSortedDAOImpl<Voter> implement
 	public SortedSet<VoterQuickSearchResult> quickSearch(String searchValue, Long voterId, long precinctId,
 			boolean includeAssignments, boolean includeOrganizations, boolean onlyActiveAssignmentsAndOrgs) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("select v.id, v.identifyingCode, v.firstName, v.middleName, v.lastName, v.suffix, v.dateOfBirth");
+		sb.append("select v.id, v.VoterId, v.FirstName, v.MiddleName, v.LastName, v.Suffix, v.Nickname, v.BirthYear");
 		if (includeAssignments)
 			sb.append(", va.id, bs.name, bs.subdivision, bsr.name, f.id, f.name, fp.id, fp.name, va.inactive");
 		sb.append(" from ");
@@ -240,12 +240,11 @@ public class VoterDAOImpl extends GenericHibernateSortedDAOImpl<Voter> implement
 		Map<Long, VoterQuickSearchResult> m = new HashMap<>();
 		for (Object[] result : results) {
 			long id = ((Number) result[0]).longValue();
-			VoterQuickSearchResult r = m
-					.computeIfAbsent(id,
-							k -> new VoterQuickSearchResult(id,
-									String.valueOf(result[1]), Voter.getDisplayName((String) result[2],
-											(String) result[3], (String) result[4], (String) result[5]),
-									(LocalDate) result[6]));
+			VoterQuickSearchResult r = m.computeIfAbsent(id,
+					k -> new VoterQuickSearchResult(id,
+							String.valueOf(result[1]), Voter.getDisplayName((String) result[2], (String) result[3],
+									(String) result[4], (String) result[5], (String) result[6]),
+							(LocalDate) result[7]));
 
 		}
 
