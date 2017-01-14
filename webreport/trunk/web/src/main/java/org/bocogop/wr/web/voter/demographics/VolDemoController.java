@@ -72,7 +72,8 @@ public class VolDemoController extends AbstractAppController {
 			@RequestParam(name = "order[0][column]") int sortColIndex,
 			@RequestParam(name = "order[0][dir]") String sortDir,
 			// params
-			@RequestParam boolean isNational, //
+			@RequestParam boolean allMyPrecincts, //
+			@RequestParam long precinctId, //
 			@RequestParam(name = "displayColumnIndexes[]") int[] displayColumnIndexes) {
 		Map<String, Object> resultMap = new HashMap<>();
 
@@ -98,8 +99,8 @@ public class VolDemoController extends AbstractAppController {
 				.filter(p -> p.getKey().startsWith("rx")).collect(Collectors
 						.toMap(p -> StringUtils.uncapitalize(p.getKey().substring(2)), p -> p.getValue().get(0)));
 
-		VolDemoSearchParams newSearchParams = new VolDemoSearchParams(null /* TODO BOCOGOP */, filters, searchValue, sortColIndex,
-				sortAscending, restrictions, displayCols);
+		VolDemoSearchParams newSearchParams = new VolDemoSearchParams(
+				allMyPrecincts ? null : precinctId, filters, searchValue, sortColIndex, sortAscending, restrictions, displayCols);
 
 		VolDemoSearchParams lastSearchParams = (VolDemoSearchParams) session
 				.getAttribute(SESSION_ATTR_DEMOGRAPHICS_SEARCH_PARAMS);
@@ -117,12 +118,15 @@ public class VolDemoController extends AbstractAppController {
 			cacheHit = (results != null);
 		}
 
+		long appUserId = getCurrentUser().getId();
+		
 		if (!cacheHit) {
 			int maxTotalEntries = 1000;
 
 			int newFrom = Math.max(start - maxTotalEntries / 2, 0);
 			int newLength = Math.max(maxTotalEntries / 2 + length, maxTotalEntries);
-			results = voterDemographicsDAO.findDemographics(newSearchParams, newFrom, newLength);
+			results = voterDemographicsDAO.findDemographics(newSearchParams, newFrom, newLength,
+					appUserId);
 			boolean lastPage = results.size() < newLength;
 			OffsetCollection<VoterDemographics> c = new OffsetCollection<>(results, newFrom, lastPage);
 			session.setAttribute(SESSION_ATTR_DEMOGRAPHICS_RESULTS, c);
@@ -144,7 +148,7 @@ public class VolDemoController extends AbstractAppController {
 			totalAndFiltered = lastSearchParams.mostRecentCounts;
 			newSearchParams.mostRecentCounts = lastSearchParams.mostRecentCounts;
 		} else {
-			totalAndFiltered = voterDemographicsDAO.findDemographicsTotalAndFilteredNumber(newSearchParams);
+			totalAndFiltered = voterDemographicsDAO.findDemographicsTotalAndFilteredNumber(newSearchParams, appUserId);
 			newSearchParams.mostRecentCounts = totalAndFiltered;
 		}
 		session.setAttribute(SESSION_ATTR_DEMOGRAPHICS_SEARCH_PARAMS, newSearchParams);

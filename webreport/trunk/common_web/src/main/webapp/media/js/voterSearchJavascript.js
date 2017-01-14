@@ -5,43 +5,25 @@ function popupVoterSearch(uid, voterListToShow, options) {
 	options = $.extend({
 		searchFirstNameStr : '',
 		searchLastNameStr : '',
-		searchCode : '',
+		searchVoterId : '',
 		searchEmail : '',
-		searchDOB : '',
+		searchYOB : '',
 		submitButtonStr : null
 	}, options)
 	
 	// ---- Set defaults immediately
 	
-	if (mode == 'add') {
-		$('#voterSearchScopeNational' + uid).click()
-		$('input[type=radio][name="voterSearchScope' + uid + '"]').prop('disabled', true)
-		$("#voterSearchIncludeInactive" + uid).prop('checked', true)
-		$("#voterSearchIncludeInactive" + uid).prop('disabled', true)
-	} else {
-		$('#voterSearchScopeLocal' + uid).click()
-		$('#voterSearchIncludeInactive' + uid).prop('checked', false)
-	}
-	
 	$("#voterSearchFirstName" + uid).val(options.searchFirstNameStr)
 	$("#voterSearchLastName" + uid).val(options.searchLastNameStr)
-	$("#voterSearchCode" + uid).val(options.searchCode)
+	$("#voterSearchVoterId" + uid).val(options.searchCode)
 	$("#voterSearchEmail" + uid).val(options.searchEmail)
-	$("#voterSearchDOB" + uid).val(options.searchDOB)
+	$("#voterSearchYOB" + uid).val(options.searchYOB)
 	$("#voterSearchNoResults" + uid).hide()
 	$("#voterSearchResultsTable" + uid).hide()
 	
 	$('#voterSearchLastName' + uid).focus()
 	
 	$("#voterSearchDialog" + uid).dialog('open')
-	
-	// ------ customize submit button based on mode
-	
-	if (options.submitButtonStr != null) {
-		if (mode == 'duplicateCheck') {
-			$("#createOrUpdateAnywayButton" + uid).button( "option", "label", options.submitButtonStr );
-		} // else ...
-	}
 	
 	// ------ preload search results if specified; otherwise, check for previous search in session on server
 	
@@ -66,10 +48,8 @@ function initVoterSearchPopup(options) {
 	var uid = options.uid
 	var maxResults = options.maxResults
 	var callbackMethod = options.callbackMethod
-	var addButtonCallbackMethod = options.addButtonCallbackMethod
-	var showDisclaimer = options.showDisclaimer
 	
-	if (mode != 'add' && mode != 'search' && mode != 'duplicateCheck') {
+	if (mode != 'search') {
 		alert('Invalid mode for voter search popup with id "' + uid + '": ' + mode)
 		return
 	}
@@ -83,8 +63,7 @@ function initVoterSearchPopup(options) {
 						if (type === 'display') {
 							return '<a class="appLink" href="javascript:voterSearchPopupItemSelected(\''
 									+ uid + '\', ' + row.id + ')">'
-									+ voterNameEscaped + '</a><br><i>Code:</i> '
-									+ (row.identifyingCode ? escapeHTML(row.identifyingCode) : '(none)')
+									+ voterNameEscaped + '</a>'
 						} else {
 							return voterNameEscaped
 						}
@@ -93,44 +72,46 @@ function initVoterSearchPopup(options) {
 				{
 					"targets" : 1,
 					"data" : function(row, type, val, meta) {
-						var theText = escapeHTML(row.primaryPrecinct ? row.primaryPrecinct.displayName : '(Unknown)')
-						if (type === 'filter') {
-							return abbreviate(theText, 25)
-						}
+						var theText = escapeHTML(row.voterId)
 						return theText
 					}
 				},
 				{
 					"targets" : 2,
 					"data" : function(row, type, val, meta) {
-						if (type === 'display') {
-							return escapeHTML(row.dateOfBirth)
-						} else {
-							return getAsYYYYMMDD(row.dateOfBirth)
-						}
+						var theText = escapeHTML(row.precinct ? row.precinct.name : '(Unknown)')
+						return theText
 					}
 				},
 				{
 					"targets" : 3,
 					"data" : function(row, type, val, meta) {
-						return escapeHTML(row.gender.name)
+						if (type === 'display') {
+							return escapeHTML(row.birthYear) + "<br><nobr>(~" + row.ageApprox + " yrs)</nobr>"
+						} else {
+							return row.birthYear
+						}
 					}
 				},
 				{
 					"targets" : 4,
 					"data" : function(row, type, val, meta) {
-						if (type === 'sort') {
-							return (row.status.sortOrder * 100000000) + getAsYYYYMMDD(row.statusDate)
-						} else if (type === 'filter') {
-							return row.status.name
-						} else {
-							return row.status.name + (row.status.voterActive == false ? " as of " +
-									 row.statusDate : '')
-						}
+						return escapeHTML(row.gender.name)
 					}
 				},
 				{
 					"targets" : 5,
+					"data" : function(row, type, val, meta) {
+						if (type === 'filter') {
+							return row.statusActive ? 'Active' : 'Inactive'
+						} else {
+							return (row.statusActive ? 'Active' : 'Inactive') +
+								(row.statusReason ? ' (' + row.statusReason + ')' : '')
+						}
+					}
+				},
+				{
+					"targets" : 6,
 					"data" : function(row, type, val, meta) {
 						var contactInfoHtml = getVoterDashedBoxEl(row).outerHTML()
 						return contactInfoHtml
@@ -151,40 +132,26 @@ function initVoterSearchPopup(options) {
 	var theDataTable = $('#voterSearchResultsList' + uid).DataTable(parms)
 	
 	var dialogEl = $("#voterSearchDialog" + uid)
-	if (mode == 'add') {
-		dialogEl.attr('title', 'Add New Voter')
-	} else {
-		dialogEl.attr('title', 'Search for Voter')
-	}
+	dialogEl.attr('title', 'Search for Voter')
 	
 	var buttonConfig = {}
-	if (mode == 'duplicateCheck')
-		buttonConfig['Create Anyway'] = {
-			id : 'createOrUpdateAnywayButton' + uid,
-			text : 'Create Anyway',
-			click : function() {
-				$(this).dialog('close')
-				addButtonCallbackMethod()
-			}
-		}
 	buttonConfig['Cancel'] = function() { $(this).dialog('close') }
 	
 	dialogEl.dialog({
 		autoOpen : false,
 		modal : false,
-		width : 1200,
+		width : 900,
 		height : 600,
 		closeOnEscape : true,
 		draggable : true,
 		resizable : true,
 		buttons : buttonConfig
 	})
-	dialogEl.data('stationsPopulated', false)
 	dialogEl.data('mode', mode)
 	dialogEl.data('maxResults', maxResults)
 	dialogEl.data('callbackMethod', callbackMethod)
 	
-	if (mode == 'add' || mode == 'search') {
+	if (mode == 'search') {
 		
 		$.each([ "#voterSearchFirstName" + uid, "#voterSearchLastName" + uid ], function(index,
 				value) {
@@ -198,74 +165,8 @@ function initVoterSearchPopup(options) {
 		$(".voterSearchLink" + uid).click(function(evt) {
 			submitVoterSearchForm(uid)
 		})
-		
-		$('#voterSearchScopeLocal' + uid).click(function() {
-			$("#voterSearchPrecinctWrapper" + uid).show()
-		})
-		$('#voterSearchScopeNational' + uid).click(function() {
-			$("#voterSearchPrecinctWrapper" + uid).hide()
-		})
-		
-		$("#voterSearchDOB" + uid).enableDatePicker({
-			showOn : "button",
-			buttonImage : imgHomePath + "/calendar.gif",
-			buttonImageOnly : true
-		})
-		$("#voterSearchDOB" + uid).mask(twoDigitDateMask, {
-			autoclear : false
-		})
-		
-		var precinctEl = $("#voterSearchScopePrecinctId" + uid)
-		precinctEl.multiselect({
-			selectedText : function(numChecked, numTotal, checkedItems) {
-				return abbreviate($(checkedItems[0]).next().text())
-			},
-			beforeopen: function(){
-				if (dialogEl.data('stationsPopulated')) return
-				var curVal = precinctEl.val()
-				
-				$.ajax({
-					url : ajaxHomePath + "/voterSearch/precincts",
-					type : "POST",
-					dataType : 'json',
-					error : commonAjaxErrorHandler,
-					success : function(results) {
-						precinctEl.empty()
-						var newHtml = []
-						$.each(results, function(index, item) {
-							var selectedText = (item.id == curVal) ? ' selected="selected"' : ''
-							newHtml.push('<option value="' + item.id + '"' + selectedText + '>' + item.displayName + '</option>')
-						})
-						precinctEl.html(newHtml.join(''))
-						
-						precinctEl.val(curVal)
-						precinctEl.multiselect("refresh")
-						dialogEl.data('stationsPopulated', true)
-						
-						precinctEl.multiselect("open")
-					}
-				})
-				
-				return false
-		   },
-			multiple : false,
-			minWidth : 400
-		}).multiselectfilter()
 	}
 	
-	if (mode == 'add') {
-		$('#voterSearchScopeNational' + uid).click()
-		$('input[type=radio][name="voterSearchScope' + uid + '"]').prop('disabled', true)
-		$("#voterSearchIncludeInactive" + uid).prop('checked', true)
-		$("#voterSearchIncludeInactive" + uid).prop('disabled', true)
-		$(".voterAddLink" + uid).click(addButtonCallbackMethod)
-	} else if (mode == 'duplicateCheck') {
-		$(".voterSearchFields" + uid).hide()
-	}
-	
-	if (showDisclaimer)
-		$('#volSearchDisclaimer' + uid).show()
-		
 	dialogEl.show()
 }
 
@@ -286,7 +187,7 @@ function restorePreviousSearch(uid) {
 //				lastName : $("#voterSearchLastName" + uid).val(),
 //				code : $("#voterSearchCode" + uid).val(),
 //				email : $("#voterSearchEmail" + uid).val(),
-//				dob : dateOfBirth,
+//				yob : yearOfBirth,
 //				scope : theScope,
 //				precinctId : $("#voterSearchScopePrecinctId" + uid).val(),
 //				includeInactive : $("#voterSearchIncludeInactive" + uid).is(
@@ -301,30 +202,15 @@ function restorePreviousSearch(uid) {
 function submitVoterSearchForm(uid) {
 	if (allValsEmpty(["voterSearchFirstName" + uid,
 	                  "voterSearchLastName" + uid,
-	                  "voterSearchCode" + uid,
+	                  "voterSearchVoterId" + uid,
 	                  "voterSearchEmail" + uid,
-	                  "voterSearchDOB" + uid])) {
+	                  "voterSearchYOB" + uid])) {
 		displayAttentionDialog('Please enter at least one piece of search criteria.')
 		return
 	}
 	
-	$('#volSearchDisclaimer' + uid).hide()
 	var dialogEl = $("#voterSearchDialog" + uid)
-	var theScope = $(
-			"input[type='radio'][name='voterSearchScope" + uid
-					+ "']:checked").val()
 
-	if (theScope != 'National' && !$("#voterSearchScopePrecinctId" + uid).val()) {
-		displayAttentionDialog('Please select a precinct.')
-		return
-	}
-	
-	var dateOfBirth = $("#voterSearchDOB" + uid).val()
-	if ($.trim(dateOfBirth) != '' && !validateDate(dateOfBirth)) {
-		displayAttentionDialog('Please enter a valid date of birth.')
-		return
-	}
-					
 	$.ajax({
 		url : ajaxHomePath + "/voterSearch/find",
 		type : "POST",
@@ -332,13 +218,9 @@ function submitVoterSearchForm(uid) {
 		data : {
 			firstName : $("#voterSearchFirstName" + uid).val(),
 			lastName : $("#voterSearchLastName" + uid).val(),
-			code : $("#voterSearchCode" + uid).val(),
+			voterId : $("#voterSearchCode" + uid).val(),
 			email : $("#voterSearchEmail" + uid).val(),
-			dob : dateOfBirth,
-			scope : theScope,
-			precinctId : $("#voterSearchScopePrecinctId" + uid).val(),
-			includeInactive : $("#voterSearchIncludeInactive" + uid).is(
-					':checked')
+			birthYear : $("#voterSearchYOB" + uid).val()
 		},
 		error : commonAjaxErrorHandler,
 		success : function(results) {
@@ -377,11 +259,6 @@ function processVoterSearchResults(uid, results) {
 	}
 	table.draw()
 
-	var mode = dialogEl.data('mode')
-	if (mode == 'add') {
-		$(".voterAddLink" + uid).show()
-	}
-	
 	$('#voterSearchLastName' + uid).focus()
 }
 
@@ -389,13 +266,13 @@ function processVoterSearchResults(uid, results) {
 function getVoterDashedBoxEl(voter) {
 	var addressHtml = voter.addressMultilineDisplay ? escapeHTML(voter.addressMultilineDisplay) : ""
 	
-	var phoneHtml = voter.phone ? escapeHTML(voter.phone) + '<br>' : "";
+	var phoneHtml = voter.finalPhone ? escapeHTML(voter.finalPhone) + '<br>' : "";
 	var emailHtml = ""
-	if (voter.email)
-		emailHtml = escapeHTML(voter.email) + '<a href="mailto:'
-				+ escapeHTML(voter.email)
+	if (voter.finalEmail)
+		emailHtml = escapeHTML(voter.finalEmail) + '<a href="mailto:'
+				+ escapeHTML(voter.finalEmail)
 				+ '"><img alt="Click to email '
-				+ escapeHTML(voter.email) + '"' + 'src="' + imgHomePath
+				+ escapeHTML(voter.finalEmail) + '"' + 'src="' + imgHomePath
 				+ '/envelope.jpg" height="14"'
 				+ ' width="18" border="0" align="absmiddle"'
 				+ ' style="padding-left: 4px; padding-right: 4px" /></a>'

@@ -47,14 +47,9 @@ public class WebSecurityConfig extends AbstractSecurityConfig {
 	private static final Logger log = LoggerFactory.getLogger(WebSecurityConfig.class);
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(new BCryptPasswordEncoder().encode("WR_tester_NUMBER1!"));
-		System.out.println(new BCryptPasswordEncoder().encode("WR_tester_NUMBER2!@"));
-		System.out.println(new BCryptPasswordEncoder().encode("WR_tester_NUMBER3!@#"));
-		System.out.println(new BCryptPasswordEncoder().encode("WR_tester_NUMBER4!@#$"));
-		System.out.println(new BCryptPasswordEncoder().encode("WR_tester_NUMBER5!@#$%"));
-		System.out.println(new BCryptPasswordEncoder().encode("WR_tester_NUMBER6!@#$%^"));
-		System.out.println(new BCryptPasswordEncoder().encode("WR_tester_NUMBER7!@#$%^&"));
-		System.out.println(new BCryptPasswordEncoder().encode("Yaseenzahra"));
+		for (String s : new String[] { //
+				"dantheman234", "davidezpass123", "pegcaptain521" })
+			System.out.println(s + " - " + new BCryptPasswordEncoder().encode(s));
 	}
 
 	public static final String URI_LOGIN = "/login.htm";
@@ -102,9 +97,7 @@ public class WebSecurityConfig extends AbstractSecurityConfig {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests() //
 				.antMatchers(URI_LOGIN, URI_LOGOUT, URI_AUTH_EXCEPTION, MEDIA_DIR + "/**") //
-				.permitAll()
-				.antMatchers(URI_DEFAULT, CommonWebConfig.AJAX_CONTEXT_PATH_PREFIX + "/**")
-				.authenticated() //
+				.permitAll().antMatchers(URI_DEFAULT, CommonWebConfig.AJAX_CONTEXT_PATH_PREFIX + "/**").authenticated() //
 				.antMatchers("/**/*.htm") //
 				.hasAuthority(Permission.LOGIN_APPLICATION) //
 

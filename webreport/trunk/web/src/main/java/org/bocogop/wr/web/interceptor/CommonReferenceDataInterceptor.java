@@ -46,7 +46,6 @@ public class CommonReferenceDataInterceptor extends AbstractReferenceDataInterce
 		ZoneId timeZone = null;
 		if (appUser != null) {
 			model.put("currentUser", appUser);
-			model.put("multipleStationsAssigned", appUser.getPrecincts().size() > 1);
 			timeZone = appUser.getTimeZone();
 
 			if (timeZone != null) {

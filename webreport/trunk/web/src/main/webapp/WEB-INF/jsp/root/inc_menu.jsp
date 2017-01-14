@@ -12,18 +12,6 @@
 		value="menuVoterSelectedCallback" />
 </jsp:include>
 
-<jsp:include page="/WEB-INF/jsp/shared/inc_voterSearchPopup.jsp">
-	<jsp:param name="uniqueVoterSearchPopupId" value="menuAdd" />
-	<jsp:param name="mode" value="add" />
-	<jsp:param name="resultCallbackMethod"
-		value="menuVoterSelectedCallback" />
-	<jsp:param name="disclaimerText"
-		value="Please search for an existing voter before adding a new one:" />
-	<jsp:param name="addButtonCallbackMethod"
-		value="menuVoterAddSelectedCallback" />
-</jsp:include>
-
-
 <div class='sidemenucontainer' role="application">
 	<div class="sidebarmenu" role="navigation">
 

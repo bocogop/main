@@ -29,7 +29,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bocogop.shared.model.AppUserGlobalRole.CompareByRole;
 import org.bocogop.shared.model.Role.RoleType;
-import org.bocogop.shared.model.precinct.Precinct;
 import org.bocogop.shared.util.StringUtil;
 import org.bocogop.shared.web.conversion.ZoneIdSerializer;
 import org.hibernate.annotations.BatchSize;
@@ -76,7 +75,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	private boolean enabled;
 
 	private Set<AppUserGlobalRole> globalRoles;
-	private Set<AppUserPrecinct> precincts;
 
 	/*
 	 * Only contains one item, lazy-loaded; mapping like this instead
@@ -100,46 +98,11 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 
 	public void initializeAll() {
 		initialize(getGlobalRoles());
-		initialize(getPrecincts());
 		initialize(getAppUserPreferencesList());
 
 		for (AppUserGlobalRole augr : getGlobalRoles()) {
 			augr.initializeAll();
 		}
-
-		for (AppUserPrecinct f : getPrecincts())
-			f.initializeAll();
-	}
-
-	/**
-	 * Returns the set of stations explicitly assigned to the user. No custom
-	 * logic is performed here for National administrators, only their
-	 * explicitly assigned stations will be returned (or an empty Set if none).
-	 */
-	@Transient
-	@JsonIgnore
-	public SortedSet<Precinct> getAssignedPrecincts() {
-		SortedSet<Precinct> precincts = new TreeSet<>();
-		for (AppUserPrecinct a : getPrecincts()) {
-			Precinct assignedPrecinct = a.getPrecinct();
-			precincts.add(assignedPrecinct);
-		}
-		return precincts;
-	}
-
-	public boolean isAssignedPrecinct(long precinctId) {
-		for (AppUserPrecinct a : getPrecincts())
-			if (a.getPrecinct().getId() == precinctId)
-				return true;
-		return false;
-	}
-
-	public AppUserPrecinct getAppUserPrecinct(long precinctId) {
-		// TODO fix this very soon.
-		for (AppUserPrecinct f : getPrecincts())
-			if (f.getPrecinct().getId() != null && precinctId == f.getPrecinct().getId())
-				return f;
-		return null;
 	}
 
 	@Transient
@@ -155,7 +118,7 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 
 	@Transient
 	public boolean isNationalAdmin() {
-		return RoleType.NATIONAL_ADMIN.isGloballyAssignedToUser(this);
+		return RoleType.NATIONAL_ADMIN.isAssignedToUser(this);
 	}
 
 	public boolean hasGlobalRole(RoleType type) {
@@ -257,10 +220,10 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 			}
 			this.authoritiesCache = Collections.unmodifiableSet(authorities);
 		}
-		
+
 		return authoritiesCache;
 	}
-	
+
 	// ------------------------------------ Common Methods
 
 	@Override
@@ -285,7 +248,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	}
 
 	// ------------------------------------ Accessor Methods
-
 
 	@Column(nullable = false)
 	@NotNull
@@ -368,19 +330,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 
 	public void setGlobalRoles(Set<AppUserGlobalRole> globalRoles) {
 		this.globalRoles = globalRoles;
-	}
-
-	@OneToMany(mappedBy = "appUser", fetch = FetchType.LAZY)
-	@BatchSize(size = 500)
-	@JsonView(AppUserView.Extended.class)
-	public Set<AppUserPrecinct> getPrecincts() {
-		if (precincts == null)
-			precincts = new HashSet<>();
-		return precincts;
-	}
-
-	public void setPrecincts(Set<AppUserPrecinct> precincts) {
-		this.precincts = precincts;
 	}
 
 	@Column(name = "EnabledInd", nullable = false)

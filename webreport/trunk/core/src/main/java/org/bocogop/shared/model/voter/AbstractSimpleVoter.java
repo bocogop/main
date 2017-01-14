@@ -6,9 +6,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 import java.time.LocalDate;
 
 import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
@@ -18,9 +15,6 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bocogop.shared.model.AbstractAuditedVersionedPersistent;
-import org.bocogop.shared.model.lookup.Gender;
-import org.bocogop.shared.model.lookup.Party;
-import org.bocogop.shared.model.precinct.Precinct;
 import org.bocogop.shared.model.voter.Voter.VoterView;
 import org.bocogop.shared.util.StringUtil;
 import org.hibernate.validator.constraints.NotBlank;
@@ -136,8 +130,8 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 				getMailingCity(), getMailingState(), getFullMailingZip(), getMailingCountry(), "\n");
 	}
 
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	@Transient
+	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	public String getFullBallotAddressMultilineDisplay() {
 		return StringUtil.getAddressDisplay(getBallotAddress1(), getBallotAddress2(), getBallotAddress3(),
 				getBallotCity(), getBallotState(), getFullBallotZip(), getBallotCountry(), "\n");
@@ -488,7 +482,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(name = "VoterStatusActive")
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
+	@JsonView({ VoterView.Search.class, VoterView.Extended.class, VoterView.Demographics.class })
 	public Boolean getStatusActive() {
 		return statusActive;
 	}
@@ -516,7 +510,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 		this.affiliatedDate = affiliatedDate;
 	}
 
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
+	@JsonView({ VoterView.Search.class, VoterView.Extended.class, VoterView.Demographics.class })
 	public Integer getBirthYear() {
 		return birthYear;
 	}
@@ -536,7 +530,7 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(name = "ResidentialAddress", length = 255)
-	@JsonIgnore
+	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
 	public String getAddress() {
 		return address;
 	}

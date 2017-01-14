@@ -68,7 +68,8 @@
 					
 					return $.extend({}, d, detailsRestrictions, {
 						"displayColumnIndexes" : displayColumns,						
-						"isNational" : $("#isNational").is(":checked")
+						"allMyPrecincts" : $("#allMyPrecincts").is(":checked"),
+						"precinctId" : $("#precinctId").val()
 					});
 				},
 				"complete" : function() {
@@ -99,9 +100,6 @@
 					stripHtml : false
 				},
 				autoPrint : false
-			}, {
-				text: 'Print Labels',
-	            action: printSelected
 			}, {
 				text: 'Email Voters',
 	            action: emailSelected
@@ -395,19 +393,15 @@ div.restrictDiv {
 						<div>
 							<input type="checkbox" class="allParamInputs scopeCheckbox" id="rxIncludeActive"
 								checked="checked">Active<br> <input type="checkbox"
-								class="allParamInputs scopeCheckbox" id="rxIncludeInactive">Inactive<br>
-							<input type="checkbox" class="allParamInputs scopeCheckbox"
-								id="rxIncludeTerminated">Terminated<br> <input
-								type="checkbox" class="allParamInputs scopeCheckbox"
-								id="rxIncludeTerminatedByCause">Terminated With Cause<br>
+								class="allParamInputs scopeCheckbox" id="rxIncludeInactive">Inactive
 						</div>
 						<div
 							style="${nationalCheckboxStyle}border-top:1px dashed gray;margin-top:8px; padding-top:15px">
-							<input type="radio" name="scope" class="allParamInputs"
+							<input type="radio" name="scope" class="allParamInputs" value="national"
+								id="allMyPrecincts">Within my precinct(s)<br> <input type="radio" name="scope" class="allParamInputs"
 								checked="checked" value="local" id="isLocal" nowrap>At
-							<c:out value="${precinctContextName}" />
-							<br> <input type="radio" name="scope" class="allParamInputs" value="national"
-								id="isNational">Nationally<br>
+							Precinct <select id="precinctId"><option value="123456789">123456789</select>
+							<br> 
 						</div>
 
 					</td>

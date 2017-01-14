@@ -5,7 +5,7 @@
 		"targets" : colDefs.length,
 		"visible" : false,
 		"data" : function(row, type, val, meta) {
-			return defaultStr(row.addressLine1)
+			return defaultStr(row.address)
 		}
 	})
 </script>

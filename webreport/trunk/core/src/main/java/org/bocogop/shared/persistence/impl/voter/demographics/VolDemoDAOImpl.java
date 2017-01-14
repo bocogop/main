@@ -50,7 +50,8 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 	}
 
 	@Override
-	public List<VoterDemographics> findDemographics(VolDemoSearchParams searchParams, int start, int length) {
+	public List<VoterDemographics> findDemographics(VolDemoSearchParams searchParams, int start, int length,
+			long appUserId) {
 		SearchContext sc = new SearchContext(searchParams);
 
 		boolean includeParticipations = false; // searchParams.displayCols.contains(PARTICIPATIONS);
@@ -59,13 +60,9 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 		sc.append("WITH");
 
 		sc.append("	all_voters AS (") //
-				.append("	SELECT *") //
-				.append("	FROM Voter v");
-		if (searchParams.isLocal()) {
-			sc.append("		WHERE v.PrecinctFK = :precinctId");
-			sc.addParam("precinctId", searchParams.precinctId);
-		}
-		sc.append("				)");
+				.append("	SELECT v.*") //
+				.append("	FROM Voter v") //
+				.append(")");
 
 		if (includeParticipations)
 			appendCTEForParticipations(sc);
@@ -143,30 +140,19 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 	}
 
 	@Override
-	public int[] findDemographicsTotalAndFilteredNumber(VolDemoSearchParams searchParams) {
+	public int[] findDemographicsTotalAndFilteredNumber(VolDemoSearchParams searchParams, long appUserId) {
 		SearchContext sc = new SearchContext(searchParams);
 
 		boolean includeParticipations = false; // searchParams.displayCols.contains(PARTICIPATIONS);
 		boolean includeIssues = false; // searchParams.displayCols.contains(ISSUES);
 
 		sc.append("WITH");
+		sc.append("		all_assigned_voters AS (") //
+				.append("	SELECT v.*") //
+				.append("	FROM Voter v") //
+				.append("		JOIN Precinct pr on v.PrecinctFK = pr.id");
 
-		if (searchParams.isLocal()) {
-			sc.append("			voters_at_precinct AS (") //
-					.append("		SELECT TOP 2000000000 v.id") //
-					.append("		FROM Voter v") //
-					.append("		WHERE v.PrecinctFK = :precinctId");
-			sc //
-					.append("	), ");
-			sc.addParam("precinctId", searchParams.precinctId);
-		}
-
-		sc.append("				all_assigned_voters AS (") //
-				.append("			SELECT *") //
-				.append("			FROM Voter v");
-		if (searchParams.isLocal())
-			sc.append("					LEFT JOIN vols_at_precinct vaf ON v.id = vaf.WrVotersFK");
-		sc.append("				)"); //
+		sc.append("	)"); //
 
 		if (includeParticipations)
 			appendCTEForParticipations(sc);
@@ -200,7 +186,7 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 				.append("					FROM wr.VoterAssignments va") //
 				.append("						JOIN wr.BenefitingServices bs on va.WrBenefitingServicesFK = bs.Id") //
 				.append("						JOIN wr.BenefitingServiceRoles bsr on va.WrBenefitingServiceRolesFK = bsr.Id") //
-				.append("					WHERE va.WrVotersFK = v.Id") //
+				.append("					WHERE va.VoterFK = v.Id") //
 				.append("						AND va.IsInactive = 0") //
 				.append("					ORDER BY bs.ServiceName, bs.Subdivision, bsr.Name") //
 				.append("				FOR XML PATH('') ,TYPE).value('.', 'varchar(max)'), 1, 2, '')") //
@@ -216,10 +202,8 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 				.append("					SELECT ';' + ps.stickerNumber + '|' + st.name + '|' + ps.licensePlate") //
 				.append("					FROM wr.ParkingSticker ps") //
 				.append("					LEFT JOIN sdsadm.std_state st ON ps.STD_StateFK = st.id") //
-				.append("					WHERE ps.WrVotersFK = v.Id"); //
-		if (sb.searchParams.isLocal())
-			sb.append("					AND ps.PrecinctFK = :precinctId"); //
-		sb.append("					ORDER BY ps.stickerNumber, st.name, ps.licensePlate") //
+				.append("					WHERE ps.VoterFK = v.Id") //
+				.append("					ORDER BY ps.stickerNumber, st.name, ps.licensePlate") //
 				.append("				FOR XML PATH('') ,TYPE).value('.', 'varchar(max)'), 1, 1, '')") //
 				.append("			FROM all_assigned_vols v") //
 				.append("			GROUP BY v.Id") //
@@ -340,16 +324,14 @@ public class VolDemoDAOImpl extends AbstractAppDAOImpl<VoterDemographics> implem
 						+ " or v.firstName like :search" + i //
 						+ " or v.middleName like :search" + i //
 						+ " or v.nameSuffix like :search" + i //
-						+ " or v.StreetAddress1 like :search" + i //
-						+ " or v.StreetAddress2 like :search" + i //
-						+ " or v.City like :search" + i //
-						+ " or st.Name like :search" + i //
-						+ " or v.ZipCode like :search" + i //
-						+ " or v.EmailAddress like :search" + i //
-						+ " or v.EmergencyContactName like :search" + i //
-						+ " or ci.nameofinstitution like :search" + i //
-						+ " or ci.stationnumber like :search" + i //
-						+ " or o.OrganizationName like :search" + i //
+						+ " or v.ResidentialAddress like :search" + i //
+						+ " or v.ResidentialCity like :search" + i //
+						+ " or v.ResidentialState like :search" + i //
+						+ " or v.ResidentialZip like :search" + i //
+						+ " or (case when v.EmailUserProvided is not null then v.EmailUserProvided else v.Email end) like :search"
+						+ i //
+						+ " or (case when v.PhoneUserProvided is not null then v.PhoneUserProvided else v.Phone end) like :search"
+						+ i //
 						+ (includeParticipations ? " or vp.combined_participations like :search" + i : "") //
 						+ ")");
 				sb.addParam("search" + i, "%" + tokens[i] + "%");

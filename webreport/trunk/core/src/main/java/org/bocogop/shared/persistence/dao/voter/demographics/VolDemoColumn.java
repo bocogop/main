@@ -11,7 +11,7 @@ import java.util.Map;
 public enum VolDemoColumn {
 	NAME("Name", true, false, true), //
 	VOTER_ID("Voter ID", true, false, true), //
-	PRECINCT("Precinct", true, true, true), //
+	PRECINCT("Precinct", true, false, true), //
 	PARTY("Party", true, true, true), //
 	AFFILIATED_DATE("Affiliated Date", false, false, true), //
 

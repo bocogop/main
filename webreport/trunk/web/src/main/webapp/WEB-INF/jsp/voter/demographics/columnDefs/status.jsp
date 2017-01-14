@@ -5,7 +5,7 @@
 		"targets" : colDefs.length,
 		"visible" : false,
 		"data" : function(row, type, val, meta) {
-			return defaultStr(row.status)
+			return defaultStr(row.statusActive ? 'Active' : 'Inactive')
 		}
 	})
 </script>

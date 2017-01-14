@@ -4,7 +4,7 @@
 	colDefs.push({
 		"targets" : colDefs.length,
 		"data" : function(row, type, val, meta) {
-			return defaultStr(row.age)
+			return defaultStr(row.ageApprox)
 		}
 	})
 </script>

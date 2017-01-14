@@ -2,7 +2,6 @@ package org.bocogop.shared.service;
 
 import org.bocogop.shared.persistence.AppUserDAO;
 import org.bocogop.shared.persistence.AppUserGlobalRoleDAO;
-import org.bocogop.shared.persistence.AppUserPrecinctDAO;
 import org.bocogop.shared.persistence.dao.RoleDAO;
 import org.bocogop.shared.persistence.dao.precinct.PrecinctDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ public abstract class AbstractAppServiceImpl {
 
 	@Autowired
 	protected AppUserDAO appUserDAO;
-	@Autowired
-	protected AppUserPrecinctDAO appUserPrecinctDAO;
 	@Autowired
 	protected AppUserGlobalRoleDAO appUserGlobalRoleDAO;
 	@Autowired

@@ -161,16 +161,12 @@ public class Role extends AbstractLookup<Role, RoleType> implements GrantedAutho
 			return name;
 		}
 
-		public boolean isGloballyAssignedToUser(AppUser user) {
+		public boolean isAssignedToUser(AppUser user) {
 			return LookupUtil.isTypeInLookups(this, user.getBasicGlobalRoles());
 		}
 
-		public boolean isApprovedAtPrecinctOrGlobal(AppUser user, long precinctId) {
-			AppUserPrecinct precinct = user.getAppUserPrecinct(precinctId);
-			if (precinct == null)
-				return false;
-
-			return isGloballyAssignedToUser(user);
+		public boolean isApproved(AppUser user, long precinctId) {
+			return isAssignedToUser(user);
 		}
 
 		public static RoleType getById(long id) {

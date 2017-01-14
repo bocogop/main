@@ -1,21 +1,3 @@
-/*
-	drop table [dbo].[AppUserPrecinct]
-*/
-
-CREATE TABLE [dbo].[AppUserPrecinct](
-	[Id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
-	[AppUserFK] [numeric](18, 0) NOT NULL,
-	[PrecinctFK] int NOT NULL,
-	[PrimaryPrecinctInd] char(1) not null,
-	[CreatedBy] [varchar](30) NOT NULL,
-	[CreatedDate] [datetime] NOT NULL,
-	[ModifiedBy] [varchar](30) NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL,
- CONSTRAINT [PK_AppUserPrecinct] PRIMARY KEY CLUSTERED ([Id] ASC)
- WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
-)
-GO
-
 create function [dbo].[AgeAtDate](
     @DOB    datetime,
     @PassedDate datetime
@@ -275,24 +257,8 @@ GO
 
 ----------------------------------------- Constraints
 
-ALTER TABLE [dbo].[AppUserPrecinct]  WITH CHECK ADD  CONSTRAINT [FK_AppUserPrecinct_AppUser] FOREIGN KEY([AppUserFK])
-REFERENCES [CORE].[AppUser] ([Id])
-GO
-
-ALTER TABLE [dbo].[AppUserPrecinct] CHECK CONSTRAINT [FK_AppUserPrecinct_AppUser]
-GO
-
-ALTER TABLE [dbo].[AppUserPrecinct]  WITH CHECK ADD  CONSTRAINT [FK_AppUserPrecinct_Precinct] FOREIGN KEY([PrecinctFK])
-REFERENCES [dbo].[Precinct] ([Id])
-GO
-
-ALTER TABLE [dbo].[AppUserPrecinct] CHECK CONSTRAINT [FK_AppUserPrecinct_Precinct]
-GO
 
 ----------------------------------------- Indexes
-
-CREATE UNIQUE NONCLUSTERED INDEX UQ_AppUserPrecinct ON [dbo].[AppUserPrecinct] (AppUserFK, PrecinctFK);
-GO
 
 ----------------------------------------- Data
 

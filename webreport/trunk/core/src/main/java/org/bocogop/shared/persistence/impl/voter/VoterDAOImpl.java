@@ -42,11 +42,7 @@ public class VoterDAOImpl extends GenericHibernateSortedDAOImpl<Voter> implement
 		boolean hasPrecinctIds = CollectionUtils.isNotEmpty(precinctIds);
 
 		StringBuilder sb = new StringBuilder("select v from ").append(Voter.class.getName()).append(" v");
-
-		if (hasPrecinctIds) {
-			sb.append(" left join v.voterAssignments fa left join fa.precinct faf");
-			sb.append(" left join v.primaryPrecinct pf left join faf.parent faf_parent");
-		}
+		sb.append(" left join fetch v.precinct p");
 
 		/* Don't bother with this yet - CPB */
 		QueryCustomization cust = new QueryCustomization();
@@ -85,15 +81,12 @@ public class VoterDAOImpl extends GenericHibernateSortedDAOImpl<Voter> implement
 		}
 
 		if (hasPrecinctIds) {
-			whereClauseItems.add("(   (pf.id is not null and pf.id in (:precinctIds))" //
-					+ " or (faf is not null and TYPE(faf) = :precinctType and faf.id in (:precinctIds))" //
-					+ " or (faf is not null and TYPE(faf) = :locationType and faf_parent.id in (:precinctIds)) )");
+			whereClauseItems.add("p.id in (:precinctIds)");
 			params.put("precinctIds", precinctIds);
-			params.put("precinctType", Precinct.class);
 		}
 
 		if (StringUtils.isNotBlank(addressStreet)) {
-			whereClauseItems.add("v.addressLine1 like :addressStreet" + " or v.addressLine2 like :addressStreet");
+			whereClauseItems.add("v.address like :addressStreet");
 			params.put("addressStreet", "%" + addressStreet + "%");
 		}
 
@@ -109,10 +102,10 @@ public class VoterDAOImpl extends GenericHibernateSortedDAOImpl<Voter> implement
 		if (StringUtils.isNotBlank(state)) {
 			state = state.trim();
 			if (state.trim().length() == 2) {
-				whereClauseItems.add("v.state.abbreviation = :state");
+				whereClauseItems.add("v.state = :state");
 				params.put("state", state);
 			} else {
-				whereClauseItems.add("v.state.name like :state");
+				whereClauseItems.add("v.state like :state");
 				params.put("state", "%" + state + "%");
 			}
 		}
@@ -126,8 +119,9 @@ public class VoterDAOImpl extends GenericHibernateSortedDAOImpl<Voter> implement
 		}
 
 		if (StringUtils.isNotBlank(phone)) {
+			// TODO BOCOGOP fix to remove all nonnumeric chars
 			StringBuilder sb2 = new StringBuilder();
-			for (String phoneField : new String[] { "phone", "phoneAlt", "phoneAlt2" })
+			for (String phoneField : new String[] { "phone", "userProvidedPhone" })
 				sb2.append(sb2.length() > 0 ? " OR " : "") //
 						.append("CONCAT(SUBSTRING(v.").append(phoneField).append(",1,3), ") //
 						.append("SUBSTRING(v.").append(phoneField).append(", 5,3), ") //

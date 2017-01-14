@@ -119,7 +119,7 @@ function refreshUser(includeRolesAndPrecincts) {
 
 function setUserFields(resultMap) {
 	var userResult = resultMap.user
-	var updateRolesAndPrecincts = resultMap.updateRolesAndPrecincts
+	var updateRoles = resultMap.updateRoles
 	
 	$("#userID").text(userResult.username)
 	$("#userName").text(userResult.displayName)
@@ -157,27 +157,7 @@ function setUserFields(resultMap) {
 		$(".defaultPrecinctText").text("(none set)")
 	}
 	
-	if (updateRolesAndPrecincts) {
-		$("#stations").empty()
-		var newOptionHtml = new Array(resultMap.appUserPrecincts.length)
-		$.each(resultMap.appUserPrecincts, function(index, appUserPrecinct) {
-			var selectedStationStyle = ''
-			if (defaultPrecinct && appUserPrecinct.precinct.id == defaultPrecinct.id)
-				selectedStationStyle = ' class="defaultPrecinctOption"'
-				
-			newOptionHtml[index] = '<option value="' + appUserPrecinct.precinct.id + '" ' + selectedStationStyle + '>' 
-					+ abbreviate(appUserPrecinct.precinct.displayName) + '</option>'
-		})
-		$("#stations").html(newOptionHtml.join(''))
-		
-		newOptionHtml = new Array(resultMap.availablePrecincts.length)
-		$("#available_stations").empty()
-		$.each(resultMap.availablePrecincts, function(index, precinct) {
-			newOptionHtml[index] = '<option value="' + precinct.id + '" title="' + escapeHTML(precinct.displayName)
-				+ '">' + abbreviate(precinct.displayName) + '</option>'
-		})
-		$("#available_stations").html(newOptionHtml.join(''))
-		
+	if (updateRoles) {
 		$("#roles").empty()
 		$.each(userResult.globalRolesSorted, function(index, appUserGlobalRole) {
 			var role = appUserGlobalRole.role
@@ -193,27 +173,9 @@ function setUserFields(resultMap) {
 					.html(role.name))
 		})
 		
-		cacheAllRolesAndPrecincts(resultMap)
-		rebuildSelectFilters(['available_stations', 'stations'], {
-			matchTitle : true
-		})
-		
-		var precinctIdMap = new Object()
-		$.each(resultMap.appUserPrecincts, function(index, appUserPrecinct) {
-			precinctIdMap['' + appUserPrecinct.precinct.id] = appUserPrecinct.precinct
-		})
-		
-		buildEffectiveRoleTable(resultMap.stationAndRoles, resultMap.roleInfoMap, precinctIdMap)
+		cacheAllRoles(resultMap)
 		
 		$("#customizeDiv").show()
-	} else {
-		 $('#stations option').each(function(i) {
-        	if (defaultPrecinct && $(this).val() == defaultPrecinct.id) {
-        		$(this).addClass('defaultPrecinctOption')
-        	} else {
-	        	$(this).removeClass('defaultPrecinctOption')
-        	}
-        })
 	}
 }
 
@@ -310,32 +272,7 @@ function removeUser() {
 	})
 }
 
-function cacheAllRolesAndPrecincts(resultMap) {
-	setAllPrecinctsIfNeeded(function() {
-		var allPrecincts = new SortedArray([], function(a, b) {
-			if (a === b) return 0
-			if (a.name < b.name) return -1
-			if (a.name > b.name) return 1
-			if (a.stationNumber < b.stationNumber) return -1
-			return 1
-		})
-		$.each(resultMap.appUserPrecincts, function(index, appUserPrecinct) {
-			allPrecincts.insert({
-				id: appUserPrecinct.precinct.id,
-				name: appUserPrecinct.precinct.displayName,
-				stationNumber: appUserPrecinct.precinct.stationNumber
-			})
-		})
-		$.each(resultMap.availablePrecincts, function(index, precinct) {
-			allPrecincts.insert({
-				id: precinct.id,
-				name: precinct.displayName,
-				stationNumber: precinct.stationNumber
-			})
-		})
-		return allPrecincts.array
-	})
-	
+function cacheAllRoles(resultMap) {
 	var userResult = resultMap.user
 	setAllRolesIfNeeded(function() {
 		var allRoles = new SortedArray([], function(a, b) {
@@ -360,50 +297,9 @@ function cacheAllRolesAndPrecincts(resultMap) {
 	})
 }
 
-function buildEffectiveRoleTable(stationAndRoles, roleInfoMap, precinctIdMap) {
-	$("#effectiveRoleTable").empty()
-	if ($.isEmptyObject(roleInfoMap)) {
-		$('<tr align="center"><td>No roles are assigned.</td></tr>').appendTo($("#effectiveRoleTable"))
-		return
-	}
-	
-	if ($.isEmptyObject(precinctIdMap)) {
-		$('<tr align="center"><td>No precincts are assigned.</td></tr>').appendTo($("#effectiveRoleTable"))
-		return
-	}
-	
-	var thead = $('<thead></thead>').appendTo($("#effectiveRoleTable"))
-	var tr = $('<tr></tr>').appendTo(thead)
-	$('<th width="99%"></th>').appendTo(tr)
-	
-	$.each(roleInfoMap, function(index, item) {
-		var th = $('<th class="check"><div><span></span></div></th>').appendTo(tr)
-		th.find("span").text(item.name)
-	})
-	
-	var tbody = $('<tbody></tbody>').appendTo($("#effectiveRoleTable"))
-	$.each(stationAndRoles, function(index, item) {
-		var precinctId = item.precinctId
-		var stationName = precinctIdMap[precinctId].displayName
-		
-		var tr = $('<tr></tr>').appendTo(tbody)
-		var td = $('<td class="stationName" colspan="' + (roleInfoMap.length + 1) + '"></td>').text(stationName).appendTo(tr)
-		
-		tr = $('<tr></tr>').appendTo(tbody)
-		td = $('<td width="99%"></td>').appendTo(tr)
-		var thisRoleMap = item.roleMap
-		
-		$.each(roleInfoMap, function(index, item) {
-			$('<td class="check"></td>').html(thisRoleMap[item.id] ?
-					'<img alt="Tick mark signifying a role assignment at precinct" src="'
-						+ imgHomePath + '/tick.png" />' : "").appendTo(tr)
-		})
-	})
-}
-
-function update(updateRolesAndPrecincts) {
+function update(updateRoles) {
 	var roles = []
-	if (updateRolesAndPrecincts)
+	if (updateRoles)
         $('#roles option').each(function(i) {
         	roles.push(this.value)
         })
@@ -419,17 +315,14 @@ function update(updateRolesAndPrecincts) {
 			locked: $("#userLocked").is(':checked'),
 			timezone: $("#timeZoneSelect").val(),
 			globalRoles: roles.join(),
-			precinctsToAdd: precinctsToAdd.join(),
-			precinctsToRemove : precinctsToRemove.join(),
-			defaultPrecinctId : $("#defaultPrecinctId").val(),
-			updateRolesAndPrecincts: updateRolesAndPrecincts
+			updateRoles: updateRoles
 		},
 		error : function(jqXHR, textStatus, errorThrown) { 
-			refreshUser(updateRolesAndPrecincts)
+			refreshUser(updateRoles)
 			commonAjaxErrorHandler(jqXHR, textStatus, errorThrown)
 		},
 		success : function(resultMap) {
-			refreshUser(updateRolesAndPrecincts)
+			refreshUser(updateRoles)
 		}
 	})
 }

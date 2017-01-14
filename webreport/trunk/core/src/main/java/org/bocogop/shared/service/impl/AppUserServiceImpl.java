@@ -8,18 +8,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.bocogop.shared.model.AppUser;
 import org.bocogop.shared.model.AppUserGlobalRole;
-import org.bocogop.shared.model.AppUserPrecinct;
 import org.bocogop.shared.model.AppUserPreferences;
 import org.bocogop.shared.model.CoreUserDetails;
 import org.bocogop.shared.model.Permission;
 import org.bocogop.shared.model.Permission.PermissionType;
 import org.bocogop.shared.model.Role;
-import org.bocogop.shared.model.Role.RoleType;
-import org.bocogop.shared.model.precinct.Precinct;
 import org.bocogop.shared.persistence.AppUserDAO;
 import org.bocogop.shared.service.AbstractAppServiceImpl;
 import org.bocogop.shared.service.AppUserService;
@@ -58,25 +54,10 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 		return updated;
 	}
 
-	private boolean hasPrecincts(AppUser user, Collection<Long> precinctIdsToBeModified) {
-		// First check if the existing precincts of the user being updated are
-		// all
-		// covered under the grantable roles
-		// of the current user
-		AppUser currentUser = SecurityUtil.getCurrentUserAs(AppUser.class);
-		if (currentUser.isNationalAdmin())
-			return true;
-
-		Set<Long> userPrecinctIds = appUserPrecinctDAO.findByUserSorted(currentUser.getId()).stream()
-				.map(p -> p.getPrecinct().getId()).collect(Collectors.toSet());
-		return userPrecinctIds.containsAll(precinctIdsToBeModified);
-	}
-
 	@Override
 	public AppUser updateUser(long userId, Boolean enabled, Boolean locked, Boolean expired, ZoneId timezone,
-			boolean updateRolesAndPrecincts, Long defaultPrecinctId, Collection<Long> globalRoles,
-			Collection<Long> precinctIds) throws ServiceValidationException {
-		CoreUserDetails currentUser = SecurityUtil.getCurrentUser();
+			boolean updateRoles, Collection<Long> globalRoles) throws ServiceValidationException {
+		CoreUserDetails<?> currentUser = SecurityUtil.getCurrentUser();
 		final AppUser user = appUserDAO.findRequiredByPrimaryKey(userId);
 
 		boolean isEditingSelf = userId == currentUser.getId();
@@ -109,13 +90,10 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 
 		boolean userRefreshNeeded = false;
 
-		long nationalAdminID = RoleType.NATIONAL_ADMIN.getId();
-
 		/*
 		 * Only allow for role & station changes if the user has UM permission
 		 */
-		if (hasUMPermission && updateRolesAndPrecincts) {
-
+		if (hasUMPermission && updateRoles) {
 			if (globalRoles != null) {
 				Collection<Role> newRoles = roleDAO.findByPrimaryKeys(globalRoles).values();
 				final Collection<Long> roleIdsAdded = new ArrayList<>();
@@ -152,60 +130,11 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 				userRefreshNeeded = true;
 			}
 
-			if (precinctIds != null) {
-				Collection<Precinct> newPrecincts = precinctDAO.findRequiredByPrimaryKeys(precinctIds).values();
-				final Collection<Long> precinctIdsAdded = new ArrayList<>();
-				final Collection<Long> precinctIdsRemoved = new ArrayList<>();
-				CollectionUtil.synchronizeCollections(user.getPrecincts(), newPrecincts,
-						new SynchronizeCollectionsOps<AppUserPrecinct, Precinct>() {
-
-							@Override
-							public void add(Collection<AppUserPrecinct> coll, AppUserPrecinct itemToAdd) {
-								precinctIdsAdded.add(itemToAdd.getPrecinct().getId());
-							}
-
-							@Override
-							public void remove(Iterator<AppUserPrecinct> it, AppUserPrecinct currentItemBeingRemoved) {
-								if (currentItemBeingRemoved.isPersistent())
-									precinctIdsRemoved.add(currentItemBeingRemoved.getPrecinct().getId());
-							}
-
-							@Override
-							public AppUserPrecinct convert(Precinct u) {
-								return new AppUserPrecinct(user, u);
-							}
-						});
-
-				Set<Long> totalPrecinctsModified = new HashSet<>(precinctIdsAdded);
-				totalPrecinctsModified.addAll(precinctIdsRemoved);
-				if (!hasPrecincts(user, totalPrecinctsModified)) {
-					throw new ServiceValidationException("appUser.update.notModifiablePrecinct");
-				}
-
-				appUserPrecinctDAO.bulkAdd(user.getId(), precinctIdsAdded);
-				appUserPrecinctDAO.deleteByPrecinctIDs(userId, precinctIdsRemoved);
-
-				userRefreshNeeded = true;
-			}
-		}
-
-		/*
-		 * Allow changing your own primary precinct; otherwise, require UM
-		 * permission
-		 */
-		if ((isEditingSelf || hasUMPermission) && defaultPrecinctId != null) {
-			appUserPrecinctDAO.savePrimaryPrecinctForUser(updatedUser.getId(), defaultPrecinctId);
-			userRefreshNeeded = true;
 		}
 
 		if (userRefreshNeeded) {
 			updatedUser = appUserDAO.findRequiredByPrimaryKey(updatedUser.getId());
 		}
-
-		/* Extra security check */
-		if (defaultPrecinctId != null && !updatedUser.isAssignedPrecinct(defaultPrecinctId))
-			throw new IllegalArgumentException(
-					"The user is not assigned to the precinct with the specified defaultPrecinctId");
 
 		return updatedUser;
 	}
@@ -222,7 +151,6 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 		if (customizations != null)
 			customizations.userDeletedCallback(appUserId, userAdminCustomizationsModel);
 
-		appUserPrecinctDAO.deleteByUsers(Arrays.asList(appUserId));
 		appUserGlobalRoleDAO.deleteByUsers(Arrays.asList(appUserId));
 		appUserDAO.delete(appUserId);
 	}

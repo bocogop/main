@@ -6,7 +6,6 @@ import javax.sql.DataSource;
 
 import org.bocogop.shared.config.testOnly.AppTestConfig;
 import org.bocogop.shared.persistence.AppUserDAO;
-import org.bocogop.shared.persistence.AppUserPrecinctDAO;
 import org.bocogop.shared.persistence.dao.ApplicationParametersDAO;
 import org.bocogop.shared.persistence.dao.CountryDAO;
 import org.bocogop.shared.persistence.dao.GenderDAO;
@@ -28,8 +27,6 @@ public abstract class AbstractTransactionalWebTest extends AbstractTransactional
 
 	@Autowired
 	protected ApplicationParametersDAO applicationParameterDAO;
-	@Autowired
-	protected AppUserPrecinctDAO appUserPrecinctDAO;
 	@Autowired
 	protected AppUserDAO appUserDAO;
 	@Autowired

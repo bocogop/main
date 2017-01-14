@@ -72,19 +72,13 @@ public class VoterController extends AbstractAppController {
 	@JsonView(VoterView.Search.class)
 	public @ResponseBody SortedSet<Voter> findVoters(@RequestParam(required = false) String firstName,
 			@RequestParam(required = false) String lastName, @RequestParam(required = false) String voterId,
-			@RequestParam(required = false) String email,
-			@DateTimeFormat(pattern = DateUtil.TWO_DIGIT_DATE_ONLY) @RequestParam(required = false) Integer birthYear,
-			@RequestParam String scope, @RequestParam(required = false) Long precinctId,
-			@RequestParam boolean includeInactive, HttpSession session) {
+			@RequestParam(required = false) String email, @RequestParam(required = false) Integer birthYear,
+			HttpSession session) {
 		if (StringUtil.allBlank(voterId, firstName, lastName, email) && birthYear == null)
 			throw new IllegalArgumentException("Please specify at least one piece of search criteria");
 
-		if ("National".equals(scope))
-			precinctId = null;
-
-		SortedSet<Voter> voters = new TreeSet<>(
-				voterDAO.findByCriteria(voterId, firstName, null, lastName, true, false, birthYear, null, null, null,
-						null, null, email, precinctId != null ? Arrays.asList(precinctId) : null));
+		SortedSet<Voter> voters = new TreeSet<>(voterDAO.findByCriteria(voterId, firstName, null, lastName, true, false,
+				birthYear, null, null, null, null, null, email, null));
 
 		// save the search params into a session object
 		VoterSearchParams searchParams = new VoterSearchParams(voterId, lastName, firstName, birthYear, email);

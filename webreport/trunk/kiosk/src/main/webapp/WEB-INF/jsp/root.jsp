@@ -53,25 +53,6 @@
 					cellpadding="0" cellspacing="0" width="100%">
 					<tr valign="middle">
 						<td width="100%" class="stationHeaderText">&nbsp;</td>
-						<c:if test="${not empty facilityContextName}">
-							<td align="right" class="stationHeaderText" nowrap><img
-								src="${imgHome}/spacer.gif" alt="" height="0"><strong><spring:message
-										code="facility" />:</strong>&nbsp;</td>
-							<td align="left" class="stationHeaderText" width="0" nowrap
-								id="dutyStationId"><div
-									style="display: inline-block; background-color: white; padding: 2px; border-radius: 2px">
-									<c:if test="${multipleStationsAssigned}">
-										<a class="changeStationLink" href="${home}/changeStation.htm"><c:out
-												value="${facilityContextName}" /><img
-											src="${imgHome}/uparrow.png" height="14" hspace="4"
-											border="0" align="absmiddle" alt="Change Station Arrow" /></a>
-									</c:if>
-									<c:if test="${not multipleStationsAssigned}">
-										<span class="changeStationText"><c:out
-												value="${facilityContextName}" /></span>
-									</c:if>
-								</div></td>
-						</c:if>
 						<c:if test="${not empty currentUser}">
 							<td align="right" class="stationHeaderText" nowrap><img
 								src="${imgHome}/spacer.gif" alt="" height="0" width="20"><strong><spring:message

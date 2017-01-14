@@ -10,7 +10,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bocogop.shared.model.Permission.PermissionType;
 import org.bocogop.shared.persistence.AppUserDAO;
-import org.bocogop.shared.persistence.AppUserPrecinctDAO;
 import org.bocogop.shared.persistence.dao.ApplicationParametersDAO;
 import org.bocogop.shared.persistence.dao.CountryDAO;
 import org.bocogop.shared.persistence.dao.EventDAO;
@@ -59,8 +58,6 @@ public abstract class AbstractCommonAppController {
 
 	@Autowired
 	protected ApplicationParametersDAO applicationParameterDAO;
-	@Autowired
-	protected AppUserPrecinctDAO appUserPrecinctDAO;
 	@Autowired
 	protected AppUserDAO appUserDAO;
 	@Autowired

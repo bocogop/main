@@ -10,7 +10,8 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bocogop.shared.model.AbstractAuditedVersionedPersistent;
+import org.bocogop.shared.model.AbstractIdentifiedPersistent;
+import org.bocogop.shared.model.voter.Voter.VoterView;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
@@ -22,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 @Table(name = "Precinct")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = PUBLIC_ONLY, isGetterVisibility = PUBLIC_ONLY)
-public class Precinct extends AbstractAuditedVersionedPersistent<Precinct> implements Comparable<Precinct> {
+public class Precinct extends AbstractIdentifiedPersistent<Precinct> implements Comparable<Precinct> {
 	private static final long serialVersionUID = -8678395783438462990L;
 
 	public static class PrecinctView {
@@ -101,7 +102,7 @@ public class Precinct extends AbstractAuditedVersionedPersistent<Precinct> imple
 	}
 
 	@Column(length = 40, nullable = false)
-	@JsonView(PrecinctView.Basic.class)
+	@JsonView({ PrecinctView.Basic.class, VoterView.Search.class })
 	public String getName() {
 		return name;
 	}

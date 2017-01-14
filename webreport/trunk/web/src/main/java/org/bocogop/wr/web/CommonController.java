@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.bocogop.shared.model.AppUser;
 import org.bocogop.shared.model.lookup.TemplateType;
-import org.bocogop.shared.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.shared.persistence.impl.AbstractAppDAOImpl;
 import org.bocogop.shared.service.VelocityService;
 import org.bocogop.shared.web.AbstractAppController;
@@ -116,10 +115,6 @@ public class CommonController extends AbstractAppController {
 	public @ResponseBody boolean keepAlive() {
 		log.debug("Received request to keep-alive the session...");
 		return true;
-	}
-
-	public static void populatePrecinctList(AppUser user, ModelMap model, PrecinctDAO precinctDAO) {
-		model.put("precinctList", user.getAssignedPrecincts());
 	}
 
 	@RequestMapping("/updatePreferences")

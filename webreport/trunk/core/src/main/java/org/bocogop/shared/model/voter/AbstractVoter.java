@@ -190,7 +190,7 @@ public abstract class AbstractVoter<T extends AbstractVoter<T>> extends Abstract
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PrecinctFK")
-	@JsonView({ VoterView.Extended.class, VoterView.Demographics.class })
+	@JsonView({ VoterView.Search.class, VoterView.Extended.class, VoterView.Demographics.class })
 	public Precinct getPrecinct() {
 		return precinct;
 	}

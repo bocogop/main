@@ -15,8 +15,8 @@ public interface AppUserService {
 	AppUser saveOrUpdateWithoutAuthority(AppUser appUser);
 
 	AppUser updateUser(long userId, Boolean enabled, Boolean locked, Boolean expired, ZoneId timezone,
-			boolean updateRolesAndFacilities, Long defaultFacilityId, Collection<Long> globalRoles,
-			Collection<Long> vaFacilityIds) throws ServiceValidationException;
+			boolean updateRolesAndFacilities, Collection<Long> globalRoles)
+			throws ServiceValidationException;
 
 	String updatePassword(long appUserId, String plaintextPassword);
 

@@ -7,7 +7,7 @@ import org.bocogop.shared.persistence.AppDAO;
 
 public interface VolDemoDAO extends AppDAO<VoterDemographics> {
 
-	List<VoterDemographics> findDemographics(VolDemoSearchParams searchParams, int start, int length);
+	List<VoterDemographics> findDemographics(VolDemoSearchParams searchParams, int start, int length, long appUserId);
 
-	int[] findDemographicsTotalAndFilteredNumber(VolDemoSearchParams searchParams);
+	int[] findDemographicsTotalAndFilteredNumber(VolDemoSearchParams searchParams, long appUserId);
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,19 +22,16 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.bocogop.shared.model.AppUser;
 import org.bocogop.shared.model.AppUser.AppUserView;
 import org.bocogop.shared.model.AppUserGlobalRole;
-import org.bocogop.shared.model.AppUserPrecinct;
 import org.bocogop.shared.model.Permission.PermissionType;
 import org.bocogop.shared.model.Role;
 import org.bocogop.shared.model.precinct.Precinct;
 import org.bocogop.shared.persistence.AppUserDAO;
 import org.bocogop.shared.persistence.AppUserDAO.QuickSearchResult;
-import org.bocogop.shared.persistence.AppUserPrecinctDAO;
 import org.bocogop.shared.persistence.dao.RoleDAO;
 import org.bocogop.shared.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.shared.service.AppUserService;
 import org.bocogop.shared.service.UserAdminCustomizations;
 import org.bocogop.shared.service.validation.ServiceValidationException;
-import org.bocogop.shared.util.PersistenceUtil;
 import org.bocogop.shared.util.SecurityUtil;
 import org.bocogop.shared.util.StringUtil;
 import org.bocogop.shared.util.TimeZoneUtils;
@@ -62,8 +58,6 @@ public class UserAdminController {
 
 	@Autowired
 	private AppUserDAO appUserDAO;
-	@Autowired
-	private AppUserPrecinctDAO appUserPrecinctDAO;
 	@Autowired
 	private AppUserService appUserService;
 	@Autowired
@@ -136,7 +130,7 @@ public class UserAdminController {
 		return getAppUserInfo(userId, username, false);
 	}
 
-	private Map<String, Object> getAppUserInfo(Long userId, String username, boolean includeRolesAndPrecincts) {
+	private Map<String, Object> getAppUserInfo(Long userId, String username, boolean includeRoles) {
 		ensureUserAccess(userId, username);
 		AppUser u = SecurityUtil.getCurrentUserAs(AppUser.class);
 
@@ -152,26 +146,11 @@ public class UserAdminController {
 		}
 
 		results.put("user", user);
-		results.put("updateRolesAndPrecincts", includeRolesAndPrecincts);
+		results.put("updateRoles", includeRoles);
 
 		Precinct primaryPrecinct = null;
 
-		if (includeRolesAndPrecincts) {
-			SortedSet<Precinct> availablePrecincts = precinctDAO.findAllSorted();
-
-			List<AppUserPrecinct> appUserPrecinctList = appUserPrecinctDAO.findByUserSorted(user.getId());
-			for (AppUserPrecinct precinct : appUserPrecinctList) {
-				if (precinct.isPrimaryPrecinct())
-					primaryPrecinct = precinct.getPrecinct();
-				availablePrecincts.remove(precinct.getPrecinct());
-			}
-
-			if (!u.isNationalAdmin())
-				availablePrecincts.retainAll(u.getAssignedPrecincts());
-			results.put("availablePrecincts", availablePrecincts);
-
-			results.put("appUserPrecincts", appUserPrecinctList);
-
+		if (includeRoles) {
 			SortedSet<Role> availableRoles = roleDAO.findAllSorted(true);
 			Set<AppUserGlobalRole> globalRoles = user.getGlobalRoles();
 			for (AppUserGlobalRole augr : globalRoles) {
@@ -185,10 +164,7 @@ public class UserAdminController {
 			results.put("availableRoles", availableRoles);
 
 			populateModelForSummaryTable(user, results);
-		} else {
-			primaryPrecinct = appUserPrecinctDAO.findPrimaryPrecinctForUser(user.getId());
 		}
-		results.put("defaultPrecinct", primaryPrecinct);
 
 		return results;
 	}
@@ -205,13 +181,6 @@ public class UserAdminController {
 		}
 
 		List<StationAndRoles> stationAndRoles = new ArrayList<>();
-
-		for (Precinct f : user.getAssignedPrecincts()) {
-			Long precinctId = f.getId();
-			Map<Long, Boolean> roleMap = new HashMap<>(falseRoleMap);
-
-			stationAndRoles.add(new StationAndRoles(f.getId(), roleMap));
-		}
 		results.put("stationAndRoles", stationAndRoles);
 		results.put("roleInfoMap", roleInfoMap);
 	}
@@ -221,26 +190,14 @@ public class UserAdminController {
 	public @ResponseBody boolean processUserUpdate(@RequestParam long userId, @RequestParam boolean enabled,
 			@RequestParam boolean expired, @RequestParam boolean locked, @RequestParam ZoneId timezone,
 			@RequestParam(required = false, defaultValue = "") List<Long> globalRoles,
-			@RequestParam(required = false, defaultValue = "") List<Long> precinctsToAdd,
-			@RequestParam(required = false, defaultValue = "") List<Long> precinctsToRemove,
-			@RequestParam Long defaultPrecinctId, @RequestParam boolean updateRolesAndPrecincts)
-			throws ServiceValidationException {
+			@RequestParam boolean updateRoles) throws ServiceValidationException {
 		ensureUserAccess(userId, null);
 
 		AppUser user = appUserDAO.findRequiredByPrimaryKey(userId);
 
-		Set<Long> precincts = null;
-		if (updateRolesAndPrecincts) {
-			precincts = new HashSet<>(PersistenceUtil.translateObjectsToIds(user.getAssignedPrecincts()));
-			for (Long l : precinctsToRemove)
-				precincts.remove(l);
-			for (Long l : precinctsToAdd)
-				precincts.add(l);
-		}
-
 		appUserService.updateUser(userId, enabled != user.isEnabled() ? enabled : null,
 				locked != user.isLocked() ? locked : null, expired != user.isAccountExpired() ? expired : null,
-				timezone, updateRolesAndPrecincts, defaultPrecinctId, globalRoles, precincts);
+				timezone, updateRoles, globalRoles);
 		return true;
 	}
 
