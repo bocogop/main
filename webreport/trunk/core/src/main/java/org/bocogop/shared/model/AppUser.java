@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bocogop.shared.model.AppUserGlobalRole.CompareByRole;
+import org.bocogop.shared.model.AppUserRole.CompareByRole;
 import org.bocogop.shared.model.Role.RoleType;
 import org.bocogop.shared.util.StringUtil;
 import org.bocogop.shared.web.conversion.ZoneIdSerializer;
@@ -74,7 +74,7 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	/* Has someone completely disabled this user from logging in */
 	private boolean enabled;
 
-	private Set<AppUserGlobalRole> globalRoles;
+	private Set<AppUserRole> roles;
 
 	/*
 	 * Only contains one item, lazy-loaded; mapping like this instead
@@ -97,10 +97,10 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	// ------------------------------------ Business Methods
 
 	public void initializeAll() {
-		initialize(getGlobalRoles());
+		initialize(getRoles());
 		initialize(getAppUserPreferencesList());
 
-		for (AppUserGlobalRole augr : getGlobalRoles()) {
+		for (AppUserRole augr : getRoles()) {
 			augr.initializeAll();
 		}
 	}
@@ -121,19 +121,19 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 		return RoleType.NATIONAL_ADMIN.isAssignedToUser(this);
 	}
 
-	public boolean hasGlobalRole(RoleType type) {
-		for (AppUserGlobalRole augr : getGlobalRoles())
+	public boolean hasRole(RoleType type) {
+		for (AppUserRole augr : getRoles())
 			if (augr.getRole().getLookupType() == type)
 				return true;
 		return false;
 	}
 
-	public void addGlobalRole(Role role) {
-		getGlobalRoles().add(new AppUserGlobalRole(this, role));
+	public void addRole(Role role) {
+		getRoles().add(new AppUserRole(this, role));
 	}
 
-	public void removeGlobalRole(Role role) {
-		for (Iterator<AppUserGlobalRole> it = getGlobalRoles().iterator(); it.hasNext();) {
+	public void removeRole(Role role) {
+		for (Iterator<AppUserRole> it = getRoles().iterator(); it.hasNext();) {
 			if (it.next().getRole().equals(role)) {
 				it.remove();
 				break;
@@ -143,10 +143,10 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 
 	@Transient
 	@JsonIgnore
-	public SortedSet<Role> getBasicGlobalRoles() {
-		Set<AppUserGlobalRole> aufrList = getGlobalRoles();
+	public SortedSet<Role> getBasicRoles() {
+		Set<AppUserRole> aufrList = getRoles();
 		SortedSet<Role> roles = new TreeSet<>();
-		for (AppUserGlobalRole aufr : aufrList) {
+		for (AppUserRole aufr : aufrList) {
 			roles.add(aufr.getRole());
 		}
 		return roles;
@@ -154,9 +154,9 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 
 	@Transient
 	@JsonView(AppUserView.Extended.class)
-	public SortedSet<AppUserGlobalRole> getGlobalRolesSorted() {
-		SortedSet<AppUserGlobalRole> results = new TreeSet<>(new CompareByRole());
-		results.addAll(getGlobalRoles());
+	public SortedSet<AppUserRole> getRolesSorted() {
+		SortedSet<AppUserRole> results = new TreeSet<>(new CompareByRole());
+		results.addAll(getRoles());
 		return results;
 	}
 
@@ -212,7 +212,7 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	public synchronized Collection<? extends GrantedAuthority> getAuthorities() {
 		if (authoritiesCache == null) {
 			Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-			for (Role r : getBasicGlobalRoles()) {
+			for (Role r : getBasicRoles()) {
 				if (r.isUsedAsPermission())
 					authorities.add(new SimpleGrantedAuthority(r.getName()));
 				for (Permission p : r.getPermissions())
@@ -320,16 +320,15 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 
 	@OneToMany(mappedBy = "appUser", fetch = FetchType.LAZY)
 	@BatchSize(size = 500)
-	/* In lieu of GlobalRolesSorted - CPB */
 	@JsonIgnore
-	public Set<AppUserGlobalRole> getGlobalRoles() {
-		if (globalRoles == null)
-			globalRoles = new HashSet<>();
-		return globalRoles;
+	public Set<AppUserRole> getRoles() {
+		if (roles == null)
+			roles = new HashSet<>();
+		return roles;
 	}
 
-	public void setGlobalRoles(Set<AppUserGlobalRole> globalRoles) {
-		this.globalRoles = globalRoles;
+	public void setRoles(Set<AppUserRole> roles) {
+		this.roles = roles;
 	}
 
 	@Column(name = "EnabledInd", nullable = false)

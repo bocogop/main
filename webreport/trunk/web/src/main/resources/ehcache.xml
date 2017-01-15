@@ -35,25 +35,25 @@
 	<!-- Specific caches -->
 
 	<cache name="queries.countryDAO" maxElementsInMemory="500"
-		eternal="true" overflowToDisk="false" />
+		eternal="true" overflowToDisk="false" copyOnRead="true" copyOnWrite="true" />
 
 	<cache name="queries.precinctDAO" maxElementsInMemory="5000"
 		eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="1200"
-		overflowToDisk="false" />
+		overflowToDisk="false" copyOnRead="true" copyOnWrite="true" />
 
 	<cache name="queries.genderDAO" maxElementsInMemory="5" eternal="true"
-		overflowToDisk="false" copyOnRead="true" />
+		overflowToDisk="false" copyOnRead="true" copyOnWrite="true" />
 
 	<cache name="queries.permissionDAO" maxElementsInMemory="1000"
 		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
-		overflowToDisk="false" copyOnRead="true" />
+		overflowToDisk="false" copyOnRead="true" copyOnWrite="true" />
 
 	<cache name="queries.roleDAO" maxElementsInMemory="1000" eternal="false"
 		timeToIdleSeconds="3600" timeToLiveSeconds="7200" overflowToDisk="false"
-		copyOnRead="true" />
+		copyOnRead="true" copyOnWrite="true" />
 
 	<cache name="queries.stateDAO" maxElementsInMemory="500" eternal="true"
-		overflowToDisk="false" />
+		overflowToDisk="false" copyOnRead="true" copyOnWrite="true" />
 
 	<!-- App classes -->
 

@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bocogop.shared.model.AppUser;
-import org.bocogop.shared.model.AppUserGlobalRole;
 import org.bocogop.shared.model.AppUserPreferences;
+import org.bocogop.shared.model.AppUserRole;
 import org.bocogop.shared.model.CoreUserDetails;
 import org.bocogop.shared.model.Permission;
 import org.bocogop.shared.model.Permission.PermissionType;
@@ -19,7 +19,6 @@ import org.bocogop.shared.model.Role;
 import org.bocogop.shared.persistence.AppUserDAO;
 import org.bocogop.shared.service.AbstractAppServiceImpl;
 import org.bocogop.shared.service.AppUserService;
-import org.bocogop.shared.service.UserAdminCustomizations;
 import org.bocogop.shared.service.validation.ServiceValidationException;
 import org.bocogop.shared.util.CollectionUtil;
 import org.bocogop.shared.util.CollectionUtil.SynchronizeCollectionsOps;
@@ -27,6 +26,7 @@ import org.bocogop.shared.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,24 +39,25 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	@Autowired(required = false)
-	private UserAdminCustomizations customizations;
+	@Value("${userAdmin.newUserDefaultTimezone}")
+	private ZoneId newUserDefaultTimezone;
 
 	@Override
 	@PreAuthorize("hasAuthority('" + Permission.USER_MANAGER + "')")
 	public AppUser saveOrUpdate(AppUser appUser) {
-		return appUserDAO.saveOrUpdate(appUser);
+		if (appUser.isPersistent() == false) {
+			appUser.setEnabled(true);
+			appUser.setTimeZone(newUserDefaultTimezone);
+		}
+
+		appUser = appUserDAO.saveOrUpdate(appUser);
+		appUser = populatePreferencesIfNecessary(appUserDAO, appUser);
+		return appUser;
 	}
 
 	@Override
-	public AppUser saveOrUpdateWithoutAuthority(AppUser appUser) {
-		AppUser updated = appUserDAO.saveOrUpdate(appUser);
-		return updated;
-	}
-
-	@Override
-	public AppUser updateUser(long userId, Boolean enabled, Boolean locked, Boolean expired, ZoneId timezone,
-			boolean updateRoles, Collection<Long> globalRoles) throws ServiceValidationException {
+	public AppUser updateUser(long userId, Boolean enabled, ZoneId timezone, boolean updateRoles,
+			Collection<Long> roles) throws ServiceValidationException {
 		CoreUserDetails<?> currentUser = SecurityUtil.getCurrentUser();
 		final AppUser user = appUserDAO.findRequiredByPrimaryKey(userId);
 
@@ -94,38 +95,37 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 		 * Only allow for role & station changes if the user has UM permission
 		 */
 		if (hasUMPermission && updateRoles) {
-			if (globalRoles != null) {
-				Collection<Role> newRoles = roleDAO.findByPrimaryKeys(globalRoles).values();
+			if (roles != null) {
+				Collection<Role> newRoles = roleDAO.findByPrimaryKeys(roles).values();
 				final Collection<Long> roleIdsAdded = new ArrayList<>();
 				final Collection<Long> roleIdsRemoved = new ArrayList<>();
-				final Collection<Long> appUserGlobalRoleIdsRemoved = new ArrayList<>();
-				CollectionUtil.synchronizeCollections(user.getGlobalRoles(), newRoles,
-						new SynchronizeCollectionsOps<AppUserGlobalRole, Role>() {
+				final Collection<Long> appUserRoleIdsRemoved = new ArrayList<>();
+				CollectionUtil.synchronizeCollections(user.getRoles(), newRoles,
+						new SynchronizeCollectionsOps<AppUserRole, Role>() {
 							@Override
-							public void add(Collection<AppUserGlobalRole> coll, AppUserGlobalRole itemToAdd) {
+							public void add(Collection<AppUserRole> coll, AppUserRole itemToAdd) {
 								roleIdsAdded.add(itemToAdd.getRole().getId());
 							}
 
 							@Override
-							public void remove(Iterator<AppUserGlobalRole> it,
-									AppUserGlobalRole currentItemBeingRemoved) {
+							public void remove(Iterator<AppUserRole> it, AppUserRole currentItemBeingRemoved) {
 								if (currentItemBeingRemoved.isPersistent()) {
-									appUserGlobalRoleIdsRemoved.add(currentItemBeingRemoved.getId());
+									appUserRoleIdsRemoved.add(currentItemBeingRemoved.getId());
 									roleIdsRemoved.add(currentItemBeingRemoved.getRole().getId());
 								}
 							}
 
 							@Override
-							public AppUserGlobalRole convert(Role u) {
-								return new AppUserGlobalRole(user, u);
+							public AppUserRole convert(Role u) {
+								return new AppUserRole(user, u);
 							}
 						});
 
 				Set<Long> totalRolesModified = new HashSet<>(roleIdsAdded);
 				totalRolesModified.addAll(roleIdsRemoved);
 
-				appUserGlobalRoleDAO.bulkAdd(user.getId(), roleIdsAdded);
-				appUserGlobalRoleDAO.deleteByPrimaryKeys(appUserGlobalRoleIdsRemoved);
+				appUserRoleDAO.bulkAdd(user.getId(), roleIdsAdded);
+				appUserRoleDAO.deleteByPrimaryKeys(appUserRoleIdsRemoved);
 
 				userRefreshNeeded = true;
 			}
@@ -148,35 +148,8 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 
 	@Override
 	public void removeUser(long appUserId, Map<String, Object> userAdminCustomizationsModel) {
-		if (customizations != null)
-			customizations.userDeletedCallback(appUserId, userAdminCustomizationsModel);
-
-		appUserGlobalRoleDAO.deleteByUsers(Arrays.asList(appUserId));
+		appUserRoleDAO.deleteByUsers(Arrays.asList(appUserId));
 		appUserDAO.delete(appUserId);
-	}
-
-	@Override
-	public AppUser createOrRetrieveUser(String activeDirectoryName, Map<String, Object> userAdminCustomizationsModel) {
-		AppUser appUser = appUserDAO.findByUsername(activeDirectoryName, false);
-		if (appUser != null) {
-			appUser = populatePreferencesIfNecessary(appUserDAO, appUser);
-
-			if (customizations != null)
-				appUser = customizations.userRetrievedCallback(appUser, userAdminCustomizationsModel);
-
-			return appUser;
-		}
-
-		// TODO BOCOGOP set name here from user input?
-		appUser = new AppUser();
-		appUser.setEnabled(true);
-		appUser = saveOrUpdateWithoutAuthority(appUser);
-		appUser = populatePreferencesIfNecessary(appUserDAO, appUser);
-
-		if (customizations != null)
-			appUser = customizations.userCreatedCallback(appUser, userAdminCustomizationsModel);
-
-		return appUser;
 	}
 
 	public static AppUser populatePreferencesIfNecessary(AppUserDAO appUserDAO, AppUser appUser) {

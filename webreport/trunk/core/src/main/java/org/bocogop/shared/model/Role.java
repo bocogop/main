@@ -162,7 +162,7 @@ public class Role extends AbstractLookup<Role, RoleType> implements GrantedAutho
 		}
 
 		public boolean isAssignedToUser(AppUser user) {
-			return LookupUtil.isTypeInLookups(this, user.getBasicGlobalRoles());
+			return LookupUtil.isTypeInLookups(this, user.getBasicRoles());
 		}
 
 		public boolean isApproved(AppUser user, long precinctId) {

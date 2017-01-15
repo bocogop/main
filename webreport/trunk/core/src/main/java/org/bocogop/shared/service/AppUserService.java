@@ -11,11 +11,7 @@ public interface AppUserService {
 
 	AppUser saveOrUpdate(AppUser appUser);
 
-	/* For application-internal code only */
-	AppUser saveOrUpdateWithoutAuthority(AppUser appUser);
-
-	AppUser updateUser(long userId, Boolean enabled, Boolean locked, Boolean expired, ZoneId timezone,
-			boolean updateRolesAndFacilities, Collection<Long> globalRoles)
+	AppUser updateUser(long userId, Boolean enabled, ZoneId timezone, boolean updateRoles, Collection<Long> roles)
 			throws ServiceValidationException;
 
 	String updatePassword(long appUserId, String plaintextPassword);
@@ -26,8 +22,6 @@ public interface AppUserService {
 	 * app-specific foreign key constraints - CPB
 	 */
 	void removeUser(long appUserId, Map<String, Object> userAdminCustomizationsModel);
-
-	AppUser createOrRetrieveUser(String activeDirectoryName, Map<String, Object> userAdminCustomizationsModel);
 
 	AppUser updatePreferences(long appUserId);
 

@@ -3,9 +3,9 @@ package org.bocogop.shared.persistence;
 import java.util.Collection;
 import java.util.List;
 
-import org.bocogop.shared.model.AppUserGlobalRole;
+import org.bocogop.shared.model.AppUserRole;
 
-public interface AppUserGlobalRoleDAO extends AppDAO<AppUserGlobalRole> {
+public interface AppUserRoleDAO extends AppDAO<AppUserRole> {
 
 	void bulkAdd(long userId, Collection<Long> roleIdsToAdd);
 

@@ -1,28 +1,18 @@
 $(function() {
 	$("input:submit, a.buttonAnchor, a.submitAnchor, button").button()
 	
-	initCustomizeDialog()
-	$("#customize").click(showCustomizeDialog)
-	
 	$(".userInput").change(function() {
-		update(false)
-	})
-	
-	$("#setDefaultLink").click(function() {
-		var optionsSelected = $('#stations option:selected')
-		if (optionsSelected.length == 0 || optionsSelected.length > 1) {
-			displayAttentionDialog("Please select one precinct to set as the default.")
-			return
-		}
-		
-		$("#defaultPrecinctId").val(optionsSelected[0].value)
-		$('#stations option:selected').prop("selected", false)
 		update(false)
 	})
 	
 	$(".manageSelfOnly").toggle(!hasUMPermission)
 	$(".manageAll").toggle(hasUMPermission)
 	
+	buildUserTable()
+    buildUserFieldsDialog()
+})
+
+function buildUserTable() {
 	$("#userTable").DataTable({
         "ajax": ajaxHomePath + "/appUser/quickSearch",
         "columns": [
@@ -35,24 +25,110 @@ $(function() {
         ],
         "dom" : '<"top"f>rt<"bottom"l>',
         "language": {
-            zeroRecords: "", //Please search above by name or VA username.",
+            zeroRecords: "", // Please search above by name or username.",
             search: "", // Search",
-            searchPlaceholder: "Search by name or VA username..."
+            searchPlaceholder: "Search by name or username..."
         },
         "processing": true,
-        "scrollY" : 140,
+        "scrollY" : 80,
         "serverSide": true
-    })    
-})
+    })
+}
 
-// --------------------------------------- Roles and Precincts functions
+//--------------------------------------- User popup
+
+function buildUserFieldsDialog() {
+	$("#userFieldsWrapper").dialog({
+		autoOpen : false,
+		modal : false,
+		width : 650,
+		height : 280,
+		closeOnEscape : true,
+		draggable : true,
+		resizable : true,
+		buttons : [
+		           {
+		               id: "userFieldsSubmit",
+		               text: "Submit",
+		               click: submitUserAddOrEdit
+		           }, {
+		               id: "userFieldsCancel",
+		               text: "Cancel",
+		               click: function() {
+		   				$(this).dialog('close')
+		   			}
+		           }
+		       ]
+	})
+}
+
+function submitUserAddOrEdit() {
+   doubleClickSafeguard($("#userPopupSubmit"))
+	var userId = $("#userFieldsWrapper").data('userId')
+	
+	var username = $("#userUsername").val()
+	var firstName = $("#userFirstName").val()
+	var lastName = $("#userLastName").val()
+	var email = $("#userEmail").val()
+		
+	var errors = new Array()
+	
+   if ($.trim(username) == '')
+	   errors.push('Please enter the username.')
+   if ($.trim(firstName) == '')
+	   errors.push('Please enter the first name.')
+	if ($.trim(lastName) == '')
+		errors.push('Please enter the last name.')
+	if (!validateEmail(email))
+		errors.push('Please enter a valid email in the format "user@server.tld".')
+		
+	if (errors.length > 0) {
+		displayAttentionDialog("Please correct the following errors: <ul><li>"
+				+ errors.join("</li><li>") + "</li></ul>");
+		return
+	}
+	
+	$.ajax({
+		url : ajaxHomePath + '/appUser/saveOrUpdate',
+		dataType : 'json',
+		data : {
+			userId : userId,
+			firstName : firstName,
+			lastName : lastName,
+			username : username
+		},
+		error : commonAjaxErrorHandler,
+		success : function(result) {
+			$("#userFieldsWrapper").dialog('close')
+			selectUser(result)
+		}
+	})
+}
+
+function editUser() {
+	popupUserAddOrEdit(currentUserId)
+}
+
+function popupUserAddOrEdit(userId) {
+	$("#userFieldsWrapper").data('userId', userId || '')
+	
+	$("#userUsername").val(userId ? currentUser.username : '')
+	$("#userFirstName").val(userId ? currentUser.firstName : '')
+	$("#userLastName").val(userId ? currentUser.lastName : '')
+	$("#userPhone").val(userId ? currentUser.phone || '' : '')
+	$("#userEmail").val(userId ? currentUser.email || '' : '')
+	$("#userDescription").val(userId ? currentUser.description || '' : '')
+	
+	$("#userFieldsWrapper").dialog('open')
+}
+
+// --------------------------------------- Roles functions
 
 var allRoles = []
-var allPrecincts = []
 
 function getAllRoles(callback) {
 	if (allRoles.length == 0) {
-		loadAllRolesAndPrecincts(function() {
+		loadAllRoles(function() {
 			callback(allRoles)
 		})
 	} else {
@@ -66,32 +142,19 @@ function setAllRolesIfNeeded(roleGenerator) {
 	}
 }
 
-function getAllPrecincts(callback) {
-	if (allPrecincts.length == 0) {
-		loadAllRolesAndPrecincts(function() {
-			callback(allPrecincts)
-		})
-	} else {
-		callback(allPrecincts)
-	}
-}
-
-function setAllPrecinctsIfNeeded(precinctGenerator) {
-	if (allPrecincts.length == 0) {
-		allPrecincts = precinctGenerator()
-	}
-}
-
-function loadAllRolesAndPrecincts(callback) {
+function loadAllRoles(callback) {
 	alert('AJAX call not implemented/needed yet')
 }
 
-//--------------------------------------- Main user functions
+// --------------------------------------- Main user functions
 
 var currentUser = null
+var currentUserId = null
 
-function refreshUser(includeRolesAndPrecincts) {
-	var userSelected = currentUser != null
+function refreshUser(includeRoles) {
+	currentUser = null
+	var userSelected = currentUserId != null
+	
 	$(".pleaseSelect").toggle(!userSelected)
 	
 	$(".manageSelfOnly").toggle(!hasUMPermission)
@@ -109,8 +172,8 @@ function refreshUser(includeRolesAndPrecincts) {
 		type : "GET",
 		dataType : 'json',
 		data : {
-			userId : currentUser.id,
-			includeRolesAndPrecincts : includeRolesAndPrecincts
+			userId : currentUserId,
+			includeRoles : includeRoles
 		},
 		error : commonAjaxErrorHandler,
 		success : setUserFields
@@ -119,6 +182,8 @@ function refreshUser(includeRolesAndPrecincts) {
 
 function setUserFields(resultMap) {
 	var userResult = resultMap.user
+	currentUser = userResult
+	
 	var updateRoles = resultMap.updateRoles
 	
 	$("#userID").text(userResult.username)
@@ -126,7 +191,7 @@ function setUserFields(resultMap) {
 	$("#userPhone").text(userResult.telephoneNumber)
 	
 	var emailHtml = ''
-	if (userResult.email != '') {
+	if (userResult.email && userResult.email != '') {
 		emailHtml = escapeHTML(userResult.email) + '<a href="mailto:'
 			+ escapeHTML(userResult.email)
 			+ '"><img alt="Click to email '
@@ -139,28 +204,15 @@ function setUserFields(resultMap) {
 	$("#userEmail").html(emailHtml)
 	$("#userEnabled").prop('checked', userResult.enabled);
 	$("#userEnabledText").text(userResult.enabled ? 'Yes' : 'No');
-	$("#userExpired").prop('checked', userResult.inactive)
-	$("#userExpiredRow").toggle(userResult.inactive)
-	$("#userLocked").prop('checked', userResult.accountLockDate != null);
-	$("#userLockedText").text(userResult.accountLockDate != null ? 'Yes' : 'No');
 	
 	if (userResult.timeZone) {
 		$("#timeZoneSelect").val(userResult.timeZone.id)
 	}
 	
-	var defaultPrecinct = resultMap.defaultPrecinct
-	if (defaultPrecinct) {
-		$("#defaultPrecinctId").val(defaultPrecinct.id)
-		$(".defaultPrecinctText").text(defaultPrecinct.displayName)
-	} else {
-		$("#defaultPrecinctId").val("")
-		$(".defaultPrecinctText").text("(none set)")
-	}
-	
 	if (updateRoles) {
 		$("#roles").empty()
-		$.each(userResult.globalRolesSorted, function(index, appUserGlobalRole) {
-			var role = appUserGlobalRole.role
+		$.each(userResult.rolesSorted, function(index, appUserRole) {
+			var role = appUserRole.role
 			$("#roles").append($('<option></option>') //
 					.val(role.id) //
 					.html(role.name))
@@ -179,21 +231,6 @@ function setUserFields(resultMap) {
 	}
 }
 
-function newAppUserSelectedCallback(appUserObj) {
-	$.ajax({
-		url : ajaxHomePath + "/appUser/add",
-		type : "POST",
-		dataType : 'json',
-		data : {
-			activeDirectoryName : appUserObj.username
-		},
-		error : commonAjaxErrorHandler,
-		success : function(result) {
-			selectUser(result)
-		}
-	})
-}
-
 function selectUserWithFields(id, username, displayName) {
 	selectUser({
 		id: id,
@@ -209,55 +246,26 @@ function selectUser(userObj) {
 	
 	if (userObj) {
 		table.row.add(userObj).draw()
+		currentUserId = userObj.id
+	} else {
+		currentUserId = null
+		currentUser = null
 	}
-	currentUser = userObj
-	refreshUser(true)
-}
-
-var precinctsToAdd = []
-var precinctsToRemove = []
-
-function moveStations(isAdd, addAll, removeAll) {
-	precinctsToAdd = []
-	$('#available_stations option').each(function(i) {
-    	if (isAdd && (addAll || $(this).is(":selected")))
-    		precinctsToAdd.push(this.value)
-    })
 	
-	precinctsToRemove = []
-	var removingDefaultPrecinct = false
-	var currentDefaultPrecinct = $("#defaultPrecinctId").val()
-    $('#stations option').each(function(i) {
-    	if (!isAdd && (removeAll || $(this).is(":selected"))) {
-    		precinctsToRemove.push(this.value)
-    		if (this.value == currentDefaultPrecinct)
-    			removingDefaultPrecinct = true
-    	}
-    })
-    
-    if (precinctsToAdd.length == 0 && precinctsToRemove.length == 0)
-    	return
-    
-    if (removingDefaultPrecinct) {
-    	confirmDialog("Are you sure you want to remove the default precinct?<p />Another default precinct will need to be selected.",
-        	function() {
-        		update(true)
-        	})
-    } else {
-    	update(true)
-    }
+	refreshUser(true)
 }
 
 function removeUser() {
 	var userSelected = currentUser != null
 	if (!userSelected) return
+	
 	confirmDialog('Remove user "' + currentUser.displayName + '"?', function() {
 		$.ajax({
 			url : ajaxHomePath + "/appUser/remove",
 			type : "GET",
 			dataType : 'json',
 			data : {
-				appUserId : currentUser.id
+				appUserId : currentUserId
 			},
 			error : commonAjaxErrorHandler,
 			success : function(result) {
@@ -280,8 +288,8 @@ function cacheAllRoles(resultMap) {
 			if (a.name < b.name) return -1
 			return 1
 		})
-		$.each(userResult.globalRolesSorted, function(index, appUserGlobalRole) {
-			var role = appUserGlobalRole.role
+		$.each(userResult.rolesSorted, function(index, appUserRole) {
+			var role = appUserRole.role
 			allRoles.insert({
 				id: role.id,
 				name: role.name
@@ -309,12 +317,10 @@ function update(updateRoles) {
 		type : "POST",
 		dataType : 'json',
 		data : {
-			userId : currentUser.id,
+			userId : currentUserId,
 			enabled: $("#userEnabled").is(':checked'),
-			expired: $("#userExpired").is(':checked'),
-			locked: $("#userLocked").is(':checked'),
 			timezone: $("#timeZoneSelect").val(),
-			globalRoles: roles.join(),
+			roles: roles.join(),
 			updateRoles: updateRoles
 		},
 		error : function(jqXHR, textStatus, errorThrown) { 
@@ -325,87 +331,6 @@ function update(updateRoles) {
 			refreshUser(updateRoles)
 		}
 	})
-}
-
-function initCustomizeDialog() {
-	$("#customizeDialog").dialog({
-		autoOpen: false,
-		modal: true,
-		show: 'slide',
-		draggable: true,
-		resizable:true,
-		width: 600,
-		buttons: {
-			OK : function() {
-				$(this).dialog('close')
-				
-				var roles = []
-		        $('#cust_roles option').each(function(i) {
-		        	roles.push(this.value)
-		        })
-		        
-		        var precincts = []
-		        $('#cust_stations option').each(function(i) {
-		        	precincts.push(this.value)
-		        })
-				
-				$.ajax({
-					url : ajaxHomePath + "/appUser/customize",
-					type : "POST",
-					dataType : 'json',
-					data : {
-						userId : currentUser.id,
-						roles: roles.join(),
-						precincts: precincts.join()
-					},
-					error : function(jqXHR, textStatus, errorThrown) { 
-						refreshUser(true)
-						commonAjaxErrorHandler(jqXHR, textStatus, errorThrown)
-					},
-					success : function(resultMap) {
-						refreshUser(true)
-					}
-				})
-			},
-			Cancel: function() {
-				$(this).dialog('close')
-			}
-		}
-	})
-}
-
-function showCustomizeDialog() {
-	$("#available_cust_roles, #cust_roles, #available_cust_stations, #cust_stations").empty()
-	getAllRoles(function(allRoles) {
-		var newOptionHtml = []
-		$.each(allRoles, function(index, r) {
-			/*
-			 * Don't let them customize the national admin - it's either global
-			 * or none - CPB
-			 */
-			if (nationalAdminId == r.id) return
-			
-			newOptionHtml.push('<option value="' + r.id + '">' + 
-					escapeHTML(r.name) + '</option>')
-		})
-		$("#available_cust_roles").html(newOptionHtml.join(''))
-	})
-	getAllPrecincts(function(allPrecincts) {
-		var newOptionHtml = []
-		$.each(allPrecincts, function(index, f) {
-			/*
-			 * Don't let them customize the central office - it's either global
-			 * or none - CPB
-			 */
-			if (centralOfficePrecinctId == f.id) return
-			
-			newOptionHtml.push('<option value="' + f.id + '">' + 
-					abbreviate(f.name) + '</option>')
-		})
-		$("#available_cust_stations").html(newOptionHtml.join(''))
-	})
-	rebuildSelectFilters(['available_cust_stations', 'cust_stations'])
-	$("#customizeDialog").dialog("open")
 }
 
 function moveItem(itemName, moveType, runUpdate) {
@@ -454,7 +379,6 @@ function abbreviate(str) {
 	return str;
 }
 
-//For making "Set Default" and "Customze..." buttons 508 Compliant 
+// For making "Set Default" and "Customze..." buttons 508 Compliant
 function doNothing() {
-	
 }

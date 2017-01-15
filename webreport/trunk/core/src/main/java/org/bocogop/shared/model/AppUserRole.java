@@ -24,14 +24,14 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "AppUserGlobalRole", schema = "Core")
+@Table(name = "AppUserRole", schema = "Core")
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = PUBLIC_ONLY, isGetterVisibility = PUBLIC_ONLY)
-public class AppUserGlobalRole extends AbstractAuditedPersistent<AppUserGlobalRole> implements LookupContainer<Role> {
+public class AppUserRole extends AbstractAuditedPersistent<AppUserRole> implements LookupContainer<Role> {
 	private static final long serialVersionUID = 1L;
 
-	public static class CompareByRole implements Comparator<AppUserGlobalRole> {
+	public static class CompareByRole implements Comparator<AppUserRole> {
 		@Override
-		public int compare(AppUserGlobalRole o1, AppUserGlobalRole o2) {
+		public int compare(AppUserRole o1, AppUserRole o2) {
 			if (o1.equals(o2))
 				return 0;
 			return new CompareToBuilder().append(o1 == null ? null : o1.getRole(), o2 == null ? null : o2.getRole())
@@ -44,10 +44,10 @@ public class AppUserGlobalRole extends AbstractAuditedPersistent<AppUserGlobalRo
 
 	// -------------------------------------- Constructors
 
-	public AppUserGlobalRole() {
+	public AppUserRole() {
 	}
 
-	public AppUserGlobalRole(AppUser appUser, Role role) {
+	public AppUserRole(AppUser appUser, Role role) {
 		this.appUser = appUser;
 		this.role = role;
 	}
@@ -68,7 +68,7 @@ public class AppUserGlobalRole extends AbstractAuditedPersistent<AppUserGlobalRo
 	// -------------------------------------- Common Methods
 
 	@Override
-	protected boolean requiredEquals(AppUserGlobalRole oo) {
+	protected boolean requiredEquals(AppUserRole oo) {
 		return new EqualsBuilder().append(nullSafeGetId(appUser), nullSafeGetId(oo.getAppUser()))
 				.append(nullSafeGetId(role), nullSafeGetId(oo.getRole())).isEquals();
 	}
@@ -80,7 +80,7 @@ public class AppUserGlobalRole extends AbstractAuditedPersistent<AppUserGlobalRo
 
 	@Override
 	public String toString() {
-		return "AppUserGlobalRole(User ID " + nullSafeGetId(appUser) + ", Role ID " + nullSafeGetId(role) + ")";
+		return "AppUserRole(User ID " + nullSafeGetId(appUser) + ", Role ID " + nullSafeGetId(role) + ")";
 	}
 
 	// -------------------------------------- Accessor Methods

@@ -61,15 +61,11 @@
 				<ul id="menuReference" role="menu" style="width: 165px">
 					${referenceDataLinks}
 				</ul></li>
-
-			<c:set var="isRoleManager" value="false" />
-			<sec:authorize access="hasAuthority('${PERMISSION_USER_MANAGER}')">
-				<c:set var="isRoleManager" value="true" />
+			<sec:authorize access="hasAnyAuthority('${PERMISSION_USER_MANAGER}')">
+				<li role="menuitem"><a href="${home}/userAdmin.htm"
+					title="Manage User Access" shortcut="cs" class="sequencehotkeyed"
+					role="menuitem">Manage Users</a></li>
 			</sec:authorize>
-			<li role="menuitem"><a href="${home}/userAdmin.htm"
-				tit`le="Manage User Access" shortcut="cs" class="sequencehotkeyed"
-				role="menuitem"><c:if test="${isRoleManager}">Manage User Access</c:if>
-					<c:if test="${not isRoleManager}">Manage My User</c:if></a></li>
 		</ul>
 	</div>
 </div>

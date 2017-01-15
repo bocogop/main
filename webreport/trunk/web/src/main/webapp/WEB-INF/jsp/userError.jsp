@@ -9,7 +9,7 @@
 </c:if>
 
 <div class="alert alert-danger clearCenter">
-	Please ensure you have been assigned access to WR and your account is not expired or disabled.
+	Please ensure you have been assigned access and your account is not expired or disabled.
 </div>
 <p>
 

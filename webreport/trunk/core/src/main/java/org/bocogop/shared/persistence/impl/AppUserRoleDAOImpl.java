@@ -8,15 +8,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.persistence.Query;
 
 import org.bocogop.shared.model.AbstractAuditedPersistent;
-import org.bocogop.shared.model.AppUserGlobalRole;
+import org.bocogop.shared.model.AppUserRole;
 import org.bocogop.shared.model.Role;
-import org.bocogop.shared.persistence.AppUserGlobalRoleDAO;
+import org.bocogop.shared.persistence.AppUserRoleDAO;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Iterables;
 
 @Repository
-public class AppUserGlobalRoleDAOImpl extends AbstractAppDAOImpl<AppUserGlobalRole> implements AppUserGlobalRoleDAO {
+public class AppUserRoleDAOImpl extends AbstractAppDAOImpl<AppUserRole> implements AppUserRoleDAO {
 
 	@Override
 	public void bulkAdd(final long userId, Collection<Long> roleIdsToAdd) {
@@ -50,7 +50,7 @@ public class AppUserGlobalRoleDAOImpl extends AbstractAppDAOImpl<AppUserGlobalRo
 		if (roleIds.isEmpty())
 			return 0;
 
-		StringBuilder sb = new StringBuilder("delete from ").append(AppUserGlobalRole.class.getName())
+		StringBuilder sb = new StringBuilder("delete from ").append(AppUserRole.class.getName())
 				.append(" where appUser.id = :appUserId and role.id in (:ids)");
 
 		/*
@@ -72,7 +72,7 @@ public class AppUserGlobalRoleDAOImpl extends AbstractAppDAOImpl<AppUserGlobalRo
 		if (userIds.isEmpty())
 			return 0;
 
-		StringBuilder sb = new StringBuilder("delete from ").append(AppUserGlobalRole.class.getName())
+		StringBuilder sb = new StringBuilder("delete from ").append(AppUserRole.class.getName())
 				.append(" where appUser.id in (:ids)");
 
 		/*

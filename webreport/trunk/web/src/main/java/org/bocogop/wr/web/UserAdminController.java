@@ -1,11 +1,9 @@
 package org.bocogop.wr.web;
 
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,16 +19,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.bocogop.shared.model.AppUser;
 import org.bocogop.shared.model.AppUser.AppUserView;
-import org.bocogop.shared.model.AppUserGlobalRole;
+import org.bocogop.shared.model.AppUserRole;
 import org.bocogop.shared.model.Permission.PermissionType;
 import org.bocogop.shared.model.Role;
-import org.bocogop.shared.model.precinct.Precinct;
+import org.bocogop.shared.model.Role.RoleType;
 import org.bocogop.shared.persistence.AppUserDAO;
 import org.bocogop.shared.persistence.AppUserDAO.QuickSearchResult;
 import org.bocogop.shared.persistence.dao.RoleDAO;
-import org.bocogop.shared.persistence.dao.precinct.PrecinctDAO;
 import org.bocogop.shared.service.AppUserService;
-import org.bocogop.shared.service.UserAdminCustomizations;
 import org.bocogop.shared.service.validation.ServiceValidationException;
 import org.bocogop.shared.util.SecurityUtil;
 import org.bocogop.shared.util.StringUtil;
@@ -62,12 +58,6 @@ public class UserAdminController {
 	private AppUserService appUserService;
 	@Autowired
 	private RoleDAO roleDAO;
-	@Autowired
-	private PrecinctDAO precinctDAO;
-
-	/* Framework injection, if desired - CPB */
-	@Autowired(required = false)
-	private UserAdminCustomizations userAdminCustomizations;
 	@Autowired
 	private CoreAjaxRequestHandler coreAjaxRequestHandler;
 
@@ -109,21 +99,21 @@ public class UserAdminController {
 		}
 	}
 
-	@RequestMapping(value = "/appUser", params = "includeRolesAndPrecincts=true", method = RequestMethod.GET)
+	@RequestMapping(value = "/appUser", params = "includeRoles=true", method = RequestMethod.GET)
 	@JsonView(AppUserView.Extended.class)
 	public @ResponseBody Map<String, Object> getExtendedAppUserInfo(@RequestParam(required = false) Long userId,
 			@RequestParam(required = false) String username) {
 		return getAppUserInfo(userId, username, true);
 	}
 
-	@RequestMapping(value = "/appUser", params = "includeRolesAndPrecincts=false", method = RequestMethod.GET)
+	@RequestMapping(value = "/appUser", params = "includeRoles=false", method = RequestMethod.GET)
 	@JsonView(AppUserView.Basic.class)
 	public @ResponseBody Map<String, Object> getBasicAppUserInfo(@RequestParam(required = false) Long userId,
 			@RequestParam(required = false) String username) {
 		return getAppUserInfo(userId, username, false);
 	}
 
-	@RequestMapping(value = "/appUser", params = "!includeRolesAndPrecincts", method = RequestMethod.GET)
+	@RequestMapping(value = "/appUser", params = "!includeRoles", method = RequestMethod.GET)
 	@JsonView(AppUserView.Basic.class)
 	public @ResponseBody Map<String, Object> getBasicAppUserInfoWithoutExtras(
 			@RequestParam(required = false) Long userId, @RequestParam(required = false) String username) {
@@ -148,56 +138,35 @@ public class UserAdminController {
 		results.put("user", user);
 		results.put("updateRoles", includeRoles);
 
-		Precinct primaryPrecinct = null;
-
 		if (includeRoles) {
 			SortedSet<Role> availableRoles = roleDAO.findAllSorted(true);
-			Set<AppUserGlobalRole> globalRoles = user.getGlobalRoles();
-			for (AppUserGlobalRole augr : globalRoles) {
+			Set<AppUserRole> roles = user.getRoles();
+			for (AppUserRole augr : roles) {
 				Role role = augr.getRole();
 				availableRoles.remove(role);
 			}
+
+			availableRoles.remove(roleDAO.findByLookup(RoleType.VOTER));
 
 			// TODO BOCOGOP
 			// if (!u.isNationalAdmin()) {
 			// }
 			results.put("availableRoles", availableRoles);
-
-			populateModelForSummaryTable(user, results);
 		}
 
 		return results;
 	}
 
-	private void populateModelForSummaryTable(AppUser user, Map<String, Object> results) {
-		SortedSet<Role> allRoles = new TreeSet<>();
-		allRoles.addAll(user.getBasicGlobalRoles());
-
-		Map<Long, Boolean> falseRoleMap = new HashMap<>();
-		Map<Long, Role> roleInfoMap = new LinkedHashMap<>();
-		for (Role r : allRoles) {
-			falseRoleMap.put(r.getId(), false);
-			roleInfoMap.put(r.getId(), r);
-		}
-
-		List<StationAndRoles> stationAndRoles = new ArrayList<>();
-		results.put("stationAndRoles", stationAndRoles);
-		results.put("roleInfoMap", roleInfoMap);
-	}
-
 	@RequestMapping(value = "/appUser/update", method = RequestMethod.POST)
 	// @PreAuthorize("hasAuthority('" + Permission.VOTER_VIEW + "')")
 	public @ResponseBody boolean processUserUpdate(@RequestParam long userId, @RequestParam boolean enabled,
-			@RequestParam boolean expired, @RequestParam boolean locked, @RequestParam ZoneId timezone,
-			@RequestParam(required = false, defaultValue = "") List<Long> globalRoles,
+			@RequestParam ZoneId timezone, @RequestParam(required = false, defaultValue = "") List<Long> roles,
 			@RequestParam boolean updateRoles) throws ServiceValidationException {
 		ensureUserAccess(userId, null);
 
 		AppUser user = appUserDAO.findRequiredByPrimaryKey(userId);
 
-		appUserService.updateUser(userId, enabled != user.isEnabled() ? enabled : null,
-				locked != user.isLocked() ? locked : null, expired != user.isAccountExpired() ? expired : null,
-				timezone, updateRoles, globalRoles);
+		appUserService.updateUser(userId, enabled != user.isEnabled() ? enabled : null, timezone, updateRoles, roles);
 		return true;
 	}
 
@@ -267,13 +236,15 @@ public class UserAdminController {
 		return resultMap;
 	}
 
-	@RequestMapping("/appUser/add")
-	public @ResponseBody AppUser addAppUser(@RequestParam String activeDirectoryName) {
-		if (StringUtils.isBlank(activeDirectoryName))
-			throw new IllegalArgumentException("Active directory name is required");
-
-		AppUser appUser = appUserService.createOrRetrieveUser(activeDirectoryName, null);
-		return appUser;
+	@RequestMapping("/appUser/saveOrUpdate")
+	public @ResponseBody AppUser addAppUser(@RequestParam(required = false) Long userId, @RequestParam String username,
+			@RequestParam String firstName, @RequestParam String lastName) {
+		AppUser u = userId == null ? new AppUser() : appUserDAO.findRequiredByPrimaryKey(userId);
+		u.setUsername(username);
+		u.setFirstName(firstName);
+		u.setLastName(lastName);
+		u = appUserService.saveOrUpdate(u);
+		return u;
 	}
 
 	@RequestMapping("/appUser/remove")
@@ -286,13 +257,4 @@ public class UserAdminController {
 		}
 	}
 
-	public static class StationAndRoles {
-		public long precinctId;
-		public Map<Long, Boolean> roleMap;
-
-		public StationAndRoles(long precinctId, Map<Long, Boolean> roleMap) {
-			this.precinctId = precinctId;
-			this.roleMap = roleMap;
-		}
-	}
 }

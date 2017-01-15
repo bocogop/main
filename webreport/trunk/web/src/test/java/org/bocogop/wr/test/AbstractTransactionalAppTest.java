@@ -125,7 +125,7 @@ public abstract class AbstractTransactionalAppTest extends AbstractTransactional
 				AppUser user = new AppUser(username);
 
 				Role role = roleDAO.findByLookup(RoleType.NATIONAL_ADMIN);
-				user.addGlobalRole(role);
+				user.addRole(role);
 
 				user.setEmail("unittest-ciss1@va.gov");
 				user.setLastName("CISS1");

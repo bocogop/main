@@ -81,9 +81,9 @@
 
 	<definition name="userAdmin" extends="root">
 		<put-attribute name="body" value="/WEB-INF/jsp/userAdmin.jsp" />
-		<put-attribute name="pageTitle" value="Manage User Access to WR" />
+		<put-attribute name="pageTitle" value="Manage User Access" />
 		<put-attribute name="pageDescription"
-			value="This screen allows user access to WR to be managed" />
+			value="This screen allows user access to be managed" />
 		<put-attribute name="helpContextID" value="15" />
 	</definition>
 

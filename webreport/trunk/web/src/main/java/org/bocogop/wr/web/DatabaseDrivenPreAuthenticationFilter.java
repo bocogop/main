@@ -3,7 +3,6 @@ package org.bocogop.wr.web;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.FilterChain;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.bocogop.shared.model.AppUser;
 import org.bocogop.shared.service.AppUserDetailsService;
-import org.bocogop.shared.web.AuthenticationCustomizations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +33,6 @@ public class DatabaseDrivenPreAuthenticationFilter extends AbstractPreAuthentica
 	private String preauthUsername;
 	@Autowired
 	private AppUserDetailsService appUserDetailsService;
-
-	@Autowired
-	private AuthenticationCustomizations authenticationCustomizations;
 
 	private List<String> excludedPrefixes = new ArrayList<>();
 
@@ -85,7 +80,6 @@ public class DatabaseDrivenPreAuthenticationFilter extends AbstractPreAuthentica
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			Authentication authResult) throws IOException, ServletException {
 		super.successfulAuthentication(request, response, authResult);
-		authenticationCustomizations.successfulAuthenticationCallback(request, authResult, new HashMap<>());
 	}
 
 	@Override

@@ -124,7 +124,7 @@ public class AppUserDAOImpl extends AbstractAppSortedDAOImpl<AppUser> implements
 			boolean wildcardFirstName) {
 		StringBuilder sb = new StringBuilder("select t from ").append(AppUser.class.getName()).append(" t");
 		if (preinitialize) {
-			sb.append(" left join fetch t.globalRoles gr");
+			sb.append(" left join fetch t.roles gr");
 			sb.append(" left join fetch gr.role r");
 			sb.append(" left join fetch r.internalPermissions ip");
 			sb.append(" left join fetch ip.permission p");
