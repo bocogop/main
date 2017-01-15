@@ -156,7 +156,8 @@ function popupUserAddOrEdit(userId) {
 	$("#userDescription").val(userId ? currentUser.description || '' : '')
 	$("#userPasswordReset").val('')
 	$("#userPasswordResetConfirm").val('')
-	toggleResetFields(false)
+	
+	toggleResetFields(userId == null)
 	
 	$("#userFieldsWrapper").dialog('open')
 }
