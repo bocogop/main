@@ -41,8 +41,8 @@ function buildUserFieldsDialog() {
 	$("#userFieldsWrapper").dialog({
 		autoOpen : false,
 		modal : false,
-		width : 650,
-		height : 280,
+		width : 740,
+		height : 350,
 		closeOnEscape : true,
 		draggable : true,
 		resizable : true,
@@ -65,17 +65,43 @@ function buildUserFieldsDialog() {
 function submitUserAddOrEdit() {
    doubleClickSafeguard($("#userPopupSubmit"))
 	var userId = $("#userFieldsWrapper").data('userId')
-	
+	var isNew = (userId == '')
+		
 	var username = $("#userUsername").val()
 	var firstName = $("#userFirstName").val()
 	var lastName = $("#userLastName").val()
+	var phone = $("#userPhone").val()
 	var email = $("#userEmail").val()
+	var description = $("#userDescription").val()
+	var passwordReset = $("#userPasswordReset").val()
+	var passwordResetConfirm = $("#userPasswordResetConfirm").val()
+	
+	if (isNew && $.trim(passwordReset) == '') {
+		displayAttentionDialog('Please enter a password for this user.')
+		return
+	}
+	
+	if (passwordReset != '') {
+		if (/\s/g.test(passwordReset) || passwordReset.length < 6) {
+			displayAttentionDialog('Your password must be at least 6 characters and cannot contain spaces.')
+			$("#userPasswordReset").val('')
+			$("#userPasswordResetConfirm").val('')
+			return
+		}
 		
+		if (passwordResetConfirm !== passwordReset) {
+			displayAttentionDialog('Your password reset values do not match. Please try again.')
+			$("#userPasswordReset").val('')
+			$("#userPasswordResetConfirm").val('')
+			return
+		}
+	}
+	
 	var errors = new Array()
 	
-   if ($.trim(username) == '')
+	if ($.trim(username) == '')
 	   errors.push('Please enter the username.')
-   if ($.trim(firstName) == '')
+	if ($.trim(firstName) == '')
 	   errors.push('Please enter the first name.')
 	if ($.trim(lastName) == '')
 		errors.push('Please enter the last name.')
@@ -95,7 +121,12 @@ function submitUserAddOrEdit() {
 			userId : userId,
 			firstName : firstName,
 			lastName : lastName,
-			username : username
+			username : username,
+			phone : phone,
+			email : email,
+			description : description,
+			passwordReset : passwordReset,
+			passwordResetConfirm : passwordResetConfirm
 		},
 		error : commonAjaxErrorHandler,
 		success : function(result) {
@@ -103,6 +134,11 @@ function submitUserAddOrEdit() {
 			selectUser(result)
 		}
 	})
+}
+
+function toggleResetFields(toggleVal) {
+	$(".passwordResetDisplay").toggle(!toggleVal)
+	$(".passwordResetRow").toggle(toggleVal)
 }
 
 function editUser() {
@@ -118,6 +154,9 @@ function popupUserAddOrEdit(userId) {
 	$("#userPhone").val(userId ? currentUser.phone || '' : '')
 	$("#userEmail").val(userId ? currentUser.email || '' : '')
 	$("#userDescription").val(userId ? currentUser.description || '' : '')
+	$("#userPasswordReset").val('')
+	$("#userPasswordResetConfirm").val('')
+	toggleResetFields(false)
 	
 	$("#userFieldsWrapper").dialog('open')
 }
@@ -187,8 +226,8 @@ function setUserFields(resultMap) {
 	var updateRoles = resultMap.updateRoles
 	
 	$("#userID").text(userResult.username)
-	$("#userName").text(userResult.displayName)
-	$("#userPhone").text(userResult.telephoneNumber)
+	$("#name").text(userResult.displayName)
+	$("#phone").text(userResult.phone)
 	
 	var emailHtml = ''
 	if (userResult.email && userResult.email != '') {
@@ -201,9 +240,10 @@ function setUserFields(resultMap) {
 			+ ' style="padding-left: 4px; padding-right: 4px" /></a>'
 	}
 	
-	$("#userEmail").html(emailHtml)
-	$("#userEnabled").prop('checked', userResult.enabled);
-	$("#userEnabledText").text(userResult.enabled ? 'Yes' : 'No');
+	$("#email").html(emailHtml)
+	$("#enabled").prop('checked', userResult.enabled);
+	$("#enabledText").text(userResult.enabled ? 'Yes' : 'No');
+	$("#description").text(userResult.description)
 	
 	if (userResult.timeZone) {
 		$("#timeZoneSelect").val(userResult.timeZone.id)
@@ -239,14 +279,14 @@ function selectUserWithFields(id, username, displayName) {
 	})
 }
 
-function selectUser(userObj) {
+function selectUser(fullUserObj) {
 	var table = $('#userTable').DataTable()
 	table.clear()
 	table.draw()
 	
-	if (userObj) {
-		table.row.add(userObj).draw()
-		currentUserId = userObj.id
+	if (fullUserObj) {
+		table.row.add(fullUserObj).draw()
+		currentUserId = fullUserObj.id
 	} else {
 		currentUserId = null
 		currentUser = null
@@ -318,7 +358,7 @@ function update(updateRoles) {
 		dataType : 'json',
 		data : {
 			userId : currentUserId,
-			enabled: $("#userEnabled").is(':checked'),
+			enabled: $("#enabled").is(':checked'),
 			timezone: $("#timeZoneSelect").val(),
 			roles: roles.join(),
 			updateRoles: updateRoles

@@ -238,12 +238,17 @@ public class UserAdminController {
 
 	@RequestMapping("/appUser/saveOrUpdate")
 	public @ResponseBody AppUser addAppUser(@RequestParam(required = false) Long userId, @RequestParam String username,
-			@RequestParam String firstName, @RequestParam String lastName) {
+			@RequestParam String firstName, @RequestParam String lastName, @RequestParam String phone,
+			@RequestParam String email, @RequestParam String description, @RequestParam String passwordReset,
+			@RequestParam String passwordResetConfirm) throws ServiceValidationException {
 		AppUser u = userId == null ? new AppUser() : appUserDAO.findRequiredByPrimaryKey(userId);
 		u.setUsername(username);
 		u.setFirstName(firstName);
 		u.setLastName(lastName);
-		u = appUserService.saveOrUpdate(u);
+		u.setPhone(phone);
+		u.setEmail(email);
+		u.setDescription(description);
+		u = appUserService.saveOrUpdate(u, passwordReset, passwordResetConfirm);
 		return u;
 	}
 

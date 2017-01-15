@@ -38,7 +38,7 @@ public abstract class AbstractDataConfig {
 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-		String[] all = ArrayUtils.addAll(new String[] { "org.bocogop.shared.model", "org.bocogop.shared.persistence.usertype" },
+		String[] all = ArrayUtils.addAll(new String[] { "org.bocogop.shared.model", "org.bocogop.shared.persistence.userType" },
 				getAdditionalPackagesToScan());
 		return buildEntityManagerFactory(env, dataSource, all);
 	}

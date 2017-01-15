@@ -73,21 +73,29 @@ div.umDiv {
 					</tr>
 					<tr>
 						<td align="right">Name:</td>
-						<td><span id="userName"></span></td>
+						<td><span id="name"></span></td>
 					</tr>
 					<tr>
 						<td align="right">Phone:</td>
-						<td><span id="userPhone"></span></td>
+						<td><span id="phone"></span></td>
 					</tr>
 					<tr>
 						<td align="right">Email:</td>
-						<td><span id="userEmail"></span></td>
+						<td><span id="email"></span></td>
 					</tr>
 					<tr>
 						<td align="right">Enabled:</td>
 						<td align="left"><span class="manageAll"><input
-								type="checkbox" id="userEnabled" class="userInput" /></span><span
-							id="userEnabledText" class="manageSelfOnly"></span></td>
+								type="checkbox" id="enabled" class="userInput" /></span><span
+							id="enabledText" class="manageSelfOnly"></span></td>
+					</tr>
+					<tr>
+						<td align="right">Password:</td>
+						<td align="left">[Protected]</td>
+					</tr>
+					<tr>
+						<td align="right">Description:</td>
+						<td><span id="description"></span></td>
 					</tr>
 					<tr>
 						<td align="center" colspan="3">&nbsp;
@@ -173,6 +181,21 @@ div.umDiv {
 				<td class='appFieldLabel' nowrap>Email:</td>
 				<td style="padding: 4px; text-align: center" width="5%"></td>
 				<td><input type="text" id="userEmail" size="20" maxlength="250" /></td>
+			</tr>
+			<tr class="passwordResetDisplay">
+				<td class='appFieldLabel' nowrap>Password:</td>
+				<td style="padding: 4px; text-align: center" width="5%"></td>
+				<td>Protected (<a href="javascript:toggleResetFields(true)">reset</a>)</td>
+			</tr>
+			<tr class="passwordResetRow" style="display:none">
+				<td class='appFieldLabel' nowrap>Password Reset:</td>
+				<td style="padding: 4px; text-align: center" width="5%"></td>
+				<td><input type="password" id="userPasswordReset" size="20" maxlength="20" /></td>
+			</tr>
+			<tr class="passwordResetRow" style="display:none">
+				<td class='appFieldLabel' nowrap>Password Reset (confirm):</td>
+				<td style="padding: 4px; text-align: center" width="5%"></td>
+				<td><input type="password" id="userPasswordResetConfirm" size="20" maxlength="20" /></td>
 			</tr>
 		</table>
 	</div>

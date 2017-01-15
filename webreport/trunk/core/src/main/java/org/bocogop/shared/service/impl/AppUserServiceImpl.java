@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bocogop.shared.model.AppUser;
 import org.bocogop.shared.model.AppUserPreferences;
 import org.bocogop.shared.model.AppUserRole;
@@ -35,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(rollbackFor = ServiceValidationException.class)
 public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUserService {
-	private static final Logger logger = LoggerFactory.getLogger(AppUserServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(AppUserServiceImpl.class);
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -44,14 +45,29 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 
 	@Override
 	@PreAuthorize("hasAuthority('" + Permission.USER_MANAGER + "')")
-	public AppUser saveOrUpdate(AppUser appUser) {
+	public AppUser saveOrUpdate(AppUser appUser, String passwordReset, String passwordResetConfirm)
+			throws ServiceValidationException {
 		if (appUser.isPersistent() == false) {
 			appUser.setEnabled(true);
 			appUser.setTimeZone(newUserDefaultTimezone);
+
+			if (StringUtils.isBlank(passwordReset))
+				throw new ServiceValidationException("appUser.create.missingPassword");
 		}
 
 		appUser = appUserDAO.saveOrUpdate(appUser);
 		appUser = populatePreferencesIfNecessary(appUserDAO, appUser);
+
+		if (StringUtils.isNotBlank(passwordReset)) {
+			if (StringUtils.isBlank(passwordResetConfirm) || !passwordReset.equals(passwordResetConfirm)
+					|| passwordReset.matches(".*\\s.*") || passwordResetConfirm.matches(".*\\s.*")) {
+				throw new ServiceValidationException("appUser.update.badValues");
+			}
+
+			updatePassword(appUser.getId(), passwordReset);
+			appUserDAO.flushAndRefresh(appUser);
+		}
+
 		return appUser;
 	}
 
@@ -85,7 +101,7 @@ public class AppUserServiceImpl extends AbstractAppServiceImpl implements AppUse
 
 		AppUser updatedUser = user;
 		if (updatedBasics) {
-			updatedUser = saveOrUpdate(user);
+			updatedUser = saveOrUpdate(user, null, null);
 			appUserDAO.flush();
 		}
 

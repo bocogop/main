@@ -9,7 +9,8 @@ import org.bocogop.shared.service.validation.ServiceValidationException;
 
 public interface AppUserService {
 
-	AppUser saveOrUpdate(AppUser appUser);
+	AppUser saveOrUpdate(AppUser appUser, String passwordReset, String passwordResetConfirm)
+			throws ServiceValidationException;
 
 	AppUser updateUser(long userId, Boolean enabled, ZoneId timezone, boolean updateRoles, Collection<Long> roles)
 			throws ServiceValidationException;

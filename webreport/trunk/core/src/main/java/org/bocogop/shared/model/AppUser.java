@@ -69,7 +69,7 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	private String middleName;
 	private String lastName;
 	private String description;
-	private String telephoneNumber;
+	private String phone;
 	private String email;
 	/* Has someone completely disabled this user from logging in */
 	private boolean enabled;
@@ -260,7 +260,6 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	}
 
 	@JsonSerialize(using = ZoneIdSerializer.class)
-	@Transient
 	public ZoneId getTimeZone() {
 		return timeZone;
 	}
@@ -302,12 +301,12 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	}
 
 	@Column(name = "Phone")
-	public String getTelephoneNumber() {
-		return telephoneNumber;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setTelephoneNumber(String telephoneNumber) {
-		this.telephoneNumber = telephoneNumber;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getEmail() {

@@ -106,7 +106,7 @@ function submitAppUserSearchForm(uid, includeLocalDB, includeLDAP) {
 						newRow[newRow.length] = escapeHTML(results[i].title)
 						newRow[newRow.length] = escapeHTML(results[i].department)
 						newRow[newRow.length] = escapeHTML(results[i].office)
-						newRow[newRow.length] = escapeHTML(results[i].telephoneNumber)
+						newRow[newRow.length] = escapeHTML(results[i].phone)
 						newRow[newRow.length] = escapeHTML(results[i].email)
 						table.row.add(newRow)
 					}

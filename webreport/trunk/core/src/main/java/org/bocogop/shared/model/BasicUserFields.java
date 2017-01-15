@@ -61,7 +61,7 @@ public interface BasicUserFields {
 
 		@Override
 		public String getPhone() {
-			return appUser.getTelephoneNumber();
+			return appUser.getPhone();
 		}
 
 	}
