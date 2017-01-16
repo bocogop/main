@@ -38,6 +38,9 @@ div.umDiv {
 	display: inline-block;
 	vertical-align: top;
 }
+div.umDiv fieldset {
+	min-height:240px;
+}
 </style>
 
 <div class="clearCenter">
@@ -97,7 +100,7 @@ div.umDiv {
 						<td align="right">Description:</td>
 						<td><span id="description"></span></td>
 					</tr>
-					<tr>
+					<tr style="display:none">
 						<td align="center" colspan="3">&nbsp;
 							<p />Time Zone:
 							<p /> <select class="userInput" id="timeZoneSelect">
@@ -151,7 +154,7 @@ div.umDiv {
 				<td style="padding: 4px; text-align: center" width="5%"><span
 					class='requdIndicator'>*</span></td>
 				<td><input type="text" id="userUsername" size="15"
-					maxlength="20" /></td>
+					maxlength="20" tabindex="1" /></td>
 				<td width="10" rowspan="5">&nbsp;</td>
 				<td align="center">Description / Notes:</td>
 			</tr>
@@ -160,27 +163,27 @@ div.umDiv {
 				<td style="padding: 4px; text-align: center" width="5%"><span
 					class='requdIndicator'>*</span></td>
 				<td><input type="text" id="userFirstName" size="20"
-					maxlength="50" /></td>
+					maxlength="50" tabindex="2" /></td>
 				<td rowspan="4"><textarea id="userDescription" rows="4"
-						cols="40"></textarea></td>
+						cols="40" tabindex="8"></textarea></td>
 			</tr>
 			<tr>
 				<td class='appFieldLabel' nowrap>Last Name:</td>
 				<td style="padding: 4px; text-align: center" width="5%"><span
 					class='requdIndicator'>*</span></td>
 				<td><input type="text" id="userLastName" size="20"
-					maxlength="50" /></td>
+					maxlength="50" tabindex="3" /></td>
 			</tr>
 			<tr>
 				<td class='appFieldLabel' nowrap>Phone:</td>
 				<td style="padding: 4px; text-align: center" width="5%"></td>
 				<td><input type="text" class="phoneextmask" id="userPhone"
-					size="20" maxlength="30" /></td>
+					size="20" maxlength="30" tabindex="4" /></td>
 			</tr>
 			<tr>
 				<td class='appFieldLabel' nowrap>Email:</td>
 				<td style="padding: 4px; text-align: center" width="5%"></td>
-				<td><input type="text" id="userEmail" size="20" maxlength="250" /></td>
+				<td><input type="text" id="userEmail" size="20" maxlength="250" tabindex="5" /></td>
 			</tr>
 			<tr class="passwordResetDisplay">
 				<td class='appFieldLabel' nowrap>Password:</td>
@@ -190,12 +193,12 @@ div.umDiv {
 			<tr class="passwordResetRow" style="display:none">
 				<td class='appFieldLabel' nowrap>Password Reset:</td>
 				<td style="padding: 4px; text-align: center" width="5%"></td>
-				<td><input type="password" id="userPasswordReset" size="20" maxlength="20" /></td>
+				<td><input type="password" id="userPasswordReset" size="20" maxlength="20" tabindex="6" /></td>
 			</tr>
 			<tr class="passwordResetRow" style="display:none">
 				<td class='appFieldLabel' nowrap>Password Reset (confirm):</td>
 				<td style="padding: 4px; text-align: center" width="5%"></td>
-				<td><input type="password" id="userPasswordResetConfirm" size="20" maxlength="20" /></td>
+				<td><input type="password" id="userPasswordResetConfirm" size="20" maxlength="20" tabindex="7" /></td>
 			</tr>
 		</table>
 	</div>

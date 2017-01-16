@@ -68,3 +68,4 @@ hs_err_pid*
 /maven-repo/org/jboss/shrinkwrap/resolver/shrinkwrap-resolver-bom/2.2.0/shrinkwrap-resolver-bom-2.2.0.pom.lastUpdated
 /maven-repo/org/jboss/shrinkwrap/shrinkwrap-bom/1.2.3/shrinkwrap-bom-1.2.3.pom.lastUpdated
 /webreport/trunk/web/target-eclipse/classes/org/bocogop/med/pcmm/service/impl/*.tsv
+/webreport/trunk/web/target-eclipse

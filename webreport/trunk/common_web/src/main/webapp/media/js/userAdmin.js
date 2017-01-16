@@ -30,7 +30,7 @@ function buildUserTable() {
             searchPlaceholder: "Search by name or username..."
         },
         "processing": true,
-        "scrollY" : 80,
+        "scrollY" : 120,
         "serverSide": true
     })
 }
