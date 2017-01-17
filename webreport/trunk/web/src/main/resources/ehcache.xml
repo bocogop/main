@@ -43,6 +43,9 @@
 
 	<cache name="queries.genderDAO" maxElementsInMemory="5" eternal="true"
 		overflowToDisk="false" copyOnRead="true" copyOnWrite="true" />
+	
+	<cache name="queries.partyDAO" maxElementsInMemory="20" eternal="true"
+		overflowToDisk="false" copyOnRead="true" copyOnWrite="true" />
 
 	<cache name="queries.permissionDAO" maxElementsInMemory="1000"
 		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"

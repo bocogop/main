@@ -67,9 +67,7 @@
 					})
 					
 					return $.extend({}, d, detailsRestrictions, {
-						"displayColumnIndexes" : displayColumns,						
-						"allMyPrecincts" : $("#allMyPrecincts").is(":checked"),
-						"precinctId" : $("#precinctId").val()
+						"displayColumnIndexes" : displayColumns
 					});
 				},
 				"complete" : function() {
@@ -105,7 +103,7 @@
 	            action: emailSelected
 			}],
 			"columnDefs" : colDefs,
-			"dom" : '<"top"fl><"clearCenter"><"top2"pBi>rt<"clear">',
+			"dom" : '<"top"l><"clearCenter"><"top2"pBi>rt<"clear">',
 			"drawCallback": function() {
 				syncColumns()
 				syncCheckboxes()
@@ -151,7 +149,6 @@
 		
 		// set specific column and other filters vals
 		$(".columnFilter").val('')
-		$(".scopeCheckbox").prop('checked', false)
 		$("#voterList_filter").val('')
 		theTable.search('').columns().search('')
 		theTable.page.len(5)
@@ -233,10 +230,6 @@
 	
 	function validateParams() {
 		var allErrors = new Array()
-		
-		if ($('#paramsTable input.scopeCheckbox:checked').length == 0) {
-			allErrors.push('Please select at least one status to display.')
-		}
 		
 		if ($('#paramsTable input.columnCheckbox:checked').length == 0) {
 			allErrors.push('Please select at least one column to display.')
@@ -351,7 +344,7 @@
 	}
 </script>
 
-<c:forEach items="${allVolDemoColumns}" var="col">
+<c:forEach items="${allVoterDemographicsColumns}" var="col">
 	<jsp:include page="columnDefs/${fn:toLowerCase(col)}.jsp"></jsp:include>
 </c:forEach>
 
@@ -378,33 +371,12 @@ div.restrictDiv {
 		<fieldset>
 			<legend id="paramsLegend">Parameters</legend>
 			<table id="paramsTable" cellpadding="7" style="min-width: 700px">
-				<c:set var="nationalCheckboxStyle" value="display:none; " />
-				<c:if test="${currentUser.nationalAdmin}">
-					<c:set var="nationalCheckboxStyle" value="" />
-				</c:if>
 
 				<tr>
-					<td align="center"><i><u>Current Status:</u></i></td>
-					<td colspan="5" align="center"><i><u>Add/Remove
+					<td colspan="6" align="center"><i><u>Add/Remove
 								Columns:</u></i></td>
 				</tr>
 				<tr valign="top">
-					<td nowrap style="border-right: 1px dashed gray">
-						<div>
-							<input type="checkbox" class="allParamInputs scopeCheckbox" id="rxIncludeActive"
-								checked="checked">Active<br> <input type="checkbox"
-								class="allParamInputs scopeCheckbox" id="rxIncludeInactive">Inactive
-						</div>
-						<div
-							style="${nationalCheckboxStyle}border-top:1px dashed gray;margin-top:8px; padding-top:15px">
-							<input type="radio" name="scope" class="allParamInputs" value="national"
-								id="allMyPrecincts">Within my precinct(s)<br> <input type="radio" name="scope" class="allParamInputs"
-								checked="checked" value="local" id="isLocal" nowrap>At
-							Precinct <select id="precinctId"><option value="123456789">123456789</select>
-							<br> 
-						</div>
-
-					</td>
 					<c:forEach items="${columnsByDivider}" var="entry">
 						<td nowrap>
 							<c:forEach items="${entry.value}" var="col">
@@ -444,7 +416,7 @@ div.restrictDiv {
 		<thead>
 			<tr>
 				<td class="noborder" width="1"></td>
-				<c:forEach items="${allVolDemoColumns}" var="col">
+				<c:forEach items="${allVoterDemographicsColumns}" var="col">
 					<c:if test="${not col.filtered}">
 						<td class="noborder"></td>
 					</c:if>
@@ -458,7 +430,7 @@ div.restrictDiv {
 					class="tableHeaderLink" href="javascript:setAllCheckboxes(true)">All</a>
 					/ <br> <a class="tableHeaderLink"
 					href="javascript:setAllCheckboxes(false)">None</a></th>
-				<c:forEach items="${allVolDemoColumns}" var="c">
+				<c:forEach items="${allVoterDemographicsColumns}" var="c">
 					<th><c:out value="${c.shortName}" /></th>
 				</c:forEach>
 			</tr>

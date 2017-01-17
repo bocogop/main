@@ -4,6 +4,7 @@
 	id="filterPrecinct" class="allParamInputs columnFilter"
 	colIndex="${COL_INDEX_PRECINCT}">
 		<option value="">(all)</option>
-		<option value="mine">My Precinct</option>
-		<option value="others">Other Precincts</option>
+		<c:forEach items="${allPrecincts}" var="p">
+		<option value="<c:out value="${p.id}" />"><c:out value="${p.name}" /></option>
+		</c:forEach>
 </select></td>

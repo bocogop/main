@@ -16,8 +16,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bocogop.shared.model.voter.Voter.VoterView;
-import org.bocogop.shared.persistence.dao.voter.demographics.VolDemoColumn;
-import org.bocogop.shared.persistence.dao.voter.demographics.VolDemoSearchParams;
+import org.bocogop.shared.persistence.dao.voter.demographics.VoterDemographicsColumn;
+import org.bocogop.shared.persistence.dao.voter.demographics.VoterDemographicsSearchParams;
 import org.bocogop.shared.util.OffsetCollection;
 import org.bocogop.shared.util.WebUtil;
 import org.bocogop.shared.web.AbstractAppController;
@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @Controller
-public class VolDemoController extends AbstractAppController {
+public class VoterDemographicsController extends AbstractAppController {
 
 	private static final String SESSION_ATTR_DEMOGRAPHICS_SEARCH_PARAMS = "voterDemographicsSearchCache";
 	private static final String SESSION_ATTR_DEMOGRAPHICS_RESULTS = "voterDemographicsResults";
@@ -53,10 +53,13 @@ public class VolDemoController extends AbstractAppController {
 		model.put("curMonth", LocalDate.now().getMonthValue());
 		model.put("curYear", LocalDate.now().getYear());
 		model.put("allGenders", genderDAO.findAllSorted());
-
-		WebUtil.addEnumToModel(VolDemoColumn.class, model);
-		model.addAttribute("columnsByDivider", VolDemoColumn.getColumnsByDivider());
-		for (VolDemoColumn c : VolDemoColumn.values()) {
+		model.put("allPrecincts", precinctDAO.findAllSorted());
+		model.put("allParties", partyDAO.findAllSorted());
+		model.put("allStates", stateDAO.findAllSorted());
+		
+		WebUtil.addEnumToModel(VoterDemographicsColumn.class, model);
+		model.addAttribute("columnsByDivider", VoterDemographicsColumn.getColumnsByDivider());
+		for (VoterDemographicsColumn c : VoterDemographicsColumn.values()) {
 			model.addAttribute("COL_INDEX_" + c.name(), c.ordinal());
 		}
 
@@ -71,24 +74,21 @@ public class VolDemoController extends AbstractAppController {
 			@RequestParam(name = "search[regex]") boolean searchIsRegex,
 			@RequestParam(name = "order[0][column]") int sortColIndex,
 			@RequestParam(name = "order[0][dir]") String sortDir,
-			// params
-			@RequestParam boolean allMyPrecincts, //
-			@RequestParam long precinctId, //
 			@RequestParam(name = "displayColumnIndexes[]") int[] displayColumnIndexes) {
 		Map<String, Object> resultMap = new HashMap<>();
 
-		EnumSet<VolDemoColumn> displayCols = VolDemoColumn.getWithIndexes(displayColumnIndexes);
+		EnumSet<VoterDemographicsColumn> displayCols = VoterDemographicsColumn.getWithIndexes(displayColumnIndexes);
 
-		Map<VolDemoColumn, String> filters = new HashMap<>();
-		VolDemoColumn[] volDemoCols = VolDemoColumn.values();
+		Map<VoterDemographicsColumn, String> filters = new HashMap<>();
+		VoterDemographicsColumn[] volDemoCols = VoterDemographicsColumn.values();
 
 		for (int i = 0; allParams.containsKey("columns[" + i + "][search][value]"); i++) {
 			List<String> l = allParams.get("columns[" + i + "][search][value]");
 			if (l.isEmpty() || StringUtils.isBlank(l.get(0)))
 				continue;
 			/*
-			 * subtract 1 to skip the checkbox column and match VolDemoColumn
-			 * ordinal values - CPB
+			 * subtract 1 to skip the checkbox column and match
+			 * VoterDemographicsColumn ordinal values - CPB
 			 */
 			filters.put(volDemoCols[i - 1], l.get(0));
 		}
@@ -99,13 +99,13 @@ public class VolDemoController extends AbstractAppController {
 				.filter(p -> p.getKey().startsWith("rx")).collect(Collectors
 						.toMap(p -> StringUtils.uncapitalize(p.getKey().substring(2)), p -> p.getValue().get(0)));
 
-		VolDemoSearchParams newSearchParams = new VolDemoSearchParams(
-				allMyPrecincts ? null : precinctId, filters, searchValue, sortColIndex, sortAscending, restrictions, displayCols);
+		VoterDemographicsSearchParams newSearchParams = new VoterDemographicsSearchParams(filters, searchValue,
+				sortColIndex, sortAscending, restrictions, displayCols);
 
-		VolDemoSearchParams lastSearchParams = (VolDemoSearchParams) session
+		VoterDemographicsSearchParams lastSearchParams = (VoterDemographicsSearchParams) session
 				.getAttribute(SESSION_ATTR_DEMOGRAPHICS_SEARCH_PARAMS);
 		if (lastSearchParams == null)
-			lastSearchParams = new VolDemoSearchParams();
+			lastSearchParams = new VoterDemographicsSearchParams();
 
 		@SuppressWarnings("unchecked")
 		OffsetCollection<VoterDemographics> lastResults = (OffsetCollection<VoterDemographics>) session
@@ -119,14 +119,13 @@ public class VolDemoController extends AbstractAppController {
 		}
 
 		long appUserId = getCurrentUser().getId();
-		
+
 		if (!cacheHit) {
 			int maxTotalEntries = 1000;
 
 			int newFrom = Math.max(start - maxTotalEntries / 2, 0);
 			int newLength = Math.max(maxTotalEntries / 2 + length, maxTotalEntries);
-			results = voterDemographicsDAO.findDemographics(newSearchParams, newFrom, newLength,
-					appUserId);
+			results = voterDemographicsDAO.findDemographics(newSearchParams, newFrom, newLength, appUserId);
 			boolean lastPage = results.size() < newLength;
 			OffsetCollection<VoterDemographics> c = new OffsetCollection<>(results, newFrom, lastPage);
 			session.setAttribute(SESSION_ATTR_DEMOGRAPHICS_RESULTS, c);

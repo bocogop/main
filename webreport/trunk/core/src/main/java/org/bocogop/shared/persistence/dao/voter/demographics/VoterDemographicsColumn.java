@@ -7,24 +7,24 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-// If these are reordered, change the VolDemoDAOImpl.getOrderByCols method too
-public enum VolDemoColumn {
-	NAME("Name", true, false, true), //
-	VOTER_ID("Voter ID", true, false, true), //
-	PRECINCT("Precinct", true, false, true), //
+// If these are reordered, change the VoterDemographicsDAOImpl.getOrderByCols method too
+public enum VoterDemographicsColumn {
+	NAME("Name", true, true, true), //
+	VOTER_ID("Voter ID", true, true, true), //
+	PRECINCT("Precinct", true, true, true), //
 	PARTY("Party", true, true, true), //
 	AFFILIATED_DATE("Affiliated Date", false, false, true), //
 
 	REGISTRATION_DATE("Registration Date", false, false, true), //
 	EFFECTIVE_DATE("Effective Date", false, false, true), //
-	STATUS("Status", true, false, true), //
+	STATUS("Status", true, true, true), //
 	STATUS_REASON("Status Reason", false, false, true), //
 
-	FULL_ADDRESS("Full Address", true, false, true), //
-	STREET("Street", false, false, true), //
-	CITY("City", false, false, true), //
+	FULL_ADDRESS("Full Address", true, true, true), //
+	STREET("Street", false, true, true), //
+	CITY("City", false, true, true), //
 	STATE("State", false, true, true), //
-	ZIP("Zip", false, false, true), //
+	ZIP("Zip", false, true, true), //
 	
 	GENDER("Gender", true, true, true), //
 	YOB("Birth Year", false, false, true), //
@@ -38,7 +38,7 @@ public enum VolDemoColumn {
 	EMAIL("Email", false, false, true), //
 	;
 
-	static List<VolDemoColumn> DIVIDERS_AFTER = Arrays.asList(AFFILIATED_DATE, STATUS_REASON, BALLOT_ADDRESS, ZIP);
+	static List<VoterDemographicsColumn> DIVIDERS_AFTER = Arrays.asList(AFFILIATED_DATE, STATUS_REASON, BALLOT_ADDRESS, ZIP);
 
 	private String fullName;
 	private String shortName;
@@ -46,11 +46,11 @@ public enum VolDemoColumn {
 	private boolean filtered;
 	private boolean alwaysSelected;
 
-	private VolDemoColumn(String fullName, boolean initiallyChecked, boolean filtered, boolean alwaysSelected) {
+	private VoterDemographicsColumn(String fullName, boolean initiallyChecked, boolean filtered, boolean alwaysSelected) {
 		this(fullName, fullName, initiallyChecked, filtered, alwaysSelected);
 	}
 
-	private VolDemoColumn(String fullName, String shortName, boolean initiallyChecked, boolean filtered,
+	private VoterDemographicsColumn(String fullName, String shortName, boolean initiallyChecked, boolean filtered,
 			boolean alwaysSelected) {
 		this.fullName = fullName;
 		this.shortName = shortName;
@@ -79,13 +79,13 @@ public enum VolDemoColumn {
 		return alwaysSelected;
 	}
 
-	public static Map<Integer, List<VolDemoColumn>> getColumnsByDivider() {
-		Map<Integer, List<VolDemoColumn>> results = new LinkedHashMap<>();
+	public static Map<Integer, List<VoterDemographicsColumn>> getColumnsByDivider() {
+		Map<Integer, List<VoterDemographicsColumn>> results = new LinkedHashMap<>();
 		int colIndex = 0;
-		List<VolDemoColumn> l = new ArrayList<>();
+		List<VoterDemographicsColumn> l = new ArrayList<>();
 		results.put(colIndex, l);
 
-		for (VolDemoColumn c : values()) {
+		for (VoterDemographicsColumn c : values()) {
 			l.add(c);
 			if (DIVIDERS_AFTER.contains(c)) {
 				colIndex++;
@@ -97,9 +97,9 @@ public enum VolDemoColumn {
 		return results;
 	}
 
-	public static EnumSet<VolDemoColumn> getWithIndexes(int[] displayColumnIndexes) {
-		EnumSet<VolDemoColumn> results = EnumSet.noneOf(VolDemoColumn.class);
-		VolDemoColumn[] vals = VolDemoColumn.values();
+	public static EnumSet<VoterDemographicsColumn> getWithIndexes(int[] displayColumnIndexes) {
+		EnumSet<VoterDemographicsColumn> results = EnumSet.noneOf(VoterDemographicsColumn.class);
+		VoterDemographicsColumn[] vals = VoterDemographicsColumn.values();
 		for (int i : displayColumnIndexes)
 			results.add(vals[i]);
 		return results;

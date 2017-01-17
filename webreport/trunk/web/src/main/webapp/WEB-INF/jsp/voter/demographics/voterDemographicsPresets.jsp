@@ -3,84 +3,59 @@
 <script type="text/javascript">
 	$(function() {
 		var presetCols = {
-			"activeInactives" : [
-				${COL_INDEX_NAME},
-				${COL_INDEX_ENTRY_DATE},
-				${COL_INDEX_STATUS},
-				${COL_INDEX_ACTIVE_ASSIGNMENTS},
-				${COL_INDEX_LAST_VOTERED_DATE} ],
 			"alphabetical" : [
 				${COL_INDEX_NAME},
-				${COL_INDEX_DOB},
-				${COL_INDEX_AGE},
-				${COL_INDEX_GENDER},
-				${COL_INDEX_IDENTIFYING_CODE},
-				${COL_INDEX_ENTRY_DATE},
+				${COL_INDEX_VOTER_ID},
+				${COL_INDEX_PRECINCT},
+				${COL_INDEX_PARTY},
+				${COL_INDEX_STATUS},
 				${COL_INDEX_FULL_ADDRESS},
-				${COL_INDEX_FULL_CONTACT},
-				${COL_INDEX_LAST_VOTERED_DATE},
-				${COL_INDEX_ACTIVE_ASSIGNMENTS}	],
+				${COL_INDEX_GENDER},
+				${COL_INDEX_AGE_APPROX},
+				${COL_INDEX_FULL_CONTACT}	],
 			"newVoters" : [
 				${COL_INDEX_NAME},
-				${COL_INDEX_IDENTIFYING_CODE},
-				${COL_INDEX_AGE_GROUP},
-				${COL_INDEX_ENTRY_DATE},
-				${COL_INDEX_PRIMARY_PRECINCT},
-				${COL_INDEX_LAST_VOTERED_DATE},
-				${COL_INDEX_TOTAL_HOURS}],
-			"separatedFromService" : [
+				${COL_INDEX_VOTER_ID},
+				${COL_INDEX_PRECINCT},
+				${COL_INDEX_PARTY},
+				${COL_INDEX_AFFILIATED_DATE},
+				${COL_INDEX_FULL_ADDRESS},
+				${COL_INDEX_GENDER},
+				${COL_INDEX_AGE_APPROX},
+				${COL_INDEX_FULL_CONTACT}],
+			"newRepublicans" : [
 				${COL_INDEX_NAME},
-				${COL_INDEX_STATUS},
-				${COL_INDEX_STATUS_DATE},
-				${COL_INDEX_LAST_VOTERED_DATE},
-				${COL_INDEX_TOTAL_HOURS}]
+				${COL_INDEX_VOTER_ID},
+				${COL_INDEX_PRECINCT},
+				${COL_INDEX_PARTY},
+				${COL_INDEX_AFFILIATED_DATE},
+				${COL_INDEX_FULL_ADDRESS},
+				${COL_INDEX_GENDER},
+				${COL_INDEX_AGE_APPROX},
+				${COL_INDEX_FULL_CONTACT}]
 		}
 		var presetFilterVals = {
-			"activeInactives" : {
-				"#rxIncludeActive" : true,
-				"#rxIncludeInactive" : false,
-				"#rxIncludeTerminated" : false,
-				"#rxIncludeTerminatedByCause" : false,
-				"#isLocal" : true,
-				"#rxLastVolOptions" : "havent",
-				"#rxHaventLastVolOption" : "haventLastVolIn30"
-			},
 			"alphabetical" : {
-				"#rxIncludeActive" : true,
-				"#rxIncludeInactive" : false,
-				"#rxIncludeTerminated" : false,
-				"#rxIncludeTerminatedByCause" : false,
-				"#isLocal" : true
+				"#filterStatus" : 'Active',
 			},
 			"newVoters" : {
-				"#rxIncludeActive" : true,
-				"#rxIncludeInactive" : true,
-				"#rxIncludeTerminated" : true,
-				"#rxIncludeTerminatedByCause" : true,
-				"#isLocal" : true,
-				"#filterEntryDateMonth" : ${curMonth},
-				"#filterEntryDateYear" : ${curYear}
+				"#rxAffiliatedDateOptions" : "within60Days",
+				
 			},
-			"separatedFromService" : {
-				"#rxIncludeActive" : false,
-				"#rxIncludeInactive" : true,
-				"#rxIncludeTerminated" : true,
-				"#rxIncludeTerminatedByCause" : true,
-				"#isLocal" : true,
-				"#rxStatusDateOptions" : "within2FY"
+			"newRepublicans" : {
+				"#rxAffiliatedDateOptions" : "within60Days",
+				"#filterParty" : '7'
 			}
 		}
 		var presetSorts = {
-			"activeInactives" : [${COL_INDEX_LAST_VOTERED_DATE}, 'asc'],
 			"alphabetical" : [${COL_INDEX_NAME}, 'asc'],
-			"newVoters" : [${COL_INDEX_NAME}, 'asc'],
-			"separatedFromService" : [${COL_INDEX_STATUS_DATE}, 'desc']
+			"newVoters" : [${COL_INDEX_AFFILIATED_DATE}, 'asc'],
+			"newRepublicans" : [${COL_INDEX_AFFILIATED_DATE}, 'asc']
 		}
 		var presetLengths = {
-			"activeInactives" : 5000,
 			"alphabetical" : 5,
 			"newVoters" : 50,
-			"separatedFromService" : 1000
+			"newRepublicans" : 1000
 		}
 		
 		$("#presetSelect").change(function() {
@@ -132,9 +107,8 @@
 
 <div style="margin-left: 50px; display:inline-block">
 	Presets: <select id="presetSelect"><option value="alphabetical" selected="selected">Alphabetical List</option>
-		<option value="activeInactives">Potentially Inactive Voters</option>
-		<option value="separatedFromService">Separated from Service</option>
 		<option value="newVoters">New Voters</option>
+		<option value="newRepublicans">New Republicans Within 60 Days</option>
 		<option value="custom">Custom</option>
 		</select>
 </div>

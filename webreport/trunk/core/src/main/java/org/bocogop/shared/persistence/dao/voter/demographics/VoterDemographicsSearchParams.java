@@ -8,21 +8,21 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class VolDemoSearchParams implements Serializable {
+public class VoterDemographicsSearchParams implements Serializable {
 	private static final long serialVersionUID = -333300450898010419L;
 
-	public Map<VolDemoColumn, String> filters = new HashMap<>();
+	public Map<VoterDemographicsColumn, String> filters = new HashMap<>();
 	public String searchValue;
 	public int sortColIndex;
 	public boolean sortAscending;
 
 	public int[] mostRecentCounts;
 	public Map<String, String> restrictions = new HashMap<>();
-	public EnumSet<VolDemoColumn> displayCols;
+	public EnumSet<VoterDemographicsColumn> displayCols;
 
-	public VolDemoSearchParams(Long precinctId, Map<VolDemoColumn, String> filters, String searchValue,
+	public VoterDemographicsSearchParams(Map<VoterDemographicsColumn, String> filters, String searchValue,
 			int sortColIndex, boolean sortAscending, Map<String, String> restrictions,
-			EnumSet<VolDemoColumn> displayCols) {
+			EnumSet<VoterDemographicsColumn> displayCols) {
 		this.filters = filters;
 		this.searchValue = searchValue;
 		this.sortColIndex = sortColIndex;
@@ -31,7 +31,7 @@ public class VolDemoSearchParams implements Serializable {
 		this.displayCols = displayCols;
 	}
 
-	public VolDemoSearchParams() {
+	public VoterDemographicsSearchParams() {
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class VolDemoSearchParams implements Serializable {
 				.append(restrictions).append(displayCols).toHashCode();
 	}
 
-	public boolean matchesCountsCriteria(VolDemoSearchParams other) {
+	public boolean matchesCountsCriteria(VoterDemographicsSearchParams other) {
 		if (this == other)
 			return true;
 		if (other == null)
@@ -49,13 +49,13 @@ public class VolDemoSearchParams implements Serializable {
 				.append(restrictions, other.restrictions).isEquals();
 	}
 
-	public boolean matchesPagingCriteria(VolDemoSearchParams newSearchParams) {
+	public boolean matchesPagingCriteria(VoterDemographicsSearchParams newSearchParams) {
 		if (this == newSearchParams)
 			return true;
 		if (newSearchParams == null)
 			return false;
 
-		for (VolDemoColumn newCol : newSearchParams.displayCols) {
+		for (VoterDemographicsColumn newCol : newSearchParams.displayCols) {
 			if (!displayCols.contains(newCol) && !newCol.isAlwaysSelected())
 				return false;
 		}

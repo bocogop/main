@@ -15,9 +15,9 @@
 			if (row.email)
 				s += 'Email: ' + row.email + '<br>'
 			if (type === 'export') {
-				s = s.replace(/<br\s*[\/]?>/gi, "\n")
+				return s.replace(/<br\s*[\/]?>/gi, "\n")
 			}
-			return s
+			return '<nobr>' + s + '</nobr>'
 		}
 	})
 </script>

@@ -10,6 +10,7 @@ public class CacheNames {
 	public static final String QUERIES_COUNTRY_DAO = "queries.countryDAO";
 	public static final String QUERIES_GENDER_DAO = "queries.genderDAO";
 	public static final String QUERIES_GRANTABLE_ROLE_DAO = "queries.grantableRoleDAO";
+	public static final String QUERIES_PARTY_DAO = "queries.partyDAO";
 	public static final String QUERIES_ROLE_DAO = "queries.roleDAO";
 	public static final String QUERIES_PERMISSION_DAO = "queries.permissionDAO";
 	public static final String QUERIES_STATE_DAO = "queries.stateDAO";

@@ -4,7 +4,7 @@
 	$(function() {
 
 		// ------------ last volunteered options
-
+		/*
 		$("#rxLastVolOptions").change(function() {
 			$("#haveLastVolDiv").toggle($(this).val() == 'have')
 			$("#haventLastVolDiv").toggle($(this).val() == 'havent')
@@ -17,15 +17,14 @@
 		$("#rxHaventLastVolOption").change(function() {
 			$("#haventLastVolSinceDiv").toggle($(this).val() == 'haventLastVolSince')
 		})
-		
+		*/
 		// ------------ status date options
 		
-		$("#rxStatusDateOptions").change(function() {
-			$("#statusDateBeforeDiv").toggle($(this).val() == 'before')
-			$("#statusDateAfterDiv").toggle($(this).val() == 'after')
-			$("#statusDateBetweenDiv").toggle($(this).val() == 'between')
+		$("#rxAffiliatedDateOptions").change(function() {
+			$("#affiliatedDateBeforeDiv").toggle($(this).val() == 'before')
+			$("#affiliatedDateAfterDiv").toggle($(this).val() == 'after')
+			$("#affiliatedDateBetweenDiv").toggle($(this).val() == 'between')
 		})
-		
 
 		// ------------ active options
 
@@ -60,6 +59,7 @@
 	})
 	
 	function validateAdvancedFilters(allErrors) {
+		/*
 		if ($("#rxHaveLastVolAfter").is(":visible") && $("#rxHaveLastVolAfter").val() == '') {
 			allErrors.push('Please enter a "volunteered after" date.')
 		}
@@ -67,21 +67,21 @@
 		if ($("#rxHaventLastVolSince").is(":visible") && $("#rxHaventLastVolSince").val() == '') {
 			allErrors.push('Please enter a "volunteered since" date.')
 		}
-		
-		if ($("#rxStatusDateBefore").is(":visible") && $("#rxStatusDateBefore").val() == '') {
-			allErrors.push('Please enter a "Status Date Before" date.')
+		*/
+		if ($("#rxAffiliatedDateBefore").is(":visible") && $("#rxAffiliatedDateBefore").val() == '') {
+			allErrors.push('Please enter an "Affiliated Date Before" date.')
 		}
 		
-		if ($("#rxStatusDateAfter").is(":visible") && $("#rxStatusDateAfter").val() == '') {
-			allErrors.push('Please enter a "Status Date After" date.')
+		if ($("#rxAffiliatedDateAfter").is(":visible") && $("#rxAffiliatedDateAfter").val() == '') {
+			allErrors.push('Please enter an "Affiliated Date After" date.')
 		}
 		
-		if ($("#rxStatusDateBetweenStart").is(":visible") && $("#rxStatusDateBetweenStart").val() == '') {
-			allErrors.push('Please enter a "Status Date Between" start date.')
+		if ($("#rxAffiliatedDateBetweenStart").is(":visible") && $("#rxAffiliatedDateBetweenStart").val() == '') {
+			allErrors.push('Please enter an "Affiliated Date Between" start date.')
 		}
 		
-		if ($("#rxStatusDateBetweenEnd").is(":visible") && $("#rxStatusDateBetweenEnd").val() == '') {
-			allErrors.push('Please enter a "Status Date Between" end date.')
+		if ($("#rxAffiliatedDateBetweenEnd").is(":visible") && $("#rxAffiliatedDateBetweenEnd").val() == '') {
+			allErrors.push('Please enter an "Affiliated Date Between" end date.')
 		}
 	}
 </script>
@@ -108,11 +108,11 @@
 
 		</td>
 	</tr>
-	--%>
+	
 	<tr id="lastVolDetails">
-		<td align="right"><i>Last Votered Date:</i></td>
+		<td align="right"><i>Affiliated Date:</i></td>
 		<td width="15"></td>
-		<td>Show <select id="rxLastVolOptions"
+		<td>Show <select id="rxAffDateOptions"
 			class="allParamInputs primaryAdvancedSelect"><option
 					value="all">(all)</option>
 				<option value="have">those who have volunteered...</option>
@@ -153,42 +153,44 @@
 				</div>
 			</div></td>
 	</tr>
-
-	<tr id="statusDateDetails">
-		<td align="right"><i>Status Date:</i></td>
+--%>
+	<tr id="affiliatedDateDetails">
+		<td align="right"><i>Affiliated Date:</i></td>
 		<td width="15"></td>
-		<td>Show <select id="rxStatusDateOptions"
+		<td>Show <select id="rxAffiliatedDateOptions"
 			class="allParamInputs primaryAdvancedSelect"><option
 					value="all">(all)</option>
-				<option value="within1FY">in this fiscal year</option>
-				<option value="within2FY">in the last 2 fiscal years</option>
+				<option value="within30Days">within the last 30 days</option>
+				<option value="within60Days">within the last 60 days</option>
+				<option value="within90Days">within the last 90 days</option>
+				<option value="withinYear">this calendar year</option>
 				<option value="before">before...</option>
 				<option value="after">after...</option>
 				<option value="between">between...</option>
 		</select>
 
-			<div class="restrictDiv" id="statusDateBeforeDiv"
+			<div class="restrictDiv" id="affiliatedDateBeforeDiv"
 				style="display: none">
 				<input type="text" class="allParamInputs dateInput"
-					id="rxStatusDateBefore" size="12" />
+					id="rxAffiliatedDateBefore" size="12" />
 			</div>
 
-			<div class="restrictDiv" id="statusDateAfterDiv"
+			<div class="restrictDiv" id="affiliatedDateAfterDiv"
 				style="display: none">
 				<input type="text" class="allParamInputs dateInput"
-					id="rxStatusDateAfter" size="12" />
+					id="rxAffiliatedDateAfter" size="12" />
 			</div>
 
-			<div class="restrictDiv" id="statusDateBetweenDiv"
+			<div class="restrictDiv" id="affiliatedDateBetweenDiv"
 				style="display: none">
 				<input type="text" class="allParamInputs dateInput"
-					id="rxStatusDateBetweenStart" size="12" /> and <input type="text"
-					class="allParamInputs dateInput" id="rxStatusDateBetweenEnd"
+					id="rxAffiliatedDateBetweenStart" size="12" /> and <input type="text"
+					class="allParamInputs dateInput" id="rxAffiliatedDateBetweenEnd"
 					size="12" />
 			</div>
 		</td>
 	</tr>
-
+	<%--
 	<tr id="inactiveDetails" style="display: none">
 		<td align="right"><i>Inactive details:</i></td>
 		<td width="15"></td>
@@ -243,4 +245,5 @@
 			</div>
 		</td>
 	</tr>
+	 --%>
 </table>
