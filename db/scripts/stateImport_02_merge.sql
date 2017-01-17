@@ -18,6 +18,28 @@ where EMAIL is not null
 	and LTRIM(RTRIM(EMAIL)) = ''
 GO
 
+with phone_one_removed as (
+	select v.id,
+		v.PHONE_NUM,
+		NewPhone = case when LTRIM(v.PHONE_NUM) like '+1%'
+			then dbo.RemoveNonNumericCharacters(RIGHT(LTRIM(v.PHONE_NUM), LEN(LTRIM(v.PHONE_NUM)) - 2))
+		when LTRIM(v.PHONE_NUM) like '1[^1]%' and LEN(dbo.RemoveNonNumericCharacters(v.PHONE_NUM)) = 11
+			then RIGHT(dbo.RemoveNonNumericCharacters(v.PHONE_NUM), LEN(dbo.RemoveNonNumericCharacters(v.PHONE_NUM)) - 1)
+		else LTRIM(RTRIM(v.PHONE_NUM)) end
+	from [dbo].[$(TableName)] v
+)
+update v set PHONE_NUM = STUFF(STUFF(dbo.RemoveNonNumericCharacters(por.NewPhone), 4, 0, '-'), 8, 0, '-')
+from [dbo].[$(TableName)] v
+	join phone_one_removed por on por.id = v.id
+where len(dbo.RemoveNonNumericCharacters(por.NewPhone)) = 10
+	and por.NewPhone not like '+%'
+	and por.NewPhone not like '0%'
+	and por.NewPhone not like '1%'
+-- and our new phone number isn't already in the perfect format
+and v.PHONE_NUM not like '[0-9][0-9][0-9]-[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'
+and v.PHONE_NUM is not null
+GO
+
 -- populate any new precincts
 insert into dbo.Precinct(Code, Name)
 select distinct n.PRECINCT_CODE, n.PRECINCT_NAME

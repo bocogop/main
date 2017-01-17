@@ -439,5 +439,3 @@ div.restrictDiv {
 		</tbody>
 	</table>
 </div>
-
-<div align="center" class="redText">*Hours columns do not reflect same-day activity.</div>

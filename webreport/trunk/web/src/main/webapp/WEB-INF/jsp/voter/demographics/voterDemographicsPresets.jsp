@@ -107,7 +107,7 @@
 
 <div style="margin-left: 50px; display:inline-block">
 	Presets: <select id="presetSelect"><option value="alphabetical" selected="selected">Alphabetical List</option>
-		<option value="newVoters">New Voters</option>
+		<option value="newVoters">New Voters Within 60 Days</option>
 		<option value="newRepublicans">New Republicans Within 60 Days</option>
 		<option value="custom">Custom</option>
 		</select>
