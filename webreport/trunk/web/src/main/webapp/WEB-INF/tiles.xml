@@ -56,7 +56,7 @@
 		<put-attribute name="helpContextID" value="9" />
 		<put-attribute name="activateCountdownTimer" value="false" />
 	</definition>
-	
+
 	<definition name="userError" extends="root-no-menu">
 		<put-attribute name="body" value="/WEB-INF/jsp/userError.jsp" />
 		<put-attribute name="pageTitle" value="User Error" />
@@ -87,7 +87,6 @@
 		<put-attribute name="helpContextID" value="15" />
 	</definition>
 
-
 	<definition name="voterProfile" extends="root">
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/voter/voterProfile.jsp" />
@@ -103,13 +102,30 @@
 		<put-attribute name="helpContextID" value="17" />
 	</definition>
 
-
 	<definition name="voterDemographics" extends="root">
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/voter/demographics/voterDemographics.jsp" />
 		<put-attribute name="pageTitle" value="Voter Demographics" />
 		<put-attribute name="pageDescription"
 			value="This screen allows the user to view a list of active voter demographics." />
+	</definition>
+
+	<definition name="eventList" extends="root">
+		<put-attribute name="body" value="/WEB-INF/jsp/event/eventList.jsp" />
+		<put-attribute name="pageTitle" value="Event List" />
+		<put-attribute name="pageDescription"
+			value="This screen allows the user to view all events" />
+	</definition>
+	
+	<definition name="eventEdit" extends="root">
+		<put-attribute name="body" value="/WEB-INF/jsp/event/eventEdit.jsp" />
+		<put-attribute name="pageTitle" value="Edit Event" />
+		<put-attribute name="pageDescription"
+			value="This screen allows the user to create and edit events" />
+	</definition>
+	
+	<definition name="eventAdd" extends="eventEdit">
+		<put-attribute name="pageTitle" value="Create Event" />
 	</definition>
 
 </tiles-definitions>

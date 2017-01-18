@@ -1,12 +1,4 @@
 function onPageLoad(isNew, isReadOnly, disableTerminationFields, anyTerminationFieldsSet) {
-	$('.dateInput').each(function() {
-		$(this).enableDatePicker({
-			showOn : "button",
-			buttonImage : imgHomePath + "/calendar.gif",
-			buttonImageOnly : true
-		})
-		$(this).mask(twoDigitDateMask)
-	})
 }
 
 function validate() {

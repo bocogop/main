@@ -41,6 +41,22 @@
 						title="Voter Demographics" shortcut="vdg" class="sequencehotkeyed"
 						role="menuitem">Voter Demographics</a></li>
 				</ul></li>
+			
+			<li role="menuitem" aria-haspopup="true"><a id="menuEventLink"
+				href="#menuEevnt" title="Event" shortcut="Shift+e" class="hotkeyed"
+				role="menuitem">Events</a>
+				<ul id="menuEvent" role="menu" style="width: 160px">
+					<sec:authorize access="hasAuthority('${PERMISSION_EVENT_EDIT}')">
+						<li role="menuitem"><a
+							href="${home}/eventAdd.htm"
+							title="Add New Event" shortcut="ce" class="sequencehotkeyed"
+							role="menuitem">Add New Event</a></li>
+					</sec:authorize>
+					<li role="menuitem"><a
+						href="${home}/eventList.htm"
+						title="Existing Event Records" shortcut="sv"
+						class="sequencehotkeyed" role="menuitem">List All Events</a></li>
+				</ul></li>
 
 
 			<li role="menuitem" aria-haspopup="true"><a

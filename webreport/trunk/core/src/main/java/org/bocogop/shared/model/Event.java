@@ -15,7 +15,9 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.bocogop.shared.util.DateUtil;
 import org.hibernate.annotations.BatchSize;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,20 +34,19 @@ public class Event extends AbstractAuditedVersionedPersistent<Event> implements 
 
 		public interface Extended extends Basic {
 		}
-	}
 
-	public static class EventAssignmentsAndOrgsView {
-		public interface Combined {
+		public interface List extends Basic {
 		}
 	}
 
 	// ---------------------------------------- Fields
 
 	private String name;
+	@DateTimeFormat(pattern = DateUtil.TWO_DIGIT_DATE_ONLY)
 	private LocalDate date;
 
 	private List<Participation> participations;
-	
+
 	// ---------------------------------------- Business Methods
 
 	// ---------------------------------------- Common Methods
@@ -97,5 +98,5 @@ public class Event extends AbstractAuditedVersionedPersistent<Event> implements 
 	public void setParticipations(List<Participation> participations) {
 		this.participations = participations;
 	}
-	
+
 }

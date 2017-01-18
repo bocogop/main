@@ -99,6 +99,17 @@ $(function() {
 				.attr('title',
 						'Please specify a Date in the MM/DD/YYYY format')
 	}
+	
+	$(".dateTimeInput").enableDateTimePicker({
+		showOn : "button",
+		buttonImage : imgHomePath + "/calendar.gif",
+		buttonImageOnly : true
+	})
+	$(".dateInput").enableDatePicker({
+		showOn : "button",
+		buttonImage : imgHomePath + "/calendar.gif",
+		buttonImageOnly : true
+	})
 })
 
 function setFocus() {

@@ -5,15 +5,6 @@
 	var selectedVolEmails = {} // map of vol ID to email
 	
 	$(function() {
-		$('.dateInput').each(function() {
-			$(this).enableDatePicker({
-				showOn : "button",
-				buttonImage : imgHomePath + "/calendar.gif",
-				buttonImageOnly : true
-			})
-			$(this).mask(twoDigitDateMask)
-		})
-		
 		$('#paramsShowHide').showHide({
 			speed : 500,
 			easing : '',

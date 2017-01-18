@@ -2,15 +2,6 @@ function onPageLoad(isNew, isReadOnly, disableTerminationFields, anyTerminationF
 	if (isReadOnly)
 		setPageTitleText('View Voter')
 	
-	$('.dateInput').each(function() {
-		$(this).enableDatePicker({
-			showOn : "button",
-			buttonImage : imgHomePath + "/calendar.gif",
-			buttonImageOnly : true
-		})
-		$(this).mask(twoDigitDateMask)
-	})
-	
 	var defaultParms = {
 		"paging" : false,
 		"processing" : true,
