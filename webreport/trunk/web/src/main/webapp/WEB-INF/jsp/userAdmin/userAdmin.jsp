@@ -9,6 +9,8 @@
 
 	var hasUMPermission = false
 	var myUserId = <c:out value="${currentUser.id}" />
+	var requestedUserId = <c:out value="${appUser.id}" default="null" />
+	
 <sec:authorize access="hasAuthority('${PERMISSION_USER_MANAGER}')">
 	hasUMPermission = true
 </sec:authorize>
@@ -21,10 +23,16 @@
 		  	data: csrfData
 		})
 		
+		loadUserAdmin()
+		
 		if (!hasUMPermission) {
     		selectUserWithFields(${currentUser.id},
     				"<c:out value="${currentUser.username}" />",
     				"<c:out value="${currentUser.displayName}" />")
+		} else if (requestedUserId != null) {
+			selectUserWithFields(requestedUserId,
+					"<c:out value="${appUser.username}" />",
+    				"<c:out value="${appUser.displayName}" />")
 		}
 	})
 </script>

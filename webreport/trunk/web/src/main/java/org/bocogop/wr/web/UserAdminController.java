@@ -77,8 +77,11 @@ public class UserAdminController {
 	}
 
 	@RequestMapping(value = "/userAdmin.htm", method = RequestMethod.GET)
-	public String userAdmin(ModelMap modelMap) {
+	@Breadcrumb("User Add/Edit")
+	public String userAdmin(ModelMap modelMap, @RequestParam(required = false) Long appUserId) {
 		modelMap.put("allTimeZones", TimeZoneUtils.TIME_ZONES);
+		if (appUserId != null)
+			modelMap.put("appUser", appUserDAO.findRequiredByPrimaryKey(appUserId));
 		return "userAdmin";
 	}
 

@@ -1,4 +1,4 @@
-$(function() {
+function loadUserAdmin() {
 	$("input:submit, a.buttonAnchor, a.submitAnchor, button").button()
 	
 	$(".userInput").change(function() {
@@ -10,7 +10,7 @@ $(function() {
 	
 	buildUserTable()
     buildUserFieldsDialog()
-})
+}
 
 function buildUserTable() {
 	$("#userTable").DataTable({

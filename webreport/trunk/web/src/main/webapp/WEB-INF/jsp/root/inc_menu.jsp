@@ -58,7 +58,7 @@
 						class="sequencehotkeyed" role="menuitem">List All Events</a></li>
 				</ul></li>
 
-
+			<%--
 			<li role="menuitem" aria-haspopup="true"><a
 				href="#menuMaintenance" title="Maintenance" shortcut="Shift+d"
 				class="hotkeyed" role="menuitem">Maintenance</a>
@@ -71,6 +71,7 @@
 					</sec:authorize>
 
 				</ul></li>
+			 --%>
 			<li role="menuitem" aria-haspopup="true"><a
 				href="#menuReference" title="Reference" shortcut="Shift+f"
 				class="hotkeyed" id="menuReferenceAnchor" role="menuitem">Reference</a>
