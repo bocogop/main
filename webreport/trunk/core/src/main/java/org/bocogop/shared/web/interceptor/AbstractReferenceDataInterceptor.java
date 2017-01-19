@@ -46,8 +46,6 @@ public abstract class AbstractReferenceDataInterceptor extends AbstractIntercept
 	private int sessionFailedRequestsCount;
 	@Value("${session.heartBeatTimeoutMillis}")
 	private int sessionHeartBeatTimeoutMillis;
-	@Value("${protocolHostnamePortOverride}")
-	private String protocolHostnamePortOverride;
 
 	@Value("${web.version}")
 	private String appVersion;
@@ -125,11 +123,6 @@ public abstract class AbstractReferenceDataInterceptor extends AbstractIntercept
 			port = -1;
 		}
 
-		String protocolHostnamePort = StringUtils.isNotBlank(protocolHostnamePortOverride)
-				? protocolHostnamePortOverride
-				: new URL(request.getScheme().replaceAll("[^A-Za-z0-9-\\.]", ""), request.getServerName(), port, "")
-						.toString();
-		model.put("protocolHostnamePort", protocolHostnamePort);
 		model.put("maxGetRequestLength", maxGetRequestLength);
 
 		addAdditionalReferenceData(request, response, handler, modelAndView);

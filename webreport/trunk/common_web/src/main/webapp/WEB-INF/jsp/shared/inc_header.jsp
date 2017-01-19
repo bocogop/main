@@ -12,7 +12,6 @@
 <%@ taglib prefix="app" uri="http://bocogop.org/app/taglibs"%>
 <%@ taglib prefix="wr" tagdir="/WEB-INF/tags"%>
 
-<c:set var="protocolHostnamePort" value="${protocolHostnamePort}" />
 <c:set var="home" value="${pageContext.servletContext.contextPath}" />
 <c:set var="ajaxHome" value="${home}${AJAX_CONTEXT_PATH_PREFIX}" />
 <c:set var="jsHome" value="${home}/media/js" />

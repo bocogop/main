@@ -1,7 +1,6 @@
 <%@ include file="../../shared/inc_header.jsp"%>
 
 <script type="text/javascript">
-	var protocolHostnamePort = '${protocolHostnamePort}'
 	var homePath = '${home}'
 	var imgHomePath = '${imgHome}'
 	var ajaxHomePath = '${ajaxHome}'

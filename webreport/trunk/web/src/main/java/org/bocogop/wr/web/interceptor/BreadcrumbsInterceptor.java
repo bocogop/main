@@ -22,7 +22,6 @@ import org.bocogop.wr.web.breadcrumbs.Breadcrumbs.Breadcrumb;
 import org.bocogop.wr.web.breadcrumbs.Link;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -47,9 +46,6 @@ public class BreadcrumbsInterceptor extends AbstractInterceptor {
 	public static void setRequestBreadcrumb(ServletRequest request, String breadcrumb) {
 		request.setAttribute(REQUEST_BREADCRUMB_KEY, breadcrumb);
 	}
-
-	@Value("${protocolHostnamePortOverride}")
-	private String protocolHostnamePortOverride;
 
 	// ------------------------------------- Business Methods
 
@@ -124,7 +120,7 @@ public class BreadcrumbsInterceptor extends AbstractInterceptor {
 		if ("GET".equalsIgnoreCase(request.getMethod())) {
 			String breadcrumb = (String) request.getAttribute(BreadcrumbsInterceptor.REQUEST_BREADCRUMB_KEY);
 			if (breadcrumb != null)
-				breadcrumbs.navigate(request, handler, breadcrumb, protocolHostnamePortOverride);
+				breadcrumbs.navigate(request, handler, breadcrumb);
 		}
 
 		if (modelAndView == null) {

@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Breadcrumbs implements Serializable {
 	private static final long serialVersionUID = -6556371037011322754L;
-	
+
 	private List<Breadcrumb> breadcrumbs = new ArrayList<>();
 
 	public void navigate(String relativeLink, Object handler, String linkName) {
@@ -48,18 +48,14 @@ public class Breadcrumbs implements Serializable {
 		link.setHref(relativeLink);
 	}
 
-	public void navigate(HttpServletRequest request, Object handler, String linkName, String protocolHostnamePortOverride) {
-		String relativeLink = null;
-		if (StringUtils.isNotBlank(protocolHostnamePortOverride)) {
-			relativeLink = protocolHostnamePortOverride + request.getContextPath() + request.getServletPath();
-		} else {
-			relativeLink = request.getRequestURL().toString();
-		}
+	public void navigate(HttpServletRequest request, Object handler, String linkName) {
+		String relativeLink = request.getRequestURL().toString();
+
 		String queryString = request.getQueryString();
 		if (!StringUtils.isBlank(queryString))
 			relativeLink += "?" + queryString;
 		relativeLink = relativeLink.replaceAll("[^\\p{Print}]", "");
-		
+
 		navigate(relativeLink, handler, linkName);
 	}
 
