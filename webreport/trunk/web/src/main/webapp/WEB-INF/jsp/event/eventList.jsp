@@ -38,7 +38,11 @@
 					}
 				}, {
 					"render" : function(row, type, val, meta) {
-						return ''
+						return val.description
+					}
+				}, {
+					"render" : function(row, type, val, meta) {
+						return val.numberOfParticipants
 					}
 				}, {
 					"render" : function(row, type, val, meta) {
@@ -79,7 +83,7 @@
 	}
 	
 	function deleteEvent(eventId) {
-		confirmDialog('Are you sure you want to delete this event?<p>This action is irreversible.', function() {
+		confirmDialog('Are you sure you want to delete this event?<p>This action is irreversible and all participation logs will also be deleted.', function() {
 			$.ajax({
 				url : ajaxHomePath + '/event/delete',
 				dataType : 'json',
@@ -121,6 +125,7 @@
 					<th width="60">Date</th>
 					<th>Event</th>
 					<th>Description</th>
+					<th>Participants</th>
 					<th width="20">Action</th>
 				</tr>
 			</thead>

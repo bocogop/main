@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bocogop.shared.model.AbstractIdentifiedPersistent;
+import org.bocogop.shared.model.Participation.ParticipationView;
 import org.bocogop.shared.model.voter.Voter.VoterView;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -102,7 +103,7 @@ public class Precinct extends AbstractIdentifiedPersistent<Precinct> implements 
 	}
 
 	@Column(length = 40, nullable = false)
-	@JsonView({ PrecinctView.Basic.class, VoterView.Search.class })
+	@JsonView({ PrecinctView.Basic.class, VoterView.Search.class, ParticipationView.VotersForEvent.class })
 	public String getName() {
 		return name;
 	}

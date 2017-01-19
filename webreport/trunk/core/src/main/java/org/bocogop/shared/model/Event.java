@@ -4,13 +4,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -44,10 +47,16 @@ public class Event extends AbstractAuditedVersionedPersistent<Event> implements 
 	private String name;
 	@DateTimeFormat(pattern = DateUtil.TWO_DIGIT_DATE_ONLY)
 	private LocalDate date;
+	private String description;
 
 	private List<Participation> participations;
 
 	// ---------------------------------------- Business Methods
+
+	@Transient
+	public int getNumberOfParticipants() {
+		return getParticipations().size();
+	}
 
 	// ---------------------------------------- Common Methods
 
@@ -80,6 +89,14 @@ public class Event extends AbstractAuditedVersionedPersistent<Event> implements 
 		this.name = name;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public LocalDate getDate() {
 		return date;
 	}
@@ -88,10 +105,12 @@ public class Event extends AbstractAuditedVersionedPersistent<Event> implements 
 		this.date = date;
 	}
 
-	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@BatchSize(size = 500)
 	@JsonIgnore
 	public List<Participation> getParticipations() {
+		if (participations == null)
+			participations = new ArrayList<>();
 		return participations;
 	}
 

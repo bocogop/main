@@ -15,6 +15,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bocogop.shared.model.AbstractAuditedVersionedPersistent;
+import org.bocogop.shared.model.Participation.ParticipationView;
 import org.bocogop.shared.model.voter.Voter.VoterView;
 import org.bocogop.shared.util.StringUtil;
 import org.hibernate.validator.constraints.NotBlank;
@@ -112,13 +113,13 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Transient
-	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
+	@JsonView({ VoterView.Search.class, VoterView.Demographics.class, ParticipationView.VotersForEvent.class })
 	public String getDisplayName() {
 		return getDisplayName(true);
 	}
 
 	@Transient
-	@JsonView({ VoterView.Search.class, VoterView.Demographics.class })
+	@JsonView({ VoterView.Search.class, VoterView.Demographics.class, ParticipationView.VotersForEvent.class })
 	public String getAddressMultilineDisplay() {
 		return StringUtil.getAddressDisplay(getAddress(), null, null, getCity(), getState(), getZip(), null, "\n");
 	}
@@ -482,7 +483,8 @@ public abstract class AbstractSimpleVoter<T extends AbstractSimpleVoter<T>>
 	}
 
 	@Column(name = "VoterStatusActive")
-	@JsonView({ VoterView.Search.class, VoterView.Extended.class, VoterView.Demographics.class })
+	@JsonView({ VoterView.Search.class, VoterView.Extended.class, VoterView.Demographics.class,
+			ParticipationView.VotersForEvent.class })
 	public Boolean getStatusActive() {
 		return statusActive;
 	}

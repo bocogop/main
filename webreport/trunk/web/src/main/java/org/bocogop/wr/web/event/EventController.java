@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.bocogop.shared.model.Event;
 import org.bocogop.shared.model.Event.EventView;
+import org.bocogop.shared.model.Participation;
+import org.bocogop.shared.model.Participation.ParticipationView;
 import org.bocogop.shared.model.Permission;
 import org.bocogop.shared.model.Permission.PermissionType;
 import org.bocogop.shared.service.validation.ServiceValidationException;
@@ -55,6 +57,12 @@ public class EventController extends AbstractAppController {
 	public @ResponseBody boolean eventDelete(@RequestParam long id) {
 		eventService.delete(id);
 		return true;
+	}
+
+	@RequestMapping("/event/participation")
+	@JsonView(ParticipationView.VotersForEvent.class)
+	public @ResponseBody Collection<Participation> getParticipationsForEvent(@RequestParam long eventId) {
+		return participationDAO.findByCriteria(null, eventId);
 	}
 
 	// ------------------------------------------------------- Event form

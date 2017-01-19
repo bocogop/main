@@ -87,7 +87,6 @@
 					<th width="5%" class="select-filter">Gender</th>
 					<th width="10%" class="select-filter" nowrap>Status</th>
 					<th width="20%">Contact Info</th>
-					
 				</tr>
 			</thead>
 		</table>

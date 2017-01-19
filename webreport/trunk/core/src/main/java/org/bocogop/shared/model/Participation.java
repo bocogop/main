@@ -15,6 +15,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bocogop.shared.model.voter.Voter;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "Participation")
@@ -27,6 +28,12 @@ public class Participation extends AbstractAuditedVersionedPersistent<Participat
 		}
 
 		public interface Extended extends Basic {
+		}
+
+		public interface VotersForEvent extends Basic {
+		}
+
+		public interface EventsForVoter extends Basic {
 		}
 	}
 
@@ -55,6 +62,7 @@ public class Participation extends AbstractAuditedVersionedPersistent<Participat
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "VoterFK", nullable = false)
 	@NotNull
+	@JsonView(ParticipationView.VotersForEvent.class)
 	public Voter getVoter() {
 		return voter;
 	}
@@ -66,6 +74,7 @@ public class Participation extends AbstractAuditedVersionedPersistent<Participat
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "EventFK", nullable = false)
 	@NotNull
+	@JsonView(ParticipationView.EventsForVoter.class)
 	public Event getEvent() {
 		return event;
 	}

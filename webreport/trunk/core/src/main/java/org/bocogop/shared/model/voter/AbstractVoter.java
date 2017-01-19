@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import org.bocogop.shared.model.Participation.ParticipationView;
 import org.bocogop.shared.model.lookup.Gender;
 import org.bocogop.shared.model.lookup.Party;
 import org.bocogop.shared.model.precinct.Precinct;
@@ -190,7 +191,8 @@ public abstract class AbstractVoter<T extends AbstractVoter<T>> extends Abstract
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PrecinctFK")
-	@JsonView({ VoterView.Search.class, VoterView.Extended.class, VoterView.Demographics.class })
+	@JsonView({ VoterView.Search.class, VoterView.Extended.class, VoterView.Demographics.class,
+			ParticipationView.VotersForEvent.class })
 	public Precinct getPrecinct() {
 		return precinct;
 	}

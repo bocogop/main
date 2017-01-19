@@ -1,0 +1,1 @@
+alter table dbo.Event add Description varchar(2000);
