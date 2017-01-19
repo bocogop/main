@@ -47,7 +47,8 @@
 				}, {
 					"render" : function(row, type, val, meta) {
 						var s = '<nobr>'
-						s += '<a href="javascript:deleteEvent(' + val.id + ')"><img src="' + imgHomePath + '/delete.gif" border="0" /></a>'
+						if (!isReadOnly)
+							s += '<a href="javascript:deleteEvent(' + val.id + ')"><img src="' + imgHomePath + '/delete.gif" border="0" /></a>'
 						s += '</nobr>'
 						return s
 					},

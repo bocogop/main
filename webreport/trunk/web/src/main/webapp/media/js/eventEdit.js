@@ -65,11 +65,13 @@ function buildParticipantTable() {
 									"targets" : 5,
 									"data" : function(row, type, val, meta) {
 										var s = '<nobr>'
-										s += '<a href="javascript:deleteParticipation('
-												+ row.id
-												+ ')"><img src="'
-												+ imgHomePath
-												+ '/delete.gif" border="0" /></a>'
+										if (!isReadOnly) {
+											s += '<a href="javascript:deleteParticipation('
+													+ row.id
+													+ ')"><img src="'
+													+ imgHomePath
+													+ '/delete.gif" border="0" /></a>'
+										}
 										s += '</nobr>'
 										return s
 									},

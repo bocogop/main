@@ -58,31 +58,31 @@
 					<input class="submitAnchor" type="submit" value="Submit"
 						id="submitFormButton" />
 				</c:if>
-				<a id="cancelOperationBtn" class="buttonAnchor"
-					href="javascript:cancelDonation();${current_breadcrumb}">Cancel</a>
 			</div>
 		</div>
 		<div class="rightHalf">
 			<fieldset>
 				<legend>Participants</legend>
 				<c:if test="${command.event.persistent}">
-				<div class="clearCenter">
-					<a id="addParticipantBtn" class="buttonAnchor"
-						href="javascript:popupVoterSearch('eventAdd')">Add Participant</a>
-				</div>
-				<table class="formatTable stripe" id="participantList" border="1"
-					summary="Participant List">
-					<thead>
-						<tr>
-							<th width="40%">Name</th>
-							<th width="10%">Voter ID</th>
-							<th width="10%">Precinct</th>
-							<th width="10%">Status</th>
-							<th width="20%">Contact Info</th>
-							<th width="10%">Action</th>
-						</tr>
-					</thead>
-				</table>
+					<c:if test="${not FORM_READ_ONLY}">
+						<div class="clearCenter">
+							<a id="addParticipantBtn" class="buttonAnchor"
+								href="javascript:popupVoterSearch('eventAdd')">Add Participant</a>
+						</div>
+					</c:if>
+					<table class="formatTable stripe" id="participantList" border="1"
+						summary="Participant List">
+						<thead>
+							<tr>
+								<th width="40%">Name</th>
+								<th width="10%">Voter ID</th>
+								<th width="10%">Precinct</th>
+								<th width="10%">Status</th>
+								<th width="20%">Contact Info</th>
+								<th width="10%">Action</th>
+							</tr>
+						</thead>
+					</table>
 				</c:if>
 				<c:if test="${not command.event.persistent}">
 					<div style="padding:20px">Please save this event before adding participants.</div>

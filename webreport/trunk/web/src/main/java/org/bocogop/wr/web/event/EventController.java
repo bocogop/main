@@ -41,6 +41,7 @@ public class EventController extends AbstractAppController {
 	@RequestMapping("/eventList.htm")
 	@Breadcrumb("Event List")
 	public String eventList(ModelMap model) {
+		setFormAsReadOnlyUnlessUserHasPermissions(model, PermissionType.EVENT_EDIT);
 		return "eventList";
 	}
 
