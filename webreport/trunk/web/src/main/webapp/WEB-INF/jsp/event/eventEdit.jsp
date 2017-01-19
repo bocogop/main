@@ -4,6 +4,12 @@
 	<%@ include file="../shared/inc_modifyToView.jsp"%>
 </c:if>
 
+<jsp:include page="/WEB-INF/jsp/shared/inc_voterSearchPopup.jsp">
+	<jsp:param name="uniqueVoterSearchPopupId" value="eventAdd" />
+	<jsp:param name="resultCallbackMethod"
+		value="eventAddVoterCallback" />
+</jsp:include>
+
 <script type="text/javascript">
 	var isReadOnly = <c:out value="${FORM_READ_ONLY}" default="false"/>
 	var eventId = <c:out value="${command.event.id}" default="null" />
@@ -16,7 +22,7 @@
 	})
 </script>
 
-<script type="text/javascript" src="${jsHome}/eventProfile.js"></script>
+<script type="text/javascript" src="${jsHome}/eventEdit.js"></script>
 
 <form:form method="post" action="${home}/eventSubmit.htm" id="eventForm">
 
@@ -34,11 +40,16 @@
 								cssClass="msg-error" /></td>
 					</tr>
 					<tr>
-						<td class='appFieldLabel' nowrap><label
-							for='donationDateInput'>Name:</label></td>
+						<td class='appFieldLabel' nowrap>Name:</td>
 						<td style="text-align: left"><span class='requdIndicator'>*</span></td>
 						<td><app:input path="event.name" id="eventName" size="20" />
 							<app:errors path="event.name" cssClass="msg-error" /></td>
+					</tr>
+					<tr>
+						<td class='appFieldLabel' nowrap>Description:</td>
+						<td style="text-align: left"><span class='requdIndicator'>*</span></td>
+						<td><app:textarea path="event.description" id="eventDescription" rows="4" cols="40" />
+							<app:errors path="event.description" cssClass="msg-error" /></td>
 					</tr>
 				</table>
 			</fieldset>
@@ -54,9 +65,10 @@
 		<div class="rightHalf">
 			<fieldset>
 				<legend>Participants</legend>
+				<c:if test="${command.event.persistent}">
 				<div class="clearCenter">
 					<a id="addParticipantBtn" class="buttonAnchor"
-						href="javascript:addParticipant()">Add Participant</a>
+						href="javascript:popupVoterSearch('eventAdd')">Add Participant</a>
 				</div>
 				<table class="formatTable stripe" id="participantList" border="1"
 					summary="Participant List">
@@ -71,6 +83,10 @@
 						</tr>
 					</thead>
 				</table>
+				</c:if>
+				<c:if test="${not command.event.persistent}">
+					<div style="padding:20px">Please save this event before adding participants.</div>
+				</c:if>
 			</fieldset>
 		</div>
 	</div>

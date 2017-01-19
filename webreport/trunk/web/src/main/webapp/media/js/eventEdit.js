@@ -2,6 +2,10 @@ function buildParticipantTable() {
 	var theDataTable = $('#participantList')
 			.DataTable(
 					{
+						buttons: ['excel', {
+							extend : 'pdfHtml5',
+							orientation : 'landscape'
+						}, 'print'],
 						"columnDefs" : [
 								{
 									"targets" : 0,
@@ -61,7 +65,7 @@ function buildParticipantTable() {
 									"targets" : 5,
 									"data" : function(row, type, val, meta) {
 										var s = '<nobr>'
-										s += '<a href="javascript:deleteParticipant('
+										s += '<a href="javascript:deleteParticipation('
 												+ row.id
 												+ ')"><img src="'
 												+ imgHomePath
@@ -71,7 +75,7 @@ function buildParticipantTable() {
 									},
 									"className" : "dt-center"
 								} ],
-						"dom" : '<"top"fi>rt<"bottom"pl><"clear">',
+						"dom" : '<"top"fBi>rt<"bottom"pl><"clear">',
 						"pagingType" : "full_numbers",
 						"pageLength" : 10,
 						"lengthMenu" : [ [ 10, -1 ], [ 10, "All" ] ],
@@ -97,5 +101,32 @@ function refreshParticipantTable() {
 			table.rows.add(response)
 			table.draw()				
 	    }
+	})
+}
+
+function eventAddVoterCallback(voterObj) {
+	$.ajax({
+		url : ajaxHomePath + '/event/participant/add',
+		dataType : 'json',
+		data : {
+			eventId : eventId,
+			voterId : voterObj.id
+		},
+		error : commonAjaxErrorHandler,
+		success : refreshParticipantTable
+	})
+}
+
+function deleteParticipation(pId) {
+	confirmDialog('Are you sure you want to remove this participant?', function() {
+		$.ajax({
+			url : ajaxHomePath + '/participation/delete',
+			dataType : 'json',
+			data : {
+				participationId : pId
+			},
+			error : commonAjaxErrorHandler,
+			success : refreshParticipantTable
+		})
 	})
 }

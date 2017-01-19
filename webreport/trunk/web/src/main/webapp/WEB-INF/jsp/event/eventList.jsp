@@ -32,7 +32,7 @@
 				}, {
 					"render" : function(row, type, val, meta) {
 						if (type === 'display') {
-							return '<a class="appLink" href="' + homePath + '/eventEdit.htm?id=' + val.id + '">' + escapeHTML(val.name) + '</a>'
+							return '<nobr><a class="appLink" href="' + homePath + '/eventEdit.htm?id=' + val.id + '">' + escapeHTML(val.name) + '</a></nobr>'
 						}
 						return val.name
 					}

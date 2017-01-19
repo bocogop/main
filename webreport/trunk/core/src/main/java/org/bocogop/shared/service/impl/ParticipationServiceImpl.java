@@ -1,5 +1,7 @@
 package org.bocogop.shared.service.impl;
 
+import java.util.List;
+
 import org.bocogop.shared.model.Participation;
 import org.bocogop.shared.service.ParticipationService;
 import org.bocogop.shared.service.validation.ServiceValidationException;
@@ -13,13 +15,17 @@ public class ParticipationServiceImpl extends AbstractServiceImpl implements Par
 
 	@Override
 	public Participation saveOrUpdate(Participation p) throws ServiceValidationException {
+		List<Participation> existing = participationDAO.findByCriteria(p.getVoter().getId(), p.getEvent().getId());
+		if (!existing.isEmpty())
+			throw new ServiceValidationException("participation.create.error.alreadyExists");
+
 		p = participationDAO.saveOrUpdate(p);
 		return p;
 	}
 
 	@Override
-	public void delete(long eventId) {
-		eventDAO.delete(eventId);
+	public void delete(long participationId) {
+		participationDAO.delete(participationId);
 	}
 
 	@Override

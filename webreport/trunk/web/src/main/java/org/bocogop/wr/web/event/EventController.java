@@ -65,6 +65,23 @@ public class EventController extends AbstractAppController {
 		return participationDAO.findByCriteria(null, eventId);
 	}
 
+	@RequestMapping("/event/participant/add")
+	public @ResponseBody boolean addParticipantToEvent(@RequestParam long eventId, @RequestParam long voterId)
+			throws ServiceValidationException {
+		Participation p = new Participation();
+		p.setVoter(voterDAO.findRequiredByPrimaryKey(voterId));
+		p.setEvent(eventDAO.findRequiredByPrimaryKey(eventId));
+		p = participationService.saveOrUpdate(p);
+		return true;
+	}
+
+	@RequestMapping("/participation/delete")
+	public @ResponseBody boolean deleteParticipation(@RequestParam long participationId)
+			throws ServiceValidationException {
+		participationService.delete(participationId);
+		return true;
+	}
+
 	// ------------------------------------------------------- Event form
 	// display and submit methods
 
