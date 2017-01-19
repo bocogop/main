@@ -78,9 +78,17 @@
 					${referenceDataLinks}
 				</ul></li>
 			<sec:authorize access="hasAnyAuthority('${PERMISSION_USER_MANAGER}')">
-				<li role="menuitem"><a href="${home}/userAdmin.htm"
-					title="Manage User Access" shortcut="cs" class="sequencehotkeyed"
-					role="menuitem">Manage Users</a></li>
+				<li role="menuitem" aria-haspopup="true"><a
+				href="#menuUserAdmin" title="Manage Users" shortcut="Shift+u"
+				class="hotkeyed" role="menuitem">Manage Users</a>
+				<ul id="menuUsers" role="menu" style="width: 140px">
+					<li role="menuitem"><a href="${home}/userAdmin.htm"
+						title="Add/Edit User" shortcut="au" class="sequencehotkeyed"
+						role="menuitem">Add/Edit User</a></li>
+					<li role="menuitem"><a href="${home}/userList.htm"
+						title="User List" shortcut="au" class="sequencehotkeyed"
+						role="menuitem">List All Users</a></li>
+				</ul>
 			</sec:authorize>
 		</ul>
 	</div>

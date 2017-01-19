@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
@@ -233,6 +234,15 @@ public class AppUserDAOImpl extends AbstractAppSortedDAOImpl<AppUser> implements
 					(String) result[4]));
 		}
 		return returnResults;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public SortedSet<AppUser> listAllWithRoles() {
+		return new TreeSet<>(em
+				.createQuery(
+						"from " + AppUser.class.getName() + " u left join fetch u.roles ur left join fetch ur.role r")
+				.getResultList());
 	}
 
 }

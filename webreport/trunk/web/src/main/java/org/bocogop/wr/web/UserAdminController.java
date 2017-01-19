@@ -32,6 +32,7 @@ import org.bocogop.shared.util.SecurityUtil;
 import org.bocogop.shared.util.StringUtil;
 import org.bocogop.shared.util.TimeZoneUtils;
 import org.bocogop.shared.web.CoreAjaxRequestHandler;
+import org.bocogop.wr.web.breadcrumbs.Breadcrumb;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,12 @@ public class UserAdminController {
 		return "userAdmin";
 	}
 
+	@RequestMapping("/userList.htm")
+	@Breadcrumb("User List")
+	public String userList(ModelMap model) {
+		return "userList";
+	}
+
 	private boolean hasUMPermission() {
 		return SecurityUtil.hasAllPermissions(PermissionType.USER_MANAGER);
 	}
@@ -97,6 +104,12 @@ public class UserAdminController {
 			if (!hasUMPermission() && !myUsername.equals(username))
 				throw new AccessDeniedException("The user with the specified username is not available");
 		}
+	}
+
+	@RequestMapping(value = "/appUser/list", method = RequestMethod.GET)
+	@JsonView(AppUserView.List.class)
+	public @ResponseBody SortedSet<AppUser> getAppUserListWithRoles() {
+		return appUserDAO.listAllWithRoles();
 	}
 
 	@RequestMapping(value = "/appUser", params = "includeRoles=true", method = RequestMethod.GET)

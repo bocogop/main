@@ -1,4 +1,4 @@
-<%@ include file="shared/inc_header.jsp"%>
+<%@ include file="../shared/inc_header.jsp"%>
 
 <script type="text/javascript">
 	var homePath = '${home}'

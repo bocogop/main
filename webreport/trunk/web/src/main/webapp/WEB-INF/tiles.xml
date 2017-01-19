@@ -53,7 +53,6 @@
 	<definition name="login" extends="root-no-menu">
 		<put-attribute name="body" value="/WEB-INF/jsp/login.jsp" />
 		<put-attribute name="pageTitle" value="Boulder County GOP Staff Site" />
-		<put-attribute name="helpContextID" value="9" />
 		<put-attribute name="activateCountdownTimer" value="false" />
 	</definition>
 
@@ -66,7 +65,6 @@
 	<definition name="home" extends="root">
 		<put-attribute name="body" value="/WEB-INF/jsp/home.jsp" />
 		<put-attribute name="pageTitle" value="Boulder County GOP Staff Site" />
-		<put-attribute name="helpContextID" value="14" />
 		<put-attribute name="showPageTitle" value="false" />
 		<put-attribute name="showAnnouncements" value="true" />
 	</definition>
@@ -76,15 +74,20 @@
 		<put-attribute name="pageTitle" value="Select/Change Precinct" />
 		<put-attribute name="pageDescription"
 			value="This screen allows the user to select or change their precinct" />
-		<put-attribute name="helpContextID" value="2" />
 	</definition>
 
 	<definition name="userAdmin" extends="root">
-		<put-attribute name="body" value="/WEB-INF/jsp/userAdmin.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/userAdmin/userAdmin.jsp" />
 		<put-attribute name="pageTitle" value="Manage User Access" />
 		<put-attribute name="pageDescription"
 			value="This screen allows user access to be managed" />
-		<put-attribute name="helpContextID" value="15" />
+	</definition>
+
+	<definition name="userList" extends="root">
+		<put-attribute name="body" value="/WEB-INF/jsp/userAdmin/userList.jsp" />
+		<put-attribute name="pageTitle" value="List Users" />
+		<put-attribute name="pageDescription"
+			value="This screen displays a list of application users" />
 	</definition>
 
 	<definition name="voterProfile" extends="root">
@@ -94,12 +97,10 @@
 
 	<definition name="createVoter" extends="voterProfile">
 		<put-attribute name="pageTitle" value="Create Voter" />
-		<put-attribute name="helpContextID" value="18" />
 	</definition>
 
 	<definition name="editVoter" extends="voterProfile">
 		<put-attribute name="pageTitle" value="Edit Voter" />
-		<put-attribute name="helpContextID" value="17" />
 	</definition>
 
 	<definition name="voterDemographics" extends="root">

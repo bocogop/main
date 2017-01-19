@@ -98,10 +98,6 @@
 </script>
 
 <style>
-#eventList tr.serviceRow {
-	background-color: #dddddd;
-}
-
 #eventList {
 	border-collapse: collapse;
 	min-width: 400px;
@@ -119,7 +115,7 @@
 		<legend>Events</legend>
 
 		<table class="formatTable" id="eventList" border="1"
-			summary="General Ledger">
+			summary="Event List">
 			<thead>
 				<tr>
 					<th width="60">Date</th>

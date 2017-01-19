@@ -57,6 +57,9 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 
 		public interface Extended extends Basic {
 		}
+
+		public interface List extends Basic {
+		}
 	}
 
 	// ------------------------------------ Fields
@@ -142,7 +145,7 @@ public class AppUser extends AbstractAuditedVersionedPersistent<AppUser>
 	}
 
 	@Transient
-	@JsonIgnore
+	@JsonView(AppUserView.List.class)
 	public SortedSet<Role> getBasicRoles() {
 		Set<AppUserRole> aufrList = getRoles();
 		SortedSet<Role> roles = new TreeSet<>();

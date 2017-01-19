@@ -3,6 +3,7 @@ package org.bocogop.shared.persistence;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.SortedSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
@@ -77,4 +78,6 @@ public interface AppUserDAO extends AppSortedDAO<AppUser> {
 					.toComparison() > 0 ? 1 : -1;
 		}
 	}
+
+	SortedSet<AppUser> listAllWithRoles();
 }
